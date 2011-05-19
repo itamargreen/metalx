@@ -1,0 +1,14 @@
+D:\MetalX\MetalX.SceneMaker2D\bin\Debug\MetalX.SceneMaker2D.exe
+D:\MetalX\MetalX.SceneMaker2D\bin\Debug\MetalX.SceneMaker2D.pdb
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\MetalX.SceneMaker2D.Form1.resources
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\MetalX.SceneMaker2D.Properties.Resources.resources
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\MetalX.SceneMaker2D.exe
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\MetalX.SceneMaker2D.pdb
+D:\MetalX\Debug\MetalX.SceneMaker2D.exe
+D:\MetalX\Debug\MetalX.SceneMaker2D.pdb
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\MetalX.SceneMaker2D.DotMXTMaker.resources
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\MetalX.SceneMaker2D.DotMXAMaker.resources
+D:\MetalX\MetalX.SceneMaker2D\obj\x86\Debug\MetalX.SceneMaker2D.AboutBox1.resources
