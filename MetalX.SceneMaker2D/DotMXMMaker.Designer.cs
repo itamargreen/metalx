@@ -1,6 +1,6 @@
 ﻿namespace MetalX.SceneMaker2D
 {
-    partial class DotMXMViewer
+    partial class DotMXMMaker
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -62,7 +62,7 @@
             this.ui_pack.Name = "ui_pack";
             this.ui_pack.Size = new System.Drawing.Size(111, 23);
             this.ui_pack.TabIndex = 2;
-            this.ui_pack.Text = "打包.Model文件";
+            this.ui_pack.Text = "打包.MXM文件";
             this.ui_pack.UseVisualStyleBackColor = true;
             this.ui_pack.Click += new System.EventHandler(this.ui_pack_Click);
             // 
@@ -72,7 +72,7 @@
             this.ui_loadmodel.Name = "ui_loadmodel";
             this.ui_loadmodel.Size = new System.Drawing.Size(111, 23);
             this.ui_loadmodel.TabIndex = 3;
-            this.ui_loadmodel.Text = "载入.Model文件";
+            this.ui_loadmodel.Text = "载入.MXM文件";
             this.ui_loadmodel.UseVisualStyleBackColor = true;
             this.ui_loadmodel.Click += new System.EventHandler(this.ui_loadmodel_Click);
             // 
@@ -95,7 +95,7 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "label1";
             // 
-            // Form1
+            // DotMXMMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -109,7 +109,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form1";
+            this.Name = "DotMXMMaker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MetalX.ModelViewer";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);

@@ -161,7 +161,7 @@ namespace MetalX
             }
             totalFrames = 0;
             SetLight(false);
-            SetCamera(new Vector3(1, -1, -Devices.D3DDev.PresentationParameters.BackBufferHeight-1), new Vector3(1, -1, 0), new Vector3(0, 1, 0));
+            SetCamera(new Vector3(0, 0, -192), new Vector3(0, 0, 0));
             isRunning = true;
             while (isRunning)
             {
@@ -274,10 +274,10 @@ namespace MetalX
         /// <param name="location">位置</param>
         /// <param name="lookAt">视点位置</param>
         /// <param name="upVect">正方向</param>
-        public void SetCamera(Vector3 location, Vector3 lookAt, Vector3 upVect)
+        public void SetCamera(Vector3 location, Vector3 lookAt)
         {
-            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH(53.130102354155978703144387440907f * (float)Math.PI / 180, 4 / 3f, 0, 1000);
-            Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, upVect);
+            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 2, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / Devices.D3DDev.PresentationParameters.BackBufferHeight, 0, -1000);
+            Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
 
             Devices.D3DDev.Lights[0].Direction = lookAt;
             Devices.D3DDev.Lights[0].Position = location;
@@ -335,7 +335,7 @@ namespace MetalX
 
             ExtendedMaterial[] extendedMaterials;
 
-            Mesh mesh = Mesh.FromStream(new MemoryStream( model.MeshData), MeshFlags.Managed, Devices.D3DDev,
+            Mesh mesh = Mesh.FromStream(new MemoryStream(model.MeshData), MeshFlags.Managed, Devices.D3DDev,
                    out extendedMaterials);
 
             model.MEMMesh = mesh;
@@ -346,7 +346,7 @@ namespace MetalX
             {
                 if (extendedMaterials[i].TextureFilename != null && extendedMaterials[i].TextureFilename != string.Empty)
                 {
-                    model.MEMTextures[i] = TextureLoader.FromStream(Devices.D3DDev,new MemoryStream( model.TexturesData[i]));
+                    model.MEMTextures[i] = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(model.TexturesData[i]));
                     model.MEMMaterials[i] = extendedMaterials[i].Material3D;
                 }
             }
@@ -431,7 +431,7 @@ namespace MetalX
         /// <param name="c">颜色</param>
         public void DrawMetalXTexture(MetalXTexture t, Location loc, Rectangle dz, Color c)
         {
-            DrawMetalXTexture(t, new Vector3(loc.Physic.X, loc.Physic.Y, 0),dz, c);
+            DrawMetalXTexture(t, new Vector3(loc.Pixel.X, loc.Pixel.Y, 0), dz, c);
         }
         public void DrawMetalXTexture(MetalXTexture t, Point point, Rectangle dz, Color c)
         {
@@ -443,12 +443,12 @@ namespace MetalX
         /// <param name="t">MetalX格式纹理</param>
         /// <param name="loc">位置</param>
         /// <param name="c">颜色</param>
-        public void DrawMetalXTexture(MetalXTexture t, Vector3 loc,Rectangle dz, Color c)
+        public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Rectangle dz, Color c)
         {
             if (t == null)
             {
                 return;
-            } 
+            }
 
             int w, h;
             w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
@@ -475,7 +475,45 @@ namespace MetalX
             vertexs[3] = new CustomVertex.PositionColoredTextured(loc, c.ToArgb(), fx, fy);
             vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y, loc.Z, c.ToArgb(), tx, fy);
             vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, c.ToArgb(), tx, ty);
-            
+
+            Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
+            Devices.D3DDev.SetTexture(0, t.MEMTexture);
+            Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
+        }
+        public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color c)
+        {
+            if (t == null)
+            {
+                return;
+            }
+
+            int w, h;
+            w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
+            h = Devices.D3DDev.PresentationParameters.BackBufferHeight;
+
+            loc.X -= w / 2;
+            loc.Y -= h / 2;
+
+            loc.Y = 0 - loc.Y;
+
+            Size s = t.SizePixel;
+            Rectangle dz = new Rectangle(new Point(), s);
+
+            float fx, fy, tx, ty;
+            fx = (float)dz.X / (float)s.Width;
+            fy = (float)dz.Y / (float)s.Height;
+            tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
+            ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
+
+            CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
+            vertexs[0] = new CustomVertex.PositionColoredTextured(loc, c.ToArgb(), fx, fy);
+            vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, c.ToArgb(), tx, ty);
+            vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - dz.Height, loc.Z, c.ToArgb(), fx, ty);
+
+            vertexs[3] = new CustomVertex.PositionColoredTextured(loc, c.ToArgb(), fx, fy);
+            vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y, loc.Z, c.ToArgb(), tx, fy);
+            vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, c.ToArgb(), tx, ty);
+
             Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
@@ -522,7 +560,6 @@ namespace MetalX
         }
         public void DrawRect(float fx, float fy, float tx, float ty, Color color)
         {
-            //ty = ty * 13 / 9;
             tx += fx;
             ty += fy;
 
