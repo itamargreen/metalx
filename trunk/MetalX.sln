@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetalX", "MetalX\MetalX.csproj", "{DB98B678-6206-4C21-808E-82D2D9E303F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetalX.ModelViewer", "MetalX.ModelViewer\MetalX.ModelViewer.csproj", "{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetalX.SceneMaker2D", "MetalX.SceneMaker2D\MetalX.SceneMaker2D.csproj", "{328184B0-02C7-4CF3-8E57-344FB5DA7A43}"
 EndProject
 Global
@@ -27,16 +25,6 @@ Global
 		{DB98B678-6206-4C21-808E-82D2D9E303F1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DB98B678-6206-4C21-808E-82D2D9E303F1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DB98B678-6206-4C21-808E-82D2D9E303F1}.Release|x86.ActiveCfg = Release|Any CPU
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Debug|x86.ActiveCfg = Debug|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Debug|x86.Build.0 = Debug|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Release|Any CPU.ActiveCfg = Release|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Release|Mixed Platforms.Build.0 = Release|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Release|x86.ActiveCfg = Release|x86
-		{CBB5E3AF-6EA1-4C5F-BF37-A9F5F8E426E4}.Release|x86.Build.0 = Release|x86
 		{328184B0-02C7-4CF3-8E57-344FB5DA7A43}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{328184B0-02C7-4CF3-8E57-344FB5DA7A43}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{328184B0-02C7-4CF3-8E57-344FB5DA7A43}.Debug|Mixed Platforms.Build.0 = Debug|x86

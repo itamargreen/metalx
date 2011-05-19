@@ -52,9 +52,9 @@ namespace MetalX.SceneMaker2D
             }
             MetalXTexture mxt = new MetalXTexture();
             mxt.Name = textBox5.Text;
-            mxt.Size = pictureBox1.Size;
+            mxt.SizePixel = pictureBox1.Size;
             mxt.TextureData = System.IO.File.ReadAllBytes(textBox1.Text);
-            mxt.TileSize = new System.Drawing.Size(w, h);
+            mxt.TileSizePixel = new System.Drawing.Size(w, h);
             UtilLib.SaveObject(textBox2.Text, mxt);
             MessageBox.Show("输出成功");
         }

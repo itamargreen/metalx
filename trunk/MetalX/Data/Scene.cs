@@ -129,7 +129,7 @@ namespace MetalX
         /// 帧集合
         /// </summary>
         public List<TileFrame> Frames = new List<TileFrame>();
-
+        public Rectangle DrawZone;
         public TileFrame this[int i]
         {
             get

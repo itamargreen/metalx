@@ -1,6 +1,6 @@
-﻿namespace MetalX.ModelViewer
+﻿namespace MetalX.SceneMaker2D
 {
-    partial class Form1
+    partial class DotMXMViewer
     {
         /// <summary>
         /// 必需的设计器变量。
