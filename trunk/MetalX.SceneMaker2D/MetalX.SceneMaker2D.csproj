@@ -64,11 +64,11 @@
     <Compile Include="DotMXAMaker.Designer.cs">
       <DependentUpon>DotMXAMaker.cs</DependentUpon>
     </Compile>
-    <Compile Include="DotMXMViewer.cs">
+    <Compile Include="DotMXMMaker.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DotMXMViewer.Designer.cs">
-      <DependentUpon>DotMXMViewer.cs</DependentUpon>
+    <Compile Include="DotMXMMaker.Designer.cs">
+      <DependentUpon>DotMXMMaker.cs</DependentUpon>
     </Compile>
     <Compile Include="DotMXTMaker.cs">
       <SubType>Form</SubType>
@@ -92,8 +92,8 @@
     <EmbeddedResource Include="DotMXAMaker.resx">
       <DependentUpon>DotMXAMaker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DotMXMViewer.resx">
-      <DependentUpon>DotMXMViewer.cs</DependentUpon>
+    <EmbeddedResource Include="DotMXMMaker.resx">
+      <DependentUpon>DotMXMMaker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DotMXTMaker.resx">
       <DependentUpon>DotMXTMaker.cs</DependentUpon>

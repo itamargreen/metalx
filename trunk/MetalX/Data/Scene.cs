@@ -83,13 +83,13 @@ namespace MetalX
                 return Tiles[i];
             }
         }
-        public Tile this[Location loc]
+        public Tile this[Point p]
         {
             get
             {
                 foreach (Tile t in Tiles)
                 {
-                    if (t.Location == loc)
+                    if (t.Location == p)
                     {
                         return t;
                     }
@@ -97,18 +97,25 @@ namespace MetalX
                 return null;
             }
         }
-        public void AddTile(Tile t)
-        {
-            Tiles.Add(t);
-        }
-        public void DelTile(Tile t)
-        {
-            Tiles.Remove(t);
-        }
-        public void DelTile(int i)
-        {
-            Tiles.RemoveAt(i);
-        }
+        //public void AddTile(Tile t)
+        //{
+        //    foreach (Tile tile in Tiles)
+        //    {
+        //        if (tile.Location == t.Location)
+        //        {
+        //            return;
+        //        }
+        //    }
+        //    Tiles.Add(t);
+        //}
+        //public void DelTile(Tile t)
+        //{
+        //    Tiles.Remove(t);
+        //}
+        //public void DelTile(int i)
+        //{
+        //    Tiles.RemoveAt(i);
+        //}
     }
     [Serializable]
     public class Tile
@@ -116,7 +123,7 @@ namespace MetalX
         /// <summary>
         /// 位置
         /// </summary>
-        public Location Location;
+        public Point Location;
         /// <summary>
         /// 帧索引
         /// </summary>
@@ -129,7 +136,7 @@ namespace MetalX
         /// 帧集合
         /// </summary>
         public List<TileFrame> Frames = new List<TileFrame>();
-        public Rectangle DrawZone;
+        //public Rectangle DrawZone;
         public TileFrame this[int i]
         {
             get
@@ -147,30 +154,34 @@ namespace MetalX
                 return Frames.Count;
             }
         }
-        /// <summary>
-        /// 添加帧
-        /// </summary>
-        /// <param name="tf">帧</param>
-        public void AddFrame(TileFrame tf)
-        {
-            Frames.Add(tf);
-        }
-        /// <summary>
-        /// 删除帧
-        /// </summary>
-        /// <param name="tf">帧</param>
-        public void DelFrame(TileFrame tf)
-        {
-            Frames.Remove(tf);
-        }
-        /// <summary>
-        /// 删除帧
-        /// </summary>
-        /// <param name="i">帧索引</param>
-        public void DelFrame(int i)
-        {
-            Frames.RemoveAt(i);
-        }
+        ///// <summary>
+        ///// 添加帧
+        ///// </summary>
+        ///// <param name="tf">帧</param>
+        //public void AddFrame(TileFrame tf)
+        //{
+        //    if(Frames.Contains(tf))
+        //    {
+        //        return;
+        //    }
+        //    Frames.Add(tf);
+        //}
+        ///// <summary>
+        ///// 删除帧
+        ///// </summary>
+        ///// <param name="tf">帧</param>
+        //public void DelFrame(TileFrame tf)
+        //{
+        //    Frames.Remove(tf);
+        //}
+        ///// <summary>
+        ///// 删除帧
+        ///// </summary>
+        ///// <param name="i">帧索引</param>
+        //public void DelFrame(int i)
+        //{
+        //    Frames.RemoveAt(i);
+        //}
     }
     [Serializable]
     public class TileFrame
@@ -263,36 +274,41 @@ namespace MetalX
         /// <summary>
         /// 物理位置
         /// </summary>
-        public Point Physic;
+        public Point Pixel;
         /// <summary>
         /// 逻辑位置
         /// </summary>
         public Point Logic;
         public Location()
         {
-            Physic = new Point();
+            Pixel = new Point();
             Logic = new Point();
+        }
+        public Location(Point pixel, Size unit)
+        {
+            Pixel = pixel;
+            Logic = new Point(pixel.X / unit.Width, pixel.Y / unit.Height);
         }
         public Location(Point logic, Point physic)
         {
-            Physic = physic;
+            Pixel = physic;
             Logic = logic;
         }
         public static Location operator +(Location pos1, Location pos2)
         {
-            return new Location(new Point(pos1.Logic.X + pos2.Logic.X, pos1.Logic.Y + pos2.Logic.Y), new Point(pos1.Physic.X + pos2.Physic.X, pos1.Physic.Y + pos2.Physic.Y));
+            return new Location(new Point(pos1.Logic.X + pos2.Logic.X, pos1.Logic.Y + pos2.Logic.Y), new Point(pos1.Pixel.X + pos2.Pixel.X, pos1.Pixel.Y + pos2.Pixel.Y));
         }
         public static Location operator -(Location pos1, Location pos2)
         {
-            return new Location(new Point(pos1.Logic.X - pos2.Logic.X, pos1.Logic.Y - pos2.Logic.Y), new Point(pos1.Physic.X - pos2.Physic.X, pos1.Physic.Y - pos2.Physic.Y));
+            return new Location(new Point(pos1.Logic.X - pos2.Logic.X, pos1.Logic.Y - pos2.Logic.Y), new Point(pos1.Pixel.X - pos2.Pixel.X, pos1.Pixel.Y - pos2.Pixel.Y));
         }
         public static Location operator *(Location pos1, float k)
         {
             float lx, ly, px, py;
             lx = pos1.Logic.X * k;
             ly = pos1.Logic.Y * k;
-            px = pos1.Physic.X * k;
-            py = pos1.Physic.Y * k;
+            px = pos1.Pixel.X * k;
+            py = pos1.Pixel.Y * k;
             return new Location(new Point((int)lx, (int)ly), new Point((int)px, (int)py));
         }
         public static Location operator /(Location pos1, float k)
@@ -300,13 +316,13 @@ namespace MetalX
             float lx, ly, px, py;
             lx = pos1.Logic.X / k;
             ly = pos1.Logic.Y / k;
-            px = pos1.Physic.X / k;
-            py = pos1.Physic.Y / k;
+            px = pos1.Pixel.X / k;
+            py = pos1.Pixel.Y / k;
             return new Location(new Point((int)lx, (int)ly), new Point((int)px, (int)py));
         }
         public static bool operator ==(Location pos1, Location pos2)
         {
-            if (pos1.Logic == pos2.Logic && pos1.Physic == pos2.Physic)
+            if (pos1.Logic == pos2.Logic && pos1.Pixel == pos2.Pixel)
             {
                 return true;
             }
@@ -314,7 +330,7 @@ namespace MetalX
         }
         public static bool operator !=(Location pos1, Location pos2)
         {
-            if (pos1.Logic != pos2.Logic || pos1.Physic != pos2.Physic)
+            if (pos1.Logic != pos2.Logic || pos1.Pixel != pos2.Pixel)
             {
                 return true;
             }

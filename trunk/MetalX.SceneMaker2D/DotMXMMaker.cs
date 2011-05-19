@@ -12,12 +12,12 @@ using Microsoft.DirectX.Direct3D;
 
 namespace MetalX.SceneMaker2D
 {
-    public partial class DotMXMViewer : Form
+    public partial class DotMXMMaker : Form
     {
         MetalXGame game;
         ModelViewer modelViewer;
 
-        public DotMXMViewer()
+        public DotMXMMaker()
         {
             InitializeComponent();
         }
@@ -74,20 +74,20 @@ namespace MetalX.SceneMaker2D
             base.OnMouseWheel(e);
             if (e.Delta > 0)
             {
-                depth += 1f;
+                depth += 10f;
             }
             else if (e.Delta < 0)
             {
-                depth -= 1f;
+                depth -= 10f;
             }
             label1.Text = depth.ToString();
-            game.SetCamera(new Vector3(0, 0, depth), new Vector3(), new Vector3(0, 1, 0));
+            game.SetCamera(new Vector3(0, 0, depth), new Vector3());
         }
 
         private void ui_pack_Click(object sender, EventArgs e)
         {
             //UtilityLibrary.SaveObject((Math.Abs(DateTime.Now.GetHashCode())).ToString() + ".Model", mg.model);            
-            UtilLib.SaveObject(filename + ".Model", modelViewer.model);
+            UtilLib.SaveObject(filename + ".MXM", modelViewer.model);
         }
         string filename;
         private void ui_load_Click(object sender, EventArgs e)
@@ -108,7 +108,7 @@ namespace MetalX.SceneMaker2D
         private void ui_loadmodel_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "*.Model|*.Model";
+            ofd.Filter = "*.MXM|*.MXM";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 if (ofd.FileName != string.Empty)

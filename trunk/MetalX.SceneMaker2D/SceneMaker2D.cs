@@ -13,18 +13,26 @@ namespace MetalX.SceneMaker2D
         public int mxtIndex;
         public Point penLoc;
         public Rectangle penRect;
+        public Size penRectLogic
+        {
+            get
+            {
+                return new Size(penRect.Width / scene.TileSizePixel.Width, penRect.Height / scene.TileSizePixel.Height);
+            }
+        }
         public int drawingLayer = -1;
 
         
         int frameIndex;
 
-        Scene scene;
+        public Scene scene;
 
         public SceneMaker2D(MetalXGame metalx)
             : base(metalx)
         {
             drawGrid = false;
             frameIndex = 0;
+            scene = new Scene();
         }
 
         public override void Code()
@@ -35,22 +43,23 @@ namespace MetalX.SceneMaker2D
         public override void Draw()
         {
             base.Draw();
-            if (drawGrid)
-            {
-                draw_grid();
-            }
             foreach (TileLayer tl in scene.TileLayers)
             {
                 if (tl.Visible)
                 {
                     foreach (Tile t in tl.Tiles)
                     {
-                        metalXGame.DrawMetalXTexture(metalXGame.Textures[t.Frames[frameIndex].TextureIndex], t.Location,t.DrawZone, t.Frames[frameIndex].ColorFilter);
+                        metalXGame.DrawMetalXTexture(metalXGame.Textures[t.Frames[frameIndex].TextureFileName], t.Location, t.Frames[frameIndex].DrawZone, t.Frames[frameIndex].ColorFilter);
                     }
                 }
             }
+            draw_pen();        
+            if (drawGrid)
+            {
+                draw_grid();
+            }         
             metalXGame.DrawRect(drawRect, Color.Red);
-            draw_pen();
+
             //metalXGame.DrawLine(100, 0, 100, 384, Color.White);
             //metalXGame.DrawText(" 场景名:" + scene.Name + " 尺寸:" + scene.Size + " 图元尺寸:" + scene.TileSize, new Point(), Color.White);
         }
@@ -68,11 +77,6 @@ namespace MetalX.SceneMaker2D
         void draw_pen()
         {
             metalXGame.DrawMetalXTexture(metalXGame.Textures[mxtName], penLoc, penRect, Color.FromArgb(150, Color.White));
-        }
-
-        public void LoadScene(Scene s)
-        {
-            this.scene = s;
         }
     }
 }
