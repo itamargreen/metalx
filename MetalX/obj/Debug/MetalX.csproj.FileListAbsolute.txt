@@ -3,3 +3,8 @@ D:\MetalX\Debug\MetalX.dll
 D:\MetalX\Debug\MetalX.pdb
 D:\MetalX\MetalX\obj\Debug\MetalX.dll
 D:\MetalX\MetalX\obj\Debug\MetalX.pdb
+D:\mx\Debug\MetalX.dll
+D:\mx\Debug\MetalX.pdb
+D:\mx\MetalX\obj\Debug\ResolveAssemblyReference.cache
+D:\mx\MetalX\obj\Debug\MetalX.dll
+D:\mx\MetalX\obj\Debug\MetalX.pdb

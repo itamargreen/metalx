@@ -1,9 +1,0 @@
-D:\MetalX\Debug\MetalX.ModelViewer.exe
-D:\MetalX\Debug\MetalX.ModelViewer.pdb
-D:\MetalX\MetalX.ModelViewer\obj\x86\Debug\ResolveAssemblyReference.cache
-D:\MetalX\MetalX.ModelViewer\obj\x86\Debug\MetalX.ModelViewer.Properties.Resources.resources
-D:\MetalX\MetalX.ModelViewer\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
-D:\MetalX\MetalX.ModelViewer\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
-D:\MetalX\MetalX.ModelViewer\obj\x86\Debug\MetalX.ModelViewer.exe
-D:\MetalX\MetalX.ModelViewer\obj\x86\Debug\MetalX.ModelViewer.pdb
-D:\MetalX\MetalX.ModelViewer\obj\x86\Debug\MetalX.ModelViewer.Form1.resources

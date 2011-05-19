@@ -14,7 +14,7 @@ namespace MetalX
         public string Version;
 
         public byte[] TextureData;
-        public Size Size, TileSize;
+        public Size SizePixel, TileSizePixel;
 
         [NonSerialized]
         public Microsoft.DirectX.Direct3D.Texture MEMTexture;

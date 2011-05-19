@@ -40,6 +40,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Windows\Microsoft.NET\DirectX for Managed Code\1.0.2902.0\Microsoft.DirectX.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.DirectX.Direct3D, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\WINDOWS\Microsoft.NET\DirectX for Managed Code\1.0.2902.0\Microsoft.DirectX.Direct3D.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -60,6 +64,12 @@
     <Compile Include="DotMXAMaker.Designer.cs">
       <DependentUpon>DotMXAMaker.cs</DependentUpon>
     </Compile>
+    <Compile Include="DotMXMViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DotMXMViewer.Designer.cs">
+      <DependentUpon>DotMXMViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="DotMXTMaker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +82,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelViewer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SceneMaker2D.cs" />
@@ -80,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DotMXAMaker.resx">
       <DependentUpon>DotMXAMaker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DotMXMViewer.resx">
+      <DependentUpon>DotMXMViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DotMXTMaker.resx">
       <DependentUpon>DotMXTMaker.cs</DependentUpon>

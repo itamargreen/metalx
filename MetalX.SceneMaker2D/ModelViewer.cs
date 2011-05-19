@@ -4,7 +4,7 @@ using System.Drawing;
 using MetalX;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
-namespace MetalX.ModelViewer
+namespace MetalX.SceneMaker2D
 {
     class ModelViewer : MetalXGameCom
     {
@@ -27,8 +27,8 @@ namespace MetalX.ModelViewer
 
             metalXGame.DrawText("FPS:" + metalXGame.AverageFPS.ToString("f1"), new Point(), Color.White);
             //metalXGame.DrawText("Camera Z:"+metalXGame.Devices.D3DDev.Transform.View.
-            if(t!=null)
-                metalXGame.DrawMetalXTexture(t, new Vector3(), Color.White);
+            //if(t!=null)
+                //metalXGame.DrawMetalXTexture(t, new Vector3(),, Color.White);
         }
     }
 }

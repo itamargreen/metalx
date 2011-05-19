@@ -10,14 +10,14 @@ using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
 
-namespace MetalX.ModelViewer
+namespace MetalX.SceneMaker2D
 {
-    public partial class Form1 : Form
+    public partial class DotMXMViewer : Form
     {
         MetalXGame game;
         ModelViewer modelViewer;
 
-        public Form1()
+        public DotMXMViewer()
         {
             InitializeComponent();
         }
