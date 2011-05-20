@@ -15,7 +15,7 @@ namespace MetalX.SceneMaker2D
     public partial class DotMXMMaker : Form
     {
         MetalXGame game;
-        ModelViewer modelViewer;
+        ModelMaker modelViewer;
 
         public DotMXMMaker()
         {
@@ -25,7 +25,7 @@ namespace MetalX.SceneMaker2D
         private void Form1_Load(object sender, EventArgs e)
         {
             game = new MetalXGame(panel1);
-            modelViewer = new ModelViewer(game);
+            modelViewer = new ModelMaker(game);
             game.MountGameCom(modelViewer);
             label1.Text = depth.ToString();
         }
@@ -40,7 +40,7 @@ namespace MetalX.SceneMaker2D
             game.Exit();
         }
 
-        private float depth = -480f, angleY = 0f, angleX = 0f;
+        private float depth = -192f, angleY = 0f, angleX = 0f;
         private float downAngleY = 0f, downAngleX = 0f;
         private Point downPoint;
 

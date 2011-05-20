@@ -273,10 +273,9 @@ namespace MetalX
         /// </summary>
         /// <param name="location">位置</param>
         /// <param name="lookAt">视点位置</param>
-        /// <param name="upVect">正方向</param>
         public void SetCamera(Vector3 location, Vector3 lookAt)
         {
-            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 2, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / Devices.D3DDev.PresentationParameters.BackBufferHeight, 0, -1000);
+            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 2, 4 / 3f, -100, 100);
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
 
             Devices.D3DDev.Lights[0].Direction = lookAt;
@@ -385,20 +384,20 @@ namespace MetalX
             texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData));
             return texture;
         }
-        public void LoadAllMXT(string pathName)
+        public void LoadAllDotMXT(string pathName)
         {
             //Textures ts = new Textures();
             List<string> dirName = new List<string>();
 
             DirectoryInfo di = new DirectoryInfo(pathName);
-            FileInfo[] fis = di.GetFiles("*.mxt");
-            foreach (FileInfo fi in fis)
-            {
-                MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
-                mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
-                Textures.Add(mxt);
-            }
-
+            //FileInfo[] fis = di.GetFiles("*.mxt");
+            //foreach (FileInfo fi in fis)
+            //{
+            //    MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
+            //    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
+            //    Textures.Add(mxt);
+            //}
+            FileInfo[] fis;
             EnumDir(pathName, dirName);
             foreach (string pName in dirName)
             {
@@ -526,9 +525,23 @@ namespace MetalX
         /// <param name="color">颜色</param>
         public void DrawText(string text, Point point, Color color)
         {
-            Devices.Sprite.Begin(Microsoft.DirectX.Direct3D.SpriteFlags.AlphaBlend);
-            Devices.Font.DrawText(Devices.Sprite, text, point, color);
-            Devices.Sprite.End();
+            DrawText(text, point, "新宋体", 10, color);
+        }
+        public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
+        {
+            using (Sprite sprite = new Sprite(Devices.D3DDev))
+            {
+                sprite.Begin(SpriteFlags.AlphaBlend);
+                using (Microsoft.DirectX.Direct3D.Font font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize)))
+                {
+                    font.DrawText(sprite, text, point, color);
+                }
+                sprite.End();
+            }
+        }
+        public void DrawLine(Point fp, Point tp, Color color)
+        {
+            DrawLine(fp.X, fp.Y, tp.X, tp.Y, color);
         }
         public void DrawLine(float fx, float fy, float tx, float ty, Color color)
         {
