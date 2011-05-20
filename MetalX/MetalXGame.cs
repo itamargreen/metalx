@@ -161,11 +161,18 @@ namespace MetalX
             }
             totalFrames = 0;
             SetLight(false);
-            SetCamera(new Vector3(0, 0, -192), new Vector3(0, 0, 0));
+            SetCamera(
+                new Vector3(0, 0, -(float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(22.5 * Math.PI / 180.0))),
+                new Vector3(0, 0, 0));
             isRunning = true;
             while (isRunning)
             {
-                Frame();
+                //try
+                {
+                    Frame();
+                }
+                //catch
+                { }
                 FPSValue = GetAverageFPS();
                 WaitFrameByAverageFPS();
             }
@@ -275,7 +282,7 @@ namespace MetalX
         /// <param name="lookAt">视点位置</param>
         public void SetCamera(Vector3 location, Vector3 lookAt)
         {
-            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 2, 4 / 3f, -100, 100);
+            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / (float)Devices.D3DDev.PresentationParameters.BackBufferHeight, -100, 100);
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
 
             Devices.D3DDev.Lights[0].Direction = lookAt;
@@ -428,10 +435,10 @@ namespace MetalX
         /// <param name="t">MetalX格式纹理</param>
         /// <param name="loc">位置</param>
         /// <param name="c">颜色</param>
-        public void DrawMetalXTexture(MetalXTexture t, Location loc, Rectangle dz, Color c)
-        {
-            DrawMetalXTexture(t, new Vector3(loc.Pixel.X, loc.Pixel.Y, 0), dz, c);
-        }
+        //public void DrawMetalXTexture(MetalXTexture t, Location loc, Rectangle dz, Color c)
+        //{
+        //    DrawMetalXTexture(t, new Vector3(loc.Pixel.X, loc.Pixel.Y, 0), dz, c);
+        //}
         public void DrawMetalXTexture(MetalXTexture t, Point point, Rectangle dz, Color c)
         {
             DrawMetalXTexture(t, new Vector3(point.X, point.Y, 0), dz, c);
@@ -575,6 +582,8 @@ namespace MetalX
         {
             tx += fx;
             ty += fy;
+            tx--;
+            ty--;
 
             DrawLine(fx, fy, tx, fy, color);
             DrawLine(tx, fy, tx, ty, color);

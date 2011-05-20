@@ -108,7 +108,8 @@ namespace MetalX.SceneMaker2D
         private void ui_loadmodel_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "*.MXM|*.MXM";
+            ofd.Filter = "MetalX Model File|*.MXM";
+            ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 if (ofd.FileName != string.Empty)
@@ -123,7 +124,8 @@ namespace MetalX.SceneMaker2D
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "*.MXT|*.MXT";
+            ofd.Filter = "MetalX Model File|*.MXM";
+            ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 if (ofd.FileName != string.Empty)

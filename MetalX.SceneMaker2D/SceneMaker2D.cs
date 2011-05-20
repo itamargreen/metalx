@@ -8,7 +8,7 @@ namespace MetalX.SceneMaker2D
     public class SceneMaker2D : MetalXGameCom
     {
         public bool drawGrid;
-        public Rectangle drawRect;
+        public Rectangle dragRect;
         public string mxtName;
         public int mxtIndex;
         public Point penLoc;
@@ -58,7 +58,7 @@ namespace MetalX.SceneMaker2D
             {
                 draw_grid();
             }         
-            metalXGame.DrawRect(drawRect, Color.Red);
+            metalXGame.DrawRect(dragRect, Color.Red);
 
             //metalXGame.DrawLine(100, 0, 100, 384, Color.White);
             //metalXGame.DrawText(" 场景名:" + scene.Name + " 尺寸:" + scene.Size + " 图元尺寸:" + scene.TileSize, new Point(), Color.White);

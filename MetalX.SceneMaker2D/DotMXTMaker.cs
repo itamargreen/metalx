@@ -21,6 +21,7 @@ namespace MetalX.SceneMaker2D
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "*.png|*.png";
+            ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 if (ofd.FileName != string.Empty)
