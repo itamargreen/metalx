@@ -66,26 +66,15 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.ui_ly_count = new System.Windows.Forms.TextBox();
-            this.ui_loop = new System.Windows.Forms.CheckBox();
-            this.ui_stop = new System.Windows.Forms.Button();
-            this.ui_play = new System.Windows.Forms.Button();
-            this.ui_proc = new System.Windows.Forms.TrackBar();
             this.label19 = new System.Windows.Forms.Label();
             this.ui_sinw = new System.Windows.Forms.TextBox();
             this.ui_sinh = new System.Windows.Forms.TextBox();
-            this.ui_mus_empty = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
-            this.ui_mus_del = new System.Windows.Forms.Button();
             this.ui_scenename = new System.Windows.Forms.TextBox();
-            this.ui_mus_add = new System.Windows.Forms.Button();
             this.ui_scenew = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.ui_sceneh = new System.Windows.Forms.TextBox();
-            this.ui_mus_slt = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.ui_createscene = new System.Windows.Forms.Button();
-            this.ui_mus_lib = new System.Windows.Forms.ListBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
             this.ui_link_clr = new System.Windows.Forms.Button();
@@ -139,6 +128,19 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ui_loop = new System.Windows.Forms.CheckBox();
+            this.ui_stop = new System.Windows.Forms.Button();
+            this.ui_play = new System.Windows.Forms.Button();
+            this.ui_proc = new System.Windows.Forms.TrackBar();
+            this.ui_mus_empty = new System.Windows.Forms.Button();
+            this.ui_mus_del = new System.Windows.Forms.Button();
+            this.ui_mus_add = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.ui_mus_slt = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.ui_mus_lib = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -146,7 +148,6 @@
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -154,6 +155,9 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -191,44 +195,48 @@
             // 
             this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
             this.新建ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.新建ToolStripMenuItem.Text = "新建";
+            this.新建ToolStripMenuItem.Click += new System.EventHandler(this.新建ToolStripMenuItem_Click);
             // 
             // 打开ToolStripMenuItem
             // 
             this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
             this.打开ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.打开ToolStripMenuItem.Text = "打开";
+            this.打开ToolStripMenuItem.Click += new System.EventHandler(this.打开ToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // 保存ToolStripMenuItem
             // 
             this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
             this.保存ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.保存ToolStripMenuItem.Text = "保存";
+            this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
             // 
             // 另存为ToolStripMenuItem
             // 
             this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
-            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.另存为ToolStripMenuItem.Text = "另存为";
+            this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.另存为ToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
             this.退出ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
@@ -251,51 +259,51 @@
             // 
             this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
             this.撤销ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.撤销ToolStripMenuItem.Text = "撤销";
             // 
             // 重复ToolStripMenuItem
             // 
             this.重复ToolStripMenuItem.Name = "重复ToolStripMenuItem";
             this.重复ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.重复ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.重复ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.重复ToolStripMenuItem.Text = "重复";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // 剪切ToolStripMenuItem
             // 
             this.剪切ToolStripMenuItem.Name = "剪切ToolStripMenuItem";
             this.剪切ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.剪切ToolStripMenuItem.Text = "剪切";
             // 
             // 复制ToolStripMenuItem
             // 
             this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
             this.复制ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.复制ToolStripMenuItem.Text = "复制";
             // 
             // 粘贴ToolStripMenuItem
             // 
             this.粘贴ToolStripMenuItem.Name = "粘贴ToolStripMenuItem";
             this.粘贴ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.粘贴ToolStripMenuItem.Text = "粘贴";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.删除ToolStripMenuItem.Text = "删除";
             // 
             // 查看ToolStripMenuItem
@@ -327,21 +335,21 @@
             // 纹理工具ToolStripMenuItem
             // 
             this.纹理工具ToolStripMenuItem.Name = "纹理工具ToolStripMenuItem";
-            this.纹理工具ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.纹理工具ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.纹理工具ToolStripMenuItem.Text = "纹理";
             this.纹理工具ToolStripMenuItem.Click += new System.EventHandler(this.纹理工具ToolStripMenuItem_Click);
             // 
             // 音频工具ToolStripMenuItem
             // 
             this.音频工具ToolStripMenuItem.Name = "音频工具ToolStripMenuItem";
-            this.音频工具ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.音频工具ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.音频工具ToolStripMenuItem.Text = "音频";
             this.音频工具ToolStripMenuItem.Click += new System.EventHandler(this.音频工具ToolStripMenuItem_Click);
             // 
             // 模型工具ToolStripMenuItem
             // 
             this.模型工具ToolStripMenuItem.Name = "模型工具ToolStripMenuItem";
-            this.模型工具ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.模型工具ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.模型工具ToolStripMenuItem.Text = "模型";
             this.模型工具ToolStripMenuItem.Click += new System.EventHandler(this.模型工具ToolStripMenuItem_Click);
             // 
@@ -358,14 +366,14 @@
             // 
             this.说明ToolStripMenuItem.Name = "说明ToolStripMenuItem";
             this.说明ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.说明ToolStripMenuItem.Text = "使用说明";
             // 
             // 关于ToolStripMenuItem
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
             this.关于ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F15)));
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
@@ -380,7 +388,7 @@
             // 
             this.ui_cursorsat.Name = "ui_cursorsat";
             this.ui_cursorsat.ReadOnly = true;
-            this.ui_cursorsat.Size = new System.Drawing.Size(46, 21);
+            this.ui_cursorsat.Size = new System.Drawing.Size(50, 21);
             this.ui_cursorsat.Text = "铅笔";
             this.ui_cursorsat.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -388,11 +396,11 @@
             // 
             this.ui_tilecount.Name = "ui_tilecount";
             this.ui_tilecount.ReadOnly = true;
-            this.ui_tilecount.Size = new System.Drawing.Size(100, 21);
+            this.ui_tilecount.Size = new System.Drawing.Size(50, 21);
+            this.ui_tilecount.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 25);
             this.splitContainer1.Name = "splitContainer1";
@@ -410,13 +418,13 @@
             this.splitContainer1.SplitterDistance = 336;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 1;
-            this.splitContainer1.SplitterMoving += new System.Windows.Forms.SplitterCancelEventHandler(this.splitContainer1_SplitterMoving);
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -437,29 +445,17 @@
             // 
             // panel4
             // 
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.label20);
             this.panel4.Controls.Add(this.ui_ly_count);
-            this.panel4.Controls.Add(this.ui_loop);
-            this.panel4.Controls.Add(this.ui_stop);
-            this.panel4.Controls.Add(this.ui_play);
-            this.panel4.Controls.Add(this.ui_proc);
             this.panel4.Controls.Add(this.label19);
             this.panel4.Controls.Add(this.ui_sinw);
             this.panel4.Controls.Add(this.ui_sinh);
-            this.panel4.Controls.Add(this.ui_mus_empty);
             this.panel4.Controls.Add(this.label10);
-            this.panel4.Controls.Add(this.ui_mus_del);
             this.panel4.Controls.Add(this.ui_scenename);
-            this.panel4.Controls.Add(this.ui_mus_add);
             this.panel4.Controls.Add(this.ui_scenew);
-            this.panel4.Controls.Add(this.label13);
             this.panel4.Controls.Add(this.ui_sceneh);
-            this.panel4.Controls.Add(this.ui_mus_slt);
             this.panel4.Controls.Add(this.label11);
-            this.panel4.Controls.Add(this.label12);
             this.panel4.Controls.Add(this.ui_createscene);
-            this.panel4.Controls.Add(this.ui_mus_lib);
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(290, 290);
@@ -481,43 +477,6 @@
             this.ui_ly_count.Size = new System.Drawing.Size(31, 21);
             this.ui_ly_count.TabIndex = 218;
             this.ui_ly_count.Text = "6";
-            // 
-            // ui_loop
-            // 
-            this.ui_loop.AutoSize = true;
-            this.ui_loop.Location = new System.Drawing.Point(6, 188);
-            this.ui_loop.Name = "ui_loop";
-            this.ui_loop.Size = new System.Drawing.Size(72, 16);
-            this.ui_loop.TabIndex = 215;
-            this.ui_loop.Text = "循环播放";
-            this.ui_loop.UseVisualStyleBackColor = true;
-            // 
-            // ui_stop
-            // 
-            this.ui_stop.Location = new System.Drawing.Point(87, 210);
-            this.ui_stop.Name = "ui_stop";
-            this.ui_stop.Size = new System.Drawing.Size(75, 23);
-            this.ui_stop.TabIndex = 214;
-            this.ui_stop.Text = "stop";
-            this.ui_stop.UseVisualStyleBackColor = true;
-            // 
-            // ui_play
-            // 
-            this.ui_play.Location = new System.Drawing.Point(6, 210);
-            this.ui_play.Name = "ui_play";
-            this.ui_play.Size = new System.Drawing.Size(75, 23);
-            this.ui_play.TabIndex = 213;
-            this.ui_play.Text = "play";
-            this.ui_play.UseVisualStyleBackColor = true;
-            // 
-            // ui_proc
-            // 
-            this.ui_proc.Location = new System.Drawing.Point(6, 240);
-            this.ui_proc.Maximum = 50;
-            this.ui_proc.Name = "ui_proc";
-            this.ui_proc.Size = new System.Drawing.Size(274, 45);
-            this.ui_proc.TabIndex = 212;
-            this.ui_proc.Value = 50;
             // 
             // label19
             // 
@@ -544,15 +503,6 @@
             this.ui_sinh.TabIndex = 210;
             this.ui_sinh.Text = "16";
             // 
-            // ui_mus_empty
-            // 
-            this.ui_mus_empty.Location = new System.Drawing.Point(205, 149);
-            this.ui_mus_empty.Name = "ui_mus_empty";
-            this.ui_mus_empty.Size = new System.Drawing.Size(75, 23);
-            this.ui_mus_empty.TabIndex = 207;
-            this.ui_mus_empty.Text = "清空";
-            this.ui_mus_empty.UseVisualStyleBackColor = true;
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -562,15 +512,6 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "场景名";
             // 
-            // ui_mus_del
-            // 
-            this.ui_mus_del.Location = new System.Drawing.Point(205, 120);
-            this.ui_mus_del.Name = "ui_mus_del";
-            this.ui_mus_del.Size = new System.Drawing.Size(75, 23);
-            this.ui_mus_del.TabIndex = 206;
-            this.ui_mus_del.Text = "删除";
-            this.ui_mus_del.UseVisualStyleBackColor = true;
-            // 
             // ui_scenename
             // 
             this.ui_scenename.Location = new System.Drawing.Point(50, 7);
@@ -578,15 +519,6 @@
             this.ui_scenename.Size = new System.Drawing.Size(44, 21);
             this.ui_scenename.TabIndex = 200;
             this.ui_scenename.Text = "noname";
-            // 
-            // ui_mus_add
-            // 
-            this.ui_mus_add.Location = new System.Drawing.Point(205, 80);
-            this.ui_mus_add.Name = "ui_mus_add";
-            this.ui_mus_add.Size = new System.Drawing.Size(75, 23);
-            this.ui_mus_add.TabIndex = 205;
-            this.ui_mus_add.Text = "添加";
-            this.ui_mus_add.UseVisualStyleBackColor = true;
             // 
             // ui_scenew
             // 
@@ -596,15 +528,6 @@
             this.ui_scenew.TabIndex = 201;
             this.ui_scenew.Text = "32";
             // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 105);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(53, 12);
-            this.label13.TabIndex = 9;
-            this.label13.Text = "背景音乐";
-            // 
             // ui_sceneh
             // 
             this.ui_sceneh.Location = new System.Drawing.Point(63, 34);
@@ -612,14 +535,6 @@
             this.ui_sceneh.Size = new System.Drawing.Size(31, 21);
             this.ui_sceneh.TabIndex = 202;
             this.ui_sceneh.Text = "24";
-            // 
-            // ui_mus_slt
-            // 
-            this.ui_mus_slt.FormattingEnabled = true;
-            this.ui_mus_slt.Location = new System.Drawing.Point(5, 82);
-            this.ui_mus_slt.Name = "ui_mus_slt";
-            this.ui_mus_slt.Size = new System.Drawing.Size(185, 20);
-            this.ui_mus_slt.TabIndex = 203;
             // 
             // label11
             // 
@@ -630,15 +545,6 @@
             this.label11.TabIndex = 4;
             this.label11.Text = "格";
             // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 67);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(53, 12);
-            this.label12.TabIndex = 7;
-            this.label12.Text = "音乐素材";
-            // 
             // ui_createscene
             // 
             this.ui_createscene.Location = new System.Drawing.Point(205, 7);
@@ -648,15 +554,6 @@
             this.ui_createscene.Text = "创建";
             this.ui_createscene.UseVisualStyleBackColor = true;
             this.ui_createscene.Click += new System.EventHandler(this.ui_createscene_Click);
-            // 
-            // ui_mus_lib
-            // 
-            this.ui_mus_lib.FormattingEnabled = true;
-            this.ui_mus_lib.ItemHeight = 12;
-            this.ui_mus_lib.Location = new System.Drawing.Point(5, 120);
-            this.ui_mus_lib.Name = "ui_mus_lib";
-            this.ui_mus_lib.Size = new System.Drawing.Size(185, 52);
-            this.ui_mus_lib.TabIndex = 204;
             // 
             // tabPage1
             // 
@@ -673,7 +570,6 @@
             // 
             // panel5
             // 
-            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.ui_link_clr);
             this.panel5.Controls.Add(this.ui_link_del);
             this.panel5.Controls.Add(this.ui_link_add);
@@ -847,7 +743,6 @@
             // 
             // panel2
             // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.ui_ly_slt);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.ui_ly_name);
@@ -925,7 +820,6 @@
             // 
             // ui_pic_panel
             // 
-            this.ui_pic_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ui_pic_panel.Controls.Add(this.panel3);
             this.ui_pic_panel.Controls.Add(this.ui_framedelay);
             this.ui_pic_panel.Controls.Add(this.ui_pic_slt);
@@ -957,15 +851,14 @@
             this.panel3.AutoScroll = true;
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.ui_pic);
-            this.panel3.Location = new System.Drawing.Point(1, 21);
+            this.panel3.Location = new System.Drawing.Point(0, 20);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(286, 262);
+            this.panel3.Size = new System.Drawing.Size(288, 262);
             this.panel3.TabIndex = 20;
             // 
             // ui_pic
             // 
-            this.ui_pic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ui_pic.Location = new System.Drawing.Point(1, 1);
             this.ui_pic.Margin = new System.Windows.Forms.Padding(0);
             this.ui_pic.Name = "ui_pic";
@@ -1177,6 +1070,133 @@
             this.statusStrip1.Text = "statusStrip1";
             this.statusStrip1.Visible = false;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.panel1);
+            this.tabPage4.Location = new System.Drawing.Point(4, 21);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(290, 775);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "场景音乐";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.ui_loop);
+            this.panel1.Controls.Add(this.ui_stop);
+            this.panel1.Controls.Add(this.ui_play);
+            this.panel1.Controls.Add(this.ui_proc);
+            this.panel1.Controls.Add(this.ui_mus_empty);
+            this.panel1.Controls.Add(this.ui_mus_del);
+            this.panel1.Controls.Add(this.ui_mus_add);
+            this.panel1.Controls.Add(this.label13);
+            this.panel1.Controls.Add(this.ui_mus_slt);
+            this.panel1.Controls.Add(this.label12);
+            this.panel1.Controls.Add(this.ui_mus_lib);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(290, 290);
+            this.panel1.TabIndex = 0;
+            // 
+            // ui_loop
+            // 
+            this.ui_loop.AutoSize = true;
+            this.ui_loop.Location = new System.Drawing.Point(6, 133);
+            this.ui_loop.Name = "ui_loop";
+            this.ui_loop.Size = new System.Drawing.Size(72, 16);
+            this.ui_loop.TabIndex = 226;
+            this.ui_loop.Text = "循环播放";
+            this.ui_loop.UseVisualStyleBackColor = true;
+            // 
+            // ui_stop
+            // 
+            this.ui_stop.Location = new System.Drawing.Point(87, 155);
+            this.ui_stop.Name = "ui_stop";
+            this.ui_stop.Size = new System.Drawing.Size(75, 23);
+            this.ui_stop.TabIndex = 225;
+            this.ui_stop.Text = "stop";
+            this.ui_stop.UseVisualStyleBackColor = true;
+            // 
+            // ui_play
+            // 
+            this.ui_play.Location = new System.Drawing.Point(6, 155);
+            this.ui_play.Name = "ui_play";
+            this.ui_play.Size = new System.Drawing.Size(75, 23);
+            this.ui_play.TabIndex = 224;
+            this.ui_play.Text = "play";
+            this.ui_play.UseVisualStyleBackColor = true;
+            // 
+            // ui_proc
+            // 
+            this.ui_proc.Location = new System.Drawing.Point(6, 185);
+            this.ui_proc.Maximum = 50;
+            this.ui_proc.Name = "ui_proc";
+            this.ui_proc.Size = new System.Drawing.Size(274, 45);
+            this.ui_proc.TabIndex = 223;
+            // 
+            // ui_mus_empty
+            // 
+            this.ui_mus_empty.Location = new System.Drawing.Point(205, 94);
+            this.ui_mus_empty.Name = "ui_mus_empty";
+            this.ui_mus_empty.Size = new System.Drawing.Size(75, 23);
+            this.ui_mus_empty.TabIndex = 222;
+            this.ui_mus_empty.Text = "清空";
+            this.ui_mus_empty.UseVisualStyleBackColor = true;
+            // 
+            // ui_mus_del
+            // 
+            this.ui_mus_del.Location = new System.Drawing.Point(205, 65);
+            this.ui_mus_del.Name = "ui_mus_del";
+            this.ui_mus_del.Size = new System.Drawing.Size(75, 23);
+            this.ui_mus_del.TabIndex = 221;
+            this.ui_mus_del.Text = "删除";
+            this.ui_mus_del.UseVisualStyleBackColor = true;
+            // 
+            // ui_mus_add
+            // 
+            this.ui_mus_add.Location = new System.Drawing.Point(205, 25);
+            this.ui_mus_add.Name = "ui_mus_add";
+            this.ui_mus_add.Size = new System.Drawing.Size(75, 23);
+            this.ui_mus_add.TabIndex = 220;
+            this.ui_mus_add.Text = "添加";
+            this.ui_mus_add.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(3, 50);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(53, 12);
+            this.label13.TabIndex = 217;
+            this.label13.Text = "背景音乐";
+            // 
+            // ui_mus_slt
+            // 
+            this.ui_mus_slt.FormattingEnabled = true;
+            this.ui_mus_slt.Location = new System.Drawing.Point(5, 27);
+            this.ui_mus_slt.Name = "ui_mus_slt";
+            this.ui_mus_slt.Size = new System.Drawing.Size(185, 20);
+            this.ui_mus_slt.TabIndex = 218;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 12);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 12);
+            this.label12.TabIndex = 216;
+            this.label12.Text = "音乐素材";
+            // 
+            // ui_mus_lib
+            // 
+            this.ui_mus_lib.FormattingEnabled = true;
+            this.ui_mus_lib.ItemHeight = 12;
+            this.ui_mus_lib.Location = new System.Drawing.Point(5, 65);
+            this.ui_mus_lib.Name = "ui_mus_lib";
+            this.ui_mus_lib.Size = new System.Drawing.Size(185, 52);
+            this.ui_mus_lib.TabIndex = 219;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1193,6 +1213,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1202,7 +1223,6 @@
             this.tabPage2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
@@ -1213,6 +1233,10 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1251,26 +1275,15 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox ui_ly_count;
-        private System.Windows.Forms.CheckBox ui_loop;
-        private System.Windows.Forms.Button ui_stop;
-        private System.Windows.Forms.Button ui_play;
-        private System.Windows.Forms.TrackBar ui_proc;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox ui_sinw;
         private System.Windows.Forms.TextBox ui_sinh;
-        private System.Windows.Forms.Button ui_mus_empty;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button ui_mus_del;
         private System.Windows.Forms.TextBox ui_scenename;
-        private System.Windows.Forms.Button ui_mus_add;
         private System.Windows.Forms.TextBox ui_scenew;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox ui_sceneh;
-        private System.Windows.Forms.ComboBox ui_mus_slt;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button ui_createscene;
-        private System.Windows.Forms.ListBox ui_mus_lib;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckedListBox ui_ly_slt;
@@ -1329,6 +1342,19 @@
         private System.Windows.Forms.ToolStripTextBox ui_mouse_pos;
         private System.Windows.Forms.ToolStripTextBox ui_cursorsat;
         private System.Windows.Forms.ToolStripTextBox ui_tilecount;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox ui_loop;
+        private System.Windows.Forms.Button ui_stop;
+        private System.Windows.Forms.Button ui_play;
+        private System.Windows.Forms.TrackBar ui_proc;
+        private System.Windows.Forms.Button ui_mus_empty;
+        private System.Windows.Forms.Button ui_mus_del;
+        private System.Windows.Forms.Button ui_mus_add;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox ui_mus_slt;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ListBox ui_mus_lib;
     }
 }
 

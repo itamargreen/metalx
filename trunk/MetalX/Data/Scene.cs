@@ -10,7 +10,7 @@ namespace MetalX
         /// <summary>
         /// 场景索引
         /// </summary>
-        public int Index;       
+        public int Index;
         /// <summary>
         /// 场景名
         /// </summary>
@@ -29,7 +29,7 @@ namespace MetalX
         public string Version; 
 
         /// <summary>
-        /// 场景逻辑尺寸
+        /// 场景尺寸
         /// </summary>
         public Size Size;
         /// <summary>
@@ -53,17 +53,13 @@ namespace MetalX
         //public Location Location;
 
         /// <summary>
-        /// 图元层集合
+        /// 图元层
         /// </summary>
         public List<TileLayer> TileLayers = new List<TileLayer>();
         /// <summary>
         /// 代码层
         /// </summary>
-        public List<Code> Codes = new List<Code>();
-        ///// <summary>
-        ///// 出口
-        ///// </summary>
-        //List<Linker> Linkers = new List<Linker>();
+        public List<CodeLayer> CodeLayers = new List<CodeLayer>();
     }
     [Serializable]
     public class TileLayer
@@ -189,7 +185,7 @@ namespace MetalX
         /// <summary>
         /// 纹理索引
         /// </summary>
-        public int TextureIndex = -1;
+        //public int TextureIndex = -1;
         /// <summary>
         /// 纹理文件名
         /// </summary>
@@ -208,8 +204,38 @@ namespace MetalX
         public Color ColorFilter = Color.FromArgb(255, Color.White);
     }
     [Serializable]
+    public class CodeLayer
+    {
+        public List<Code> Codes = new List<Code>();
+        public Code this[int i]
+        {
+            get
+            {
+                return Codes[i];
+            }
+        }
+        public Code this[Point p]
+        {
+            get
+            {
+                foreach (Code t in Codes)
+                {
+                    if (t.Location == p)
+                    {
+                        return t;
+                    }
+                }
+                return null;
+            }
+        }
+    }
+    [Serializable]
     public class Code
     {
+        /// <summary>
+        /// 位置
+        /// </summary>
+        public Point Location;
         /// <summary>
         /// 人物可到达
         /// </summary>
@@ -258,97 +284,7 @@ namespace MetalX
         /// 默认朝向
         /// </summary>
         public Direction DefaultDirection;
-    }
-    //[Serializable]
-    //public class Linker
-    //{
-
-    //    /// <summary>
-    //    /// 触发逻辑区域
-    //    /// </summary>
-    //    public Rectangle Zone;
-    //}
-    [Serializable]
-    public class Location
-    {
-        /// <summary>
-        /// 物理位置
-        /// </summary>
-        public Point Pixel;
-        /// <summary>
-        /// 逻辑位置
-        /// </summary>
-        public Point Logic;
-        public Location()
-        {
-            Pixel = new Point();
-            Logic = new Point();
-        }
-        public Location(Point pixel, Size unit)
-        {
-            Pixel = pixel;
-            Logic = new Point(pixel.X / unit.Width, pixel.Y / unit.Height);
-        }
-        public Location(Point logic, Point physic)
-        {
-            Pixel = physic;
-            Logic = logic;
-        }
-        public static Location operator +(Location pos1, Location pos2)
-        {
-            return new Location(new Point(pos1.Logic.X + pos2.Logic.X, pos1.Logic.Y + pos2.Logic.Y), new Point(pos1.Pixel.X + pos2.Pixel.X, pos1.Pixel.Y + pos2.Pixel.Y));
-        }
-        public static Location operator -(Location pos1, Location pos2)
-        {
-            return new Location(new Point(pos1.Logic.X - pos2.Logic.X, pos1.Logic.Y - pos2.Logic.Y), new Point(pos1.Pixel.X - pos2.Pixel.X, pos1.Pixel.Y - pos2.Pixel.Y));
-        }
-        public static Location operator *(Location pos1, float k)
-        {
-            float lx, ly, px, py;
-            lx = pos1.Logic.X * k;
-            ly = pos1.Logic.Y * k;
-            px = pos1.Pixel.X * k;
-            py = pos1.Pixel.Y * k;
-            return new Location(new Point((int)lx, (int)ly), new Point((int)px, (int)py));
-        }
-        public static Location operator /(Location pos1, float k)
-        {
-            float lx, ly, px, py;
-            lx = pos1.Logic.X / k;
-            ly = pos1.Logic.Y / k;
-            px = pos1.Pixel.X / k;
-            py = pos1.Pixel.Y / k;
-            return new Location(new Point((int)lx, (int)ly), new Point((int)px, (int)py));
-        }
-        public static bool operator ==(Location pos1, Location pos2)
-        {
-            if (pos1.Logic == pos2.Logic && pos1.Pixel == pos2.Pixel)
-            {
-                return true;
-            }
-            return false;
-        }
-        public static bool operator !=(Location pos1, Location pos2)
-        {
-            if (pos1.Logic != pos2.Logic || pos1.Pixel != pos2.Pixel)
-            {
-                return true;
-            }
-            return false;
-        }
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-        public Location GetClone()
-        {
-            return (Location)MemberwiseClone();
-        }
-    }
+    }    
     [Serializable]
     public enum Direction
     {
@@ -369,5 +305,96 @@ namespace MetalX
         /// </summary>
         R = 3,
     }
+    //[Serializable]
+    //public class Linker
+    //{
+
+    //    /// <summary>
+    //    /// 触发逻辑区域
+    //    /// </summary>
+    //    public Rectangle Zone;
+    //}
+    //[Serializable]
+    //public class Location
+    //{
+    //    /// <summary>
+    //    /// 物理位置
+    //    /// </summary>
+    //    public Point Pixel;
+    //    /// <summary>
+    //    /// 逻辑位置
+    //    /// </summary>
+    //    public Point Logic;
+    //    public Location()
+    //    {
+    //        Pixel = new Point();
+    //        Logic = new Point();
+    //    }
+    //    public Location(Point pixel, Size unit)
+    //    {
+    //        Pixel = pixel;
+    //        Logic = new Point(pixel.X / unit.Width, pixel.Y / unit.Height);
+    //    }
+    //    public Location(Point logic, Point physic)
+    //    {
+    //        Pixel = physic;
+    //        Logic = logic;
+    //    }
+    //    public static Location operator +(Location pos1, Location pos2)
+    //    {
+    //        return new Location(new Point(pos1.Logic.X + pos2.Logic.X, pos1.Logic.Y + pos2.Logic.Y), new Point(pos1.Pixel.X + pos2.Pixel.X, pos1.Pixel.Y + pos2.Pixel.Y));
+    //    }
+    //    public static Location operator -(Location pos1, Location pos2)
+    //    {
+    //        return new Location(new Point(pos1.Logic.X - pos2.Logic.X, pos1.Logic.Y - pos2.Logic.Y), new Point(pos1.Pixel.X - pos2.Pixel.X, pos1.Pixel.Y - pos2.Pixel.Y));
+    //    }
+    //    public static Location operator *(Location pos1, float k)
+    //    {
+    //        float lx, ly, px, py;
+    //        lx = pos1.Logic.X * k;
+    //        ly = pos1.Logic.Y * k;
+    //        px = pos1.Pixel.X * k;
+    //        py = pos1.Pixel.Y * k;
+    //        return new Location(new Point((int)lx, (int)ly), new Point((int)px, (int)py));
+    //    }
+    //    public static Location operator /(Location pos1, float k)
+    //    {
+    //        float lx, ly, px, py;
+    //        lx = pos1.Logic.X / k;
+    //        ly = pos1.Logic.Y / k;
+    //        px = pos1.Pixel.X / k;
+    //        py = pos1.Pixel.Y / k;
+    //        return new Location(new Point((int)lx, (int)ly), new Point((int)px, (int)py));
+    //    }
+    //    public static bool operator ==(Location pos1, Location pos2)
+    //    {
+    //        if (pos1.Logic == pos2.Logic && pos1.Pixel == pos2.Pixel)
+    //        {
+    //            return true;
+    //        }
+    //        return false;
+    //    }
+    //    public static bool operator !=(Location pos1, Location pos2)
+    //    {
+    //        if (pos1.Logic != pos2.Logic || pos1.Pixel != pos2.Pixel)
+    //        {
+    //            return true;
+    //        }
+    //        return false;
+    //    }
+    //    public override int GetHashCode()
+    //    {
+    //        return base.GetHashCode();
+    //    }
+    //    public override bool Equals(object obj)
+    //    {
+    //        return base.Equals(obj);
+    //    }
+    //    public Location GetClone()
+    //    {
+    //        return (Location)MemberwiseClone();
+    //    }
+    //}
+
 }
 
