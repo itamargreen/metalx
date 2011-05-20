@@ -10,8 +10,8 @@ namespace MetalX
         MetalXGame metalXGame;
         public Form Window;
 
-        public Microsoft.DirectX.Direct3D.Font Font;
-        public Microsoft.DirectX.Direct3D.Sprite Sprite;
+        //public Microsoft.DirectX.Direct3D.Font Font;
+        //public Microsoft.DirectX.Direct3D.Sprite Sprite;
         public Microsoft.DirectX.Direct3D.Device D3DDev;
         public Microsoft.DirectX.DirectSound.Device DSoundDev;
         public Microsoft.DirectX.DirectInput.Device DKeyboardDev;
@@ -40,8 +40,8 @@ namespace MetalX
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
 
-            Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
-            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new Font("微软雅黑", 12));
+            //Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
+            //Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new Font("微软雅黑", 12));
 
         }
         public Devices(Control control, MetalXGame metalxgame)
@@ -51,6 +51,7 @@ namespace MetalX
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
             pps.Windowed = true;
+            //pps.MultiSample=Microsoft.DirectX.Direct3D.MultiSampleType.
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
 
@@ -63,8 +64,8 @@ namespace MetalX
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
 
-            Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
-            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new Font("微软雅黑", 12));
+            //Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
+            //Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new Font("微软雅黑", 12));
         }
 
         #region metal2d

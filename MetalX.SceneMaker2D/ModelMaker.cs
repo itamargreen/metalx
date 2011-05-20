@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using MetalX;
+
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
+
+using MetalX;
 namespace MetalX.SceneMaker2D
 {
-    class ModelViewer : MetalXGameCom
+    class ModelMaker : MetalXGameCom
     {
         public Vector3 xyz;
         public MetalXModel model;
         public MetalXTexture t;
-        public ModelViewer(MetalXGame g)
+        public ModelMaker(MetalXGame g)
             : base(g)
         {
         }

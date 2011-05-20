@@ -65,11 +65,11 @@ namespace MetalX.SceneMaker2D
         }
         void draw_grid()
         {
-            for (int i = 0; i < scene.SizePixel.Width; i += scene.TileSizePixel.Width)
+            for (int i = 0; i <= scene.SizePixel.Width; i += scene.TileSizePixel.Width)
             {
                 metalXGame.DrawLine(i, 0, i, scene.SizePixel.Height, Color.Blue);
             }
-            for (int i = 0; i < scene.SizePixel.Height; i += scene.TileSizePixel.Height)
+            for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)
             {
                 metalXGame.DrawLine(0, i, scene.SizePixel.Width, i, Color.Blue);
             }
