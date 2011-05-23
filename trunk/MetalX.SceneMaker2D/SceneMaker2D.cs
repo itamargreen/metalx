@@ -13,6 +13,19 @@ namespace MetalX.SceneMaker2D
         public int mxtIndex;
         public Point penLoc;
         public Rectangle penRect;
+        public Rectangle penRectPixel
+        {
+            get
+            {
+                if (mxtName == null)
+                {
+                    return new Rectangle(penRect.Location, scene.TileSizePixel);
+                }
+                float wx = penRect.Width / metalXGame.Textures[mxtName].TileSizePixel.Width;
+                float hx = penRect.Height / metalXGame.Textures[mxtName].TileSizePixel.Height;
+                return new Rectangle(penRect.Location, new Size((int)(wx * scene.TileSizePixel.Width), (int)(hx * scene.TileSizePixel.Height)));
+            }
+        }
         public Size penRectLogic
         {
             get
@@ -49,7 +62,12 @@ namespace MetalX.SceneMaker2D
                 {
                     foreach (Tile t in tl.Tiles)
                     {
-                        metalXGame.DrawMetalXTexture(metalXGame.Textures[t.Frames[frameIndex].TextureFileName], t.Location, t.Frames[frameIndex].DrawZone, t.Frames[frameIndex].ColorFilter);
+                        metalXGame.DrawMetalXTexture(
+                            metalXGame.Textures[t.Frames[frameIndex].TextureFileName],  
+                            t.Frames[frameIndex].DrawZone,
+                            t.Location, 
+                            scene.TileSizePixel,
+                            t.Frames[frameIndex].ColorFilter);
                     }
                 }
             }
@@ -76,7 +94,12 @@ namespace MetalX.SceneMaker2D
         }
         void draw_pen()
         {
-            metalXGame.DrawMetalXTexture(metalXGame.Textures[mxtName], penLoc, penRect, Color.FromArgb(150, Color.White));
+            metalXGame.DrawMetalXTexture(
+                metalXGame.Textures[mxtName],
+                penRect, 
+                penLoc,
+                penRectPixel.Size, 
+                Color.FromArgb(100, Color.White));
         }
     }
 }

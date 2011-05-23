@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace MetalX
 {
-    public class Devices
+    public class Devices:IDisposable
     {
         MetalXGame metalXGame;
         public Form Window;
@@ -63,6 +63,13 @@ namespace MetalX
 
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
+        }
+        public void Dispose()
+        {
+            D3DDev.Dispose();
+            DSoundDev.Dispose();
+            DKeyboardDev.Dispose();
+            DMouseDev.Dispose();
         }
 
         #region metal2d

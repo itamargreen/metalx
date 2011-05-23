@@ -6,6 +6,16 @@ namespace MetalX
 {
     public class UtilLib
     {
+        public static void EnumDir(string root, List<string> list)
+        {
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(root);
+            System.IO.DirectoryInfo[] dis = di.GetDirectories();
+            for (int i = 0; i < dis.Length; i++)
+            {
+                list.Add(dis[i].FullName);
+                EnumDir(dis[i].FullName, list);
+            }
+        }
         public static byte[] Compress(byte[] input)
         {
             System.IO.MemoryStream os = new System.IO.MemoryStream();
