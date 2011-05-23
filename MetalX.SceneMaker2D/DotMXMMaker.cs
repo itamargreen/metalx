@@ -37,7 +37,7 @@ namespace MetalX.SceneMaker2D
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            game.Exit();
+            game.Dispose();
         }
 
         private float depth = -192f, angleY = 0f, angleX = 0f;
@@ -100,7 +100,7 @@ namespace MetalX.SceneMaker2D
                 {
                     modelViewer.model = game.LoadDotX(ofd.FileName);
                     filename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
-                    game.Start();
+                    game.GO();
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace MetalX.SceneMaker2D
                 {
                     modelViewer.model = game.LoadDotMXM(ofd.FileName);
                     filename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
-                    game.Start();
+                    game.GO();
                 }
             }
         }
@@ -131,7 +131,7 @@ namespace MetalX.SceneMaker2D
                 if (ofd.FileName != string.Empty)
                 {
                     modelViewer.t = game.LoadDotMXT(ofd.FileName);
-                    game.Start();
+                    game.GO();
                 }
             }
         }

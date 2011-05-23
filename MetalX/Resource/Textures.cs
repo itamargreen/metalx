@@ -41,6 +41,17 @@ namespace MetalX
         }
         public void Add(MetalXTexture texture)
         {
+            //foreach (MetalXTexture mxt in items)
+            //{
+            //    if (mxt.Name == texture.Name)
+            //    {
+            //        return;
+            //    }
+            //}
+            if (items.Contains(texture))
+            {
+                return;
+            }
             items.Add(texture);
         }
         public void Del(MetalXTexture texture)

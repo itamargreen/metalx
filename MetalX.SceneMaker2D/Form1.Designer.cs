@@ -124,10 +124,6 @@
             this.ui_a = new System.Windows.Forms.TextBox();
             this.ui_b = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ui_loop = new System.Windows.Forms.CheckBox();
@@ -141,6 +137,10 @@
             this.ui_mus_slt = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.ui_mus_lib = new System.Windows.Forms.ListBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -154,10 +154,10 @@
             this.ui_pic_panel.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -235,7 +235,7 @@
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.退出ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
@@ -261,6 +261,7 @@
             this.撤销ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.撤销ToolStripMenuItem.Text = "撤销";
+            this.撤销ToolStripMenuItem.Click += new System.EventHandler(this.撤销ToolStripMenuItem_Click);
             // 
             // 重复ToolStripMenuItem
             // 
@@ -303,6 +304,7 @@
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
+            this.删除ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.删除ToolStripMenuItem.Text = "删除";
             // 
@@ -317,7 +319,7 @@
             // 折叠打开工具箱ToolStripMenuItem
             // 
             this.折叠打开工具箱ToolStripMenuItem.Name = "折叠打开工具箱ToolStripMenuItem";
-            this.折叠打开工具箱ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.折叠打开工具箱ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
             this.折叠打开工具箱ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.折叠打开工具箱ToolStripMenuItem.Text = "折叠(打开)工具箱";
             this.折叠打开工具箱ToolStripMenuItem.Click += new System.EventHandler(this.折叠打开工具箱ToolStripMenuItem_Click);
@@ -335,21 +337,21 @@
             // 纹理工具ToolStripMenuItem
             // 
             this.纹理工具ToolStripMenuItem.Name = "纹理工具ToolStripMenuItem";
-            this.纹理工具ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.纹理工具ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.纹理工具ToolStripMenuItem.Text = "纹理";
             this.纹理工具ToolStripMenuItem.Click += new System.EventHandler(this.纹理工具ToolStripMenuItem_Click);
             // 
             // 音频工具ToolStripMenuItem
             // 
             this.音频工具ToolStripMenuItem.Name = "音频工具ToolStripMenuItem";
-            this.音频工具ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.音频工具ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.音频工具ToolStripMenuItem.Text = "音频";
             this.音频工具ToolStripMenuItem.Click += new System.EventHandler(this.音频工具ToolStripMenuItem_Click);
             // 
             // 模型工具ToolStripMenuItem
             // 
             this.模型工具ToolStripMenuItem.Name = "模型工具ToolStripMenuItem";
-            this.模型工具ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模型工具ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.模型工具ToolStripMenuItem.Text = "模型";
             this.模型工具ToolStripMenuItem.Click += new System.EventHandler(this.模型工具ToolStripMenuItem_Click);
             // 
@@ -372,7 +374,7 @@
             // 关于ToolStripMenuItem
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F15)));
+            this.关于ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
@@ -1039,37 +1041,6 @@
             this.label4.TabIndex = 10;
             this.label4.Text = "A";
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 21);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(290, 775);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "NPC编辑";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 708);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.Visible = false;
-            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.panel1);
@@ -1197,6 +1168,37 @@
             this.ui_mus_lib.Size = new System.Drawing.Size(185, 52);
             this.ui_mus_lib.TabIndex = 219;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 21);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(290, 775);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "NPC编辑";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 708);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1232,11 +1234,11 @@
             this.ui_pic_panel.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

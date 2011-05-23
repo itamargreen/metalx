@@ -9,7 +9,7 @@ using Microsoft.DirectX.Direct3D;
 
 namespace MetalX
 {
-    public class MetalXGame
+    public class MetalXGame:IDisposable
     {
         #region 成员
         List<MetalXGameCom> metalXGameComs = new List<MetalXGameCom>();
@@ -152,7 +152,7 @@ namespace MetalX
         /// <summary>
         /// 启动
         /// </summary>
-        public void Start()
+        public void GO()
         {
             gameBeginTime = DateTime.Now;
             if (Devices.Window != null)
@@ -167,12 +167,8 @@ namespace MetalX
             isRunning = true;
             while (isRunning)
             {
-                //try
-                {
-                    Frame();
-                }
-                //catch
-                { }
+                Frame();
+
                 FPSValue = GetAverageFPS();
                 WaitFrameByAverageFPS();
             }
@@ -235,12 +231,14 @@ namespace MetalX
             }
             while (timespan >= pastMS);
         }
-        /// <summary>
-        /// 退出
-        /// </summary>
         public void Exit()
         {
             isRunning = false;
+        }
+        public void Dispose()
+        {
+            isRunning = false;
+            Devices.Dispose();
             if (Devices.Window != null)
             {
                 Devices.Window.Close();
@@ -288,7 +286,7 @@ namespace MetalX
             Devices.D3DDev.Lights[0].Direction = lookAt;
             Devices.D3DDev.Lights[0].Position = location;
         }
-
+        #region Load File Method
         /// <summary>
         /// 加载.X文件
         /// </summary>
@@ -361,6 +359,49 @@ namespace MetalX
             return model;
         }
         /// <summary>
+        /// 加载.MXT文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX纹理</returns>
+        public MetalXTexture LoadDotMXT(string fileName)
+        {
+            MetalXTexture texture = new MetalXTexture();
+            texture = (MetalXTexture)UtilLib.LoadObject(fileName);
+            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData));
+            return texture;
+        }
+        public void LoadAllDotMXT(string pathName)
+        {
+            //Textures.
+            //Textures ts = new Textures();
+            List<string> dirName = new List<string>();
+
+            DirectoryInfo di = new DirectoryInfo(pathName);
+            //FileInfo[] fis = di.GetFiles("*.mxt");
+            //foreach (FileInfo fi in fis)
+            //{
+            //    MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
+            //    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
+            //    Textures.Add(mxt);
+            //}
+            FileInfo[] fis;
+            UtilLib.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                di = new DirectoryInfo(pName);
+                fis = di.GetFiles("*.mxt");
+                foreach (FileInfo fi in fis)
+                {
+                    MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
+                    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
+                    Textures.Add(mxt);
+                }
+            }
+            //return ts;
+        }
+        #endregion
+        #region DrawMXM
+        /// <summary>
         /// 绘制MetalX格式模型
         /// </summary>
         /// <param name="model">MetalX格式模型</param>
@@ -378,70 +419,29 @@ namespace MetalX
                 model.MEMMesh.DrawSubset(i);
             }
         }
-
-        /// <summary>
-        /// 加载.MXT文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX纹理</returns>
-        public MetalXTexture LoadDotMXT(string fileName)
-        {
-            MetalXTexture texture = new MetalXTexture();
-            texture = (MetalXTexture)UtilLib.LoadObject(fileName);
-            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData));
-            return texture;
-        }
-        public void LoadAllDotMXT(string pathName)
-        {
-            //Textures ts = new Textures();
-            List<string> dirName = new List<string>();
-
-            DirectoryInfo di = new DirectoryInfo(pathName);
-            //FileInfo[] fis = di.GetFiles("*.mxt");
-            //foreach (FileInfo fi in fis)
-            //{
-            //    MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
-            //    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
-            //    Textures.Add(mxt);
-            //}
-            FileInfo[] fis;
-            EnumDir(pathName, dirName);
-            foreach (string pName in dirName)
-            {
-                di = new DirectoryInfo(pName);
-                fis = di.GetFiles("*.mxt");
-                foreach (FileInfo fi in fis)
-                {
-                    MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
-                    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
-                    Textures.Add(mxt);
-                }
-            }
-            //return ts;
-        }
-        void EnumDir(string root, List<string> list)
-        {
-            DirectoryInfo di = new DirectoryInfo(root);
-            DirectoryInfo[] dis = di.GetDirectories();
-            for (int i = 0; i < dis.Length; i++)
-            {
-                list.Add(dis[i].FullName);
-                EnumDir(dis[i].FullName, list);
-            }
-        }
+        #endregion
+        #region DrawMXT
         /// <summary>
         /// 绘制MetalX格式纹理
         /// </summary>
         /// <param name="t">MetalX格式纹理</param>
         /// <param name="loc">位置</param>
         /// <param name="c">颜色</param>
-        //public void DrawMetalXTexture(MetalXTexture t, Location loc, Rectangle dz, Color c)
+        //public void DrawMetalXTexture(MetalXTexture t, Location loc, Rectangle dz, Color color)
         //{
-        //    DrawMetalXTexture(t, new Vector3(loc.Pixel.X, loc.Pixel.Y, 0), dz, c);
+        //    DrawMetalXTexture(t, new Vector3(loc.Pixel.X, loc.Pixel.Y, 0), dz, color);
         //}
-        public void DrawMetalXTexture(MetalXTexture t, Point point, Rectangle dz, Color c)
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Color color)
         {
-            DrawMetalXTexture(t, new Vector3(point.X, point.Y, 0), dz, c);
+            DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
+        }
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Rectangle ddz, Color color)
+        {
+            DrawMetalXTexture(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
+        }
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Size size, Color color)
+        {
+            DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), size, color);
         }
         /// <summary>
         /// 绘制MetalX格式纹理
@@ -449,7 +449,7 @@ namespace MetalX
         /// <param name="t">MetalX格式纹理</param>
         /// <param name="loc">位置</param>
         /// <param name="c">颜色</param>
-        public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Rectangle dz, Color c)
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
         {
             if (t == null)
             {
@@ -474,19 +474,19 @@ namespace MetalX
             ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
 
             CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
-            vertexs[0] = new CustomVertex.PositionColoredTextured(loc, c.ToArgb(), fx, fy);
-            vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, c.ToArgb(), tx, ty);
-            vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - dz.Height, loc.Z, c.ToArgb(), fx, ty);
+            vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
+            vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
+            vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - size.Height, loc.Z, color.ToArgb(), fx, ty);
 
-            vertexs[3] = new CustomVertex.PositionColoredTextured(loc, c.ToArgb(), fx, fy);
-            vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y, loc.Z, c.ToArgb(), tx, fy);
-            vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, c.ToArgb(), tx, ty);
+            vertexs[3] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
+            vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
+            vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
 
             Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
         }
-        public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color c)
+        public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color color)
         {
             if (t == null)
             {
@@ -512,18 +512,20 @@ namespace MetalX
             ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
 
             CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
-            vertexs[0] = new CustomVertex.PositionColoredTextured(loc, c.ToArgb(), fx, fy);
-            vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, c.ToArgb(), tx, ty);
-            vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - dz.Height, loc.Z, c.ToArgb(), fx, ty);
+            vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
+            vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, color.ToArgb(), tx, ty);
+            vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - dz.Height, loc.Z, color.ToArgb(), fx, ty);
 
-            vertexs[3] = new CustomVertex.PositionColoredTextured(loc, c.ToArgb(), fx, fy);
-            vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y, loc.Z, c.ToArgb(), tx, fy);
-            vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, c.ToArgb(), tx, ty);
+            vertexs[3] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
+            vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
+            vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, color.ToArgb(), tx, ty);
 
             Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
         }
+        #endregion
+        #region DrawText
         /// <summary>
         /// 绘制文本
         /// </summary>
@@ -546,6 +548,8 @@ namespace MetalX
                 sprite.End();
             }
         }
+        #endregion
+        #region Direct2D
         public void DrawLine(Point fp, Point tp, Color color)
         {
             DrawLine(fp.X, fp.Y, tp.X, tp.Y, color);
@@ -590,6 +594,7 @@ namespace MetalX
             DrawLine(tx, ty, fx, ty, color);
             DrawLine(fx, fy, fx, ty, color);
         }
+        #endregion
         #endregion
     }
 }
