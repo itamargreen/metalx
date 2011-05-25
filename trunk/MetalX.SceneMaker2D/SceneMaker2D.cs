@@ -8,6 +8,7 @@ namespace MetalX.SceneMaker2D
     public class SceneMaker2D : MetalXGameCom
     {
         public bool drawGrid;
+        public bool drawCode;
         public Rectangle dragRect;
         public string mxtName;
         public int mxtIndex;
@@ -72,10 +73,14 @@ namespace MetalX.SceneMaker2D
                 }
             }
             draw_pen();        
-            if (drawGrid)
+            if (drawGrid||drawCode)
             {
                 draw_grid();
-            }         
+            }
+            if (drawCode)
+            {
+                draw_code();
+            }
             metalXGame.DrawRect(dragRect, Color.Red);
 
             //metalXGame.DrawLine(100, 0, 100, 384, Color.White);
@@ -91,6 +96,20 @@ namespace MetalX.SceneMaker2D
             {
                 metalXGame.DrawLine(0, i, scene.SizePixel.Width, i, Color.Blue);
             }
+        }
+        void draw_code()
+        {
+            foreach (Code c in scene.CodeLayers[0].Codes)
+            {
+                metalXGame.DrawText(c.CHRCanRch.ToString(), c.Location, Color.Black);
+            }
+            //for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)
+            //{
+            //    for (int j = 0; j <= scene.SizePixel.Width; j += scene.TileSizePixel.Width)
+            //    {
+            //        metalXGame.DrawText("1", new Point(j, i), Color.Black);
+            //    }
+            //}
         }
         void draw_pen()
         {

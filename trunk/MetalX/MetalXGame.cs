@@ -191,6 +191,7 @@ namespace MetalX
                     metalXGameCom.Draw();
                 }
             }
+            //Devices.sprite.End();
             Devices.D3DDev.EndScene();
             Devices.D3DDev.Present();
             Application.DoEvents();
@@ -538,15 +539,9 @@ namespace MetalX
         }
         public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
         {
-            using (Sprite sprite = new Sprite(Devices.D3DDev))
-            {
-                sprite.Begin(SpriteFlags.AlphaBlend);
-                using (Microsoft.DirectX.Direct3D.Font font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize)))
-                {
-                    font.DrawText(sprite, text, point, color);
-                }
-                sprite.End();
-            }
+            Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+            Devices.Font.DrawText(Devices.Sprite, text, point, color);
+            Devices.Sprite.End();
         }
         #endregion
         #region Direct2D

@@ -14,6 +14,10 @@ namespace MetalX
         public Microsoft.DirectX.DirectSound.Device DSoundDev;
         public Microsoft.DirectX.DirectInput.Device DKeyboardDev;
         public Microsoft.DirectX.DirectInput.Device DMouseDev;
+
+        public Microsoft.DirectX.Direct3D.Font Font;
+        public Microsoft.DirectX.Direct3D.Sprite Sprite;
+
         public SizeF D3DDevSizePixel
         {
             get
@@ -35,6 +39,8 @@ namespace MetalX
             pps.Windowed = true;
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, Window, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
+            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("新宋体", 12));
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(Window, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
@@ -54,6 +60,8 @@ namespace MetalX
             pps.Windowed = true;
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
+            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("新宋体", 12));
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(control, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
