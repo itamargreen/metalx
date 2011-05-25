@@ -61,10 +61,10 @@ namespace MetalX
         /// </summary>
         public List<CodeLayer> CodeLayers = new List<CodeLayer>();
 
-        public Scene GetClone()
-        {
-            return (Scene)MemberwiseClone();
-        }
+        //public Scene GetClone()
+        //{
+        //    return (Scene)MemberwiseClone();
+        //}
     }
     [Serializable]
     public class TileLayer
