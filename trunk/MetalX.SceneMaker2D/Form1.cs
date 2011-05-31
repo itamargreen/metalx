@@ -89,6 +89,7 @@ namespace MetalX.SceneMaker2D
             new_scene(new Size(int.Parse(ui_scenew.Text), int.Parse(ui_sceneh.Text)),
                 new Size(int.Parse(ui_sinw.Text), int.Parse(ui_sinh.Text)));
         }
+
         void new_scene(Size sizepixel, Size tilesizepixel)
         {
             if (metalXGame != null)
@@ -136,7 +137,7 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(metalXGame);
 
-            sceneMaker2D.scene = (Scene)UtilLib.LoadObject(fileName);
+            sceneMaker2D.scene = metalXGame.LoadDotMXScene(fileName);
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
@@ -306,6 +307,7 @@ namespace MetalX.SceneMaker2D
             }
             catch { }
         }
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (tabControl2.SelectedIndex == 0)
@@ -406,7 +408,7 @@ namespace MetalX.SceneMaker2D
             else if (tabControl2.SelectedIndex == 1)
             {
                 Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
-                int l = 5;
+                //int l = 5;
                 paint_code(p, e, scene_code_layer);
             }
         }
@@ -518,6 +520,7 @@ namespace MetalX.SceneMaker2D
 
                     TileFrame tf = new TileFrame();
                     tf.TextureFileName = sceneMaker2D.mxtName;
+                    tf.TextureIndex = metalXGame.Textures.GetIndex(tf.TextureFileName);
                     tf.DrawZone.Location = new Point(rect.X + xoo, rect.Y + yoo);
                     tf.DrawZone.Size = metalXGame.Textures[sceneMaker2D.mxtName].TileSizePixel;
                     //tf.DrawZone.Size = sceneMaker2D.scene.TileSizePixel;

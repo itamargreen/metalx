@@ -10,7 +10,7 @@ namespace MetalX
         /// <summary>
         /// 场景索引
         /// </summary>
-        public int Index;
+        //public int Index;
         /// <summary>
         /// 场景名
         /// </summary>
@@ -61,6 +61,9 @@ namespace MetalX
         /// </summary>
         public List<CodeLayer> CodeLayers = new List<CodeLayer>();
 
+        public Scene()
+        { 
+        }
         public Scene(Size s,Size tsp)
         {
             TileSizePixel = tsp;
@@ -211,6 +214,7 @@ namespace MetalX
         /// 纹理文件名
         /// </summary>
         public string TextureFileName;
+        public int TextureIndex = -1;
         /// <summary>
         /// 纹理物理尺寸
         /// </summary>

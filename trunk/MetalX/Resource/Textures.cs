@@ -32,6 +32,17 @@ namespace MetalX
                 return null;
             }
         }
+        public int GetIndex(string tname)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Name == tname)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
         public int Count
         {
             get

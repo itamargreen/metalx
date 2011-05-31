@@ -65,7 +65,7 @@ namespace MetalX.SceneMaker2D
                     foreach (Tile t in tl.Tiles)
                     {
                         metalXGame.DrawMetalXTexture(
-                            metalXGame.Textures[t.Frames[frameIndex].TextureFileName],  
+                            metalXGame.Textures[t.Frames[frameIndex].TextureIndex],  
                             t.Frames[frameIndex].DrawZone,
                             t.Location, 
                             scene.TileSizePixel,
