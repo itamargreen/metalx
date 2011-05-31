@@ -9,6 +9,7 @@ namespace MetalX.SceneMaker2D
     {
         public bool drawGrid;
         public bool drawCode;
+        public int drawCodeLayer=0;
         public Rectangle dragRect;
         public string mxtName;
         public int mxtIndex;
@@ -46,7 +47,7 @@ namespace MetalX.SceneMaker2D
         {
             drawGrid = false;
             frameIndex = 0;
-            scene = new Scene();
+            //scene = new Scene();
         }
 
         public override void Code()
@@ -69,6 +70,16 @@ namespace MetalX.SceneMaker2D
                             t.Location, 
                             scene.TileSizePixel,
                             t.Frames[frameIndex].ColorFilter);
+                    }
+                }
+            }
+            foreach (CodeLayer cl in scene.CodeLayers)
+            {
+                foreach (Code c in cl.Codes)
+                {
+                    if (c.SceneFileName != null)
+                    {
+                        draw_link(c.Location);
                     }
                 }
             }
@@ -99,9 +110,61 @@ namespace MetalX.SceneMaker2D
         }
         void draw_code()
         {
-            foreach (Code c in scene.CodeLayers[0].Codes)
+            if (drawCodeLayer == 0)
             {
-                metalXGame.DrawText(c.CHRCanRch.ToString(), c.Location, Color.Black);
+                foreach (Code c in scene.CodeLayers[0].Codes)
+                {
+                    string str = "o";
+                    if (!c.CHRCanRch)
+                    {
+                        str = "x";
+                    }
+                    metalXGame.DrawText(str, c.Location, Color.Red);
+                }
+            }
+            else if (drawCodeLayer == 1)
+            {
+                foreach (Code c in scene.CodeLayers[0].Codes)
+                {
+                    string str = "o";
+                    if (!c.MTLCanRch)
+                    {
+                        str = "x";
+                    }
+                    metalXGame.DrawText(str, c.Location, Color.Red);
+                }
+            }
+            else if (drawCodeLayer == 2)
+            {
+                foreach (Code c in scene.CodeLayers[0].Codes)
+                {
+                    string str = "o";
+                    if (!c.SHPCanRch)
+                    {
+                        str = "x";
+                    }
+                    metalXGame.DrawText(str, c.Location, Color.Red);
+                }
+            }
+            else if (drawCodeLayer == 3)
+            {
+                foreach (Code c in scene.CodeLayers[0].Codes)
+                {
+                    string str = "o";
+                    if (!c.FLTCanRch)
+                    {
+                        str = "x";
+                    }
+                    metalXGame.DrawText(str, c.Location, Color.Red);
+                }
+            }
+            else if (drawCodeLayer == 4)
+            {
+                foreach (Code c in scene.CodeLayers[0].Codes)
+                {
+                    string str = c.DrawLayer.ToString();
+                    metalXGame.DrawText(str, c.Location, Color.Red);
+                }
             }
             //for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)
             //{
@@ -119,6 +182,10 @@ namespace MetalX.SceneMaker2D
                 penLoc,
                 penRectPixel.Size, 
                 Color.FromArgb(100, Color.White));
+        }
+        void draw_link(Point p)
+        {
+            metalXGame.DrawRect(new Rectangle(p, scene.TileSizePixel), Color.Green);
         }
     }
 }

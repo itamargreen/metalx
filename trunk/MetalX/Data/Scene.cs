@@ -61,6 +61,22 @@ namespace MetalX
         /// </summary>
         public List<CodeLayer> CodeLayers = new List<CodeLayer>();
 
+        public Scene(Size s,Size tsp)
+        {
+            TileSizePixel = tsp;
+            CodeLayers.Add(new CodeLayer());
+            Size = s;
+            int i=0;
+            for (int y = 0; y < Size.Height; y++)
+            {
+                for (int x = 0; x < Size.Width; x++)
+                {
+                    CodeLayers[0].Codes.Add(new Code());
+                    CodeLayers[0].Codes[i++].Location = new Point(x * TileSizePixel.Width, y * TileSizePixel.Height);
+                }
+            }
+        }
+
         //public Scene GetClone()
         //{
         //    return (Scene)MemberwiseClone();
@@ -212,6 +228,54 @@ namespace MetalX
     public class CodeLayer
     {
         public List<Code> Codes = new List<Code>();
+        public Code this[int x, int y]
+        {
+            get
+            {
+                for (int i = 0; i < Codes.Count; i++)
+                {
+                    if (Codes[i].Location == new Point(x, y))
+                    {
+                        return Codes[i];
+                    }
+                }
+                return null;
+            }
+            set
+            {
+                for (int i = 0; i < Codes.Count; i++)
+                {
+                    if (Codes[i].Location == new Point(x, y))
+                    {
+                        Codes[i] = value;
+                    }
+                }
+            }
+        }
+        public Code this[Point p]
+        {
+            get
+            {
+                for (int i = 0; i < Codes.Count; i++)
+                {
+                    if (Codes[i].Location == p)
+                    {
+                        return Codes[i];
+                    }
+                }
+                return null;
+            }
+            set
+            {
+                for (int i = 0; i < Codes.Count; i++)
+                {
+                    if (Codes[i].Location == p)
+                    {
+                        Codes[i] = value;
+                    }
+                }
+            }
+        }
         public Code this[int i]
         {
             get
@@ -219,28 +283,10 @@ namespace MetalX
                 return Codes[i];
             }
         }
-        public Code this[Point p]
-        {
-            get
-            {
-                foreach (Code t in Codes)
-                {
-                    if (t.Location == p)
-                    {
-                        return t;
-                    }
-                }
-                return null;
-            }
-        }
     }
     [Serializable]
     public class Code
     {
-        /// <summary>
-        /// 位置
-        /// </summary>
-        public Point Location;
         /// <summary>
         /// 人物可到达
         /// </summary>
@@ -289,6 +335,10 @@ namespace MetalX
         /// 默认朝向
         /// </summary>
         public Direction DefaultDirection;
+        /// <summary>
+        /// 位置
+        /// </summary>
+        public Point Location;
     }    
     [Serializable]
     public enum Direction
