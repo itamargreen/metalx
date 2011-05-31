@@ -7,7 +7,7 @@ namespace MetalX
     [Serializable]
     public class MetalXTexture : IDisposable
     {
-        public int Index;
+        //public int Index;
         public string Name;
         public string Path;
         public DateTime CreateTime;
@@ -21,7 +21,7 @@ namespace MetalX
 
         public MetalXTexture()
         {
-            Index = -1;
+            //Index = -1;
             //Version = Path = Name = null;
             CreateTime = DateTime.Now;
         }

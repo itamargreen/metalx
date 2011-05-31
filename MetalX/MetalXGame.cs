@@ -400,6 +400,35 @@ namespace MetalX
             }
             //return ts;
         }
+        public Scene LoadDotMXScene(string pathName)
+        {
+            Scene scene = new Scene();
+            scene = (Scene)UtilLib.LoadObject(pathName);
+            //foreach (TileLayer tl in scene.TileLayers)
+            //{
+            //    foreach (Tile t in tl.Tiles)
+            //    {
+            //        foreach (TileFrame tf in t.Frames)
+            //        {
+            //            string tfname = tf.TextureFileName;
+            //            GetTextureIndex(tfname);
+            //        }
+            //    }
+            //}
+            for (int i = 0; i < scene.TileLayers.Count; i++)
+            {
+                for (int j = 0; j < scene.TileLayers[i].Tiles.Count; j++)
+                {
+                    for (int k = 0; k < scene.TileLayers[i].Tiles[j].Frames.Count; k++)
+                    {
+                        string tfname = scene.TileLayers[i].Tiles[j].Frames[k].TextureFileName;
+                        scene.TileLayers[i].Tiles[j].Frames[k].TextureIndex = Textures.GetIndex(tfname);
+                    }
+                }
+            }
+            return scene;
+        }
+
         #endregion
         #region DrawMXM
         /// <summary>
