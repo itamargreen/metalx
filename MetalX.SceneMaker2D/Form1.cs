@@ -26,6 +26,7 @@ namespace MetalX.SceneMaker2D
         Rectangle right_rect;
         Rectangle left_rect;
         string openFileName;
+        int scene_code_layer;
         bool drawing_code = false;
         public Form1()
         {
@@ -101,17 +102,13 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(metalXGame);
 
-            sceneMaker2D.scene = new Scene();
-
             int sw = sizepixel.Width;
             int sh = sizepixel.Height;
-
             int tw = tilesizepixel.Width;
             int th = tilesizepixel.Height;
 
+            sceneMaker2D.scene = new Scene(new Size(sw, sh), new Size(tw, th));
             sceneMaker2D.scene.Name = ui_scenename.Text;
-            sceneMaker2D.scene.Size = new Size(sw, sh);
-            sceneMaker2D.scene.TileSizePixel = new Size(tw, th);
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < int.Parse(ui_ly_count.Text); i++)
@@ -265,51 +262,103 @@ namespace MetalX.SceneMaker2D
         {
             return new Point(p1.X + p2.X, p1.Y + p2.Y);
         }
-
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        void paint_code(Point p, MouseEventArgs e, int l)
         {
+
+            if (!(e.Button == MouseButtons.Left || e.Button == MouseButtons.Right))
+            {
+                return;
+            }
+
+            bool val = true;
+
             if (e.Button == MouseButtons.Left)
             {
-                if (drawing_code)
-                { }
-                else
-                {
-                    if (erasing)
-                    {
-                        if (sceneMaker2D.dragRect.Width > sceneMaker2D.scene.TileSizePixel.Width ||
-                            sceneMaker2D.dragRect.Height > sceneMaker2D.scene.TileSizePixel.Height)
-                        {
-                            backup(UtilLib.Serialize(sceneMaker2D.scene));
-                            del_zone(sceneMaker2D.dragRect, sceneMaker2D.penRect);
-                        }
-                        else
-                        {
-                            backup(UtilLib.Serialize(sceneMaker2D.scene));
-                            del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRect);
-                        }
-                    }
-                    else
-                    {
-                        if (sceneMaker2D.dragRect.Width > sceneMaker2D.scene.TileSizePixel.Width ||
-                            sceneMaker2D.dragRect.Height > sceneMaker2D.scene.TileSizePixel.Height)
-                        {
-                            backup(UtilLib.Serialize(sceneMaker2D.scene));
-                            paint_zone(sceneMaker2D.dragRect, sceneMaker2D.penRectPixel);
-                        }
-                        else
-                        {
-                            backup(UtilLib.Serialize(sceneMaker2D.scene));
-                            paint_tile(sceneMaker2D.penLoc, sceneMaker2D.penRectPixel);
-                        }
-                    }
-                }
+                val = true;
             }
             else if (e.Button == MouseButtons.Right)
             {
+                val = false;
+            }
+
+            try
+            {
+                if (sceneMaker2D.drawCodeLayer == 0)
+                {
+                    sceneMaker2D.scene.CodeLayers[0][p].CHRCanRch = val;
+                }
+                else if (sceneMaker2D.drawCodeLayer == 1)
+                {
+                    sceneMaker2D.scene.CodeLayers[0][p].MTLCanRch = val;
+                }
+                else if (sceneMaker2D.drawCodeLayer == 2)
+                {
+                    sceneMaker2D.scene.CodeLayers[0][p].SHPCanRch = val;
+                }
+                else if (sceneMaker2D.drawCodeLayer == 3)
+                {
+                    sceneMaker2D.scene.CodeLayers[0][p].FLTCanRch = val;
+                }
+                else if (sceneMaker2D.drawCodeLayer == 4)
+                {
+                    sceneMaker2D.scene.CodeLayers[0][p].DrawLayer = l;
+                }
+            }
+            catch { }
+        }
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (tabControl2.SelectedIndex == 0)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (drawing_code)
+                    { }
+                    else
+                    {
+                        if (erasing)
+                        {
+                            if (sceneMaker2D.dragRect.Width > sceneMaker2D.scene.TileSizePixel.Width ||
+                                sceneMaker2D.dragRect.Height > sceneMaker2D.scene.TileSizePixel.Height)
+                            {
+                                backup(UtilLib.Serialize(sceneMaker2D.scene));
+                                del_zone(sceneMaker2D.dragRect, sceneMaker2D.penRect);
+                            }
+                            else
+                            {
+                                backup(UtilLib.Serialize(sceneMaker2D.scene));
+                                del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRect);
+                            }
+                        }
+                        else
+                        {
+                            if (sceneMaker2D.dragRect.Width > sceneMaker2D.scene.TileSizePixel.Width ||
+                                sceneMaker2D.dragRect.Height > sceneMaker2D.scene.TileSizePixel.Height)
+                            {
+                                backup(UtilLib.Serialize(sceneMaker2D.scene));
+                                paint_zone(sceneMaker2D.dragRect, sceneMaker2D.penRectPixel);
+                            }
+                            else
+                            {
+                                backup(UtilLib.Serialize(sceneMaker2D.scene));
+                                paint_tile(sceneMaker2D.penLoc, sceneMaker2D.penRectPixel);
+                            }
+                        }
+                    }
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
+                    right_rect.Location = p;
+                    right_rect.Size = sceneMaker2D.scene.TileSizePixel;
+                    sceneMaker2D.dragRect = right_rect;
+                }
+            }
+            else if (tabControl2.SelectedIndex == 1)
+            {
                 Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
-                right_rect.Location = p;
-                right_rect.Size = sceneMaker2D.scene.TileSizePixel;
-                sceneMaker2D.dragRect = right_rect;
+                
+                paint_code(p, e,scene_code_layer);
             }
         }
 
@@ -321,65 +370,86 @@ namespace MetalX.SceneMaker2D
                 ui_mouse_pos.Text = pointround2(e.Location, sceneMaker2D.scene.TileSizePixel).ToString();
             }
             catch
-            { } 
-            if (e.Button == MouseButtons.Left)
+            { }
+            if (tabControl2.SelectedIndex == 0)
             {
-                if (drawing_code)
-                { }
-                else
+                if (e.Button == MouseButtons.Left)
                 {
-                    if (erasing)
-                    {
-                        backup(UtilLib.Serialize(sceneMaker2D.scene));
-                        del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRect);
-                    }
+                    if (drawing_code)
+                    { }
                     else
                     {
-                        backup(UtilLib.Serialize(sceneMaker2D.scene));
-                        paint_tile(sceneMaker2D.penLoc, sceneMaker2D.penRectPixel);
+                        if (erasing)
+                        {
+                            backup(UtilLib.Serialize(sceneMaker2D.scene));
+                            del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRect);
+                        }
+                        else
+                        {
+                            backup(UtilLib.Serialize(sceneMaker2D.scene));
+                            paint_tile(sceneMaker2D.penLoc, sceneMaker2D.penRectPixel);
+                        }
                     }
                 }
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                try
+                else if (e.Button == MouseButtons.Right)
                 {
-                    Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
-                    p = pointaddpoint(p, new Point(sceneMaker2D.scene.TileSizePixel));
-                    right_rect.Size = new Size(pointdelpoint(p, right_rect.Location));
-                    sceneMaker2D.dragRect = right_rect;
+                    try
+                    {
+                        Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
+                        p = pointaddpoint(p, new Point(sceneMaker2D.scene.TileSizePixel));
+                        right_rect.Size = new Size(pointdelpoint(p, right_rect.Location));
+                        sceneMaker2D.dragRect = right_rect;
+                    }
+                    catch { }
                 }
-                catch { }
+            }
+            else if (tabControl2.SelectedIndex == 1)
+            {
+                Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
+                int l = 5;
+                paint_code(p, e, scene_code_layer);
             }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (tabControl2.SelectedIndex == 0)
             {
-                try
+
+                if (e.Button == MouseButtons.Right)
                 {
-                    Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
-                    p = pointaddpoint(p, new Point(sceneMaker2D.scene.TileSizePixel));
-                    right_rect.Size = new Size(pointdelpoint(p, right_rect.Location));
-                    sceneMaker2D.dragRect = right_rect;
+                    try
+                    {
+                        Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
+                        p = pointaddpoint(p, new Point(sceneMaker2D.scene.TileSizePixel));
+                        right_rect.Size = new Size(pointdelpoint(p, right_rect.Location));
+                        ui_linkzonex.Text = right_rect.Location.X.ToString();
+                        ui_linkzoney.Text = right_rect.Location.Y.ToString();
+                        ui_linkzonew.Text = right_rect.Size.Width.ToString();
+                        // .Text = right_rect.Location.X.ToString();
+                        ui_linkzoneh.Text = right_rect.Size.Height.ToString();
+                        sceneMaker2D.dragRect = right_rect;
+                    }
+                    catch { }
                 }
-                catch { }
+                else if (e.Button == MouseButtons.Middle)
+                {
+                    if (erasing)
+                    {
+                        pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
+                        ui_cursorsat.Text = "铅笔";
+                        erasing = false;
+                    }
+                    else
+                    {
+                        pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+                        ui_cursorsat.Text = "橡皮";
+                        erasing = true;
+                    }
+                }
             }
-            else if (e.Button == MouseButtons.Middle)
+            else if (tabControl2.SelectedIndex == 1)
             {
-                if (erasing)
-                {
-                    pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
-                    ui_cursorsat.Text = "铅笔";
-                    erasing = false;
-                }
-                else
-                {
-                    pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-                    ui_cursorsat.Text = "橡皮";
-                    erasing = true;
-                }
             }
         }
 
@@ -600,6 +670,52 @@ namespace MetalX.SceneMaker2D
                 drawing_code = true;
             }
             sceneMaker2D.drawCode = drawing_code;
+        }
+
+        private void ui_codelayer_slt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sceneMaker2D.drawCodeLayer = ui_codelayer_slt.SelectedIndex;
+        }
+
+        private void tabControl1_KeyDown(object sender, KeyEventArgs e)
+        {
+            scene_code_layer = e.KeyValue - 48;
+            if (scene_code_layer < 0 || scene_code_layer > 9)
+            {
+                scene_code_layer = 0;
+            }
+        }
+
+        private void ui_link_file_DoubleClick(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "MetalX Scene File|*.MXScene";
+            ofd.RestoreDirectory = true;
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                ui_link_file.Text = System.IO.Path.GetFileName(ofd.FileName);
+            }
+        }
+        void paint_link(Point p)
+        {
+            sceneMaker2D.scene.CodeLayers[0][p].SceneFileName = ui_link_file.Text;
+            //sceneMaker2D.scene.CodeLayers[0][p].DefaultDirection=
+            //sceneMaker2D.scene.CodeLayers[0][p].DefaultLocation=
+        }
+        void paint_link(Rectangle slt_zone)
+        {
+            for (int y = slt_zone.Y; y < slt_zone.Bottom; y += sceneMaker2D.scene.TileSizePixel.Height)
+            {
+                for (int x = slt_zone.X; x < slt_zone.Right; x += sceneMaker2D.scene.TileSizePixel.Width)
+                {
+                    paint_link(new Point(x, y));
+                }
+            }
+        }
+
+        private void ui_link_add_Click(object sender, EventArgs e)
+        {
+            paint_link(right_rect);
         }
     }
 }
