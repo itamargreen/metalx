@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace MetalX
+namespace MetalX.Resource
 {
     public class Devices:IDisposable
     {

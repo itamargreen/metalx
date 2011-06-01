@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace MetalX
 {
-    public class Settings
+    public class Option
     {
         float x;
         Size tileSize;
@@ -55,7 +55,7 @@ namespace MetalX
             }
         }
 
-        public Settings()
+        public Option()
         {
             x = 1f;
             rootPath = @".\";

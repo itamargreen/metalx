@@ -8,6 +8,11 @@ using System.Windows.Forms;
 
 using Microsoft.DirectX;
 
+using MetalX.Data;
+using MetalX.Resource;
+using MetalX.Framework;
+using MetalX.Plug;
+
 namespace MetalX.SceneMaker2D
 {
     public partial class Form1 : Form
@@ -455,6 +460,22 @@ namespace MetalX.SceneMaker2D
             }
         }
 
+        void paint_link(Point p)
+        {
+            sceneMaker2D.scene.CodeLayers[0][p].SceneFileName = ui_link_file.Text;
+            //sceneMaker2D.scene.CodeLayers[0][p].DefaultDirection=
+            //sceneMaker2D.scene.CodeLayers[0][p].DefaultLocation=
+        }
+        void paint_link(Rectangle slt_zone)
+        {
+            for (int y = slt_zone.Y; y < slt_zone.Bottom; y += sceneMaker2D.scene.TileSizePixel.Height)
+            {
+                for (int x = slt_zone.X; x < slt_zone.Right; x += sceneMaker2D.scene.TileSizePixel.Width)
+                {
+                    paint_link(new Point(x, y));
+                }
+            }
+        }
         void del_tile(Point p, Rectangle rect)
         {
             if (sceneMaker2D.drawingLayer < 0)
@@ -697,22 +718,6 @@ namespace MetalX.SceneMaker2D
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 ui_link_file.Text = System.IO.Path.GetFileName(ofd.FileName);
-            }
-        }
-        void paint_link(Point p)
-        {
-            sceneMaker2D.scene.CodeLayers[0][p].SceneFileName = ui_link_file.Text;
-            //sceneMaker2D.scene.CodeLayers[0][p].DefaultDirection=
-            //sceneMaker2D.scene.CodeLayers[0][p].DefaultLocation=
-        }
-        void paint_link(Rectangle slt_zone)
-        {
-            for (int y = slt_zone.Y; y < slt_zone.Bottom; y += sceneMaker2D.scene.TileSizePixel.Height)
-            {
-                for (int x = slt_zone.X; x < slt_zone.Right; x += sceneMaker2D.scene.TileSizePixel.Width)
-                {
-                    paint_link(new Point(x, y));
-                }
             }
         }
 

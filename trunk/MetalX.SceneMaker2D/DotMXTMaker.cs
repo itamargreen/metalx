@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 
 using MetalX;
+using MetalX.Plug;
+using MetalX.Format;
 
 namespace MetalX.SceneMaker2D
 {

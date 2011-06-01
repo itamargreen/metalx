@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace MetalX
+using MetalX.Data;
+using MetalX.Format;
+
+namespace MetalX.Resource
 {
     public class Models
     {

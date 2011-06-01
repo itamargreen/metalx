@@ -7,6 +7,12 @@ using System.IO;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
+using MetalX.Data;
+using MetalX.Framework;
+using MetalX.Format;
+using MetalX.Resource;
+using MetalX.Plug;
+
 namespace MetalX
 {
     public class MetalXGame:IDisposable
@@ -25,7 +31,7 @@ namespace MetalX
         /// <summary>
         /// 设置管理器
         /// </summary>
-        public Settings Settings;
+        public Option Settings;
         /// <summary>
         /// 模型管理器
         /// </summary>
@@ -121,7 +127,7 @@ namespace MetalX
         {
             Name = name;
 
-            Settings = new Settings();
+            Settings = new Option();
 
             Devices = new Devices(this);
 
@@ -136,7 +142,7 @@ namespace MetalX
 
             Name = name;
 
-            Settings = new Settings();
+            Settings = new Option();
 
             Devices = new Devices(control, this);
 
