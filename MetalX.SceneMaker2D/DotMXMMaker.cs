@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
+using MetalX.Plug;
 
 namespace MetalX.SceneMaker2D
 {

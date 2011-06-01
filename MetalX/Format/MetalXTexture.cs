@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace MetalX
+namespace MetalX.Format
 {
     [Serializable]
     public class MetalXTexture : IDisposable

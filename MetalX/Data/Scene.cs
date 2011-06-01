@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace MetalX
+namespace MetalX.Data
 {
     [Serializable]
     public class Scene

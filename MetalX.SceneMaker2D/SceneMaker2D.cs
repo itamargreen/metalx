@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using MetalX;
+using MetalX.Format;
+using MetalX.Data;
+using MetalX.Framework;
+
 namespace MetalX.SceneMaker2D
 {
     public class SceneMaker2D : MetalXGameCom

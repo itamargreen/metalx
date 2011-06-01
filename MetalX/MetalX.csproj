@@ -76,12 +76,15 @@
     <Compile Include="Format\MetalXTexture.cs" />
     <Compile Include="Data\Scene.cs" />
     <Compile Include="MetalXGame.cs" />
-    <Compile Include="Core\Devices.cs" />
+    <Compile Include="Resource\Devices.cs" />
     <Compile Include="Resource\Models.cs" />
     <Compile Include="Plug\MP3Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\Settings.cs" />
+    <Compile Include="Option.cs" />
     <Compile Include="Plug\UtilLib.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
