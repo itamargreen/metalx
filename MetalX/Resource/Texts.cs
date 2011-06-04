@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetalX.Resource
 {
-    public class Audios
+    public class Texts
     {
     }
 }

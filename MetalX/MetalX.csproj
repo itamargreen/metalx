@@ -67,6 +67,7 @@
     <Compile Include="Manager\SceneMgr.cs" />
     <Compile Include="Manager\UIMgr.cs" />
     <Compile Include="Resource\Audios.cs" />
+    <Compile Include="Resource\Texts.cs" />
     <Compile Include="Resource\Textures.cs" />
     <Compile Include="Data\CHR.cs" />
     <Compile Include="Data\FLT.cs" />
