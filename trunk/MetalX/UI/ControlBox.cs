@@ -156,6 +156,43 @@ namespace MetalX.UI
         public event ButtonBoxEvent OnButtonDown;
         public event ButtonBoxEvent OnButtonUp;
 
+        void HideAll()
+        {
+            WaitTextureBox.Visible = FocusTextureBox.Visible = DownTextureBox.Visible = UpTextureBox.Visible = false;
+        }
+        /// <summary>
+        /// 转换到等待状态
+        /// </summary>
+        public void Wait()
+        {
+            HideAll();
+            WaitTextureBox.Visible = true;
+        }
+        /// <summary>
+        /// 转换到选中状态
+        /// </summary>
+        public void Focus()
+        {
+            HideAll();
+            FocusTextureBox.Visible = true;
+        }
+        /// <summary>
+        /// 转换到按下状态
+        /// </summary>
+        public void Down()
+        {
+            HideAll();
+            DownTextureBox.Visible = true;
+        }
+        /// <summary>
+        /// 转换到抬起状态
+        /// </summary>
+        public void Up()
+        {
+            HideAll();
+            UpTextureBox.Visible = true;
+        }
+
         public ButtonBox()
         {            
             OnButtonWait = new ButtonBoxEvent(OnButtonWaitCode);
@@ -166,22 +203,18 @@ namespace MetalX.UI
 
         public virtual void OnButtonUpCode(int buttnBoxIndex)
         {
-            //throw new NotImplementedException();
         }
 
         public virtual void OnButtonDownCode(int buttnBoxIndex)
         {
-            //throw new NotImplementedException();
         }
 
         public virtual void OnButtonFocusCode(int buttnBoxIndex)
         {
-            //throw new NotImplementedException();
         }
 
         public virtual void OnButtonWaitCode(int buttnBoxIndex)
         {
-            //throw new NotImplementedException();
         }
     }
 }

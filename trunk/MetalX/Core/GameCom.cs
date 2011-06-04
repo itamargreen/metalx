@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace MetalX.Framework
+namespace MetalX
 {
-    public class MetalXGameCom
+    public class GameCom
     {
-        protected MetalXGame metalXGame;
+        protected Game game;
 
         bool enable = false;
         public bool Enable
@@ -61,9 +61,9 @@ namespace MetalX.Framework
             }
         }
 
-        public MetalXGameCom(MetalXGame metalxgame)
+        public GameCom(Game game)
         {
-            metalXGame = metalxgame;
+            this.game = game;
             EnableAll();
         }
 

@@ -6,16 +6,16 @@ using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
 using MetalX;
-using MetalX.Framework;
-using MetalX.Format;
+using MetalX.Component;
+using MetalX.Fileformat;
 namespace MetalX.SceneMaker2D
 {
-    class ModelMaker : MetalXGameCom
+    class ModelMaker : GameCom
     {
         public Vector3 xyz;
         public MetalXModel model;
         public MetalXTexture t;
-        public ModelMaker(MetalXGame g)
+        public ModelMaker(Game g)
             : base(g)
         {
         }
@@ -27,12 +27,12 @@ namespace MetalX.SceneMaker2D
         {
             base.Draw();
             if(model!=null)
-                metalXGame.DrawMetalXModel(model, new Vector3(), xyz, new Vector3());
+                game.DrawMetalXModel(model, new Vector3(), xyz, new Vector3());
 
-            metalXGame.DrawText("FPS:" + metalXGame.AverageFPS.ToString("f1"), new Point(), Color.White);
-            //metalXGame.DrawText("Camera Z:"+metalXGame.Devices.D3DDev.Transform.View.
+            game.DrawText("FPS:" + game.AverageFPS.ToString("f1"), new Point(), Color.White);
+            //game.DrawText("Camera Z:"+game.Devices.D3DDev.Transform.View.
             //if(t!=null)
-                //metalXGame.DrawMetalXTexture(t, new Vector3(),, Color.White);
+                //game.DrawMetalXTexture(t, new Vector3(),, Color.White);
         }
     }
 }

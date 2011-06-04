@@ -622,6 +622,7 @@
             this.ui_ly_slt.Name = "ui_ly_slt";
             this.ui_ly_slt.Size = new System.Drawing.Size(189, 164);
             this.ui_ly_slt.TabIndex = 111;
+            this.ui_ly_slt.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ui_ly_slt_ItemCheck);
             this.ui_ly_slt.SelectedIndexChanged += new System.EventHandler(this.ui_ly_slt_SelectedIndexChanged);
             // 
             // label9

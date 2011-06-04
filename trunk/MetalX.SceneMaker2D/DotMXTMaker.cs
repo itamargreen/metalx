@@ -7,8 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using MetalX;
-using MetalX.Plug;
-using MetalX.Format;
+using MetalX.Fileformat;
 
 namespace MetalX.SceneMaker2D
 {
@@ -58,7 +57,7 @@ namespace MetalX.SceneMaker2D
             mxt.SizePixel = pictureBox1.Size;
             mxt.TextureData = System.IO.File.ReadAllBytes(textBox1.Text);
             mxt.TileSizePixel = new System.Drawing.Size(w, h);
-            UtilLib.SaveObject(textBox2.Text, mxt);
+            Util.SaveObject(textBox2.Text, mxt);
             MessageBox.Show("输出成功");
         }
         int w = 16, h = 16;

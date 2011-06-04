@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetalX.Plug
+namespace MetalX
 {
-    public class UtilLib
+    public class Util
     {
         public static void EnumDir(string root, List<string> list)
         {
@@ -115,17 +115,6 @@ namespace MetalX.Plug
             }
         }
 
-        public static string GetString(string fullname)
-        {
-            try
-            {
-                return System.IO.File.ReadAllText(fullname, System.Text.Encoding.Default);
-            }
-            catch
-            {
-                return "";
-            }
-        }
         public static string[] SplitString(string data, int everyline)
         {
             int line = data.Length / everyline + 1;
@@ -151,15 +140,6 @@ namespace MetalX.Plug
                 tmp[0] = data;
             }
             return tmp;
-        }
-        public static string GetFileName(string pathandfilename)
-        {
-            //if (pathandfilename == null || pathandfilename.Length == 0)
-            //{
-            //    return "";
-            //}
-            //return pathandfilename.Substring(pathandfilename.LastIndexOf("\\") + 1);
-            return System.IO.Path.GetFileName(pathandfilename);
         }
 
         public static string GenFileName(string header, string ext)

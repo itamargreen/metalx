@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 
-using MetalX.Format;
+using MetalX.Fileformat;
+
 namespace MetalX.Resource
 {
     public class Textures
