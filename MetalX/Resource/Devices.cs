@@ -7,7 +7,7 @@ namespace MetalX.Resource
 {
     public class Devices:IDisposable
     {
-        MetalXGame metalXGame;
+        Game metalXGame;
         public Form Window;
 
         public Microsoft.DirectX.Direct3D.Device D3DDev;
@@ -25,7 +25,7 @@ namespace MetalX.Resource
                 return new SizeF(D3DDev.PresentationParameters.BackBufferWidth, D3DDev.PresentationParameters.BackBufferHeight);
             }
         }
-        public Devices(MetalXGame metalxgame)
+        public Devices(Game metalxgame)
         {
             Window = new Form();
             Window.Text = metalxgame.Name;
@@ -51,7 +51,7 @@ namespace MetalX.Resource
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
         }
-        public Devices(Control control, MetalXGame metalxgame)
+        public Devices(Control control, Game metalxgame)
         {
             metalXGame = metalxgame;
 

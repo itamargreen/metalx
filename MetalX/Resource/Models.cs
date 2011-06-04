@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 
-using MetalX.Data;
-using MetalX.Format;
+
+using MetalX.Fileformat;
 
 namespace MetalX.Resource
 {

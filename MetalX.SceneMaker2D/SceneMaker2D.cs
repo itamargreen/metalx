@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using MetalX;
-using MetalX.Format;
-using MetalX.Data;
-using MetalX.Framework;
+using MetalX.Fileformat;
+using MetalX.Dataformat;
+using MetalX.Component;
 
 namespace MetalX.SceneMaker2D
 {
-    public class SceneMaker2D : MetalXGameCom
+    public class SceneMaker2D : GameCom
     {
         public bool drawGrid;
         public bool drawCode;
@@ -27,8 +27,8 @@ namespace MetalX.SceneMaker2D
                 {
                     return new Rectangle(penRect.Location, scene.TileSizePixel);
                 }
-                float wx = penRect.Width / metalXGame.Textures[mxtName].TileSizePixel.Width;
-                float hx = penRect.Height / metalXGame.Textures[mxtName].TileSizePixel.Height;
+                float wx = penRect.Width / game.Textures[mxtName].TileSizePixel.Width;
+                float hx = penRect.Height / game.Textures[mxtName].TileSizePixel.Height;
                 return new Rectangle(penRect.Location, new Size((int)(wx * scene.TileSizePixel.Width), (int)(hx * scene.TileSizePixel.Height)));
             }
         }
@@ -46,7 +46,7 @@ namespace MetalX.SceneMaker2D
 
         public Scene scene;
 
-        public SceneMaker2D(MetalXGame metalx)
+        public SceneMaker2D(Game metalx)
             : base(metalx)
         {
             drawGrid = false;
@@ -68,8 +68,8 @@ namespace MetalX.SceneMaker2D
                 {
                     foreach (Tile t in tl.Tiles)
                     {
-                        metalXGame.DrawMetalXTexture(
-                            metalXGame.Textures[t.Frames[frameIndex].TextureIndex],  
+                        game.DrawMetalXTexture(
+                            game.Textures[t.Frames[frameIndex].TextureIndex],  
                             t.Frames[frameIndex].DrawZone,
                             t.Location, 
                             scene.TileSizePixel,
@@ -96,20 +96,20 @@ namespace MetalX.SceneMaker2D
             {
                 draw_code();
             }
-            metalXGame.DrawRect(dragRect, Color.Red);
+            game.DrawRect(dragRect, Color.Red);
 
-            //metalXGame.DrawLine(100, 0, 100, 384, Color.White);
-            //metalXGame.DrawText(" 场景名:" + scene.Name + " 尺寸:" + scene.Size + " 图元尺寸:" + scene.TileSize, new Point(), Color.White);
+            //game.DrawLine(100, 0, 100, 384, Color.White);
+            //game.DrawText(" 场景名:" + scene.Name + " 尺寸:" + scene.Size + " 图元尺寸:" + scene.TileSize, new Point(), Color.White);
         }
         void draw_grid()
         {
             for (int i = 0; i <= scene.SizePixel.Width; i += scene.TileSizePixel.Width)
             {
-                metalXGame.DrawLine(i, 0, i, scene.SizePixel.Height, Color.Blue);
+                game.DrawLine(i, 0, i, scene.SizePixel.Height, Color.Blue);
             }
             for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)
             {
-                metalXGame.DrawLine(0, i, scene.SizePixel.Width, i, Color.Blue);
+                game.DrawLine(0, i, scene.SizePixel.Width, i, Color.Blue);
             }
         }
         void draw_code()
@@ -123,7 +123,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    metalXGame.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, c.Location, Color.Red);
                 }
             }
             else if (drawCodeLayer == 1)
@@ -135,7 +135,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    metalXGame.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, c.Location, Color.Red);
                 }
             }
             else if (drawCodeLayer == 2)
@@ -147,7 +147,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    metalXGame.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, c.Location, Color.Red);
                 }
             }
             else if (drawCodeLayer == 3)
@@ -159,7 +159,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    metalXGame.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, c.Location, Color.Red);
                 }
             }
             else if (drawCodeLayer == 4)
@@ -167,21 +167,21 @@ namespace MetalX.SceneMaker2D
                 foreach (Code c in scene.CodeLayers[0].Codes)
                 {
                     string str = c.DrawLayer.ToString();
-                    metalXGame.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, c.Location, Color.Red);
                 }
             }
             //for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)
             //{
             //    for (int j = 0; j <= scene.SizePixel.Width; j += scene.TileSizePixel.Width)
             //    {
-            //        metalXGame.DrawText("1", new Point(j, i), Color.Black);
+            //        game.DrawText("1", new Point(j, i), Color.Black);
             //    }
             //}
         }
         void draw_pen()
         {
-            metalXGame.DrawMetalXTexture(
-                metalXGame.Textures[mxtName],
+            game.DrawMetalXTexture(
+                game.Textures[mxtName],
                 penRect, 
                 penLoc,
                 penRectPixel.Size, 
@@ -189,7 +189,7 @@ namespace MetalX.SceneMaker2D
         }
         void draw_link(Point p)
         {
-            metalXGame.DrawRect(new Rectangle(p, scene.TileSizePixel), Color.Green);
+            game.DrawRect(new Rectangle(p, scene.TileSizePixel), Color.Green);
         }
     }
 }

@@ -9,13 +9,11 @@ using System.Windows.Forms;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
-using MetalX.Plug;
-
 namespace MetalX.SceneMaker2D
 {
     public partial class DotMXMMaker : Form
     {
-        MetalXGame game;
+        Game game;
         ModelMaker modelViewer;
 
         public DotMXMMaker()
@@ -25,7 +23,7 @@ namespace MetalX.SceneMaker2D
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            game = new MetalXGame(panel1);
+            game = new Game(panel1);
             modelViewer = new ModelMaker(game);
             game.MountGameCom(modelViewer);
             label1.Text = depth.ToString();
@@ -88,7 +86,7 @@ namespace MetalX.SceneMaker2D
         private void ui_pack_Click(object sender, EventArgs e)
         {
             //UtilityLibrary.SaveObject((Math.Abs(DateTime.Now.GetHashCode())).ToString() + ".Model", mg.model);            
-            UtilLib.SaveObject(filename + ".MXM", modelViewer.model);
+            Util.SaveObject(filename + ".MXM", modelViewer.model);
         }
         string filename;
         private void ui_load_Click(object sender, EventArgs e)

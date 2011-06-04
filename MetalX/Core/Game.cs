@@ -7,18 +7,17 @@ using System.IO;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
-using MetalX.Data;
-using MetalX.Framework;
-using MetalX.Format;
+using MetalX.Dataformat;
+using MetalX.Component;
+using MetalX.Fileformat;
 using MetalX.Resource;
-using MetalX.Plug;
 
 namespace MetalX
 {
-    public class MetalXGame:IDisposable
+    public class Game:IDisposable
     {
         #region 成员
-        List<MetalXGameCom> metalXGameComs = new List<MetalXGameCom>();
+        List<GameCom> metalXGameComs = new List<GameCom>();
         bool isRunning;
         /// <summary>
         /// 名字
@@ -123,7 +122,7 @@ namespace MetalX
         //}
         #endregion
         #region 构造方法
-        public MetalXGame(string name)
+        public Game(string name)
         {
             Name = name;
 
@@ -133,11 +132,11 @@ namespace MetalX
 
             Textures = new Textures();
         }
-        public MetalXGame()
+        public Game()
             : this("MetalXGame")
         { }
 
-        public MetalXGame(string name, System.Windows.Forms.Control control)
+        public Game(string name, System.Windows.Forms.Control control)
         {
 
             Name = name;
@@ -150,7 +149,7 @@ namespace MetalX
 
             Textures = new Textures();
         }
-        public MetalXGame(System.Windows.Forms.Control control)
+        public Game(System.Windows.Forms.Control control)
             : this("MetalXGame", control)
         { }
         #endregion
@@ -186,7 +185,7 @@ namespace MetalX
         {
             Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.White, 1, 0);
             Devices.D3DDev.BeginScene();
-            foreach (MetalXGameCom metalXGameCom in metalXGameComs)
+            foreach (GameCom metalXGameCom in metalXGameComs)
             {
                 if (metalXGameCom.Enable)
                 {
@@ -256,7 +255,7 @@ namespace MetalX
         /// 挂载MetalX组件
         /// </summary>
         /// <param name="metalXCom"></param>
-        public void MountGameCom(MetalXGameCom metalXGameCom)
+        public void MountGameCom(GameCom metalXGameCom)
         {
             metalXGameComs.Add(metalXGameCom);
         }
@@ -342,7 +341,7 @@ namespace MetalX
         /// <returns>MetalX模型</returns>
         public MetalXModel LoadDotMXM(string fileName)
         {
-            MetalXModel model = (MetalXModel)UtilLib.LoadObject(fileName);
+            MetalXModel model = (MetalXModel)Util.LoadObject(fileName);
 
             ExtendedMaterial[] extendedMaterials;
 
@@ -373,8 +372,8 @@ namespace MetalX
         public MetalXTexture LoadDotMXT(string fileName)
         {
             MetalXTexture texture = new MetalXTexture();
-            texture = (MetalXTexture)UtilLib.LoadObject(fileName);
-            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData));
+            texture = (MetalXTexture)Util.LoadObject(fileName);
+            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.White.ToArgb());
             return texture;
         }
         public void LoadAllDotMXT(string pathName)
@@ -392,15 +391,14 @@ namespace MetalX
             //    Textures.Add(mxt);
             //}
             FileInfo[] fis;
-            UtilLib.EnumDir(pathName, dirName);
+            Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
             {
                 di = new DirectoryInfo(pName);
                 fis = di.GetFiles("*.mxt");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
-                    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
+                    MetalXTexture mxt = LoadDotMXT(fi.FullName);
                     Textures.Add(mxt);
                 }
             }
@@ -409,7 +407,7 @@ namespace MetalX
         public Scene LoadDotMXScene(string pathName)
         {
             Scene scene = new Scene();
-            scene = (Scene)UtilLib.LoadObject(pathName);
+            scene = (Scene)Util.LoadObject(pathName);
             //foreach (TileLayer tl in scene.TileLayers)
             //{
             //    foreach (Tile t in tl.Tiles)
