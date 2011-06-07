@@ -69,11 +69,12 @@ namespace MetalX.SceneMaker2D
                     foreach (Tile t in tl.Tiles)
                     {
                         game.DrawMetalXTexture(
-                            game.Textures[t.Frames[frameIndex].TextureIndex],  
+                            game.Textures[t.Frames[frameIndex].TextureIndex],
                             t.Frames[frameIndex].DrawZone,
-                            t.Location, 
+                            Util.PointAddPoint(t.Location, base.GlobalOffset),
                             scene.TileSizePixel,
-                            t.Frames[frameIndex].ColorFilter);
+                            Util.MixColor(t.Frames[frameIndex].ColorFilter, base.ColorFilter)
+                            );
                     }
                 }
             }
