@@ -735,5 +735,20 @@ namespace MetalX.SceneMaker2D
         {
             paint_link(right_rect);
         }
+
+        private void 震动ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sceneMaker2D.ShockScreen(1000);
+        }
+
+        private void 淡入ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sceneMaker2D.FallinSceen(1000);
+        }
+
+        private void 淡出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sceneMaker2D.FalloutSceen(1000);
+        }
     }
 }

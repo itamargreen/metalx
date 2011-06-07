@@ -50,6 +50,7 @@
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.折叠打开工具箱ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.震动ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.纹理工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.音频工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,6 +146,8 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.淡入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.淡出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -318,7 +321,10 @@
             // 查看ToolStripMenuItem
             // 
             this.查看ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.折叠打开工具箱ToolStripMenuItem});
+            this.折叠打开工具箱ToolStripMenuItem,
+            this.震动ToolStripMenuItem,
+            this.淡入ToolStripMenuItem,
+            this.淡出ToolStripMenuItem});
             this.查看ToolStripMenuItem.Name = "查看ToolStripMenuItem";
             this.查看ToolStripMenuItem.Size = new System.Drawing.Size(41, 21);
             this.查看ToolStripMenuItem.Text = "查看";
@@ -330,6 +336,13 @@
             this.折叠打开工具箱ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.折叠打开工具箱ToolStripMenuItem.Text = "折叠(打开)工具箱";
             this.折叠打开工具箱ToolStripMenuItem.Click += new System.EventHandler(this.折叠打开工具箱ToolStripMenuItem_Click);
+            // 
+            // 震动ToolStripMenuItem
+            // 
+            this.震动ToolStripMenuItem.Name = "震动ToolStripMenuItem";
+            this.震动ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.震动ToolStripMenuItem.Text = "震动";
+            this.震动ToolStripMenuItem.Click += new System.EventHandler(this.震动ToolStripMenuItem_Click);
             // 
             // 工具ToolStripMenuItem
             // 
@@ -1257,6 +1270,20 @@
             this.statusStrip1.Text = "statusStrip1";
             this.statusStrip1.Visible = false;
             // 
+            // 淡入ToolStripMenuItem
+            // 
+            this.淡入ToolStripMenuItem.Name = "淡入ToolStripMenuItem";
+            this.淡入ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.淡入ToolStripMenuItem.Text = "淡入";
+            this.淡入ToolStripMenuItem.Click += new System.EventHandler(this.淡入ToolStripMenuItem_Click);
+            // 
+            // 淡出ToolStripMenuItem
+            // 
+            this.淡出ToolStripMenuItem.Name = "淡出ToolStripMenuItem";
+            this.淡出ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.淡出ToolStripMenuItem.Text = "淡出";
+            this.淡出ToolStripMenuItem.Click += new System.EventHandler(this.淡出ToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1423,6 +1450,9 @@
         private System.Windows.Forms.Button ui_ly_add;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.CheckedListBox ui_codelayer_slt;
+        private System.Windows.Forms.ToolStripMenuItem 震动ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 淡入ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 淡出ToolStripMenuItem;
     }
 }
 

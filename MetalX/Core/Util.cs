@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace MetalX
 {
@@ -91,20 +92,17 @@ namespace MetalX
             filebuff = Compress(filebuff);
             System.IO.File.WriteAllBytes(FileName, filebuff);
         }
-
+        static System.Random Random = new System.Random(DateTime.Now.Millisecond);
         public static float Roll()
         {
-            System.Random Random = new System.Random();
             return (float)Random.NextDouble();
         }
         public static int Roll(int from, int to)
         {
-            System.Random Random = new System.Random();
             return Random.Next(from, to + 1);
         }
         public static bool Roll(float border)
         {
-            System.Random Random = new System.Random();
             if (Roll() < border)
             {
                 return true;
@@ -113,6 +111,10 @@ namespace MetalX
             {
                 return false;
             }
+        }
+        public static Color MixColor(Color targetColor, Color filterColor)
+        {
+            return Color.FromArgb(targetColor.ToArgb() & filterColor.ToArgb());
         }
 
         public static string[] SplitString(string data, int everyline)
@@ -148,7 +150,14 @@ namespace MetalX
             i = System.Math.Abs(i);
             return header + i.ToString() + ext;
         }
-
+        public static Point PointAddPoint(Point p1, Point p2)
+        {
+            return new Point(p1.X + p2.X, p1.Y + p2.Y);
+        }
+        public static Point PointSubPoint(Point p1, Point p2)
+        {
+            return new Point(p1.X - p2.X, p1.Y - p2.Y);
+        }
         public static System.Drawing.PointF GetPointOnCircle(float r, float deg)
         {
             deg %= 360;
