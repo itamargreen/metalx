@@ -43,6 +43,8 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.ui_loadpath = new System.Windows.Forms.Button();
+            this.ui_savepath = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -70,7 +72,7 @@
             // 
             this.ui_load.Location = new System.Drawing.Point(658, 508);
             this.ui_load.Name = "ui_load";
-            this.ui_load.Size = new System.Drawing.Size(75, 23);
+            this.ui_load.Size = new System.Drawing.Size(64, 23);
             this.ui_load.TabIndex = 1;
             this.ui_load.Text = "载入图片";
             this.ui_load.UseVisualStyleBackColor = true;
@@ -89,7 +91,7 @@
             // 
             this.ui_save.Location = new System.Drawing.Point(658, 535);
             this.ui_save.Name = "ui_save";
-            this.ui_save.Size = new System.Drawing.Size(75, 23);
+            this.ui_save.Size = new System.Drawing.Size(64, 23);
             this.ui_save.TabIndex = 3;
             this.ui_save.Text = "输出.MXT";
             this.ui_save.UseVisualStyleBackColor = true;
@@ -184,11 +186,33 @@
             this.label5.TabIndex = 13;
             this.label5.Text = "名字";
             // 
+            // ui_loadpath
+            // 
+            this.ui_loadpath.Location = new System.Drawing.Point(728, 508);
+            this.ui_loadpath.Name = "ui_loadpath";
+            this.ui_loadpath.Size = new System.Drawing.Size(64, 23);
+            this.ui_loadpath.TabIndex = 14;
+            this.ui_loadpath.Text = "批量目录";
+            this.ui_loadpath.UseVisualStyleBackColor = true;
+            this.ui_loadpath.Click += new System.EventHandler(this.ui_loadpath_Click);
+            // 
+            // ui_savepath
+            // 
+            this.ui_savepath.Location = new System.Drawing.Point(728, 535);
+            this.ui_savepath.Name = "ui_savepath";
+            this.ui_savepath.Size = new System.Drawing.Size(64, 23);
+            this.ui_savepath.TabIndex = 15;
+            this.ui_savepath.Text = "批量输出";
+            this.ui_savepath.UseVisualStyleBackColor = true;
+            this.ui_savepath.Click += new System.EventHandler(this.ui_savepath_Click);
+            // 
             // DotMXTMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(794, 574);
+            this.Controls.Add(this.ui_savepath);
+            this.Controls.Add(this.ui_loadpath);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.checkBox1);
@@ -235,5 +259,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button ui_loadpath;
+        private System.Windows.Forms.Button ui_savepath;
     }
 }

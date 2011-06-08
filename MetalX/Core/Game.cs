@@ -164,10 +164,12 @@ namespace MetalX
                 Devices.Window.Show();
             }
             totalFrames = 0;
-            SetLight(false);
             SetCamera(
                 new Vector3(0, 0, -(float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(22.5 * Math.PI / 180.0))),
                 new Vector3(0, 0, 0));
+            SetLight(
+                new Vector3(0, 0, -(float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(22.5 * Math.PI / 180.0))),
+                false);
             isRunning = true;
             while (isRunning)
             {
@@ -261,22 +263,21 @@ namespace MetalX
         /// 设置灯光
         /// </summary>
         /// <param name="value">开/关</param>
-        public void SetLight(bool value)
+        public void SetLight(Vector3 location, bool value)
         {
+            Devices.D3DDev.RenderState.Lighting = value;
+            Devices.D3DDev.Lights[0].Enabled = value;    
+            
             Devices.D3DDev.RenderState.AlphaBlendEnable = true;
-            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;
-            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
-            Devices.D3DDev.SetTextureStageState(0, Microsoft.DirectX.Direct3D.TextureStageStates.AlphaOperation, true);
+            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
+            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
 
-
-            //Devices.D3DDev.Lights[0].Type = LightType.Directional;
+            //Devices.D3DDev.Lights[0].Type = LightType.Point;
             //Devices.D3DDev.Lights[0].Ambient = Color.White;
             //Devices.D3DDev.Lights[0].Diffuse = Color.White;
-            //Devices.D3DDev.Lights[0].Range = 10000f;
-            //Devices.D3DDev.Lights[0].Update();
-            //Devices.D3DDev.Lights[0].Enabled = value;
 
-            Devices.D3DDev.RenderState.Lighting = value;
+            //Devices.D3DDev.Lights[0].Position = location;
+            //Devices.D3DDev.Lights[0].Update();       
         }
         /// <summary>
         /// 设置镜头
@@ -285,6 +286,7 @@ namespace MetalX
         /// <param name="lookAt">视点位置</param>
         public void SetCamera(Vector3 location, Vector3 lookAt)
         {
+            //Devices.D3DDev.Lights[0].Position = location;
             Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / (float)Devices.D3DDev.PresentationParameters.BackBufferHeight, -100, 100);
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
 
@@ -380,8 +382,6 @@ namespace MetalX
             //Textures.
             //Textures ts = new Textures();
             List<string> dirName = new List<string>();
-
-            DirectoryInfo di = new DirectoryInfo(pathName);
             //FileInfo[] fis = di.GetFiles("*.mxt");
             //foreach (FileInfo fi in fis)
             //{
@@ -389,12 +389,11 @@ namespace MetalX
             //    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
             //    Textures.Add(mxt);
             //}
-            FileInfo[] fis;
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
             {
-                di = new DirectoryInfo(pName);
-                fis = di.GetFiles("*.mxt");
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.mxt");
                 foreach (FileInfo fi in fis)
                 {
                     MetalXTexture mxt = LoadDotMXT(fi.FullName);
@@ -519,44 +518,44 @@ namespace MetalX
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
         }
-        public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color color)
-        {
-            if (t == null)
-            {
-                return;
-            }
+        //public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color color)
+        //{
+        //    if (t == null)
+        //    {
+        //        return;
+        //    }
 
-            int w, h;
-            w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
-            h = Devices.D3DDev.PresentationParameters.BackBufferHeight;
+        //    int w, h;
+        //    w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
+        //    h = Devices.D3DDev.PresentationParameters.BackBufferHeight;
 
-            loc.X -= w / 2;
-            loc.Y -= h / 2;
+        //    loc.X -= w / 2;
+        //    loc.Y -= h / 2;
 
-            loc.Y = 0 - loc.Y;
+        //    loc.Y = 0 - loc.Y;
 
-            Size s = t.SizePixel;
-            Rectangle dz = new Rectangle(new Point(), s);
+        //    Size s = t.SizePixel;
+        //    Rectangle dz = new Rectangle(new Point(), s);
 
-            float fx, fy, tx, ty;
-            fx = (float)dz.X / (float)s.Width;
-            fy = (float)dz.Y / (float)s.Height;
-            tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
-            ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
+        //    float fx, fy, tx, ty;
+        //    fx = (float)dz.X / (float)s.Width;
+        //    fy = (float)dz.Y / (float)s.Height;
+        //    tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
+        //    ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
 
-            CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
-            vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
-            vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, color.ToArgb(), tx, ty);
-            vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - dz.Height, loc.Z, color.ToArgb(), fx, ty);
+        //    CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
+        //    vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
+        //    vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, color.ToArgb(), tx, ty);
+        //    vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - dz.Height, loc.Z, color.ToArgb(), fx, ty);
 
-            vertexs[3] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
-            vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
-            vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, color.ToArgb(), tx, ty);
+        //    vertexs[3] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
+        //    vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
+        //    vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + dz.Width, loc.Y - dz.Height, loc.Z, color.ToArgb(), tx, ty);
 
-            Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
-            Devices.D3DDev.SetTexture(0, t.MEMTexture);
-            Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
-        }
+        //    Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
+        //    Devices.D3DDev.SetTexture(0, t.MEMTexture);
+        //    Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
+        //}
         #endregion
         #region DrawText
         /// <summary>
