@@ -8,58 +8,20 @@ namespace MetalX
     {
         protected Game game;
 
-        bool enable = false;
-        public bool Enable
-        {
-            get { return enable; }
-            set { enable = value; }
-        }
-        bool visible = false;
-        public bool Visible
-        {
-            get
-            {
-                return visible;
-            }
-            set
-            {
-                visible = value;
-            }
-        }
-        bool controllable = false;
-        public bool Controllable
-        {
-            get
-            {
-                return controllable;
-            }
-            set
-            {
-                controllable = value;
-            }
-        }
+        public bool Enable = false;
+        public bool Visible = false;
+        public bool Controllable = false;
 
         public void EnableAll()
         {
-            controllable = enable = visible = true;
+            Controllable = Enable = Visible = true;
         }
         public void DisableAll()
         {
-            controllable = enable = visible = false;
+            Controllable = Enable = Visible = true;
         }
 
-        Color colorFilter = Color.FromArgb(255, Color.White);
-        public Color ColorFilter
-        {
-            get
-            {
-                return colorFilter;
-            }
-            set
-            {
-                colorFilter = value;
-            }
-        }
+        public Color ColorFilter = Color.FromArgb(255, Color.White);
 
         public GameCom(Game game)
         {
@@ -70,7 +32,7 @@ namespace MetalX
         public virtual void Code()
         {
             Shock();
-            Fallout();
+            FallOut();
         }
         public virtual void Draw()
         {
@@ -123,51 +85,51 @@ namespace MetalX
         }
         #endregion
         #region for fallout
-        bool IsFallouting = false;
+        bool IsFallOuting = false;
         DateTime FalloutBegineTime;
         int FalloutTime;
         double fallout_interval;
         bool IsFallin;
-        public void FalloutSceen(int ms)
+        public void FallOutSceen(int ms)
         {
             FalloutBegineTime = DateTime.Now;
             FalloutTime = ms;
             fallout_interval = FalloutTime / 255;
-            IsFallouting = true;
+            IsFallOuting = true;
             IsFallin = false;
         }
-        public void FallinSceen(int ms)
+        public void FallInSceen(int ms)
         {
-            FalloutSceen(ms);
+            FallOutSceen(ms);
             IsFallin = true;
         }
-        protected void Fallout()
+        protected void FallOut()
         {
             TimeSpan ts = DateTime.Now - FalloutBegineTime;
-            if (IsFallouting)
+            if (IsFallOuting)
             {
                 if (ts.TotalMilliseconds > FalloutTime)
                 {
                     if (IsFallin)
                     {
-                        ColorFilter = Color.FromArgb(255, 255, 255);
+                        ColorFilter = Color.FromArgb(255, 255, 255, 255);
                     }
                     else
                     {
-                        ColorFilter = Color.FromArgb(0, 0, 0);
+                        ColorFilter = Color.FromArgb(255, 0, 0, 0);
                     }
-                    IsFallouting = false;
+                    IsFallOuting = false;
                 }
                 else
                 {
                     int frame = (int)((ts.TotalMilliseconds / (double)(FalloutTime)) * 255);
                     if (IsFallin)
                     {
-                        ColorFilter = Color.FromArgb(frame, frame, frame);
+                        ColorFilter = Color.FromArgb(255, frame, frame, frame);
                     }
                     else
                     {
-                        ColorFilter = Color.FromArgb(255 - frame, 255 - frame, 255 - frame);
+                        ColorFilter = Color.FromArgb(255, 255 - frame, 255 - frame, 255 - frame);
                     }
                 }
             }

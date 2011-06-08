@@ -111,7 +111,7 @@
             this.MinimizeBox = false;
             this.Name = "DotMXMMaker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MetalX.ModelViewer";
+            this.Text = "模型插件";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);

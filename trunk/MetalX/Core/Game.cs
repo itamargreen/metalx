@@ -29,7 +29,7 @@ namespace MetalX
         /// <summary>
         /// 设置管理器
         /// </summary>
-        public Option Settings;
+        public Option Option;
         /// <summary>
         /// 模型管理器
         /// </summary>
@@ -41,6 +41,8 @@ namespace MetalX
 
         DateTime gameBeginTime;
 
+        public DateTime FrameBeginTime;
+        
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -125,7 +127,7 @@ namespace MetalX
         {
             Name = name;
 
-            Settings = new Option();
+            Option = new Option();
 
             Devices = new Devices(this);
 
@@ -140,7 +142,7 @@ namespace MetalX
 
             Name = name;
 
-            Settings = new Option();
+            Option = new Option();
 
             Devices = new Devices(control, this);
 
@@ -173,6 +175,8 @@ namespace MetalX
             isRunning = true;
             while (isRunning)
             {
+                FrameBeginTime = DateTime.Now;
+
                 Frame();
 
                 FPSValue = GetAverageFPS();
@@ -239,7 +243,7 @@ namespace MetalX
         }
         public void Exit()
         {
-            isRunning = false;
+            Dispose();
         }
         public void Dispose()
         {
@@ -249,7 +253,7 @@ namespace MetalX
             {
                 Devices.Window.Close();
             }
-            Application.Exit();
+            //Application.Exit();
         }
         /// <summary>
         /// 挂载MetalX组件
@@ -374,7 +378,7 @@ namespace MetalX
         {
             MetalXTexture texture = new MetalXTexture();
             texture = (MetalXTexture)Util.LoadObject(fileName);
-            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.White.ToArgb());
+            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
             return texture;
         }
         public void LoadAllDotMXT(string pathName)
@@ -516,6 +520,7 @@ namespace MetalX
 
             Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
+            Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Disable;
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
         }
         //public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color color)
