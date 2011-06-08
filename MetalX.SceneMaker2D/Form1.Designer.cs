@@ -51,6 +51,8 @@
             this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.折叠打开工具箱ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.震动ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.淡入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.淡出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.纹理工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.音频工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,8 +148,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.淡入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.淡出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -343,6 +343,20 @@
             this.震动ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.震动ToolStripMenuItem.Text = "震动";
             this.震动ToolStripMenuItem.Click += new System.EventHandler(this.震动ToolStripMenuItem_Click);
+            // 
+            // 淡入ToolStripMenuItem
+            // 
+            this.淡入ToolStripMenuItem.Name = "淡入ToolStripMenuItem";
+            this.淡入ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.淡入ToolStripMenuItem.Text = "淡入";
+            this.淡入ToolStripMenuItem.Click += new System.EventHandler(this.淡入ToolStripMenuItem_Click);
+            // 
+            // 淡出ToolStripMenuItem
+            // 
+            this.淡出ToolStripMenuItem.Name = "淡出ToolStripMenuItem";
+            this.淡出ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.淡出ToolStripMenuItem.Text = "淡出";
+            this.淡出ToolStripMenuItem.Click += new System.EventHandler(this.淡出ToolStripMenuItem_Click);
             // 
             // 工具ToolStripMenuItem
             // 
@@ -932,6 +946,7 @@
             // 
             // ui_pic
             // 
+            this.ui_pic.BackColor = System.Drawing.Color.CornflowerBlue;
             this.ui_pic.Location = new System.Drawing.Point(1, 1);
             this.ui_pic.Margin = new System.Windows.Forms.Padding(0);
             this.ui_pic.Name = "ui_pic";
@@ -1269,20 +1284,6 @@
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             this.statusStrip1.Visible = false;
-            // 
-            // 淡入ToolStripMenuItem
-            // 
-            this.淡入ToolStripMenuItem.Name = "淡入ToolStripMenuItem";
-            this.淡入ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.淡入ToolStripMenuItem.Text = "淡入";
-            this.淡入ToolStripMenuItem.Click += new System.EventHandler(this.淡入ToolStripMenuItem_Click);
-            // 
-            // 淡出ToolStripMenuItem
-            // 
-            this.淡出ToolStripMenuItem.Name = "淡出ToolStripMenuItem";
-            this.淡出ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.淡出ToolStripMenuItem.Text = "淡出";
-            this.淡出ToolStripMenuItem.Click += new System.EventHandler(this.淡出ToolStripMenuItem_Click);
             // 
             // Form1
             // 

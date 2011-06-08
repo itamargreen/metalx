@@ -7,9 +7,8 @@ using System.IO;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
-using MetalX.Dataformat;
+using MetalX.Data;
 using MetalX.Component;
-using MetalX.Fileformat;
 using MetalX.Resource;
 
 namespace MetalX
@@ -183,7 +182,7 @@ namespace MetalX
         /// </summary>
         void Frame()
         {
-            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.White, 1, 0);
+            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.CornflowerBlue, 1, 0);
             Devices.D3DDev.BeginScene();
             foreach (GameCom metalXGameCom in metalXGameComs)
             {
@@ -196,7 +195,6 @@ namespace MetalX
                     metalXGameCom.Draw();
                 }
             }
-            //Devices.sprite.End();
             Devices.D3DDev.EndScene();
             Devices.D3DDev.Present();
             Application.DoEvents();
@@ -265,6 +263,12 @@ namespace MetalX
         /// <param name="value">开/关</param>
         public void SetLight(bool value)
         {
+            Devices.D3DDev.RenderState.AlphaBlendEnable = true;
+            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;
+            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
+            Devices.D3DDev.SetTextureStageState(0, Microsoft.DirectX.Direct3D.TextureStageStates.AlphaOperation, true);
+
+
             //Devices.D3DDev.Lights[0].Type = LightType.Directional;
             //Devices.D3DDev.Lights[0].Ambient = Color.White;
             //Devices.D3DDev.Lights[0].Diffuse = Color.White;
@@ -273,11 +277,6 @@ namespace MetalX
             //Devices.D3DDev.Lights[0].Enabled = value;
 
             Devices.D3DDev.RenderState.Lighting = value;
-
-            Devices.D3DDev.RenderState.AlphaBlendEnable = true;
-            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;
-            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
-
         }
         /// <summary>
         /// 设置镜头

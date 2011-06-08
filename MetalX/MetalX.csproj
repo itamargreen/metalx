@@ -64,22 +64,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\GamepadManager.cs" />
+    <Compile Include="Component\KeyboardManager.cs" />
+    <Compile Include="Component\MouseManager.cs" />
     <Compile Include="Component\SceneManager.cs" />
     <Compile Include="Component\UIManager.cs" />
     <Compile Include="Resource\Audios.cs" />
     <Compile Include="Resource\Texts.cs" />
     <Compile Include="Resource\Textures.cs" />
-    <Compile Include="Dataformat\CHR.cs" />
-    <Compile Include="Dataformat\FLT.cs" />
-    <Compile Include="Dataformat\MTL.cs" />
-    <Compile Include="Dataformat\SHP.cs" />
-    <Compile Include="Fileformat\MetalXAudio.cs" />
+    <Compile Include="Data\CHR.cs" />
+    <Compile Include="Data\FLT.cs" />
+    <Compile Include="Data\MTL.cs" />
+    <Compile Include="Data\SHP.cs" />
+    <Compile Include="File\MetalXAudio.cs" />
     <Compile Include="Core\GameCom.cs" />
-    <Compile Include="Fileformat\MetalXModel.cs" />
-    <Compile Include="Fileformat\MetalXTexture.cs" />
-    <Compile Include="Dataformat\Scene.cs" />
+    <Compile Include="File\MetalXModel.cs" />
+    <Compile Include="File\MetalXTexture.cs" />
+    <Compile Include="Data\Scene.cs" />
     <Compile Include="Core\Game.cs" />
-    <Compile Include="Resource\Devices.cs" />
+    <Compile Include="Core\Devices.cs" />
     <Compile Include="Resource\Models.cs" />
     <Compile Include="Component\SoundManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

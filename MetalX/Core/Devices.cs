@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace MetalX.Resource
+namespace MetalX
 {
-    public class Devices:IDisposable
+    public class Devices : IDisposable
     {
         Game metalXGame;
         public Form Window;
@@ -25,6 +25,7 @@ namespace MetalX.Resource
                 return new SizeF(D3DDev.PresentationParameters.BackBufferWidth, D3DDev.PresentationParameters.BackBufferHeight);
             }
         }
+
         public Devices(Game metalxgame)
         {
             Window = new Form();
@@ -39,6 +40,7 @@ namespace MetalX.Resource
             pps.Windowed = true;
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, Window, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+
             Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
             Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("新宋体", 12));
 
@@ -60,6 +62,7 @@ namespace MetalX.Resource
             pps.Windowed = true;
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+
             Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
             Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("新宋体", 12));
 
