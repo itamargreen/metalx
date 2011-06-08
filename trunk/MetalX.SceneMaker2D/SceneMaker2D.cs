@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using MetalX;
-using MetalX.Fileformat;
-using MetalX.Dataformat;
+using MetalX.Data;
 using MetalX.Component;
 
 namespace MetalX.SceneMaker2D

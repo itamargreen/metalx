@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 
 
-using MetalX.Fileformat;
-
 namespace MetalX.Resource
 {
     public class Models

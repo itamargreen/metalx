@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 using Microsoft.DirectX;
 
-using MetalX.Dataformat;
-using MetalX.Resource;
 using MetalX.Component;
+using MetalX.Data;
+using MetalX.Resource;
 
 namespace MetalX.SceneMaker2D
 {

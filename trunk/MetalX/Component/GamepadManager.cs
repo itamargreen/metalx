@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetalX.Dataformat
+namespace MetalX.Component
 {
-    class CHR
+    class GamepadManager
     {
     }
 }
