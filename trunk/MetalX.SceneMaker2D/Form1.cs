@@ -18,7 +18,7 @@ namespace MetalX.SceneMaker2D
     {
         Stack<object> stack = new Stack<object>(10);
 
-        Cursor bc;
+        Cursor bc = Cursors.Cross;
         bool insFrame = false;
         Game game;
         SceneMaker2D sceneMaker2D;
@@ -591,6 +591,7 @@ namespace MetalX.SceneMaker2D
                 yoo += game.Textures[sceneMaker2D.mxtName].TileSizePixel.Height;
             }
             insFrame = false;
+            pictureBox1.Cursor = bc;
             ui_tilecount.Text = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count.ToString();
         }
         void paint_zone(Rectangle target_zone, Rectangle slt_zone)
