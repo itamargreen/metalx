@@ -233,7 +233,7 @@
             this.Name = "DotMXTMaker";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "插件——纹理";
+            this.Text = "纹理插件";
             this.Load += new System.EventHandler(this.DotMXTMaker_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

@@ -31,7 +31,7 @@ namespace MetalX
             Window = new Form();
             Window.Text = metalxgame.Name;
             Window.StartPosition = FormStartPosition.CenterScreen;
-            Window.Size = metalxgame.Settings.WindowSize;
+            Window.Size = metalxgame.Option.WindowSize;
 
             metalXGame = metalxgame;
 

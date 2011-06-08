@@ -12,6 +12,7 @@ namespace MetalX.SceneMaker2D
     {
         public bool drawGrid;
         public bool drawCode;
+        public bool drawPen;
         public int drawCodeLayer=0;
         public Rectangle dragRect;
         public string mxtName;
@@ -42,6 +43,7 @@ namespace MetalX.SceneMaker2D
 
         
         int frameIndex;
+        DateTime lastFrameBeginTime = DateTime.Now;
 
         public Scene scene;
 
@@ -49,13 +51,25 @@ namespace MetalX.SceneMaker2D
             : base(metalx)
         {
             drawGrid = false;
+            drawPen = true;
             frameIndex = 0;
+            drawCode = false;
+            drawCodeLayer = 0;
+            dragRect = new Rectangle();
+
+            penRect = new Rectangle();
             //scene = new Scene();
         }
 
         public override void Code()
         {
             base.Code();
+            TimeSpan ts = DateTime.Now - lastFrameBeginTime;
+            if (ts.TotalMilliseconds > scene.FrameInterval)
+            {
+                frameIndex++;
+                lastFrameBeginTime = DateTime.Now;
+            }
         }
 
         public override void Draw()
@@ -68,11 +82,11 @@ namespace MetalX.SceneMaker2D
                     foreach (Tile t in tl.Tiles)
                     {
                         game.DrawMetalXTexture(
-                            game.Textures[t.Frames[frameIndex].TextureIndex],
-                            t.Frames[frameIndex].DrawZone,
+                            game.Textures[t[frameIndex].TextureIndex],
+                            t[frameIndex].DrawZone,
                             Util.PointAddPoint(t.Location, base.GlobalOffset),
                             scene.TileSizePixel,
-                            Util.MixColor(t.Frames[frameIndex].ColorFilter, base.ColorFilter)
+                            Util.MixColor(t[frameIndex].ColorFilter, ColorFilter)
                             );
                     }
                 }
@@ -87,6 +101,7 @@ namespace MetalX.SceneMaker2D
                     }
                 }
             }
+            if(drawPen)
             draw_pen();        
             if (drawGrid||drawCode)
             {

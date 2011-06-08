@@ -26,8 +26,11 @@ namespace MetalX.Data
         /// <summary>
         /// 版本
         /// </summary>
-        public string Version; 
-
+        public string Version;
+        /// <summary>
+        /// 帧间隔
+        /// </summary>
+        public int FrameInterval = 500;
         /// <summary>
         /// 场景尺寸
         /// </summary>
@@ -161,6 +164,7 @@ namespace MetalX.Data
         {
             get
             {
+                i = i % Frames.Count;
                 return Frames[i];
             }
         }

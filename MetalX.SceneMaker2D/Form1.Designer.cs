@@ -112,12 +112,9 @@
             this.ui_pic_panel = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.ui_pic = new System.Windows.Forms.PictureBox();
-            this.ui_framedelay = new System.Windows.Forms.TextBox();
             this.ui_pic_slt = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.ui_showgrid = new System.Windows.Forms.CheckBox();
             this.ui_aniframec = new System.Windows.Forms.TextBox();
-            this.ui_isani = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ui_gridh = new System.Windows.Forms.TextBox();
@@ -147,7 +144,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ui_framedelay = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -402,14 +400,15 @@
             // 
             this.说明ToolStripMenuItem.Name = "说明ToolStripMenuItem";
             this.说明ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.说明ToolStripMenuItem.Text = "使用说明";
+            this.说明ToolStripMenuItem.Click += new System.EventHandler(this.说明ToolStripMenuItem_Click);
             // 
             // 关于ToolStripMenuItem
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
             this.关于ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
@@ -468,6 +467,7 @@
             this.tabControl1.Size = new System.Drawing.Size(298, 800);
             this.tabControl1.TabIndex = 1;
             this.tabControl1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tabControl1_KeyDown);
+            this.tabControl1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tabControl1_KeyUp);
             // 
             // tabPage2
             // 
@@ -482,6 +482,8 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.label8);
+            this.panel4.Controls.Add(this.ui_framedelay);
             this.panel4.Controls.Add(this.label20);
             this.panel4.Controls.Add(this.ui_ly_count);
             this.panel4.Controls.Add(this.label19);
@@ -908,12 +910,9 @@
             // ui_pic_panel
             // 
             this.ui_pic_panel.Controls.Add(this.panel3);
-            this.ui_pic_panel.Controls.Add(this.ui_framedelay);
             this.ui_pic_panel.Controls.Add(this.ui_pic_slt);
-            this.ui_pic_panel.Controls.Add(this.label8);
             this.ui_pic_panel.Controls.Add(this.ui_showgrid);
             this.ui_pic_panel.Controls.Add(this.ui_aniframec);
-            this.ui_pic_panel.Controls.Add(this.ui_isani);
             this.ui_pic_panel.Controls.Add(this.label7);
             this.ui_pic_panel.Controls.Add(this.label1);
             this.ui_pic_panel.Controls.Add(this.ui_gridh);
@@ -958,14 +957,6 @@
             this.ui_pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseMove);
             this.ui_pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseUp);
             // 
-            // ui_framedelay
-            // 
-            this.ui_framedelay.Location = new System.Drawing.Point(126, 314);
-            this.ui_framedelay.Name = "ui_framedelay";
-            this.ui_framedelay.Size = new System.Drawing.Size(30, 21);
-            this.ui_framedelay.TabIndex = 106;
-            this.ui_framedelay.Text = "1";
-            // 
             // ui_pic_slt
             // 
             this.ui_pic_slt.FormattingEnabled = true;
@@ -975,15 +966,6 @@
             this.ui_pic_slt.Size = new System.Drawing.Size(288, 20);
             this.ui_pic_slt.TabIndex = 100;
             this.ui_pic_slt.SelectedIndexChanged += new System.EventHandler(this.ui_pic_slt_SelectedIndexChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(109, 317);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(11, 12);
-            this.label8.TabIndex = 18;
-            this.label8.Text = "S";
             // 
             // ui_showgrid
             // 
@@ -998,26 +980,17 @@
             // 
             // ui_aniframec
             // 
-            this.ui_aniframec.Location = new System.Drawing.Point(73, 314);
+            this.ui_aniframec.Location = new System.Drawing.Point(179, 287);
             this.ui_aniframec.Name = "ui_aniframec";
+            this.ui_aniframec.ReadOnly = true;
             this.ui_aniframec.Size = new System.Drawing.Size(30, 21);
             this.ui_aniframec.TabIndex = 105;
             this.ui_aniframec.Text = "0";
             // 
-            // ui_isani
-            // 
-            this.ui_isani.AutoSize = true;
-            this.ui_isani.Location = new System.Drawing.Point(5, 316);
-            this.ui_isani.Name = "ui_isani";
-            this.ui_isani.Size = new System.Drawing.Size(48, 16);
-            this.ui_isani.TabIndex = 104;
-            this.ui_isani.Text = "动画";
-            this.ui_isani.UseVisualStyleBackColor = true;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(56, 317);
+            this.label7.Location = new System.Drawing.Point(162, 290);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(11, 12);
             this.label7.TabIndex = 16;
@@ -1276,21 +1249,28 @@
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
-            // statusStrip1
+            // ui_framedelay
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 708);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.Visible = false;
+            this.ui_framedelay.Location = new System.Drawing.Point(171, 61);
+            this.ui_framedelay.Name = "ui_framedelay";
+            this.ui_framedelay.Size = new System.Drawing.Size(50, 21);
+            this.ui_framedelay.TabIndex = 219;
+            this.ui_framedelay.Text = "500";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(100, 64);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(65, 12);
+            this.label8.TabIndex = 220;
+            this.label8.Text = "动画帧间隔";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 730);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1361,7 +1341,6 @@
         private System.Windows.Forms.ToolStripMenuItem 说明ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel panel4;
@@ -1380,12 +1359,9 @@
         private System.Windows.Forms.Panel ui_pic_panel;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox ui_pic;
-        private System.Windows.Forms.TextBox ui_framedelay;
         private System.Windows.Forms.ComboBox ui_pic_slt;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox ui_showgrid;
         private System.Windows.Forms.TextBox ui_aniframec;
-        private System.Windows.Forms.CheckBox ui_isani;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox ui_gridh;
@@ -1454,6 +1430,8 @@
         private System.Windows.Forms.ToolStripMenuItem 震动ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 淡入ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 淡出ToolStripMenuItem;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox ui_framedelay;
     }
 }
 
