@@ -87,7 +87,7 @@ namespace MetalX.SceneMaker2D
         }
         private void ui_createscene_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedIndex = 1;
+            
             new_scene(new Size(int.Parse(ui_scenew.Text), int.Parse(ui_sceneh.Text)),
                 new Size(int.Parse(ui_sinw.Text), int.Parse(ui_sinh.Text)));
         }
@@ -130,6 +130,8 @@ namespace MetalX.SceneMaker2D
 
             pictureBox1.Size = sceneMaker2D.scene.SizePixel;
 
+            tabControl1.SelectedIndex = 1;
+
             game.MountGameCom(sceneMaker2D);
             game.GO();
         }
@@ -156,9 +158,12 @@ namespace MetalX.SceneMaker2D
                 ui_ly_slt.Items.Add(sceneMaker2D.scene.TileLayers.Count - 1 - i);
                 ui_ly_slt.SetItemChecked(i, true);
             }
-            sceneMaker2D.scene.CodeLayers.Add(new CodeLayer());
+            ui_ly_slt.SetSelected(sceneMaker2D.scene.TileLayers.Count - 1, true);
+            //sceneMaker2D.scene.CodeLayers.Add(new CodeLayer());
 
             pictureBox1.Size = sceneMaker2D.scene.SizePixel;
+
+            tabControl1.SelectedIndex = 1;
 
             game.MountGameCom(sceneMaker2D);
             game.GO();
