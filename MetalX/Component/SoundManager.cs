@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 
 using Microsoft.DirectX.DirectSound;
 using Mp3Sharp;
@@ -10,9 +10,10 @@ namespace MetalX.Component
     public class SoundManager : GameCom
     {
         SecondaryBuffer secondaryBuffer;
-        WaveFormat waveFormat;
+        WaveFormat waveFormat = new WaveFormat();
         BufferDescription bufferDescription;
         Mp3Stream mp3Stream;
+        Thread fillControlthd;
         int wholeSize;
         int halfSize
         {
@@ -21,14 +22,10 @@ namespace MetalX.Component
                 return wholeSize / 2;
             }
         }
-        byte[] buff = new byte[512];
+        byte[] buff = new byte[8820];
 
         public bool Loop = false;
         public bool Playing = false;
-
-        System.Threading.AutoResetEvent autoResetEvent;
-        Notify notify;
-        BufferPositionNotify[] bufferPositionNotify;
 
         public double Progress
         {
@@ -43,55 +40,43 @@ namespace MetalX.Component
                     return (double)(mp3Stream.Position) / (double)(mp3Stream.Length);
                 }
             }
+            set
+            {
+                if (mp3Stream == null)
+                {
+                    return;
+                }
+                mp3Stream.Position = (long)(value * (double)mp3Stream.Length);
+            }
         }
 
         public SoundManager(Game g)
             : base(g)
-        { }
+        {
+            fillControlthd = new Thread(fillControl);
+            fillControlthd.IsBackground = true;
+            fillControlthd.Priority = ThreadPriority.Lowest;
+            fillControlthd.Start();
+            DisableAll();
+        }
 
-        public override void Code()
+        bool pos, posb;
+        //true: in fore | false: in back
+        bool foreFilled, backFilled;
+
+
+        void Load(System.IO.Stream stream)
         {
             if (Playing)
             {
-                //autoResetEvent.Reset();
-                //autoResetEvent.WaitOne();
+                secondaryBuffer.Stop();
+                Playing = false;
+            } 
+            mp3Stream = new Mp3Stream(stream);
 
-                if (mp3Stream.Position < mp3Stream.Length)
-                {
-                    //mp3Stream.Read(buff, 0, halfSize);
-                    //if (secondaryBuffer.PlayPosition > halfSize)
-                    //{
-                    //    secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
-                    //}
-                    //else
-                    //{
-                    //    secondaryBuffer.Write(halfSize, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
-                    //}
-                }
-                else
-                {
-                    if (Loop)
-                    {
-                        mp3Stream.Position = 0;
-                    }
-                    else
-                    {
-                        secondaryBuffer.Stop();
-                        Playing = false;
-                    }
-                }
-            }
-        }
-
-        public void Load(int i)
-        {
-            TimeSpan ts = TimeSpan.FromSeconds(0.2);
-
-            mp3Stream = new Mp3Stream(new System.IO.MemoryStream(game.Audios[i].AudioData));
             mp3Stream.Read(buff, 0, 512);
             mp3Stream.Position = 0;
 
-            waveFormat = new WaveFormat();
             waveFormat.BitsPerSample = 16;
             waveFormat.Channels = mp3Stream.ChannelCount;
             waveFormat.SamplesPerSecond = mp3Stream.Frequency;
@@ -99,83 +84,158 @@ namespace MetalX.Component
             waveFormat.BlockAlign = (short)(waveFormat.Channels * (waveFormat.BitsPerSample / 8));
             waveFormat.AverageBytesPerSecond = waveFormat.SamplesPerSecond * waveFormat.BlockAlign;
 
+            wholeSize = (int)(waveFormat.AverageBytesPerSecond * TimeSpan.FromSeconds(0.1).TotalSeconds);
+
             bufferDescription = new BufferDescription(waveFormat);
-            bufferDescription.BufferBytes = wholeSize = (int)(waveFormat.AverageBytesPerSecond * ts.TotalSeconds);
-            bufferDescription.ControlPositionNotify = true;
+            bufferDescription.BufferBytes = wholeSize;
+            //bufferDescription.StickyFocus = true;
+            //bufferDescription.LocateInHardware = true;
+            //bufferDescription.DeferLocation = true;
+            bufferDescription.GlobalFocus = true;
 
             secondaryBuffer = new SecondaryBuffer(bufferDescription, game.Devices.DSoundDev);
 
             #region useless code area
-            notify = new Notify(secondaryBuffer);
+            //autoResetEvent = new System.Threading.AutoResetEvent(false);
+
+            //notify = new Notify(secondaryBuffer);
 
             //System.Reflection.MethodInfo methodInfo;
+            //methodInfo = typeof(SoundManager).GetMethod("fillBack");
 
-            bufferPositionNotify = new BufferPositionNotify[2];
-            bufferPositionNotify[0] = new BufferPositionNotify();
-            bufferPositionNotify[0].Offset = 0;
-            bufferPositionNotify[0].EventNotifyHandle = this.GetType().GetMethod("fillBack").MethodHandle.Value;
-            bufferPositionNotify[1] = new BufferPositionNotify();
-            bufferPositionNotify[1].Offset = halfSize;
-            bufferPositionNotify[1].EventNotifyHandle = this.GetType().GetMethod("fillFore").MethodHandle.Value;
+            //bufferPositionNotify = new BufferPositionNotify[2];
+            //bufferPositionNotify[0] = new BufferPositionNotify();
+            //bufferPositionNotify[0].Offset = 0;
+            //bufferPositionNotify[0].EventNotifyHandle = this.GetType().GetMethod("fillBack", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).MethodHandle.Value;
+            //bufferPositionNotify[1] = new BufferPositionNotify();
+            //bufferPositionNotify[1].Offset = halfSize;
+            //bufferPositionNotify[1].EventNotifyHandle = this.GetType().GetMethod("fillFore", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).MethodHandle.Value;
 
-            notify.SetNotificationPositions(bufferPositionNotify);
-            autoResetEvent = new System.Threading.AutoResetEvent(false);
+            //bufferPositionNotify = new BufferPositionNotify[2];
+            //bufferPositionNotify[0] = new BufferPositionNotify();
+            //bufferPositionNotify[0].Offset = 0;
+            //bufferPositionNotify[0].EventNotifyHandle = autoResetEvent.Handle;
+            //bufferPositionNotify[1] = new BufferPositionNotify();
+            //bufferPositionNotify[1].Offset = halfSize;
+            //bufferPositionNotify[1].EventNotifyHandle = autoResetEvent.Handle;
+
+            //notify.SetNotificationPositions(bufferPositionNotify);
             #endregion
         }
-        bool playFinish()
+
+        void fillControl()
         {
-            if (mp3Stream.Position < mp3Stream.Length)
+            while (true)
             {
-                return false;
-            }
-            else
-            {
-                if (Loop)
+                if (Playing)
                 {
-                    mp3Stream.Position = 0;
+                    if (secondaryBuffer == null || secondaryBuffer.Disposed || mp3Stream == null)
+                    {
+                        Thread.Sleep(100);
+                        continue;
+                    }
+                    if (secondaryBuffer.PlayPosition < halfSize)
+                    {
+                        pos = true;
+                    }
+                    else
+                    {
+                        pos = false;
+                    }
+                    if (pos != posb)
+                    {
+
+                        if (pos)
+                        {
+                            backFilled = false;
+                        }
+                        else
+                        {
+                            foreFilled = false;
+                        }
+                    }
+                    posb = pos;
+
+
+                    if (mp3Stream.Position < mp3Stream.Length)
+                    {
+                        if (pos && !backFilled)
+                        {
+                            fillBack();
+                            backFilled = true;
+                        }
+                        else if (!pos && !foreFilled)
+                        {
+                            fillFore();
+                            foreFilled = true;
+                        }
+                    }
+                    else
+                    {
+                        mp3Stream.Position = 0;
+                        if (Loop)
+                        {
+                            //mp3Stream.Position = 0;
+                        }
+                        else
+                        {
+                            secondaryBuffer.Stop();
+                            Playing = false;
+                        }
+                    }
                 }
-                else
-                {
-                    secondaryBuffer.Stop();
-                    Playing = false;
-                }
-                return true;
             }
         }
         void fillFore()
         {
+            if (secondaryBuffer == null || secondaryBuffer.Disposed || mp3Stream == null)
+            {
+                return;
+            }
             mp3Stream.Read(buff, 0, halfSize);
-            secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
+            try
+            {
+                secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
+            }
+            catch { }
         }
         void fillBack()
         {
-            mp3Stream.Read(buff, 0, halfSize);
-            secondaryBuffer.Write(halfSize, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
-        }
-        public void Play()
-        {
-            if (mp3Stream == null)
+            if (secondaryBuffer == null || secondaryBuffer.Disposed || mp3Stream == null)
             {
                 return;
-            } 
-
+            }
+            mp3Stream.Read(buff, 0, halfSize);
+            try
+            {
+                secondaryBuffer.Write(halfSize, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
+            }
+            catch { }
+        }
+        public void Play(string musicName) { Play(game.Audios.GetIndex(musicName)); }
+        public void Play(int i) { Play(new System.IO.MemoryStream(game.Audios[i].AudioData)); }
+        public void PlayMP3(string fileName) { Play(new System.IO.MemoryStream(System.IO.File.ReadAllBytes(fileName))); }
+        public void Play(System.IO.Stream stream)
+        {
+            Load(stream);
             mp3Stream.Read(buff, 0, halfSize);
             secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
-
             secondaryBuffer.Play(0, BufferPlayFlags.Looping);
-            
             Playing = true;
         }
         public void Stop()
         {
+            if (mp3Stream == null)
+            {
+                return;
+            }
             if (secondaryBuffer == null)
             {
                 return;
             }
-
-            secondaryBuffer.Stop();
             Playing = false;
-
+            bufferDescription.Dispose();
+            secondaryBuffer.Dispose();
             mp3Stream.Dispose();
         }
     }

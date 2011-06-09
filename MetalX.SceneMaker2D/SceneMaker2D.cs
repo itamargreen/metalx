@@ -55,10 +55,9 @@ namespace MetalX.SceneMaker2D
             frameIndex = 0;
             drawCode = false;
             drawCodeLayer = 0;
-            dragRect = new Rectangle();
 
+            dragRect = new Rectangle();
             penRect = new Rectangle();
-            //scene = new Scene();
         }
 
         public override void Code()
