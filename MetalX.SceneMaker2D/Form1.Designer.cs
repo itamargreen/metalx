@@ -90,7 +90,7 @@
             this.ui_ly_up = new System.Windows.Forms.Button();
             this.ui_ly_add = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.ui_codelayer_slt = new System.Windows.Forms.CheckedListBox();
+            this.ui_codelayer_slt = new System.Windows.Forms.ListBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.ui_link_clr = new System.Windows.Forms.Button();
             this.ui_link_del = new System.Windows.Forms.Button();
@@ -1426,7 +1426,7 @@
         private System.Windows.Forms.Button ui_ly_up;
         private System.Windows.Forms.Button ui_ly_add;
         private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.CheckedListBox ui_codelayer_slt;
+        private System.Windows.Forms.ListBox ui_codelayer_slt;
         private System.Windows.Forms.ToolStripMenuItem 震动ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 淡入ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 淡出ToolStripMenuItem;

@@ -33,8 +33,9 @@ namespace MetalX.SceneMaker2D
                         Image img = Image.FromFile(ofd.FileName);
 
                         pictureBox1.Size = img.Size;
-                        label1.Text = img.Size.ToString();
                         pictureBox1.Image = img;
+
+                        label1.Text = img.Size.ToString();
                         textBox1.Text = ofd.FileName;
 
                         textBox2.Text = System.IO.Path.GetDirectoryName(ofd.FileName) + @"\" + System.IO.Path.GetFileNameWithoutExtension(ofd.FileName) + ".MXT";

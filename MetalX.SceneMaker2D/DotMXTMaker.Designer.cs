@@ -70,18 +70,18 @@
             // 
             // ui_load
             // 
-            this.ui_load.Location = new System.Drawing.Point(658, 508);
+            this.ui_load.Location = new System.Drawing.Point(658, 512);
             this.ui_load.Name = "ui_load";
-            this.ui_load.Size = new System.Drawing.Size(64, 23);
+            this.ui_load.Size = new System.Drawing.Size(60, 23);
             this.ui_load.TabIndex = 1;
-            this.ui_load.Text = "载入图片";
+            this.ui_load.Text = "载入";
             this.ui_load.UseVisualStyleBackColor = true;
             this.ui_load.Click += new System.EventHandler(this.ui_load_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 495);
+            this.label1.Location = new System.Drawing.Point(12, 499);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 2;
@@ -89,17 +89,17 @@
             // 
             // ui_save
             // 
-            this.ui_save.Location = new System.Drawing.Point(658, 535);
+            this.ui_save.Location = new System.Drawing.Point(658, 539);
             this.ui_save.Name = "ui_save";
-            this.ui_save.Size = new System.Drawing.Size(64, 23);
+            this.ui_save.Size = new System.Drawing.Size(60, 23);
             this.ui_save.TabIndex = 3;
-            this.ui_save.Text = "输出.MXT";
+            this.ui_save.Text = "输出";
             this.ui_save.UseVisualStyleBackColor = true;
             this.ui_save.Click += new System.EventHandler(this.ui_save_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 510);
+            this.textBox1.Location = new System.Drawing.Point(12, 514);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(640, 21);
@@ -107,7 +107,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(12, 537);
+            this.textBox2.Location = new System.Drawing.Point(12, 541);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(640, 21);
             this.textBox2.TabIndex = 5;
@@ -188,7 +188,7 @@
             // 
             // ui_loadpath
             // 
-            this.ui_loadpath.Location = new System.Drawing.Point(728, 508);
+            this.ui_loadpath.Location = new System.Drawing.Point(718, 512);
             this.ui_loadpath.Name = "ui_loadpath";
             this.ui_loadpath.Size = new System.Drawing.Size(64, 23);
             this.ui_loadpath.TabIndex = 14;
@@ -198,7 +198,7 @@
             // 
             // ui_savepath
             // 
-            this.ui_savepath.Location = new System.Drawing.Point(728, 535);
+            this.ui_savepath.Location = new System.Drawing.Point(718, 539);
             this.ui_savepath.Name = "ui_savepath";
             this.ui_savepath.Size = new System.Drawing.Size(64, 23);
             this.ui_savepath.TabIndex = 15;

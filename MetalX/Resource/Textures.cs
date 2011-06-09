@@ -23,7 +23,7 @@ namespace MetalX.Resource
         {
             get
             {
-                for (int i = 0; i < Count; i++)
+                for (int i = 0; i < items.Count; i++)
                 {
                     if (items[i].Name == name)
                     {
