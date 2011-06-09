@@ -53,17 +53,17 @@ namespace MetalX.Resource
         }
         public void Add(MetalXTexture texture)
         {
-            //foreach (MetalXTexture mxt in items)
-            //{
-            //    if (mxt.Name == texture.Name)
-            //    {
-            //        return;
-            //    }
-            //}
-            if (items.Contains(texture))
+            foreach (MetalXTexture mxt in items)
             {
-                return;
+                if (mxt.Name == texture.Name)
+                {
+                    return;
+                }
             }
+            //if (items.Contains(texture))
+            //{
+            //    return;
+            //}
             items.Add(texture);
         }
         public void Del(MetalXTexture texture)

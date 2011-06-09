@@ -55,7 +55,6 @@ namespace MetalX.Component
         {
             fillControlthd = new Thread(fillControl);
             fillControlthd.IsBackground = true;
-            fillControlthd.Priority = ThreadPriority.Lowest;
             fillControlthd.Start();
             DisableAll();
         }
