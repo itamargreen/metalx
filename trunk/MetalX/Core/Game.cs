@@ -44,6 +44,7 @@ namespace MetalX
         /// 帧开始时间
         /// </summary>
         public DateTime FrameBeginTime;
+        public SoundManager SoundManager;
 
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
@@ -145,7 +146,6 @@ namespace MetalX
 
         public Game(string name, System.Windows.Forms.Control control)
         {
-
             Name = name;
             Options = new Options();
             Devices = new Devices(control, this);
@@ -156,11 +156,19 @@ namespace MetalX
 
         #endregion
         #region 方法
+
+        void mountComponent()
+        {
+            SoundManager = new SoundManager(this);
+            MountGameCom(SoundManager);
+        }
+
         /// <summary>
         /// 启动
         /// </summary>
         public void GO()
         {
+            mountComponent();
             gameBeginTime = DateTime.Now;
             if (Devices.Window != null)
             {

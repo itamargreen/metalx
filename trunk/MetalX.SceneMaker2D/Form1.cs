@@ -118,6 +118,7 @@ namespace MetalX.SceneMaker2D
             game.LoadAllDotMXA(@".\");
 
             update_pic_list();
+            update_mus_list();
 
             sceneMaker2D = new SceneMaker2D(game);
 
@@ -161,6 +162,7 @@ namespace MetalX.SceneMaker2D
             game.LoadAllDotMXT(@".\");
 
             update_pic_list();
+            update_mus_list();
 
             sceneMaker2D = new SceneMaker2D(game);
 
@@ -191,6 +193,15 @@ namespace MetalX.SceneMaker2D
             for (int i = 0; i < game.Textures.Count; i++)
             {
                 ui_pic_slt.Items.Add(game.Textures[i].Name);
+            }
+        }
+        void update_mus_list()
+        {
+            ui_mus_slt.Text = "";
+            ui_mus_slt.Items.Clear();
+            for (int i = 0; i < game.Audios.Count; i++)
+            {
+                ui_mus_slt.Items.Add(game.Audios[i].Name);
             }
         }
 
@@ -797,12 +808,14 @@ namespace MetalX.SceneMaker2D
         }
         private void ui_link_file_DoubleClick(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "MetalX Scene File|*.MXScene";
-            ofd.RestoreDirectory = true;
-            if (ofd.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ui_link_file.Text = System.IO.Path.GetFileName(ofd.FileName);
+                ofd.Filter = "MetalX Scene File|*.MXScene";
+                ofd.RestoreDirectory = true;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    ui_link_file.Text = System.IO.Path.GetFileName(ofd.FileName);
+                }
             }
         }
 
@@ -829,6 +842,51 @@ namespace MetalX.SceneMaker2D
         private void 说明ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new HelpBox1().ShowDialog();
+        }
+
+        private void ui_play_Click(object sender, EventArgs e)
+        {
+            if (ui_mus_slt.Text == string.Empty)
+            {
+                return;
+            }
+            game.SoundManager.Play(ui_mus_slt.Text);
+            timer1.Enabled = true;
+        }
+
+        private void ui_stop_Click(object sender, EventArgs e)
+        {
+            game.SoundManager.Stop();
+            timer1.Enabled = false;
+            ui_proc.Value = 0;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            ui_proc.Value = (int)(game.SoundManager.Progress * 50);
+            if (!game.SoundManager.Playing)
+            {
+                timer1.Enabled = false;
+            }
+        }
+
+        private void ui_proc_Scroll(object sender, EventArgs e)
+        {
+            game.SoundManager.Progress = (double)ui_proc.Value / ui_proc.Maximum;
+        }
+
+        private void ui_loadmp3_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "*.mp3|*.mp3";
+                ofd.RestoreDirectory = true;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    game.SoundManager.PlayMP3(ofd.FileName);
+                    timer1.Enabled = true;
+                }
+            }
         }
     }
 }
