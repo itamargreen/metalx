@@ -16,8 +16,6 @@ namespace MetalX
     public class Game:IDisposable
     {
         #region 成员
-        List<GameCom> metalXGameComs = new List<GameCom>();
-        bool isRunning;
         /// <summary>
         /// 名字
         /// </summary>
@@ -38,19 +36,21 @@ namespace MetalX
         /// 纹理管理器
         /// </summary>
         public Textures Textures;
-
-        DateTime gameBeginTime;
-
+        /// <summary>
+        /// 帧开始时间
+        /// </summary>
         public DateTime FrameBeginTime;
         
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
 
+        bool isRunning = true;
+        List<GameCom> metalXGameComs = new List<GameCom>();
+        DateTime gameBeginTime;
         float targetFPS = 60;
-        float FPSValue;
+        ulong totalFrames = 0;
 
-        ulong totalFrames;
         #endregion
         #region 属性
         //public bool FPSCanRead
@@ -85,16 +85,15 @@ namespace MetalX
         //        return frameEndTime - frameBeginTime;
         //    }
         //}
-        TimeSpan GameTotalTime
+        /// <summary>
+        /// 运行时常
+        /// </summary>
+        public TimeSpan GameTotalTime
         {
             get
             {
                 return DateTime.Now - gameBeginTime;
             }
-        }
-        float GetAverageFPS()
-        {
-            return (float)(totalFrames / GameTotalTime.TotalSeconds);
         }
         /// <summary>
         /// 平均帧速
@@ -103,7 +102,7 @@ namespace MetalX
         {
             get
             {
-                return FPSValue;
+                return (float)(totalFrames / GameTotalTime.TotalSeconds);
             }
             set
             {
@@ -179,9 +178,9 @@ namespace MetalX
 
                 Frame();
 
-                FPSValue = GetAverageFPS();
                 WaitFrameByAverageFPS();
             }
+            Dispose();
         }
         /// <summary>
         /// 每帧
@@ -218,10 +217,6 @@ namespace MetalX
         /// </summary>
         void WaitFrameByAverageFPS()
         {
-            do
-            {
-                FPSValue = GetAverageFPS();
-            }
             while (AverageFPS > targetFPS);
         }
         /// <summary>
@@ -243,7 +238,7 @@ namespace MetalX
         }
         public void Exit()
         {
-            Dispose();
+            isRunning = false;
         }
         public void Dispose()
         {
@@ -520,7 +515,7 @@ namespace MetalX
 
             Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
-            Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Disable;
+            Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Modulate;
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
         }
         //public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color color)
