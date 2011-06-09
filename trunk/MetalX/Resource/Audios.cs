@@ -48,17 +48,17 @@ namespace MetalX.Resource
         }
         public void Add(MetalXAudio audio)
         {
-            //foreach (MetalXTexture mxt in items)
-            //{
-            //    if (mxt.Name == texture.Name)
-            //    {
-            //        return;
-            //    }
-            //}
-            if (items.Contains(audio))
+            foreach (MetalXAudio mxt in items)
             {
-                return;
+                if (mxt.Name == audio.Name)
+                {
+                    return;
+                }
             }
+            //if (items.Contains(audio))
+            //{
+            //    return;
+            //}
             items.Add(audio);
         }
         public void Del(MetalXAudio audio)

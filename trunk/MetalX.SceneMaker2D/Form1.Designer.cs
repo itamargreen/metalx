@@ -132,6 +132,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ui_loadmp3 = new System.Windows.Forms.Button();
             this.ui_loop = new System.Windows.Forms.CheckBox();
             this.ui_stop = new System.Windows.Forms.Button();
             this.ui_play = new System.Windows.Forms.Button();
@@ -147,7 +148,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.ui_loadmp3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -416,7 +416,6 @@
             // 
             // ui_mouse_pos
             // 
-            this.ui_mouse_pos.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.ui_mouse_pos.Name = "ui_mouse_pos";
             this.ui_mouse_pos.ReadOnly = true;
             this.ui_mouse_pos.Size = new System.Drawing.Size(80, 23);
@@ -424,7 +423,6 @@
             // 
             // ui_cursorsat
             // 
-            this.ui_cursorsat.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.ui_cursorsat.Name = "ui_cursorsat";
             this.ui_cursorsat.ReadOnly = true;
             this.ui_cursorsat.Size = new System.Drawing.Size(50, 23);
@@ -433,7 +431,6 @@
             // 
             // ui_tilecount
             // 
-            this.ui_tilecount.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.ui_tilecount.Name = "ui_tilecount";
             this.ui_tilecount.ReadOnly = true;
             this.ui_tilecount.Size = new System.Drawing.Size(50, 23);
@@ -1153,6 +1150,16 @@
             this.panel1.Size = new System.Drawing.Size(290, 290);
             this.panel1.TabIndex = 0;
             // 
+            // ui_loadmp3
+            // 
+            this.ui_loadmp3.Location = new System.Drawing.Point(205, 186);
+            this.ui_loadmp3.Name = "ui_loadmp3";
+            this.ui_loadmp3.Size = new System.Drawing.Size(75, 23);
+            this.ui_loadmp3.TabIndex = 227;
+            this.ui_loadmp3.Text = "play MP3";
+            this.ui_loadmp3.UseVisualStyleBackColor = true;
+            this.ui_loadmp3.Click += new System.EventHandler(this.ui_loadmp3_Click);
+            // 
             // ui_loop
             // 
             this.ui_loop.AutoSize = true;
@@ -1280,16 +1287,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // ui_loadmp3
-            // 
-            this.ui_loadmp3.Location = new System.Drawing.Point(205, 186);
-            this.ui_loadmp3.Name = "ui_loadmp3";
-            this.ui_loadmp3.Size = new System.Drawing.Size(75, 23);
-            this.ui_loadmp3.TabIndex = 227;
-            this.ui_loadmp3.Text = "play MP3";
-            this.ui_loadmp3.UseVisualStyleBackColor = true;
-            this.ui_loadmp3.Click += new System.EventHandler(this.ui_loadmp3_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1300,7 +1297,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MetalX.SceneMaker2D";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
