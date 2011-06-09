@@ -13,7 +13,7 @@ using MetalX.Resource;
 
 namespace MetalX
 {
-    public class Game:IDisposable
+    public class Game : IDisposable
     {
         #region 成员
         /// <summary>
@@ -27,7 +27,7 @@ namespace MetalX
         /// <summary>
         /// 设置管理器
         /// </summary>
-        public Option Option;
+        public Options Options;
         /// <summary>
         /// 模型管理器
         /// </summary>
@@ -37,10 +37,14 @@ namespace MetalX
         /// </summary>
         public Textures Textures;
         /// <summary>
+        /// 音频管理器
+        /// </summary>
+        public Audios Audios;
+        /// <summary>
         /// 帧开始时间
         /// </summary>
         public DateTime FrameBeginTime;
-        
+
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -122,36 +126,34 @@ namespace MetalX
         //}
         #endregion
         #region 构造方法
-        public Game(string name)
-        {
-            Name = name;
-
-            Option = new Option();
-
-            Devices = new Devices(this);
-
-            Textures = new Textures();
-        }
         public Game()
             : this("MetalXGame")
         { }
+
+        public Game(System.Windows.Forms.Control control)
+            : this("MetalXGame", control)
+        { }
+
+        public Game(string name)
+        {
+            Name = name;
+            Options = new Options();
+            Devices = new Devices(this);
+            Textures = new Textures();
+            Audios = new Audios();
+        }
 
         public Game(string name, System.Windows.Forms.Control control)
         {
 
             Name = name;
-
-            Option = new Option();
-
+            Options = new Options();
             Devices = new Devices(control, this);
-
             Models = new Models();
-
             Textures = new Textures();
+            Audios = new Audios();
         }
-        public Game(System.Windows.Forms.Control control)
-            : this("MetalXGame", control)
-        { }
+
         #endregion
         #region 方法
         /// <summary>
@@ -217,7 +219,7 @@ namespace MetalX
         /// </summary>
         void WaitFrameByAverageFPS()
         {
-            while (AverageFPS > targetFPS);
+            while (AverageFPS > targetFPS) ;
         }
         /// <summary>
         /// 延迟等待
@@ -265,8 +267,8 @@ namespace MetalX
         public void SetLight(Vector3 location, bool value)
         {
             Devices.D3DDev.RenderState.Lighting = value;
-            Devices.D3DDev.Lights[0].Enabled = value;    
-            
+            Devices.D3DDev.Lights[0].Enabled = value;
+
             Devices.D3DDev.RenderState.AlphaBlendEnable = true;
             Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
             Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
@@ -293,6 +295,30 @@ namespace MetalX
             Devices.D3DDev.Lights[0].Position = location;
         }
         #region Load File Method
+
+        public MetalXAudio LoadDotMP3(string fileName)
+        {
+            return null;
+        }
+        public MetalXAudio LoadDotMXA(string fileName)
+        {
+            return (MetalXAudio)Util.LoadObject(fileName);
+        }
+        public void LoadAllDotMXA(string pathName)
+        {
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.mxa");
+                foreach (FileInfo fi in fis)
+                {
+                    MetalXAudio mxa = LoadDotMXA(fi.FullName);
+                    Audios.Add(mxa);
+                }
+            }
+        }
         /// <summary>
         /// 加载.X文件
         /// </summary>
@@ -363,6 +389,10 @@ namespace MetalX
             model.MEMCount = extendedMaterials.Length;
 
             return model;
+        }
+        public MetalXTexture LoadDotPNG(string fileName)
+        {
+            return null;
         }
         /// <summary>
         /// 加载.MXT文件
@@ -513,10 +543,16 @@ namespace MetalX
             vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
             vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
 
-            Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
             Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Modulate;
+
+            Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
+
+            //vb = new VertexBuffer(typeof(CustomVertex.PositionColoredTextured), 6, Devices.D3DDev, Usage.None, CustomVertex.PositionColoredTextured.Format, Pool.Managed);
+            //vb.SetData(vertexs, 0, LockFlags.None);
+            //Devices.D3DDev.SetStreamSource(0, vb, 0);
+            //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
         //public void DrawMetalXTexture(MetalXTexture t, Vector3 loc, Color color)
         //{
@@ -580,29 +616,41 @@ namespace MetalX
         {
             DrawLine(fp.X, fp.Y, tp.X, tp.Y, color);
         }
+        //VertexBuffer vb;
         public void DrawLine(float fx, float fy, float tx, float ty, Color color)
         {
-            int w, h;
-            w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
-            h = Devices.D3DDev.PresentationParameters.BackBufferHeight;
+            using (Line l = new Line(Devices.D3DDev))
+            {
+                Vector2[] vects = new Vector2[2];
+                vects[0] = new Vector2(fx, fy);
+                vects[1] = new Vector2(tx, ty);
+                l.Begin();
+                l.Draw(vects, color);
+                l.End();
+            }
+            //int w, h;
+            //w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
+            //h = Devices.D3DDev.PresentationParameters.BackBufferHeight;
 
-            fx -= w / 2;
-            tx -= w / 2;
-            fy -= h / 2;
-            ty -= h / 2;
+            //fx -= w / 2;
+            //tx -= w / 2;
+            //fy -= h / 2;
+            //ty -= h / 2;
 
-            fy = 0 - fy;
-            ty = 0 - ty;
+            //fy = 0 - fy;
+            //ty = 0 - ty;
 
-            Devices.D3DDev.VertexFormat = CustomVertex.PositionColored.Format;
+            //CustomVertex.PositionColored[] verts = new CustomVertex.PositionColored[2];
+            //verts[0] = new CustomVertex.PositionColored(fx, fy, 0, color.ToArgb());
+            //verts[1] = new CustomVertex.PositionColored(tx, ty, 0, color.ToArgb());
 
-            CustomVertex.PositionColored[] verts = new CustomVertex.PositionColored[2];
-            verts[0].Position = new Vector3(fx, fy, 0);
-            verts[0].Color = color.ToArgb();
-            verts[1].Position = new Vector3(tx, ty, 0);
-            verts[1].Color = color.ToArgb();
+            //Devices.D3DDev.VertexFormat = CustomVertex.PositionColored.Format;
+            //Devices.D3DDev.DrawUserPrimitives(PrimitiveType.LineList, 1, verts);
 
-            Devices.D3DDev.DrawUserPrimitives(PrimitiveType.LineList, 1, verts);
+            //vb = new VertexBuffer(typeof(CustomVertex.PositionColored), 2, Devices.D3DDev, Usage.None, CustomVertex.PositionColored.Format, Pool.Managed);
+            //vb.SetData(verts, 0, LockFlags.None);
+            //Devices.D3DDev.SetStreamSource(0, vb, 0);
+            //Devices.D3DDev.DrawPrimitives(PrimitiveType.LineList, 0, 1);
         }
         public void DrawRect(Rectangle rect, Color color)
         {

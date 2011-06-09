@@ -71,7 +71,7 @@ namespace MetalX.SceneMaker2D
 
         private void 音频工具ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            new DotMXAMaker().ShowDialog();
         }
 
         private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -84,11 +84,24 @@ namespace MetalX.SceneMaker2D
             {
                 stack.Push(obj);
             }
+            else
+            {
+                Stack<object> bs = new Stack<object>();
+                for (int i = 0; i < 9; i++)
+                {
+                    bs.Push(stack.Pop());
+                }
+                stack.Clear();
+                for (int i = 0; i < 9; i++)
+                {
+                    stack.Push(bs.Pop());
+                }
+            }
         }
         private void ui_createscene_Click(object sender, EventArgs e)
         {
-            
-            new_scene(new Size(int.Parse(ui_scenew.Text), int.Parse(ui_sceneh.Text)),
+            new_scene(
+                new Size(int.Parse(ui_scenew.Text), int.Parse(ui_sceneh.Text)),
                 new Size(int.Parse(ui_sinw.Text), int.Parse(ui_sinh.Text)));
         }
 
@@ -102,6 +115,7 @@ namespace MetalX.SceneMaker2D
             }
             game = new Game(pictureBox1);
             game.LoadAllDotMXT(@".\");
+            game.LoadAllDotMXA(@".\");
 
             update_pic_list();
 
