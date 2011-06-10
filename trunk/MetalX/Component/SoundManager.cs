@@ -53,10 +53,10 @@ namespace MetalX.Component
         public SoundManager(Game g)
             : base(g)
         {
+            DisableAll();
             fillControlthd = new Thread(fillControl);
             fillControlthd.IsBackground = true;
             fillControlthd.Start();
-            DisableAll();
         }
 
         bool pos, posb;

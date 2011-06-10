@@ -45,13 +45,14 @@ namespace MetalX
         /// </summary>
         public DateTime FrameBeginTime;
         public SoundManager SoundManager;
-
+        public UIManager UIManager;
+        public KeyboardManager KeyboardManager;
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
 
         bool isRunning = true;
-        List<GameCom> metalXGameComs = new List<GameCom>();
+        public List<GameCom> GameComs = new List<GameCom>();
         DateTime gameBeginTime;
         float targetFPS = 60;
         ulong totalFrames = 0;
@@ -159,8 +160,15 @@ namespace MetalX
 
         void mountComponent()
         {
+            KeyboardManager = new KeyboardManager(this);
+            MountGameCom(KeyboardManager);
+
             SoundManager = new SoundManager(this);
             MountGameCom(SoundManager);
+
+            UIManager = new UIManager(this);
+            MountGameCom(UIManager);
+
         }
         /// <summary>
         /// 启动
@@ -198,7 +206,7 @@ namespace MetalX
         {
             Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.CornflowerBlue, 1, 0);
             Devices.D3DDev.BeginScene();
-            foreach (GameCom metalXGameCom in metalXGameComs)
+            foreach (GameCom metalXGameCom in GameComs)
             {
                 if (metalXGameCom.Enable)
                 {
@@ -272,7 +280,7 @@ namespace MetalX
         /// <param name="metalXCom"></param>
         public void MountGameCom(GameCom metalXGameCom)
         {
-            metalXGameComs.Add(metalXGameCom);
+            GameComs.Add(metalXGameCom);
         }
         /// <summary>
         /// 设置灯光

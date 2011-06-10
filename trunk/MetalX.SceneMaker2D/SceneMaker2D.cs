@@ -112,8 +112,24 @@ namespace MetalX.SceneMaker2D
             }
             game.DrawRect(dragRect, Color.Red);
 
+            
             //game.DrawLine(100, 0, 100, 384, Color.White);
             //game.DrawText(" 场景名:" + scene.Name + " 尺寸:" + scene.Size + " 图元尺寸:" + scene.TileSize, new Point(), Color.White);
+        }
+        public override void OnKeyboardDownCode(int key)
+        {
+            base.OnKeyboardDownCode(key);
+            game.DrawText(key + " down", new Point(), Color.White);
+        }
+        public override void OnKeyboardDownHoldCode(int key)
+        {
+            base.OnKeyboardDownHoldCode(key);
+            game.DrawText(key + " downhold", new Point(0,20), Color.White);
+        }
+        public override void OnKeyboardUpCode(int key)
+        {
+            base.OnKeyboardUpCode(key);
+            game.DrawText(key + " up", new Point(0,40), Color.White);
         }
         void draw_grid()
         {

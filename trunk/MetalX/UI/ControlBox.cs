@@ -4,18 +4,10 @@ using System.Drawing;
 
 namespace MetalX.UI
 {
-    public delegate void FormBoxEvent(int formBoxIndex);
-    public delegate void ButtonBoxEvent(int buttnBoxIndex);
-    public delegate void TextBoxEvent(int textBoxIndex);
-    public enum ButtonBoxState
-    {
-        Wait,
-        Focus,
-        Down,
-        Up,
-    }
+    [Serializable]
     public class ControlBox
     {
+        protected Game game;
         public bool Visible = true;
         public string Name;
         public int Index = -1;
@@ -24,7 +16,12 @@ namespace MetalX.UI
         public string BgSound;
         public Size Size;
         public Point Location;
+        public ControlBox(Game g)
+        {
+            game = g;
+        }
     }
+    [Serializable]
     public class FormBox : ControlBox
     {
         public event FormBoxEvent OnFormBoxAppear;
@@ -47,12 +44,10 @@ namespace MetalX.UI
         }
         public void Disappear()
         {
-            if (!Visible)
-            {
-                return;
-            }
+            Visible = false;
         }
-        public FormBox()
+        public FormBox(Game g)
+            : base(g)
         {
             OnFormBoxAppear = new FormBoxEvent(OnFormBoxAppearCode);
             OnFormBoxDisappear = new FormBoxEvent(OnFormBoxDisappearCode);
@@ -68,7 +63,7 @@ namespace MetalX.UI
             //throw new NotImplementedException();
         }
     }
-
+    [Serializable]
     public class TextBox : ControlBox
     {
         public string Text;
@@ -109,7 +104,8 @@ namespace MetalX.UI
                 return Text.Substring(0, SubTextIndex);
             }
         }
-        public TextBox()
+        public TextBox(Game g)
+            : base(g)
         {
             OnSubTextShowDone = new TextBoxEvent(OnSubTextShowDoneCode);
         }
@@ -124,14 +120,17 @@ namespace MetalX.UI
             Interval = interval;
         }
     }
-
+    [Serializable]
     public class TextureBox : ControlBox
     {
         public string TextureFileName;
         public int TextureIndex = -1;
         public Color TextureColor;
+        public TextureBox(Game g)
+            : base(g)
+        { }
     }
-
+    [Serializable]
     public class ButtonBox : ControlBox
     {
         public ButtonBoxState ButtonBoxState;
@@ -146,10 +145,10 @@ namespace MetalX.UI
         public TextBox DownTextBox;
         public TextBox UpTextBox;
 
-        public event ButtonBoxEvent OnButtonWait;
-        public event ButtonBoxEvent OnButtonFocus;
         public event ButtonBoxEvent OnButtonDown;
+        public event ButtonBoxEvent OnButtonFocus;
         public event ButtonBoxEvent OnButtonUp;
+        public event ButtonBoxEvent OnButtonWait;
 
         void HideAll()
         {
@@ -188,8 +187,9 @@ namespace MetalX.UI
             UpTextureBox.Visible = true;
         }
 
-        public ButtonBox()
-        {            
+        public ButtonBox(Game g)
+            : base(g)
+        {
             OnButtonWait = new ButtonBoxEvent(OnButtonWaitCode);
             OnButtonFocus = new ButtonBoxEvent(OnButtonFocusCode);
             OnButtonDown = new ButtonBoxEvent(OnButtonDownCode);
