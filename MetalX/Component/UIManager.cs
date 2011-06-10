@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 using MetalX.UI;
@@ -8,7 +8,7 @@ namespace MetalX.Component
 {
     public class UIManager : GameCom
     {
-        List<FormBox> AppearingBoxes = new List<FormBox>();
+        Collection<FormBox> AppearingBoxes = new Collection<FormBox>();
 
         public UIManager(Game g)
             : base(g)

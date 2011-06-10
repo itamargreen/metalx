@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -115,7 +115,7 @@ namespace MetalX.SceneMaker2D
 
         private void ui_savepath_Click(object sender, EventArgs e)
         {
-            List<string> dirName = new List<string>();
+            Collection<string> dirName = new Collection<string>();
             Util.EnumDir(textBox1.Text, dirName);
 
             foreach (string pName in dirName)

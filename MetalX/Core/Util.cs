@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Drawing;
 
@@ -7,7 +7,7 @@ namespace MetalX
 {
     public class Util
     {
-        public static void EnumDir(string root, List<string> list)
+        public static void EnumDir(string root, Collection<string> list)
         {
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(root);
             System.IO.DirectoryInfo[] dis = di.GetDirectories();

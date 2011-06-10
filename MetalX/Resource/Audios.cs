@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace MetalX.Resource
 {
     public class Audios
     {
-        List<MetalXAudio> items = new List<MetalXAudio>();
+        Collection<MetalXAudio> items = new Collection<MetalXAudio>();
         public MetalXAudio this[int i]
         {
             get

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 
 using MetalX;
@@ -27,8 +27,8 @@ namespace MetalX.SceneMaker2D
                 {
                     return new Rectangle(penRect.Location, scene.TileSizePixel);
                 }
-                float wx = penRect.Width / game.Textures[mxtName].TileSizePixel.Width;
-                float hx = penRect.Height / game.Textures[mxtName].TileSizePixel.Height;
+                float wx = penRect.Width / game.Textures[mxtIndex].TileSizePixel.Width;
+                float hx = penRect.Height / game.Textures[mxtIndex].TileSizePixel.Height;
                 return new Rectangle(penRect.Location, new Size((int)(wx * scene.TileSizePixel.Width), (int)(hx * scene.TileSizePixel.Height)));
             }
         }
@@ -70,10 +70,8 @@ namespace MetalX.SceneMaker2D
                 lastFrameBeginTime = DateTime.Now;
             }
         }
-
-        public override void Draw()
+        void draw()
         {
-            base.Draw();
             foreach (TileLayer tl in scene.TileLayers)
             {
                 if (tl.Visible)
@@ -100,9 +98,9 @@ namespace MetalX.SceneMaker2D
                     }
                 }
             }
-            if(drawPen)
-            draw_pen();        
-            if (drawGrid||drawCode)
+            if (drawPen)
+                draw_pen();
+            if (drawGrid || drawCode)
             {
                 draw_grid();
             }
@@ -112,24 +110,73 @@ namespace MetalX.SceneMaker2D
             }
             game.DrawRect(dragRect, Color.Red);
 
-            
-            //game.DrawLine(100, 0, 100, 384, Color.White);
-            //game.DrawText(" 场景名:" + scene.Name + " 尺寸:" + scene.Size + " 图元尺寸:" + scene.TileSize, new Point(), Color.White);
+            game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.Black); 
+        }
+        void drawfast()
+        {
+            draw_scene();
+            foreach (CodeLayer cl in scene.CodeLayers)
+            {
+                foreach (Code c in cl.Codes)
+                {
+                    if (c.SceneFileName != null)
+                    {
+                        draw_link(c.Location);
+                    }
+                }
+            }
+            if (drawPen)
+                draw_pen();
+            if (drawGrid || drawCode)
+            {
+                draw_grid();
+            }
+            if (drawCode)
+            {
+                draw_code();
+            }
+            game.DrawRect(dragRect, Color.Red);
+
+            game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.White);
+        }
+        public override void Draw()
+        {
+            base.Draw();
+            draw();
         }
         public override void OnKeyboardDownCode(int key)
         {
             base.OnKeyboardDownCode(key);
-            game.DrawText(key + " down", new Point(), Color.White);
+            //game.DrawText(key + " down", new Point(), Color.White);
         }
         public override void OnKeyboardDownHoldCode(int key)
         {
             base.OnKeyboardDownHoldCode(key);
-            game.DrawText(key + " downhold", new Point(0,20), Color.White);
+            //game.DrawText(key + " downhold", new Point(0,20), Color.White);
         }
         public override void OnKeyboardUpCode(int key)
         {
             base.OnKeyboardUpCode(key);
-            game.DrawText(key + " up", new Point(0,40), Color.White);
+            //game.DrawText(key + " up", new Point(0,40), Color.White);
+        }
+        void draw_scene()
+        {
+            for (int i = 0; i < scene.TileLayers.Count; i++)
+            {
+                if (scene.TileLayers[i].Visible)
+                {
+                    for (int j = 0; j < scene.TileLayers[i].Tiles.Count; j++)
+                    {
+                        game.DrawMetalXTexture(
+                            game.Textures[scene.TileLayers[i].Tiles[j][frameIndex].TextureIndex],
+                            scene.TileLayers[i].Tiles[j][frameIndex].DrawZone,
+                            Util.PointAddPoint(scene.TileLayers[i].Tiles[j].Location, base.GlobalOffset),
+                            scene.TileSizePixel,
+                            Util.MixColor(scene.TileLayers[i].Tiles[j][frameIndex].ColorFilter, ColorFilter)
+                            );
+                    }
+                }
+            }
         }
         void draw_grid()
         {
@@ -211,7 +258,7 @@ namespace MetalX.SceneMaker2D
         void draw_pen()
         {
             game.DrawMetalXTexture(
-                game.Textures[mxtName],
+                game.Textures[mxtIndex],
                 penRect, 
                 penLoc,
                 penRectPixel.Size, 
