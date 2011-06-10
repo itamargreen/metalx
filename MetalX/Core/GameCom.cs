@@ -6,6 +6,10 @@ namespace MetalX
 {
     public class GameCom
     {
+        public event KeyboardEvent OnKeyboardDown;
+        public event KeyboardEvent OnKeyboardDownHold;
+        public event KeyboardEvent OnKeyboardUp;
+
         protected Game game;
 
         public bool Enable = false;
@@ -26,7 +30,19 @@ namespace MetalX
         public GameCom(Game game)
         {
             this.game = game;
+            OnKeyboardDown = new KeyboardEvent(OnKeyboardDownCode);
+            OnKeyboardUp = new KeyboardEvent(OnKeyboardUpCode);
+            OnKeyboardDownHold = new KeyboardEvent(OnKeyboardDownHoldCode);
             EnableAll();
+        }
+        public virtual void OnKeyboardDownCode(int key)
+        {
+        }
+        public virtual void OnKeyboardUpCode(int key)
+        {
+        }
+        public virtual void OnKeyboardDownHoldCode(int key)
+        {
         }
 
         public virtual void Code()
@@ -37,6 +53,25 @@ namespace MetalX
         public virtual void Draw()
         {
 
+        }
+        public void SetKeyboardEvent(int key, KeyState keyState)
+        {
+            if (!Controllable)
+            {
+                return;
+            }
+            if (keyState == KeyState.Down)
+            {
+                OnKeyboardDown(key);
+            } 
+            else if (keyState == KeyState.Up)
+            {
+                OnKeyboardUp(key);
+            } 
+            else if (keyState == KeyState.DownHold)
+            {
+                OnKeyboardDownHold(key);
+            }
         }
         #region for shock
         protected Point GlobalOffset;

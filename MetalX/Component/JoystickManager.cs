@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetalX.Component
 {
-    class GamepadManager
+    class JoystickManager
     {
     }
 }

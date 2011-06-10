@@ -64,11 +64,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Component\GamepadManager.cs" />
+    <Compile Include="Component\JoystickManager.cs" />
     <Compile Include="Component\KeyboardManager.cs" />
     <Compile Include="Component\MouseManager.cs" />
     <Compile Include="Component\SceneManager.cs" />
     <Compile Include="Component\UIManager.cs" />
+    <Compile Include="Core\Defines.cs" />
     <Compile Include="Data\Item.cs" />
     <Compile Include="Resource\Audios.cs" />
     <Compile Include="Resource\Texts.cs" />
