@@ -474,10 +474,10 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.panel4);
-            this.tabPage2.Location = new System.Drawing.Point(4, 21);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(290, 775);
+            this.tabPage2.Size = new System.Drawing.Size(290, 774);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "场景设置";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -618,10 +618,10 @@
             this.tabPage1.Controls.Add(this.tabControl2);
             this.tabPage1.Controls.Add(this.panel5);
             this.tabPage1.Controls.Add(this.ui_pic_panel);
-            this.tabPage1.Location = new System.Drawing.Point(4, 21);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(290, 775);
+            this.tabPage1.Size = new System.Drawing.Size(290, 774);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "场景编辑";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -640,10 +640,10 @@
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.panel2);
-            this.tabPage5.Location = new System.Drawing.Point(4, 21);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(282, 199);
+            this.tabPage5.Size = new System.Drawing.Size(282, 198);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "图层";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -728,10 +728,10 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.ui_codelayer_slt);
-            this.tabPage6.Location = new System.Drawing.Point(4, 21);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(282, 199);
+            this.tabPage6.Size = new System.Drawing.Size(282, 198);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "代码层";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1121,10 +1121,10 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.panel1);
-            this.tabPage4.Location = new System.Drawing.Point(4, 21);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(290, 775);
+            this.tabPage4.Size = new System.Drawing.Size(290, 774);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "场景音乐";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1193,7 +1193,7 @@
             this.ui_proc.Location = new System.Drawing.Point(6, 216);
             this.ui_proc.Maximum = 50;
             this.ui_proc.Name = "ui_proc";
-            this.ui_proc.Size = new System.Drawing.Size(274, 45);
+            this.ui_proc.Size = new System.Drawing.Size(274, 42);
             this.ui_proc.TabIndex = 223;
             this.ui_proc.Scroll += new System.EventHandler(this.ui_proc_Scroll);
             // 
@@ -1261,9 +1261,9 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 21);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(290, 775);
+            this.tabPage3.Size = new System.Drawing.Size(290, 774);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "NPC编辑";
             this.tabPage3.UseVisualStyleBackColor = true;

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 
@@ -7,7 +7,7 @@ namespace MetalX.Resource
 {
     public class Models
     {
-        List<MetalXModel> items = new List<MetalXModel>();
+        Collection<MetalXModel> items = new Collection<MetalXModel>();
         public MetalXModel this[int i]
         {
             get
@@ -54,7 +54,7 @@ namespace MetalX.Resource
             //if (_Items == null)
             //{
             //}
-            //items = new List<Model>();
+            //items = new Collection<Model>();
         }
     }
 

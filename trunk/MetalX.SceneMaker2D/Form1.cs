@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -16,8 +17,7 @@ namespace MetalX.SceneMaker2D
 {
     public partial class Form1 : Form
     {
-        Stack<object> stack = new Stack<object>(10);
-
+        Stack stack = new Stack();
         Cursor bc = Cursors.Cross;
         bool insFrame = false;
         Game game;
@@ -80,23 +80,24 @@ namespace MetalX.SceneMaker2D
         }
         void backup(object obj)
         {
-            if (stack.Count < 10)
-            {
-                stack.Push(obj);
-            }
-            else
-            {
-                Stack<object> bs = new Stack<object>();
-                for (int i = 0; i < 9; i++)
-                {
-                    bs.Push(stack.Pop());
-                }
-                stack.Clear();
-                for (int i = 0; i < 9; i++)
-                {
-                    stack.Push(bs.Pop());
-                }
-            }
+            stack.Push(obj);
+            //if (stack.Count < 10)
+            //{
+                
+            //}
+            //else
+            //{
+            //    Stack<object> bs = new Stack<object>();
+            //    for (int i = 0; i < 9; i++)
+            //    {
+            //        bs.Push(stack.Pop());
+            //    }
+            //    stack.Clear();
+            //    for (int i = 0; i < 9; i++)
+            //    {
+            //        stack.Push(bs.Pop());
+            //    }
+            //}
         }
         private void ui_createscene_Click(object sender, EventArgs e)
         {
@@ -123,6 +124,8 @@ namespace MetalX.SceneMaker2D
             update_mus_list();
 
             sceneMaker2D = new SceneMaker2D(game);
+            game.SoundManager = new SoundManager(game);
+            game.MountGameCom(game.SoundManager);
 
             int sw = sizepixel.Width;
             int sh = sizepixel.Height;
@@ -211,12 +214,13 @@ namespace MetalX.SceneMaker2D
 
         private void ui_pic_slt_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ui_pic.Image = Image.FromStream(new System.IO.MemoryStream(game.Textures[ui_pic_slt.Text].TextureData));
-            ui_pic.Size = new Size(game.Textures[ui_pic_slt.Text].SizePixel.Width + 2, game.Textures[ui_pic_slt.Text].SizePixel.Height + 2);
-            ui_gridw.Text = game.Textures[ui_pic_slt.Text].TileSizePixel.Width.ToString();
-            ui_gridh.Text = game.Textures[ui_pic_slt.Text].TileSizePixel.Height.ToString();
+            ui_pic.Image = Image.FromStream(new System.IO.MemoryStream(game.Textures[sceneMaker2D.mxtIndex].TextureData));
+            ui_pic.Size = new Size(game.Textures[sceneMaker2D.mxtIndex].SizePixel.Width + 2, game.Textures[sceneMaker2D.mxtIndex].SizePixel.Height + 2);
+            ui_gridw.Text = game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Width.ToString();
+            ui_gridh.Text = game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Height.ToString();
             ui_pic.Focus();
             sceneMaker2D.mxtName = ui_pic_slt.Text;
+            sceneMaker2D.mxtIndex = ui_pic_slt.SelectedIndex;
         }
 
         private void ui_pic_Paint(object sender, PaintEventArgs e)
@@ -226,11 +230,11 @@ namespace MetalX.SceneMaker2D
                 Graphics g = e.Graphics;
                 if (ui_showgrid.Checked)
                 {
-                    for (int i = 0; i <= game.Textures[ui_pic_slt.Text].SizePixel.Height; i += game.Textures[ui_pic_slt.Text].TileSizePixel.Height)
+                    for (int i = 0; i <= game.Textures[sceneMaker2D.mxtIndex].SizePixel.Height; i += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Height)
                     {
                         g.DrawLine(new Pen(Color.Blue), 0, i, ui_pic.Size.Width, i);
                     }
-                    for (int i = 0; i <= game.Textures[ui_pic_slt.Text].SizePixel.Width; i += game.Textures[ui_pic_slt.Text].TileSizePixel.Width)
+                    for (int i = 0; i <= game.Textures[sceneMaker2D.mxtIndex].SizePixel.Width; i += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Width)
                     {
                         g.DrawLine(new Pen(Color.Blue), i, 0, i, ui_pic.Size.Height);
                     }
@@ -258,9 +262,9 @@ namespace MetalX.SceneMaker2D
             }
             if (e.Button == MouseButtons.Left)
             {
-                Point p = pointround(e.Location, game.Textures[sceneMaker2D.mxtName].TileSizePixel);
+                Point p = pointround(e.Location, game.Textures[sceneMaker2D.mxtIndex].TileSizePixel);
                 left_rect.Location = p;
-                left_rect.Size = game.Textures[sceneMaker2D.mxtName].TileSizePixel;
+                left_rect.Size = game.Textures[sceneMaker2D.mxtIndex].TileSizePixel;
                 ui_pic.Refresh();
             }
         }
@@ -269,8 +273,8 @@ namespace MetalX.SceneMaker2D
         {
             if (e.Button == MouseButtons.Left)
             {
-                Point p = pointround(e.Location, game.Textures[ui_pic_slt.Text].TileSizePixel);
-                p = pointaddpoint(p, new Point(game.Textures[ui_pic_slt.Text].TileSizePixel));
+                Point p = pointround(e.Location, game.Textures[sceneMaker2D.mxtIndex].TileSizePixel);
+                p = pointaddpoint(p, new Point(game.Textures[sceneMaker2D.mxtIndex].TileSizePixel));
                 left_rect.Size = new Size(pointdelpoint(p, left_rect.Location));
                 ui_pic.Refresh();
             }
@@ -280,8 +284,8 @@ namespace MetalX.SceneMaker2D
         {
             if (e.Button == MouseButtons.Left)
             {
-                Point p = pointround(e.Location, game.Textures[ui_pic_slt.Text].TileSizePixel);
-                p = pointaddpoint(p, new Point(game.Textures[ui_pic_slt.Text].TileSizePixel));
+                Point p = pointround(e.Location, game.Textures[sceneMaker2D.mxtIndex].TileSizePixel);
+                p = pointaddpoint(p, new Point(game.Textures[sceneMaker2D.mxtIndex].TileSizePixel));
                 left_rect.Size = new Size(pointdelpoint(p, left_rect.Location));
                 sceneMaker2D.penRect = left_rect;
                 ui_pic.Refresh();
@@ -588,7 +592,7 @@ namespace MetalX.SceneMaker2D
                     tf.TextureFileName = sceneMaker2D.mxtName;
                     tf.TextureIndex = game.Textures.GetIndex(tf.TextureFileName);
                     tf.DrawZone.Location = new Point(rect.X + xoo, rect.Y + yoo);
-                    tf.DrawZone.Size = game.Textures[sceneMaker2D.mxtName].TileSizePixel;
+                    tf.DrawZone.Size = game.Textures[sceneMaker2D.mxtIndex].TileSizePixel;
                     //tf.DrawZone.Size = sceneMaker2D.scene.TileSizePixel;
 
                     Tile tile = new Tile();
@@ -601,7 +605,6 @@ namespace MetalX.SceneMaker2D
                         if (insFrame)
                         {
                             sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Frames.Add(tf);
-                            
                         }
                         else
                         {
@@ -616,10 +619,10 @@ namespace MetalX.SceneMaker2D
                         {
                             sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Add(tile);
                         }
-                    }     
-                    xoo += game.Textures[sceneMaker2D.mxtName].TileSizePixel.Width;
+                    }
+                    xoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Width;
                 }
-                yoo += game.Textures[sceneMaker2D.mxtName].TileSizePixel.Height;
+                yoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Height;
             }
             insFrame = false;
             pictureBox1.Cursor = bc;
@@ -637,21 +640,14 @@ namespace MetalX.SceneMaker2D
         }
         int contains_tile(Point loc)
         {
-            try
+            for (int i = 0; i < sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count; i++)
             {
-                int i = 0;
-                foreach (Tile tile in sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles)
+                if (sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Location == loc)
                 {
-                    if (tile.Location == loc)
-                    {
-                        return i;
-                    }
-                    i++;
+                    return i;
                 }
-                return -1;
             }
-            catch
-            { return -1; }
+            return -1;
         }
 
         private void ui_ly_slt_SelectedIndexChanged(object sender, EventArgs e)
@@ -694,14 +690,16 @@ namespace MetalX.SceneMaker2D
         {
             if (openFileName == null)
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "MetalX Scene File|*.MXScene";
-                sfd.RestoreDirectory = true;
-                if (sfd.ShowDialog() == DialogResult.OK)
+                using (SaveFileDialog sfd = new SaveFileDialog())
                 {
-                    openFileName = sfd.FileName;
-                    Util.SaveObject(openFileName, sceneMaker2D.scene);
-                    Text = openFileName;
+                    sfd.Filter = "MetalX Scene File|*.MXScene";
+                    sfd.RestoreDirectory = true;
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        openFileName = sfd.FileName;
+                        Util.SaveObject(openFileName, sceneMaker2D.scene);
+                        Text = openFileName;
+                    }
                 }
             }
             else
@@ -729,14 +727,16 @@ namespace MetalX.SceneMaker2D
 
         private void 另存为ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "MetalX Scene File|*.MXScene";
-            sfd.RestoreDirectory = true;
-            if (sfd.ShowDialog() == DialogResult.OK)
+            using (SaveFileDialog sfd = new SaveFileDialog())
             {
-                openFileName = sfd.FileName;
-                Util.SaveObject(openFileName, sceneMaker2D.scene);
-                Text = openFileName;
+                sfd.Filter = "MetalX Scene File|*.MXScene";
+                sfd.RestoreDirectory = true;
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    openFileName = sfd.FileName;
+                    Util.SaveObject(openFileName, sceneMaker2D.scene);
+                    Text = openFileName;
+                }
             }
         }
 

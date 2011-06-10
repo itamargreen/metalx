@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 
 namespace MetalX.UI
@@ -26,7 +26,7 @@ namespace MetalX.UI
     {
         public event FormBoxEvent OnFormBoxAppear;
         public event FormBoxEvent OnFormBoxDisappear;
-        public List<ControlBox> ControlBoxes = new List<ControlBox>();
+        public Collection<ControlBox> ControlBoxes = new Collection<ControlBox>();
         public void Appear()
         {
             if (Visible)
