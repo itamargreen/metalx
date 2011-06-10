@@ -117,4 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>1 - 场景素材支持PNG格式和MXT格式，MXT格式是MetalX的纹理格式文件，用插件中的纹理工具可以将PNG转为MXT文件。
+2 - 音频文件支持MP3格式和MXA格式。
+3 - 场景编辑中可以按键盘上的I键（鼠标指针由十字变为向上箭头）进入插入动画帧模式。
+4 - 场景编辑中可以按键盘上的C键显示或隐藏画笔上的图片。
+5 - 新建场景时可以选择场景图元分辨率，如与素材图元分辨率不同，则引擎自动将素材图元拉伸至场景图元分辨率大小（建议为整数倍）。
+6 - 新建场景时可以选择动画帧间隔，单位为毫秒。
+7 - 场景编辑时可以按鼠标中键在画笔和橡皮之间切换。</value>
+  </data>
 </root>

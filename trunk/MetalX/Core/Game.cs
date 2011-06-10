@@ -162,7 +162,6 @@ namespace MetalX
             SoundManager = new SoundManager(this);
             MountGameCom(SoundManager);
         }
-
         /// <summary>
         /// 启动
         /// </summary>
@@ -246,10 +245,17 @@ namespace MetalX
             }
             while (timespan >= pastMS);
         }
+        /// <summary>
+        /// 结束退出
+        /// </summary>
         public void Exit()
         {
             isRunning = false;
+            Application.Exit();
         }
+        /// <summary>
+        /// 释放资源
+        /// </summary>
         public void Dispose()
         {
             isRunning = false;
@@ -303,15 +309,31 @@ namespace MetalX
             Devices.D3DDev.Lights[0].Position = location;
         }
         #region Load File Method
-
+        /// <summary>
+        /// 加载.MP3文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX音频</returns>
         public MetalXAudio LoadDotMP3(string fileName)
         {
-            return null;
+            MetalXAudio mxa = new MetalXAudio();
+            mxa.Name = Path.GetFileNameWithoutExtension(fileName);
+            mxa.AudioData = File.ReadAllBytes(fileName);
+            return mxa;
         }
+        /// <summary>
+        /// 加载.MXA文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX音频</returns>
         public MetalXAudio LoadDotMXA(string fileName)
         {
             return (MetalXAudio)Util.LoadObject(fileName);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pathName"></param>
         public void LoadAllDotMXA(string pathName)
         {
             List<string> dirName = new List<string>();
@@ -323,6 +345,21 @@ namespace MetalX
                 foreach (FileInfo fi in fis)
                 {
                     MetalXAudio mxa = LoadDotMXA(fi.FullName);
+                    Audios.Add(mxa);
+                }
+            }
+        }
+        public void LoadAllDotMP3(string pathName)
+        {
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.mp3");
+                foreach (FileInfo fi in fis)
+                {
+                    MetalXAudio mxa = LoadDotMP3(fi.FullName);
                     Audios.Add(mxa);
                 }
             }
@@ -398,9 +435,21 @@ namespace MetalX
 
             return model;
         }
+        /// <summary>
+        /// 加载.PNG文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX纹理</returns>
         public MetalXTexture LoadDotPNG(string fileName)
         {
-            return null;
+            MetalXTexture texture = new MetalXTexture();
+            texture.Name = Path.GetFileNameWithoutExtension(fileName);
+            texture.TextureData = File.ReadAllBytes(fileName);
+            Image img = Image.FromStream(new MemoryStream(texture.TextureData));
+            texture.SizePixel = img.Size;
+            texture.TileSizePixel = new Size(16, 16);
+            texture.MEMTexture = TextureLoader.FromFile(Devices.D3DDev, fileName, texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+            return texture;
         }
         /// <summary>
         /// 加载.MXT文件
@@ -414,6 +463,10 @@ namespace MetalX
             texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
             return texture;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pathName"></param>
         public void LoadAllDotMXT(string pathName)
         {
             //Textures.
@@ -439,6 +492,27 @@ namespace MetalX
             }
             //return ts;
         }
+        public void LoadAllDotPNG(string pathName)
+        {
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.png");
+                foreach (FileInfo fi in fis)
+                {
+                    MetalXTexture mxt = LoadDotPNG(fi.FullName);
+                    Textures.Add(mxt);
+                }
+            }
+            //return ts;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pathName"></param>
+        /// <returns></returns>
         public Scene LoadDotMXScene(string pathName)
         {
             Scene scene = new Scene();
@@ -490,16 +564,6 @@ namespace MetalX
         }
         #endregion
         #region DrawMXT
-        /// <summary>
-        /// 绘制MetalX格式纹理
-        /// </summary>
-        /// <param name="t">MetalX格式纹理</param>
-        /// <param name="loc">位置</param>
-        /// <param name="c">颜色</param>
-        //public void DrawMetalXTexture(MetalXTexture t, Location loc, Rectangle dz, Color color)
-        //{
-        //    DrawMetalXTexture(t, new Vector3(loc.Pixel.X, loc.Pixel.Y, 0), dz, color);
-        //}
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Color color)
         {
             DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
@@ -509,6 +573,10 @@ namespace MetalX
             DrawMetalXTexture(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
         }
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Size size, Color color)
+        {
+            DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+        }
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, PointF point, Size size, Color color)
         {
             DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), size, color);
         }
@@ -624,7 +692,6 @@ namespace MetalX
         {
             DrawLine(fp.X, fp.Y, tp.X, tp.Y, color);
         }
-        //VertexBuffer vb;
         public void DrawLine(float fx, float fy, float tx, float ty, Color color)
         {
             using (Line l = new Line(Devices.D3DDev))

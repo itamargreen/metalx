@@ -19,7 +19,6 @@ namespace MetalX.UI
         public bool Visible = true;
         public string Name;
         public int Index = -1;
-        public Color TextColor;
         public Color BgColor;
         public string BgImage;
         public string BgSound;
@@ -73,6 +72,7 @@ namespace MetalX.UI
     public class TextBox : ControlBox
     {
         public string Text;
+        public Color TextColor;
         public int TextIndex = -1;
         public string TextFileName;
         public string[] Lines
@@ -127,14 +127,9 @@ namespace MetalX.UI
 
     public class TextureBox : ControlBox
     {
-        public Microsoft.DirectX.Direct3D.Texture Texture;
         public string TextureFileName;
         public int TextureIndex = -1;
-        public void LoadTexture(Microsoft.DirectX.Direct3D.Device dev, string pathName)
-        {
-            TextureFileName = pathName;
-            Texture = Microsoft.DirectX.Direct3D.TextureLoader.FromFile(dev, pathName);
-        }
+        public Color TextureColor;
     }
 
     public class ButtonBox : ControlBox

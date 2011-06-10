@@ -116,6 +116,8 @@ namespace MetalX.SceneMaker2D
             game = new Game(pictureBox1);
             game.LoadAllDotMXT(@".\");
             game.LoadAllDotMXA(@".\");
+            game.LoadAllDotPNG(@".\");
+            game.LoadAllDotMP3(@".\");
 
             update_pic_list();
             update_mus_list();
@@ -160,6 +162,9 @@ namespace MetalX.SceneMaker2D
             }
             game = new Game(pictureBox1);
             game.LoadAllDotMXT(@".\");
+            game.LoadAllDotMXA(@".\");
+            game.LoadAllDotPNG(@".\");
+            game.LoadAllDotMP3(@".\");
 
             update_pic_list();
             update_mus_list();
@@ -175,7 +180,6 @@ namespace MetalX.SceneMaker2D
                 ui_ly_slt.SetItemChecked(i, true);
             }
             ui_ly_slt.SetSelected(sceneMaker2D.scene.TileLayers.Count - 1, true);
-            //sceneMaker2D.scene.CodeLayers.Add(new CodeLayer());
 
             pictureBox1.Size = sceneMaker2D.scene.SizePixel;
 
@@ -310,7 +314,6 @@ namespace MetalX.SceneMaker2D
         }
         void paint_code(Point p, MouseEventArgs e, int l)
         {
-
             if (!(e.Button == MouseButtons.Left || e.Button == MouseButtons.Right))
             {
                 return;
@@ -503,8 +506,6 @@ namespace MetalX.SceneMaker2D
         void paint_link(Point p)
         {
             sceneMaker2D.scene.CodeLayers[0][p].SceneFileName = ui_link_file.Text;
-            //sceneMaker2D.scene.CodeLayers[0][p].DefaultDirection=
-            //sceneMaker2D.scene.CodeLayers[0][p].DefaultLocation=
         }
         void paint_link(Rectangle slt_zone)
         {
@@ -656,7 +657,7 @@ namespace MetalX.SceneMaker2D
         private void ui_ly_slt_SelectedIndexChanged(object sender, EventArgs e)
         {
             int sl = ui_ly_slt.Items.Count - 1;
-            sceneMaker2D.drawingLayer = sl-ui_ly_slt.SelectedIndex;
+            sceneMaker2D.drawingLayer = sl - ui_ly_slt.SelectedIndex;
             ui_mouse_pos.Text = "选中层" + sceneMaker2D.drawingLayer.ToString();
         }
         
@@ -791,7 +792,6 @@ namespace MetalX.SceneMaker2D
                 {
                     ui_aniframec.Text = "" + sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][i].FrameCount;
                 }
-                //sceneMaker2D.drawPen = false;
                 if (insFrame)
                 {
                     insFrame = false;

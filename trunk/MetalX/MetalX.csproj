@@ -69,6 +69,7 @@
     <Compile Include="Component\MouseManager.cs" />
     <Compile Include="Component\SceneManager.cs" />
     <Compile Include="Component\UIManager.cs" />
+    <Compile Include="Data\Item.cs" />
     <Compile Include="Resource\Audios.cs" />
     <Compile Include="Resource\Texts.cs" />
     <Compile Include="Resource\Textures.cs" />

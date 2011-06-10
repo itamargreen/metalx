@@ -22,7 +22,7 @@ namespace MetalX.Component
                 return wholeSize / 2;
             }
         }
-        byte[] buff = new byte[8820];
+        byte[] buff = new byte[40000];
 
         public bool Loop = false;
         public bool Playing = false;
@@ -83,13 +83,10 @@ namespace MetalX.Component
             waveFormat.BlockAlign = (short)(waveFormat.Channels * (waveFormat.BitsPerSample / 8));
             waveFormat.AverageBytesPerSecond = waveFormat.SamplesPerSecond * waveFormat.BlockAlign;
 
-            wholeSize = (int)(waveFormat.AverageBytesPerSecond * TimeSpan.FromSeconds(0.1).TotalSeconds);
+            wholeSize = (int)(waveFormat.AverageBytesPerSecond * TimeSpan.FromSeconds(0.4).TotalSeconds);
 
             bufferDescription = new BufferDescription(waveFormat);
             bufferDescription.BufferBytes = wholeSize;
-            //bufferDescription.StickyFocus = true;
-            //bufferDescription.LocateInHardware = true;
-            //bufferDescription.DeferLocation = true;
             bufferDescription.GlobalFocus = true;
 
             secondaryBuffer = new SecondaryBuffer(bufferDescription, game.Devices.DSoundDev);
@@ -143,7 +140,6 @@ namespace MetalX.Component
                     }
                     if (pos != posb)
                     {
-
                         if (pos)
                         {
                             backFilled = false;
@@ -154,8 +150,6 @@ namespace MetalX.Component
                         }
                     }
                     posb = pos;
-
-
                     if (mp3Stream.Position < mp3Stream.Length)
                     {
                         if (pos && !backFilled)
@@ -174,7 +168,6 @@ namespace MetalX.Component
                         mp3Stream.Position = 0;
                         if (Loop)
                         {
-                            //mp3Stream.Position = 0;
                         }
                         else
                         {
