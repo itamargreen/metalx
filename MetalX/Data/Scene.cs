@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace MetalX.Data
@@ -58,11 +58,11 @@ namespace MetalX.Data
         /// <summary>
         /// 图元层
         /// </summary>
-        public Collection<TileLayer> TileLayers = new Collection<TileLayer>();
+        public List<TileLayer> TileLayers = new List<TileLayer>();
         /// <summary>
         /// 代码层
         /// </summary>
-        public Collection<CodeLayer> CodeLayers = new Collection<CodeLayer>();
+        public List<CodeLayer> CodeLayers = new List<CodeLayer>();
 
         public Scene()
         { 
@@ -94,7 +94,7 @@ namespace MetalX.Data
         /// <summary>
         /// 图元集合
         /// </summary>
-        public Collection<Tile> Tiles = new Collection<Tile>();
+        public List<Tile> Tiles = new List<Tile>();
         /// <summary>
         /// 可见行
         /// </summary>
@@ -158,7 +158,7 @@ namespace MetalX.Data
         /// <summary>
         /// 帧集合
         /// </summary>
-        public Collection<TileFrame> Frames = new Collection<TileFrame>();
+        public List<TileFrame> Frames = new List<TileFrame>();
         //public Rectangle DrawZone;
         public TileFrame this[int i]
         {
@@ -235,7 +235,7 @@ namespace MetalX.Data
     [Serializable]
     public class CodeLayer
     {
-        public Collection<Code> Codes = new Collection<Code>();
+        public List<Code> Codes = new List<Code>();
         public Code this[int x, int y]
         {
             get

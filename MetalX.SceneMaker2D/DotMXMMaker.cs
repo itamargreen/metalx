@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -99,7 +99,7 @@ namespace MetalX.SceneMaker2D
                 {
                     modelViewer.model = game.LoadDotX(ofd.FileName);
                     filename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
-                    game.GO();
+                    game.Start();
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace MetalX.SceneMaker2D
                 {
                     modelViewer.model = game.LoadDotMXM(ofd.FileName);
                     filename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
-                    game.GO();
+                    game.Start();
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace MetalX.SceneMaker2D
                 if (ofd.FileName != string.Empty)
                 {
                     modelViewer.t = game.LoadDotMXT(ofd.FileName);
-                    game.GO();
+                    game.Start();
                 }
             }
         }

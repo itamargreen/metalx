@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace MetalX.SceneMaker2D

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 
@@ -7,7 +7,7 @@ namespace MetalX
 {
     public class Devices : IDisposable
     {
-        Game game;
+        Game metalXGame;
         public Form Window;
 
         public Microsoft.DirectX.Direct3D.Device D3DDev;
@@ -26,15 +26,15 @@ namespace MetalX
             }
         }
 
-        public Devices(Game g)
+        public Devices(Game metalxgame)
         {
-            game = g;
-
             Window = new Form();
-            Window.Text = g.Name;
+            Window.Text = metalxgame.Name;
             Window.StartPosition = FormStartPosition.CenterScreen;
-            Window.Size = g.Options.WindowSize;
-            
+            Window.Size = metalxgame.Options.WindowSize;
+
+            metalXGame = metalxgame;
+
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
             pps.Windowed = true;
@@ -42,7 +42,7 @@ namespace MetalX
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, Window, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
 
             Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
-            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("微软雅黑", 12));
+            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("新宋体", 12));
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(Window, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
@@ -53,9 +53,9 @@ namespace MetalX
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
         }
-        public Devices(Control control, Game g)
+        public Devices(Control control, Game metalxgame)
         {
-            game = g;
+            metalXGame = metalxgame;
 
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
@@ -64,7 +64,7 @@ namespace MetalX
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
 
             Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
-            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("微软雅黑", 12));
+            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("新宋体", 12));
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(control, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
@@ -77,8 +77,6 @@ namespace MetalX
         }
         public void Dispose()
         {
-            Font.Dispose();
-            Sprite.Dispose();
             D3DDev.Dispose();
             DSoundDev.Dispose();
             DKeyboardDev.Dispose();

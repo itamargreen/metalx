@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Drawing;
 
 using MetalX;
@@ -16,14 +16,14 @@ namespace MetalX.SceneMaker2D
         public int drawCodeLayer=0;
         public Rectangle dragRect;
         public string mxtName;
-        public int mxtIndex;
+        public int mxtIndex = -1;
         public Point penLoc;
         public Rectangle penRect;
         public Rectangle penRectPixel
         {
             get
             {
-                if (mxtName == null)
+                if (mxtIndex == -1)
                 {
                     return new Rectangle(penRect.Location, scene.TileSizePixel);
                 }
@@ -70,8 +70,10 @@ namespace MetalX.SceneMaker2D
                 lastFrameBeginTime = DateTime.Now;
             }
         }
-        void draw()
+
+        public override void Draw()
         {
+            base.Draw();
             foreach (TileLayer tl in scene.TileLayers)
             {
                 if (tl.Visible)
@@ -98,9 +100,9 @@ namespace MetalX.SceneMaker2D
                     }
                 }
             }
-            if (drawPen)
-                draw_pen();
-            if (drawGrid || drawCode)
+            if(drawPen)
+            draw_pen();        
+            if (drawGrid||drawCode)
             {
                 draw_grid();
             }
@@ -110,73 +112,22 @@ namespace MetalX.SceneMaker2D
             }
             game.DrawRect(dragRect, Color.Red);
 
-            game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.Black); 
-        }
-        void drawfast()
-        {
-            draw_scene();
-            foreach (CodeLayer cl in scene.CodeLayers)
-            {
-                foreach (Code c in cl.Codes)
-                {
-                    if (c.SceneFileName != null)
-                    {
-                        draw_link(c.Location);
-                    }
-                }
-            }
-            if (drawPen)
-                draw_pen();
-            if (drawGrid || drawCode)
-            {
-                draw_grid();
-            }
-            if (drawCode)
-            {
-                draw_code();
-            }
-            game.DrawRect(dragRect, Color.Red);
-
-            game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.White);
-        }
-        public override void Draw()
-        {
-            base.Draw();
-            draw();
+            game.DrawText(" FPS: " + game.AverageFPS, new Point(), Color.White);
         }
         public override void OnKeyboardDownCode(int key)
         {
             base.OnKeyboardDownCode(key);
-            //game.DrawText(key + " down", new Point(), Color.White);
+            game.DrawText(key + " down", new Point(), Color.White);
         }
         public override void OnKeyboardDownHoldCode(int key)
         {
             base.OnKeyboardDownHoldCode(key);
-            //game.DrawText(key + " downhold", new Point(0,20), Color.White);
+            game.DrawText(key + " downhold", new Point(0,20), Color.White);
         }
         public override void OnKeyboardUpCode(int key)
         {
             base.OnKeyboardUpCode(key);
-            //game.DrawText(key + " up", new Point(0,40), Color.White);
-        }
-        void draw_scene()
-        {
-            for (int i = 0; i < scene.TileLayers.Count; i++)
-            {
-                if (scene.TileLayers[i].Visible)
-                {
-                    for (int j = 0; j < scene.TileLayers[i].Tiles.Count; j++)
-                    {
-                        game.DrawMetalXTexture(
-                            game.Textures[scene.TileLayers[i].Tiles[j][frameIndex].TextureIndex],
-                            scene.TileLayers[i].Tiles[j][frameIndex].DrawZone,
-                            Util.PointAddPoint(scene.TileLayers[i].Tiles[j].Location, base.GlobalOffset),
-                            scene.TileSizePixel,
-                            Util.MixColor(scene.TileLayers[i].Tiles[j][frameIndex].ColorFilter, ColorFilter)
-                            );
-                    }
-                }
-            }
+            game.DrawText(key + " up", new Point(0,40), Color.White);
         }
         void draw_grid()
         {

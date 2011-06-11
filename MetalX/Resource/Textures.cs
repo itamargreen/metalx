@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 
@@ -8,7 +8,7 @@ namespace MetalX.Resource
 {
     public class Textures
     {
-        Collection<MetalXTexture> items = new Collection<MetalXTexture>();
+        List<MetalXTexture> items = new List<MetalXTexture>();
         public Textures()
         { 
         }
@@ -16,6 +16,10 @@ namespace MetalX.Resource
         {
             get
             {
+                if (i < 0)
+                {
+                    return null;
+                }
                 return items[i];
             }
         }
