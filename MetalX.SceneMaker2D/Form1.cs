@@ -54,24 +54,6 @@ namespace MetalX.SceneMaker2D
             return new Point(p1.X + p2.X, p1.Y + p2.Y);
         }
 
-        int contains_tile(Point loc)
-        {
-            try
-            {
-                int i = 0;
-                foreach (Tile tile in sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles)
-                {
-                    if (tile.Location == loc)
-                    {
-                        return i;
-                    }
-                    i++;
-                }
-                return -1;
-            }
-            catch
-            { return -1; }
-        }
         void backup(object obj)
         {
             stack.Push(obj);
@@ -94,6 +76,80 @@ namespace MetalX.SceneMaker2D
             //}
         }
 
+        int contains_tile(Point loc)
+        {
+            int i = 0;
+            foreach (Tile tile in sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles)
+            {
+                if (tile.Location == loc)
+                {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+
+        void paint_tile(Point p, Rectangle rect)
+        {
+            if (sceneMaker2D.drawingLayer < 0)
+            {
+                return;
+            }
+            if (sceneMaker2D.mxtIndex == -1)
+            {
+                return;
+            }
+            int xo, yo;
+            int xoo = 0, yoo = 0;
+            for (yo = 0; yo < rect.Height; yo += sceneMaker2D.scene.TileSizePixel.Height)
+            {
+                xoo = 0;
+                for (xo = 0; xo < rect.Width; xo += sceneMaker2D.scene.TileSizePixel.Width)
+                {
+                    Point pp = new Point();
+                    pp.X = p.X + xo;
+                    pp.Y = p.Y + yo;
+
+                    if (pp.X < 0 || pp.Y < 0 || pp.X >= sceneMaker2D.scene.SizePixel.Width || pp.Y >= sceneMaker2D.scene.SizePixel.Height)
+                    {
+                        continue;
+                    }
+
+                    TileFrame tf = new TileFrame();
+                    tf.TextureFileName = sceneMaker2D.mxtName;
+                    tf.TextureIndex = sceneMaker2D.mxtIndex;
+                    tf.DrawZone.Location = new Point(rect.X + xoo, rect.Y + yoo);
+                    tf.DrawZone.Size = game.Textures[sceneMaker2D.mxtIndex].TileSizePixel;
+
+                    Tile tile = new Tile();
+                    tile.Location = pp;
+                    tile.Frames.Add(tf);
+
+                    int i = contains_tile(tile.Location);
+                    if (i > -1)
+                    {
+                        if (insFrame)
+                        {
+                            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Frames.Add(tf);
+                        }
+                        else
+                        {
+                            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles[i] = tile;
+                        }
+                    }
+                    else
+                    {
+                        sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Add(tile);
+                    }
+                    xoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Width;
+                }
+                yoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Height;
+            }
+            insFrame = false;
+            pictureBox1.Cursor = bc;
+            ui_tilecount.Text = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count.ToString();
+        }
         void paint_code(Point p, MouseEventArgs e, int l)
         {
             if (!(e.Button == MouseButtons.Left || e.Button == MouseButtons.Right))
@@ -157,7 +213,6 @@ namespace MetalX.SceneMaker2D
             {
                 return;
             }
-            //backup(UtilLib.Serialize(sceneMaker2D.scene));
             int xo, yo;
             for (yo = 0; yo < rect.Height; yo += sceneMaker2D.scene.TileSizePixel.Height)
             {
@@ -181,77 +236,6 @@ namespace MetalX.SceneMaker2D
             }
             ui_tilecount.Text = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count.ToString();
         }
-        void del_zone(Rectangle target_zone, Rectangle slt_zone)
-        {
-            for (int y = target_zone.Y; y < target_zone.Bottom; y += slt_zone.Height)
-            {
-                for (int x = target_zone.X; x < target_zone.Right; x += slt_zone.Width)
-                {
-                    del_tile(new Point(x, y), slt_zone);
-                }
-            }
-        }
-        void paint_tile(Point p, Rectangle rect)
-        {
-            if (sceneMaker2D.drawingLayer < 0)
-            {
-                return;
-            }
-            if (sceneMaker2D.mxtIndex == -1)
-            {
-                return;
-            }
-            //backup(UtilLib.Serialize(sceneMaker2D.scene));
-            int xo, yo;
-            int xoo = 0, yoo = 0;
-            for (yo = 0; yo < rect.Height; yo += sceneMaker2D.scene.TileSizePixel.Height)
-            {
-                xoo = 0;
-                for (xo = 0; xo < rect.Width; xo += sceneMaker2D.scene.TileSizePixel.Width)
-                {
-                    Point pp = new Point();
-                    pp.X = p.X + xo;
-                    pp.Y = p.Y + yo;
-
-                    if (pp.X < 0 || pp.Y < 0 || pp.X >= sceneMaker2D.scene.SizePixel.Width || pp.Y >= sceneMaker2D.scene.SizePixel.Height)
-                    {
-                        continue;
-                    }
-
-                    TileFrame tf = new TileFrame();
-                    tf.TextureFileName = sceneMaker2D.mxtName;
-                    tf.TextureIndex = sceneMaker2D.mxtIndex;
-                    tf.DrawZone.Location = new Point(rect.X + xoo, rect.Y + yoo);
-                    tf.DrawZone.Size = game.Textures[sceneMaker2D.mxtIndex].TileSizePixel;
-
-                    Tile tile = new Tile();
-                    tile.Location = pp;
-                    tile.Frames.Add(tf);
-
-                    int i = contains_tile(tile.Location);
-                    if (i > -1)
-                    {
-                        if (insFrame)
-                        {
-                            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Frames.Add(tf);
-                        }
-                        else
-                        {
-                            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles[i] = tile;
-                        }
-                    }
-                    else
-                    {
-                        sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Add(tile);
-                    }
-                    xoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Width;
-                }
-                yoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Height;
-            }
-            insFrame = false;
-            pictureBox1.Cursor = bc;
-            ui_tilecount.Text = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count.ToString();
-        }
         void paint_zone(Rectangle target_zone, Rectangle slt_zone)
         {
             for (int y = target_zone.Y; y < target_zone.Bottom; y += slt_zone.Height)
@@ -262,6 +246,17 @@ namespace MetalX.SceneMaker2D
                 }
             }
         }
+        void del_zone(Rectangle target_zone, Rectangle slt_zone)
+        {
+            for (int y = target_zone.Y; y < target_zone.Bottom; y += slt_zone.Height)
+            {
+                for (int x = target_zone.X; x < target_zone.Right; x += slt_zone.Width)
+                {
+                    del_tile(new Point(x, y), slt_zone);
+                }
+            }
+        }
+
         void update_pic_list()
         {
             ui_pic.Image = null;
@@ -382,6 +377,7 @@ namespace MetalX.SceneMaker2D
         {
             splitContainer1.SplitterDistance = 320;
         }
+
         private void Form1_Shown(object sender, EventArgs e)
         {
             
@@ -424,7 +420,6 @@ namespace MetalX.SceneMaker2D
         {
             new AboutBox1().ShowDialog();
         }
-
 
         private void ui_pic_slt_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -521,12 +516,12 @@ namespace MetalX.SceneMaker2D
                                 sceneMaker2D.dragRect.Height > sceneMaker2D.scene.TileSizePixel.Height)
                             {
                                 backup(Util.Serialize(sceneMaker2D.scene));
-                                del_zone(sceneMaker2D.dragRect, sceneMaker2D.penRect);
+                                del_zone(sceneMaker2D.dragRect, sceneMaker2D.penRectPixel);
                             }
                             else
                             {
                                 backup(Util.Serialize(sceneMaker2D.scene));
-                                del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRect);
+                                del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRectPixel);
                             }
                         }
                         else
@@ -581,7 +576,7 @@ namespace MetalX.SceneMaker2D
                         if (erasing)
                         {
                             backup(Util.Serialize(sceneMaker2D.scene));
-                            del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRect);
+                            del_tile(sceneMaker2D.penLoc, sceneMaker2D.penRectPixel);
                         }
                         else
                         {
@@ -605,7 +600,6 @@ namespace MetalX.SceneMaker2D
             else if (tabControl2.SelectedIndex == 1)
             {
                 Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
-                //int l = 5;
                 paint_code(p, e, scene_code_layer);
             }
         }
