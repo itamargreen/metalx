@@ -50,6 +50,8 @@
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.折叠打开工具箱ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.显示隐藏网格ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.震动ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.淡入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.淡出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,6 +114,7 @@
             this.ui_linkzoney = new System.Windows.Forms.TextBox();
             this.ui_link_slt = new System.Windows.Forms.ComboBox();
             this.ui_pic_panel = new System.Windows.Forms.Panel();
+            this.ui_chg_tile_size = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.ui_pic = new System.Windows.Forms.PictureBox();
             this.ui_pic_slt = new System.Windows.Forms.ComboBox();
@@ -322,6 +325,8 @@
             // 
             this.查看ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.折叠打开工具箱ToolStripMenuItem,
+            this.显示隐藏网格ToolStripMenuItem,
+            this.toolStripComboBox1,
             this.震动ToolStripMenuItem,
             this.淡入ToolStripMenuItem,
             this.淡出ToolStripMenuItem});
@@ -336,6 +341,24 @@
             this.折叠打开工具箱ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.折叠打开工具箱ToolStripMenuItem.Text = "折叠(打开)工具箱";
             this.折叠打开工具箱ToolStripMenuItem.Click += new System.EventHandler(this.折叠打开工具箱ToolStripMenuItem_Click);
+            // 
+            // 显示隐藏网格ToolStripMenuItem
+            // 
+            this.显示隐藏网格ToolStripMenuItem.Name = "显示隐藏网格ToolStripMenuItem";
+            this.显示隐藏网格ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.显示隐藏网格ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.显示隐藏网格ToolStripMenuItem.Text = "显示(隐藏)网格";
+            this.显示隐藏网格ToolStripMenuItem.Click += new System.EventHandler(this.显示隐藏网格ToolStripMenuItem_Click);
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.Items.AddRange(new object[] {
+            "Direct3D",
+            "Direct2D"});
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 20);
+            this.toolStripComboBox1.Text = "Direct3D";
+            this.toolStripComboBox1.TextUpdate += new System.EventHandler(this.toolStripComboBox1_TextUpdate);
             // 
             // 震动ToolStripMenuItem
             // 
@@ -474,10 +497,10 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.panel4);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 21);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(290, 774);
+            this.tabPage2.Size = new System.Drawing.Size(290, 775);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "场景设置";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -618,10 +641,10 @@
             this.tabPage1.Controls.Add(this.tabControl2);
             this.tabPage1.Controls.Add(this.panel5);
             this.tabPage1.Controls.Add(this.ui_pic_panel);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 21);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(290, 774);
+            this.tabPage1.Size = new System.Drawing.Size(290, 775);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "场景编辑";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -640,10 +663,10 @@
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.panel2);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Location = new System.Drawing.Point(4, 21);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(282, 198);
+            this.tabPage5.Size = new System.Drawing.Size(282, 199);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "图层";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -728,10 +751,10 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.ui_codelayer_slt);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Location = new System.Drawing.Point(4, 21);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(282, 198);
+            this.tabPage6.Size = new System.Drawing.Size(282, 199);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "代码层";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -929,6 +952,7 @@
             // 
             // ui_pic_panel
             // 
+            this.ui_pic_panel.Controls.Add(this.ui_chg_tile_size);
             this.ui_pic_panel.Controls.Add(this.panel3);
             this.ui_pic_panel.Controls.Add(this.ui_pic_slt);
             this.ui_pic_panel.Controls.Add(this.ui_showgrid);
@@ -951,6 +975,16 @@
             this.ui_pic_panel.Name = "ui_pic_panel";
             this.ui_pic_panel.Size = new System.Drawing.Size(290, 370);
             this.ui_pic_panel.TabIndex = 1;
+            // 
+            // ui_chg_tile_size
+            // 
+            this.ui_chg_tile_size.Location = new System.Drawing.Point(239, 285);
+            this.ui_chg_tile_size.Name = "ui_chg_tile_size";
+            this.ui_chg_tile_size.Size = new System.Drawing.Size(45, 23);
+            this.ui_chg_tile_size.TabIndex = 117;
+            this.ui_chg_tile_size.Text = "变更";
+            this.ui_chg_tile_size.UseVisualStyleBackColor = true;
+            this.ui_chg_tile_size.Click += new System.EventHandler(this.ui_chg_tile_size_Click);
             // 
             // panel3
             // 
@@ -1000,7 +1034,7 @@
             // 
             // ui_aniframec
             // 
-            this.ui_aniframec.Location = new System.Drawing.Point(179, 287);
+            this.ui_aniframec.Location = new System.Drawing.Point(254, 341);
             this.ui_aniframec.Name = "ui_aniframec";
             this.ui_aniframec.ReadOnly = true;
             this.ui_aniframec.Size = new System.Drawing.Size(30, 21);
@@ -1010,7 +1044,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(162, 290);
+            this.label7.Location = new System.Drawing.Point(237, 344);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(11, 12);
             this.label7.TabIndex = 16;
@@ -1027,7 +1061,7 @@
             // 
             // ui_gridh
             // 
-            this.ui_gridh.Location = new System.Drawing.Point(126, 287);
+            this.ui_gridh.Location = new System.Drawing.Point(203, 287);
             this.ui_gridh.Name = "ui_gridh";
             this.ui_gridh.Size = new System.Drawing.Size(30, 21);
             this.ui_gridh.TabIndex = 103;
@@ -1044,7 +1078,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(109, 290);
+            this.label5.Location = new System.Drawing.Point(186, 290);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(11, 12);
             this.label5.TabIndex = 14;
@@ -1061,7 +1095,7 @@
             // 
             // ui_gridw
             // 
-            this.ui_gridw.Location = new System.Drawing.Point(73, 287);
+            this.ui_gridw.Location = new System.Drawing.Point(150, 287);
             this.ui_gridw.Name = "ui_gridw";
             this.ui_gridw.Size = new System.Drawing.Size(30, 21);
             this.ui_gridw.TabIndex = 102;
@@ -1078,7 +1112,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(56, 290);
+            this.label6.Location = new System.Drawing.Point(133, 290);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(11, 12);
             this.label6.TabIndex = 12;
@@ -1121,10 +1155,10 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.panel1);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 21);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(290, 774);
+            this.tabPage4.Size = new System.Drawing.Size(290, 775);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "场景音乐";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1193,7 +1227,7 @@
             this.ui_proc.Location = new System.Drawing.Point(6, 216);
             this.ui_proc.Maximum = 50;
             this.ui_proc.Name = "ui_proc";
-            this.ui_proc.Size = new System.Drawing.Size(274, 42);
+            this.ui_proc.Size = new System.Drawing.Size(274, 45);
             this.ui_proc.TabIndex = 223;
             this.ui_proc.Scroll += new System.EventHandler(this.ui_proc_Scroll);
             // 
@@ -1261,9 +1295,9 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 21);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(290, 774);
+            this.tabPage3.Size = new System.Drawing.Size(290, 775);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "NPC编辑";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1452,6 +1486,9 @@
         private System.Windows.Forms.TextBox ui_framedelay;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button ui_loadmp3;
+        private System.Windows.Forms.Button ui_chg_tile_size;
+        private System.Windows.Forms.ToolStripMenuItem 显示隐藏网格ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
     }
 }
 

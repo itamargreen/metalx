@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
@@ -52,7 +52,7 @@ namespace MetalX
         //bool frameTotalTimeCanRead;
 
         bool isRunning = true;
-        public Collection<GameCom> GameComs = new Collection<GameCom>();
+        public List<GameCom> GameComs = new List<GameCom>();
         DateTime gameBeginTime;
         float targetFPS = 60;
         ulong totalFrames = 0;
@@ -141,7 +141,6 @@ namespace MetalX
             Name = name;
             Options = new Options();
             Devices = new Devices(this);
-            Models = new Models();
             Textures = new Textures();
             Audios = new Audios();
         }
@@ -158,10 +157,22 @@ namespace MetalX
 
         #endregion
         #region 方法
+
+        void mountGameCom()
+        {
+            KeyboardManager = new KeyboardManager(this);
+            MountGameCom(KeyboardManager);
+
+            SoundManager = new SoundManager(this);
+            MountGameCom(SoundManager);
+
+            UIManager = new UIManager(this);
+            MountGameCom(UIManager);
+        }
         /// <summary>
         /// 启动
         /// </summary>
-        public void GO()
+        public void Start()
         {
             //mountComponent();
             gameBeginTime = DateTime.Now;
@@ -192,11 +203,7 @@ namespace MetalX
         /// </summary>
         void Frame()
         {
-            //if (Devices.D3DDev.Disposed)
-            //{
-            //    return;
-            //}
-            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.CornflowerBlue, 0, 0);
+            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.CornflowerBlue, 1, 0);
             Devices.D3DDev.BeginScene();
             foreach (GameCom metalXGameCom in GameComs)
             {
@@ -245,13 +252,18 @@ namespace MetalX
             }
             while (timespan >= pastMS);
         }
+        public void Stop()
+        {
+            isRunning = false;
+        }
         /// <summary>
         /// 结束退出
         /// </summary>
         public void Exit()
         {
-            isRunning = false;
-            //Application.Exit();
+            Stop();
+            Dispose();
+            Application.Exit();
         }
         /// <summary>
         /// 释放资源
@@ -264,7 +276,6 @@ namespace MetalX
             {
                 Devices.Window.Close();
             }
-            //Application.Exit();
         }
         /// <summary>
         /// 挂载MetalX组件
@@ -336,7 +347,7 @@ namespace MetalX
         /// <param name="pathName"></param>
         public void LoadAllDotMXA(string pathName)
         {
-            Collection<string> dirName = new Collection<string>();
+            List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
             {
@@ -351,7 +362,7 @@ namespace MetalX
         }
         public void LoadAllDotMP3(string pathName)
         {
-            Collection<string> dirName = new Collection<string>();
+            List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
             {
@@ -469,32 +480,24 @@ namespace MetalX
         /// <param name="pathName"></param>
         public void LoadAllDotMXT(string pathName)
         {
-            //Textures.
-            //Textures ts = new Textures();
-            Collection<string> dirName = new Collection<string>();
-            //FileInfo[] fis = di.GetFiles("*.mxt");
-            //foreach (FileInfo fi in fis)
-            //{
-            //    MetalXTexture mxt = (MetalXTexture)UtilLib.LoadObject(fi.FullName);
-            //    mxt.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(mxt.TextureData));
-            //    Textures.Add(mxt);
-            //}
-            Util.EnumDir(pathName, dirName);
-            foreach (string pName in dirName)
+            List<string> dirName = new List<string>();
             {
-                DirectoryInfo di = new DirectoryInfo(pName);
-                FileInfo[] fis = di.GetFiles("*.mxt");
-                foreach (FileInfo fi in fis)
+                Util.EnumDir(pathName, dirName);
+                foreach (string pName in dirName)
                 {
-                    MetalXTexture mxt = LoadDotMXT(fi.FullName);
-                    Textures.Add(mxt);
+                    DirectoryInfo di = new DirectoryInfo(pName);
+                    FileInfo[] fis = di.GetFiles("*.mxt");
+                    foreach (FileInfo fi in fis)
+                    {
+                        MetalXTexture mxt = LoadDotMXT(fi.FullName);
+                        Textures.Add(mxt);
+                    }
                 }
             }
-            //return ts;
         }
         public void LoadAllDotPNG(string pathName)
         {
-            Collection<string> dirName = new Collection<string>();
+            List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
             {
@@ -506,7 +509,6 @@ namespace MetalX
                     Textures.Add(mxt);
                 }
             }
-            //return ts;
         }
         /// <summary>
         /// 
@@ -566,19 +568,31 @@ namespace MetalX
         #region DrawMXT
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Color color)
         {
-            DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
+            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
+            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
         }
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Rectangle ddz, Color color)
         {
-            DrawMetalXTexture(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
+            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+                DrawMetalXTextureDirect3D(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
+            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                DrawMetalXTextureDirect2D(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
         }
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Size size, Color color)
         {
-            DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
         }
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, PointF point, Size size, Color color)
         {
-            DrawMetalXTexture(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
         }
         /// <summary>
         /// 绘制MetalX格式纹理
@@ -586,7 +600,7 @@ namespace MetalX
         /// <param name="t">MetalX格式纹理</param>
         /// <param name="loc">位置</param>
         /// <param name="c">颜色</param>
-        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
+        public void DrawMetalXTextureDirect3D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
         {
             if (t == null)
             {
@@ -630,17 +644,21 @@ namespace MetalX
             //Devices.D3DDev.SetStreamSource(0, vb, 0);
             //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
-        public void DrawMetalXTexture1(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
+        public void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
         {
             if (t == null)
             {
                 return;
             }
+
             Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
-            Devices.Sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), new Point((int)loc.X, (int)loc.Y), color);
-            //Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), loc, color);
+
+            Point p = new Point((int)loc.X, (int)loc.Y);
+            Devices.Sprite.Draw2D(t.MEMTexture, dz, dz, p, color);
+
             Devices.Sprite.End();
         }
+
         #endregion
         #region DrawText
         /// <summary>
@@ -651,7 +669,7 @@ namespace MetalX
         /// <param name="color">颜色</param>
         public void DrawText(string text, Point point, Color color)
         {
-            DrawText(text, point, "微软雅黑", 10, color);
+            DrawText(text, point, "新宋体", 10, color);
         }
         public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
         {

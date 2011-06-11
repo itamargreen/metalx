@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace MetalX
 {
     public class Options
     {
+        public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct3D;
         float x;
         Size tileSize;
         string rootPath;

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace MetalX
 {
@@ -19,5 +19,10 @@ namespace MetalX
         Up,
         Down,
         DownHold,
+    }
+    public enum TextureDrawMode
+    {
+        Direct3D,
+        Direct2D,
     }
 }

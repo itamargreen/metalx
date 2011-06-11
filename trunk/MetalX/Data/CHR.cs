@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Drawing;
 
 using Microsoft.DirectX;
@@ -41,7 +41,7 @@ namespace MetalX.Data
         public int MP;
         public int MPMax;
 
-        public Collection<Item> Bag = new Collection<Item>();
+        public List<Item> Bag = new List<Item>();
 
         public void BagIn(Item item)
         {
