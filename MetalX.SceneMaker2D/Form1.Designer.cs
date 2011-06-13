@@ -574,7 +574,7 @@
             this.ui_sinw.Name = "ui_sinw";
             this.ui_sinw.Size = new System.Drawing.Size(31, 21);
             this.ui_sinw.TabIndex = 209;
-            this.ui_sinw.Text = "16";
+            this.ui_sinw.Text = "48";
             // 
             // ui_sinh
             // 
@@ -582,7 +582,7 @@
             this.ui_sinh.Name = "ui_sinh";
             this.ui_sinh.Size = new System.Drawing.Size(31, 21);
             this.ui_sinh.TabIndex = 210;
-            this.ui_sinh.Text = "16";
+            this.ui_sinh.Text = "48";
             // 
             // label10
             // 
