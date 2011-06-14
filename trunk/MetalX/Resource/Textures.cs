@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 
+using Microsoft.DirectX.Direct3D;
 
 namespace MetalX.Resource
 {
@@ -77,6 +78,33 @@ namespace MetalX.Resource
         public void Del(int i)
         {
             items.RemoveAt(i);
+        }        /// <summary>
+        /// 加载.PNG文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX纹理</returns>
+        public MetalXTexture LoadDotPNG(string fileName,Game g)
+        {
+            MetalXTexture texture = new MetalXTexture();
+            texture.Name = Path.GetFileNameWithoutExtension(fileName);
+            texture.TextureData = File.ReadAllBytes(fileName);
+            Image img = Image.FromStream(new MemoryStream(texture.TextureData));
+            texture.SizePixel = img.Size;
+            texture.TileSizePixel = new Size(24, 24);
+            texture.MEMTexture = TextureLoader.FromFile(g.Devices.D3DDev, fileName, texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+            return texture;
+        }
+        /// <summary>
+        /// 加载.MXT文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX纹理</returns>
+        public MetalXTexture LoadDotMXT(string fileName, Game g)
+        {
+            MetalXTexture texture = new MetalXTexture();
+            texture = (MetalXTexture)Util.LoadObject(fileName);
+            texture.MEMTexture = TextureLoader.FromStream(g.Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+            return texture;
         }
     }
 }

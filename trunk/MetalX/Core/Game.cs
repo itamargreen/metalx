@@ -40,13 +40,16 @@ namespace MetalX
         /// 音频管理器
         /// </summary>
         public Audios Audios;
+        public Scenes Scenes;
+        public FormBoxes FormBoxes;
         /// <summary>
         /// 帧开始时间
         /// </summary>
         public DateTime FrameBeginTime;
-        public SoundManager SoundManager;
-        public UIManager UIManager;
-        public KeyboardManager KeyboardManager;
+        SoundManager SoundManager;
+        UIManager UIManager;
+        KeyboardManager KeyboardManager;
+        SceneManager SceneManager;
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -91,6 +94,16 @@ namespace MetalX
         //        return frameEndTime - frameBeginTime;
         //    }
         //}
+        /// <summary>
+        /// 设置图标
+        /// </summary>
+        public string Icon
+        {
+            set
+            {
+                Devices.Window.Icon = new Icon(value);
+            }
+        }
         /// <summary>
         /// 运行时常
         /// </summary>
@@ -141,8 +154,16 @@ namespace MetalX
             Name = name;
             Options = new Options();
             Devices = new Devices(this);
+            Devices.Window.FormClosing += new FormClosingEventHandler(WindowClosing);
             Textures = new Textures();
             Audios = new Audios();
+            Scenes = new Scenes();
+            FormBoxes = new FormBoxes();
+        }
+
+        void WindowClosing(object sender, FormClosingEventArgs e)
+        {
+            Exit();
         }
 
         public Game(string name, System.Windows.Forms.Control control)
@@ -153,12 +174,58 @@ namespace MetalX
             Models = new Models();
             Textures = new Textures();
             Audios = new Audios();
+            Scenes = new Scenes();
+            FormBoxes = new FormBoxes();
         }
 
         #endregion
         #region 方法
-
-        void mountGameCom()
+        public void PlayMXA(string name)
+        {
+            SoundManager.PlayMXA(name);
+        }
+        public void PlayMXA(int i)
+        {
+            SoundManager.PlayMXA(i);
+        }
+        public void PlayMXA(Stream stm)
+        {
+            SoundManager.PlayMXA(stm);
+        }
+        public void PlayMP3(string name)
+        {
+            SoundManager.PlayMP3(name);
+        }
+        public void StopMXA()
+        {
+            SoundManager.Stop();
+        }
+        public double ProgressMXA
+        {
+            get
+            {
+                return SoundManager.Progress;
+            }
+            set
+            {
+                SoundManager.Progress = value;
+            }
+        }
+        public bool PlayingMXA
+        {
+            get
+            {
+                return SoundManager.Playing;
+            }
+        }
+        public bool PlayingMP3
+        {
+            get
+            {
+                return SoundManager.Playing;
+            }
+        }
+        public void Init()
         {
             KeyboardManager = new KeyboardManager(this);
             MountGameCom(KeyboardManager);
@@ -168,13 +235,15 @@ namespace MetalX
 
             UIManager = new UIManager(this);
             MountGameCom(UIManager);
+
+            SceneManager = new SceneManager(this);
+            MountGameCom(SceneManager);
         }
         /// <summary>
         /// 启动
         /// </summary>
         public void Start()
-        {
-            //mountComponent();
+        {            
             gameBeginTime = DateTime.Now;
             if (Devices.Window != null)
             {
@@ -196,7 +265,6 @@ namespace MetalX
 
                 //WaitFrameByAverageFPS();
             }
-            //Dispose();
         }
         /// <summary>
         /// 每帧
@@ -272,10 +340,10 @@ namespace MetalX
         {
             isRunning = false;
             Devices.Dispose();
-            if (Devices.Window != null)
-            {
-                Devices.Window.Close();
-            }
+            //if (Devices.Window != null)
+            //{
+            //    Devices.Window.Close();
+            //}
         }
         /// <summary>
         /// 挂载MetalX组件
@@ -320,31 +388,14 @@ namespace MetalX
             Devices.D3DDev.Lights[0].Position = location;
         }
         #region Load File Method
-        /// <summary>
-        /// 加载.MP3文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX音频</returns>
-        public MetalXAudio LoadDotMP3(string fileName)
+        public void LoadFormBox(FormBox fb)
         {
-            MetalXAudio mxa = new MetalXAudio();
-            mxa.Name = Path.GetFileNameWithoutExtension(fileName);
-            mxa.AudioData = File.ReadAllBytes(fileName);
-            return mxa;
+            FormBoxes.Add(fb);
         }
-        /// <summary>
-        /// 加载.MXA文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX音频</returns>
-        public MetalXAudio LoadDotMXA(string fileName)
+        public void LoadScene(string pathName)
         {
-            return (MetalXAudio)Util.LoadObject(fileName);
+            Scenes.Add(Scenes.LoadDotMXScene(pathName, this));
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pathName"></param>
         public void LoadAllDotMXA(string pathName)
         {
             List<string> dirName = new List<string>();
@@ -355,7 +406,7 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.mxa");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXAudio mxa = LoadDotMXA(fi.FullName);
+                    MetalXAudio mxa = Audios.LoadDotMXA(fi.FullName);
                     Audios.Add(mxa);
                 }
             }
@@ -370,114 +421,11 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.mp3");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXAudio mxa = LoadDotMP3(fi.FullName);
+                    MetalXAudio mxa = Audios.LoadDotMP3(fi.FullName);
                     Audios.Add(mxa);
                 }
             }
         }
-        /// <summary>
-        /// 加载.X文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX模型</returns>
-        public MetalXModel LoadDotX(string fileName)
-        {
-            GraphicsStream adj;
-            ExtendedMaterial[] extendedMaterials;
-            EffectInstance[] effectInstances;
-
-            Mesh mesh = Mesh.FromFile(fileName, MeshFlags.Managed, Devices.D3DDev,
-                out adj, out extendedMaterials, out effectInstances);
-
-            MetalXModel model = new MetalXModel();
-            MemoryStream tms = new MemoryStream();
-            mesh.Save(tms, adj, extendedMaterials, effectInstances, XFileFormat.Compressed);
-            //model.MeshData.Position = 0;
-            model.MeshData = tms.ToArray();
-
-            model.MEMMesh = mesh;
-            model.MEMTextures = new Microsoft.DirectX.Direct3D.Texture[extendedMaterials.Length];
-            model.MEMMaterials = new Material[extendedMaterials.Length];
-            model.TexturesData = new byte[extendedMaterials.Length][];
-
-            for (int i = 0; i < extendedMaterials.Length; i++)
-            {
-                if (extendedMaterials[i].TextureFilename != null && extendedMaterials[i].TextureFilename != string.Empty)
-                {
-                    model.MEMTextures[i] = TextureLoader.FromFile(Devices.D3DDev, extendedMaterials[i].TextureFilename);
-                    FileStream fs = File.OpenRead(extendedMaterials[i].TextureFilename);
-                    byte[] buf = new byte[(int)fs.Length];
-                    fs.Read(buf, 0, buf.Length);
-                    model.TexturesData[i] = buf;
-                    model.MEMMaterials[i] = extendedMaterials[i].Material3D;
-                }
-            }
-            model.MEMCount = extendedMaterials.Length;
-
-            return model;
-        }
-        /// <summary>
-        /// 加载.MXM文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX模型</returns>
-        public MetalXModel LoadDotMXM(string fileName)
-        {
-            MetalXModel model = (MetalXModel)Util.LoadObject(fileName);
-
-            ExtendedMaterial[] extendedMaterials;
-
-            Mesh mesh = Mesh.FromStream(new MemoryStream(model.MeshData), MeshFlags.Managed, Devices.D3DDev,
-                   out extendedMaterials);
-
-            model.MEMMesh = mesh;
-            model.MEMTextures = new Microsoft.DirectX.Direct3D.Texture[extendedMaterials.Length];
-            model.MEMMaterials = new Material[extendedMaterials.Length];
-
-            for (int i = 0; i < extendedMaterials.Length; i++)
-            {
-                if (extendedMaterials[i].TextureFilename != null && extendedMaterials[i].TextureFilename != string.Empty)
-                {
-                    model.MEMTextures[i] = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(model.TexturesData[i]));
-                    model.MEMMaterials[i] = extendedMaterials[i].Material3D;
-                }
-            }
-            model.MEMCount = extendedMaterials.Length;
-
-            return model;
-        }
-        /// <summary>
-        /// 加载.PNG文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX纹理</returns>
-        public MetalXTexture LoadDotPNG(string fileName)
-        {
-            MetalXTexture texture = new MetalXTexture();
-            texture.Name = Path.GetFileNameWithoutExtension(fileName);
-            texture.TextureData = File.ReadAllBytes(fileName);
-            Image img = Image.FromStream(new MemoryStream(texture.TextureData));
-            texture.SizePixel = img.Size;
-            texture.TileSizePixel = new Size(16, 16);
-            texture.MEMTexture = TextureLoader.FromFile(Devices.D3DDev, fileName, texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
-            return texture;
-        }
-        /// <summary>
-        /// 加载.MXT文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX纹理</returns>
-        public MetalXTexture LoadDotMXT(string fileName)
-        {
-            MetalXTexture texture = new MetalXTexture();
-            texture = (MetalXTexture)Util.LoadObject(fileName);
-            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
-            return texture;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pathName"></param>
         public void LoadAllDotMXT(string pathName)
         {
             List<string> dirName = new List<string>();
@@ -489,7 +437,7 @@ namespace MetalX
                     FileInfo[] fis = di.GetFiles("*.mxt");
                     foreach (FileInfo fi in fis)
                     {
-                        MetalXTexture mxt = LoadDotMXT(fi.FullName);
+                        MetalXTexture mxt = Textures.LoadDotMXT(fi.FullName, this);
                         Textures.Add(mxt);
                     }
                 }
@@ -505,45 +453,11 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.png");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXTexture mxt = LoadDotPNG(fi.FullName);
+                    MetalXTexture mxt = Textures.LoadDotPNG(fi.FullName, this);
                     Textures.Add(mxt);
                 }
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pathName"></param>
-        /// <returns></returns>
-        public Scene LoadDotMXScene(string pathName)
-        {
-            Scene scene = new Scene();
-            scene = (Scene)Util.LoadObject(pathName);
-            //foreach (TileLayer tl in scene.TileLayers)
-            //{
-            //    foreach (Tile t in tl.Tiles)
-            //    {
-            //        foreach (TileFrame tf in t.Frames)
-            //        {
-            //            string tfname = tf.TextureFileName;
-            //            GetTextureIndex(tfname);
-            //        }
-            //    }
-            //}
-            for (int i = 0; i < scene.TileLayers.Count; i++)
-            {
-                for (int j = 0; j < scene.TileLayers[i].Tiles.Count; j++)
-                {
-                    for (int k = 0; k < scene.TileLayers[i].Tiles[j].Frames.Count; k++)
-                    {
-                        string tfname = scene.TileLayers[i].Tiles[j].Frames[k].TextureFileName;
-                        scene.TileLayers[i].Tiles[j].Frames[k].TextureIndex = Textures.GetIndex(tfname);
-                    }
-                }
-            }
-            return scene;
-        }
-
         #endregion
         #region DrawMXM
         /// <summary>

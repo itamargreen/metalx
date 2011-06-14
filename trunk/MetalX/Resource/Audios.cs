@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace MetalX.Resource
 {
@@ -68,6 +68,26 @@ namespace MetalX.Resource
         public void Del(int i)
         {
             items.RemoveAt(i);
+        }        /// <summary>
+        /// 加载.MP3文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX音频</returns>
+        public MetalXAudio LoadDotMP3(string fileName)
+        {
+            MetalXAudio mxa = new MetalXAudio();
+            mxa.Name = Path.GetFileNameWithoutExtension(fileName);
+            mxa.AudioData = File.ReadAllBytes(fileName);
+            return mxa;
+        }
+        /// <summary>
+        /// 加载.MXA文件
+        /// </summary>
+        /// <param name="fileName">文件路径+文件名</param>
+        /// <returns>MetalX音频</returns>
+        public MetalXAudio LoadDotMXA(string fileName)
+        {
+            return (MetalXAudio)Util.LoadObject(fileName);
         }
     }
 }

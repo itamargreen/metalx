@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+
+using MetalX.Data;
 
 namespace MetalX.Component
 {
     class SceneManager : GameCom
     {
+        public int AtSceneIndex = -1;
         public SceneManager(Game g)
             : base(g)
         {

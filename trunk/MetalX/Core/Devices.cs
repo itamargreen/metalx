@@ -7,7 +7,7 @@ namespace MetalX
 {
     public class Devices : IDisposable
     {
-        Game metalXGame;
+        Game game;
         public Form Window;
 
         public Microsoft.DirectX.Direct3D.Device D3DDev;
@@ -33,7 +33,7 @@ namespace MetalX
             Window.StartPosition = FormStartPosition.CenterScreen;
             Window.Size = metalxgame.Options.WindowSize;
 
-            metalXGame = metalxgame;
+            game = metalxgame;
 
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
@@ -55,7 +55,7 @@ namespace MetalX
         }
         public Devices(Control control, Game metalxgame)
         {
-            metalXGame = metalxgame;
+            game = metalxgame;
 
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
