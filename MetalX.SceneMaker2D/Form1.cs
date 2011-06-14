@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 using Microsoft.DirectX;
 
+using MetalX;
 using MetalX.Component;
 using MetalX.Data;
 using MetalX.Resource;
@@ -343,7 +344,7 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(game);
 
-            sceneMaker2D.scene = game.LoadDotMXScene(fileName);
+            sceneMaker2D.scene = game.Scenes.LoadDotMXScene(fileName, game);
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
@@ -454,6 +455,10 @@ namespace MetalX.SceneMaker2D
 
         private void ui_showgrid_CheckedChanged(object sender, EventArgs e)
         {
+            if (sceneMaker2D == null)
+            {
+                return;
+            }
             sceneMaker2D.drawGrid = ui_showgrid.Checked;
             ui_pic.Refresh();
         }
@@ -843,21 +848,21 @@ namespace MetalX.SceneMaker2D
             {
                 return;
             }
-            game.SoundManager.Play(ui_mus_slt.Text);
+            game.PlayMXA(ui_mus_slt.Text);
             timer1.Enabled = true;
         }
 
         private void ui_stop_Click(object sender, EventArgs e)
         {
-            game.SoundManager.Stop();
+            game.StopMXA();
             timer1.Enabled = false;
             ui_proc.Value = 0;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ui_proc.Value = (int)(game.SoundManager.Progress * 50);
-            if (!game.SoundManager.Playing)
+            ui_proc.Value = (int)(game.ProgressMXA * 50);
+            if (!game.PlayingMXA)
             {
                 timer1.Enabled = false;
             }
@@ -865,7 +870,7 @@ namespace MetalX.SceneMaker2D
 
         private void ui_proc_Scroll(object sender, EventArgs e)
         {
-            game.SoundManager.Progress = (double)ui_proc.Value / ui_proc.Maximum;
+            game.ProgressMXA = (double)ui_proc.Value / ui_proc.Maximum;
         }
 
         private void ui_loadmp3_Click(object sender, EventArgs e)
@@ -876,7 +881,7 @@ namespace MetalX.SceneMaker2D
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    game.SoundManager.PlayMP3(ofd.FileName);
+                    game.PlayMP3(ofd.FileName);
                     timer1.Enabled = true;
                 }
             }

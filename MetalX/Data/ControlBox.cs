@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace MetalX.UI
+namespace MetalX.Data
 {
     [Serializable]
     public class ControlBox
@@ -10,7 +10,7 @@ namespace MetalX.UI
         protected Game game;
         public bool Visible = true;
         public string Name;
-        public int Index = -1;
+        //public int Index = -1;
         public Color BgColor;
         public string BgImage;
         public string BgSound;

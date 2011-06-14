@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-using MetalX.UI;
+using MetalX.Data;
 
 namespace MetalX.Component
 {
     public class UIManager : GameCom
     {
-        List<FormBox> AppearingBoxes = new List<FormBox>();
+        Stack<int> AppearingFormBoxIndex = new Stack<int>();
 
         public UIManager(Game g)
             : base(g)
@@ -22,8 +22,9 @@ namespace MetalX.Component
         public override void Draw()
         {
             base.Draw();
-            foreach (FormBox fb in AppearingBoxes)
+            foreach (int i in AppearingFormBoxIndex)
             {
+                FormBox fb = game.FormBoxes[i];
                 if (fb.Visible)
                 {
                     foreach (ControlBox cb in fb.ControlBoxes)
