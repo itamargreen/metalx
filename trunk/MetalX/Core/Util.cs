@@ -7,6 +7,27 @@ namespace MetalX
 {
     public class Util
     {
+        public static bool Is2PowSize(Size size)
+        {
+            if (Is2Pow(size.Width) && Is2Pow(size.Height))
+            {
+                return true;
+            }
+            return false;
+        }
+        public static bool Is2Pow(int num)
+        {
+            int j = 1;
+            for (int i = 0; i < 16; i++)
+            {
+                j <<= 1;
+                if (num == j)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public static void EnumDir(string root, List<string> list)
         {
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(root);

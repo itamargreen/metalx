@@ -514,7 +514,7 @@ namespace MetalX
         /// <param name="t">MetalX格式纹理</param>
         /// <param name="loc">位置</param>
         /// <param name="c">颜色</param>
-        public void DrawMetalXTextureDirect3D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
+        void DrawMetalXTextureDirect3D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
         {
             if (t == null)
             {
@@ -533,10 +533,21 @@ namespace MetalX
             Size s = t.SizePixel;
 
             float fx, fy, tx, ty;
-            fx = (float)dz.X / (float)s.Width;
-            fy = (float)dz.Y / (float)s.Height;
-            tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
-            ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
+
+            if (Util.Is2PowSize(t.SizePixel))
+            {
+                fx = ((float)dz.X) / (float)s.Width;
+                fy = ((float)dz.Y) / (float)s.Height;
+                tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
+                ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
+            }
+            else
+            {
+                fx = ((float)dz.X + 0.5f) / (float)s.Width;
+                fy = ((float)dz.Y + 0.5f) / (float)s.Height;
+                tx = ((float)dz.X + (float)dz.Width + 0.5f) / (float)s.Width;
+                ty = ((float)dz.Y + (float)dz.Height + 0.5f) / (float)s.Height;
+            }
 
             CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
             vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
@@ -558,7 +569,7 @@ namespace MetalX
             //Devices.D3DDev.SetStreamSource(0, vb, 0);
             //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
-        public void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
+        void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
         {
             if (t == null)
             {

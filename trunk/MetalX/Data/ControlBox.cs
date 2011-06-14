@@ -11,9 +11,12 @@ namespace MetalX.Data
         public bool Visible = true;
         public string Name;
         //public int Index = -1;
-        public Color BgColor;
-        public string BgImage;
-        public string BgSound;
+        public Color BGColor;
+        public Color BGTextureFliterColor = Color.White;
+        public int BGTextureIndex = -1;
+        public string BGTextureFileName;
+        public string BGTextureName;
+        public string BGAudio;
         public Size Size;
         public Point Location;
         public ControlBox(Game g)
@@ -29,15 +32,19 @@ namespace MetalX.Data
         public List<ControlBox> ControlBoxes = new List<ControlBox>();
         public void Appear()
         {
-            if (Visible)
-            {
-                return;
-            }
+            //if (Visible)
+            //{
+            //    return;
+            //}
             foreach (ControlBox cb in ControlBoxes)
             {
                 if (cb is ButtonBox)
                 {
                     ((ButtonBox)cb).ButtonBoxState = ButtonBoxState.Wait;
+                } 
+                else if (cb is TextBox)
+                {
+                    ((TextBox)cb).SubTextIndex = 0;
                 }
             }
             Visible = true;
@@ -67,7 +74,7 @@ namespace MetalX.Data
     public class TextBox : ControlBox
     {
         public string Text;
-        public Color TextColor;
+        public Color TextColor = Color.White;
         public int TextIndex = -1;
         public string TextFileName;
         public string[] Lines
@@ -81,7 +88,7 @@ namespace MetalX.Data
         public int Interval = 33;
         DateTime lastCharacterTime;
         public Size FontSize;
-        public int SubTextIndex = 1;
+        public int SubTextIndex = 0;
         public event TextBoxEvent OnSubTextShowDone;
         public string SubText
         {
@@ -97,7 +104,7 @@ namespace MetalX.Data
                     }
                     else
                     {
-                        OneByOne = false;
+                        //OneByOne = false;
                         //OnTextBoxShowDone();
                     }
                 }
@@ -114,6 +121,7 @@ namespace MetalX.Data
         }
         public void LoadText(string pathName, bool onebyone, int interval)
         {
+            SubTextIndex = 0;
             TextFileName = pathName;
             Text = System.IO.File.ReadAllText(TextFileName);
             OneByOne = onebyone;
@@ -123,9 +131,10 @@ namespace MetalX.Data
     [Serializable]
     public class TextureBox : ControlBox
     {
-        public string TextureFileName;
+        public string TextureFileName; 
+        public string TextureName;
         public int TextureIndex = -1;
-        public Color TextureColor;
+        public Color TextureFliterColor = Color.White;
         public TextureBox(Game g)
             : base(g)
         { }
