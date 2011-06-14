@@ -6,11 +6,11 @@ using MetalX.Data;
 
 namespace MetalX.Component
 {
-    public class UIManager : GameCom
+    public class FormBoxManager : GameCom
     {
         Stack<int> AppearingFormBoxIndex = new Stack<int>();
 
-        public UIManager(Game g)
+        public FormBoxManager(Game g)
             : base(g)
         { }
 

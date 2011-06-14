@@ -47,7 +47,7 @@ namespace MetalX
         /// </summary>
         public DateTime FrameBeginTime;
         SoundManager SoundManager;
-        UIManager UIManager;
+        FormBoxManager FormBoxManager;
         KeyboardManager KeyboardManager;
         SceneManager SceneManager;
         //DateTime frameBeginTime, frameEndTime;
@@ -233,8 +233,8 @@ namespace MetalX
             SoundManager = new SoundManager(this);
             MountGameCom(SoundManager);
 
-            UIManager = new UIManager(this);
-            MountGameCom(UIManager);
+            FormBoxManager = new FormBoxManager(this);
+            MountGameCom(FormBoxManager);
 
             SceneManager = new SceneManager(this);
             MountGameCom(SceneManager);
