@@ -287,8 +287,7 @@ namespace MetalX.SceneMaker2D
                 game.Stop();
             }
             game = new Game(pictureBox1);
-            game.LoadAllDotMXT(@".\");
-            game.LoadAllDotMXA(@".\");
+
             game.LoadAllDotPNG(@".\");
             game.LoadAllDotMP3(@".\");
 
@@ -334,8 +333,8 @@ namespace MetalX.SceneMaker2D
                 game.Stop();
             }
             game = new Game(pictureBox1);
-            game.LoadAllDotMXT(@".\");
-            game.LoadAllDotMXA(@".\");
+            //game.LoadAllDotMXT(@".\");
+            //game.LoadAllDotMXA(@".\");
             game.LoadAllDotPNG(@".\");
             game.LoadAllDotMP3(@".\");
 
