@@ -21,20 +21,6 @@ namespace MetalX.Resource
                 return items[i];
             }
         }
-        //public MetalXTexture this[string name]
-        //{
-        //    get
-        //    {
-        //        for (int i = 0; i < items.Count; i++)
-        //        {
-        //            if (items[i].Name == name)
-        //            {
-        //                return items[i];
-        //            }
-        //        }
-        //        return null;
-        //    }
-        //}
         public int GetIndex(string tname)
         {
             for (int i = 0; i < items.Count; i++)
@@ -62,16 +48,12 @@ namespace MetalX.Resource
                     return;
                 }
             }
-            //if (items.Contains(texture))
-            //{
-            //    return;
-            //}
             items.Add(texture);
         }
         public void Del(int i)
         {
             items.RemoveAt(i);
-        }        /// <summary>
+        }
 
     }
 }

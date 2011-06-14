@@ -26,14 +26,14 @@ namespace MetalX
             }
         }
 
-        public Devices(Game metalxgame)
+        public Devices(Game g)
         {
             Window = new Form();
-            Window.Text = metalxgame.Name;
+            Window.Text = g.Name;
             Window.StartPosition = FormStartPosition.CenterScreen;
-            Window.Size = metalxgame.Options.WindowSize;
+            Window.Size = g.Options.WindowSize;
 
-            game = metalxgame;
+            game = g;
 
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
@@ -53,9 +53,9 @@ namespace MetalX
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
         }
-        public Devices(Control control, Game metalxgame)
+        public Devices(Control control, Game g)
         {
-            game = metalxgame;
+            game = g;
 
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
