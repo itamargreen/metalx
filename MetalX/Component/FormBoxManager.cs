@@ -103,8 +103,12 @@ namespace MetalX.Component
         }
         public void Disappear(int i)
         {
-            AppearingFormBoxIndex.RemoveAt(i);
-            game.FormBoxes[i].Disappear();
+            try
+            {
+                AppearingFormBoxIndex.RemoveAt(i);
+                game.FormBoxes[i].Disappear();
+            }
+            catch { }
         }
 
         public override void OnKeyboardUpCode(int key)

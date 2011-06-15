@@ -45,7 +45,11 @@ namespace MetalX
         /// <summary>
         /// 帧开始时间
         /// </summary>
-        public DateTime FrameBeginTime;
+        public DateTime frameBeginTime;
+        /// <summary>
+        /// 帧开始时间
+        /// </summary>
+        public TimeSpan frameTimeSpan;
         SoundManager SoundManager;
         FormBoxManager FormBoxManager;
         KeyboardManager KeyboardManager;
@@ -128,17 +132,17 @@ namespace MetalX
                 targetFPS = value <= 0 ? 60 : (value >= 60 ? 60 : value);
             }
         }
-        //public float FPS
-        //{
-        //    get
-        //    {
-        //        return FPSValue;
-        //    }
-        //    set
-        //    {
-        //        targetFPS = value <= 0 ? 60 : (value >= 60 ? 60 : value);
-        //    }
-        //}
+        public float FPS
+        {
+            get
+            {
+                return (float)(1000 / frameTimeSpan.Ticks);
+            }
+            set
+            {
+                targetFPS = value <= 0 ? 60 : (value >= 60 ? 60 : value);
+            }
+        }
         #endregion
         #region 构造方法
         public Game()
@@ -259,11 +263,11 @@ namespace MetalX
             isRunning = true;
             while (isRunning)
             {
-                FrameBeginTime = DateTime.Now;
+                frameBeginTime = DateTime.Now;
 
                 Frame();
 
-                //WaitFrameByAverageFPS();
+                frameTimeSpan = DateTime.Now - frameBeginTime;
             }
         }
         /// <summary>
@@ -271,7 +275,7 @@ namespace MetalX
         /// </summary>
         void Frame()
         {
-            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.CornflowerBlue, 1, 0);
+            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.CornflowerBlue, 0, 0);
             Devices.D3DDev.BeginScene();
             foreach (GameCom metalXGameCom in GameComs)
             {
@@ -302,6 +306,10 @@ namespace MetalX
         void WaitFrameByAverageFPS()
         {
             while (AverageFPS > targetFPS) ;
+        }
+        void WaitFrameByFPS()
+        {
+            while (FPS > targetFPS) ;
         }
         /// <summary>
         /// 延迟等待
