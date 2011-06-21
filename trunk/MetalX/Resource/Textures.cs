@@ -104,7 +104,7 @@ namespace MetalX.Resource
         {
             MetalXTexture texture = new MetalXTexture();
             texture = (MetalXTexture)Util.LoadObject(fileName);
-            texture.MEMTexture = TextureLoader.FromStream(g.Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+            texture.MEMTexture = TextureLoader.FromStream(g.Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.X8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
             return texture;
         }
     }

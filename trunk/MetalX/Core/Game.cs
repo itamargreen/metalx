@@ -136,7 +136,14 @@ namespace MetalX
         {
             get
             {
-                return (float)(1000 / frameTimeSpan.Ticks);
+                try
+                {
+                    return (float)(1000 / frameTimeSpan.Ticks);
+                }
+                catch
+                {
+                    return 0;
+                }
             }
             set
             {
@@ -238,10 +245,10 @@ namespace MetalX
             MountGameCom(SoundManager);
 
             FormBoxManager = new FormBoxManager(this);
-            MountGameCom(FormBoxManager);
+            //MountGameCom(FormBoxManager);
 
             SceneManager = new SceneManager(this);
-            MountGameCom(SceneManager);
+            //MountGameCom(SceneManager);
         }
         /// <summary>
         /// 启动
@@ -551,10 +558,10 @@ namespace MetalX
             }
             else
             {
-                fx = ((float)dz.X + 0.5f) / (float)s.Width;
-                fy = ((float)dz.Y + 0.5f) / (float)s.Height;
-                tx = ((float)dz.X + (float)dz.Width + 0.5f) / (float)s.Width;
-                ty = ((float)dz.Y + (float)dz.Height + 0.5f) / (float)s.Height;
+                fx = ((float)dz.X + 0.0f) / (float)s.Width;
+                fy = ((float)dz.Y + 0.0f) / (float)s.Height;
+                tx = ((float)dz.X + (float)dz.Width + 0.0f) / (float)s.Width;
+                ty = ((float)dz.Y + (float)dz.Height + 0.0f) / (float)s.Height;
             }
 
             CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];

@@ -148,6 +148,7 @@ namespace MetalX.SceneMaker2D
                 yoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Height;
             }
             insFrame = false;
+            ui_cursorsat.Text = "铅笔";
             pictureBox1.Cursor = bc;
             ui_tilecount.Text = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count.ToString();
         }
@@ -321,6 +322,7 @@ namespace MetalX.SceneMaker2D
 
             tabControl1.SelectedIndex = 1;
 
+            game.Init();
             game.MountGameCom(sceneMaker2D);
             game.Start();
         }
@@ -357,6 +359,7 @@ namespace MetalX.SceneMaker2D
 
             tabControl1.SelectedIndex = 1;
 
+            game.Init();
             game.MountGameCom(sceneMaker2D);
             game.Start();
         }
@@ -423,6 +426,7 @@ namespace MetalX.SceneMaker2D
 
         private void ui_pic_slt_SelectedIndexChanged(object sender, EventArgs e)
         {
+            sceneMaker2D.mxtName = ui_pic_slt.Text;
             sceneMaker2D.mxtIndex = ui_pic_slt.SelectedIndex;
             ui_pic.Image = Image.FromStream(new System.IO.MemoryStream(game.Textures[sceneMaker2D.mxtIndex].TextureData));
             ui_pic.Size = new Size(game.Textures[sceneMaker2D.mxtIndex].SizePixel.Width + 2, game.Textures[sceneMaker2D.mxtIndex].SizePixel.Height + 2);
@@ -765,18 +769,39 @@ namespace MetalX.SceneMaker2D
 
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.C)
+            try
             {
-                if (sceneMaker2D.drawPen)
-                    sceneMaker2D.drawPen = false;
-                else
-                    sceneMaker2D.drawPen = true;
+                if (e.KeyCode == Keys.Up)
+                {
+                    splitContainer1.Panel2.VerticalScroll.Value -= 10;
+                }
+                else if (e.KeyCode == Keys.Left)
+                {
+                    splitContainer1.Panel2.HorizontalScroll.Value -= 10;
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    splitContainer1.Panel2.VerticalScroll.Value += 10;
+                }
+                else if (e.KeyCode == Keys.Right)
+                {
+                    splitContainer1.Panel2.HorizontalScroll.Value += 10;
+                }
+                else if (e.KeyCode == Keys.C)
+                {
+                    if (sceneMaker2D.drawPen)
+                        sceneMaker2D.drawPen = false;
+                    else
+                        sceneMaker2D.drawPen = true;
+                }
+                scene_code_layer = e.KeyValue - 48;
+                if (scene_code_layer < 0 || scene_code_layer > 9)
+                {
+                    scene_code_layer = 0;
+                }
             }
-            scene_code_layer = e.KeyValue - 48;
-            if (scene_code_layer < 0 || scene_code_layer > 9)
-            {
-                scene_code_layer = 0;
-            }
+            catch
+            { }
         }
 
         private void tabControl1_KeyUp(object sender, KeyEventArgs e)
@@ -787,20 +812,23 @@ namespace MetalX.SceneMaker2D
                 if (i > -1)
                 {
                     ui_aniframec.Text = "" + sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][i].FrameCount;
+
+                    if (insFrame)
+                    {
+                        insFrame = false;
+                        ui_cursorsat.Text = "铅笔";
+                        pictureBox1.Cursor = bc;
+                    }
+                    else
+                    {
+                        if (pictureBox1.Cursor != System.Windows.Forms.Cursors.UpArrow)
+                            bc = pictureBox1.Cursor;
+                        insFrame = true;
+                        ui_cursorsat.Text = "插入帧";
+                        pictureBox1.Cursor = System.Windows.Forms.Cursors.UpArrow;
+                    }
                 }
-                if (insFrame)
-                {
-                    insFrame = false;
-                    pictureBox1.Cursor = bc;
-                }
-                else
-                {
-                    if (pictureBox1.Cursor != System.Windows.Forms.Cursors.UpArrow)
-                        bc = pictureBox1.Cursor;
-                    insFrame = true;
-                    pictureBox1.Cursor = System.Windows.Forms.Cursors.UpArrow;
-                }
-            } 
+            }
         }
 
         private void ui_link_file_DoubleClick(object sender, EventArgs e)
@@ -913,6 +941,14 @@ namespace MetalX.SceneMaker2D
             {
                 game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
             }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {            
         }
     }
 }

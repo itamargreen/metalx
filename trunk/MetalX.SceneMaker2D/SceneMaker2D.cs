@@ -112,12 +112,16 @@ namespace MetalX.SceneMaker2D
             }
             game.DrawRect(dragRect, Color.Red);
 
-            game.DrawText(" FPS: " + game.FPS.ToString("f1"), new Point(), Color.White);
+            game.DrawText(" FPS: " + game.AverageFPS.ToString("f1"), new Point(), Color.White);
         }
         public override void OnKeyboardDownCode(int key)
         {
             base.OnKeyboardDownCode(key);
             game.DrawText(key + " down", new Point(), Color.White);
+            //if (key == 200)
+            //{
+            //    ((System.Windows.Forms.Panel)game.Devices.D3DDev..DeviceWindow.Parent).VerticalScroll.Value += 16;
+            //}
         }
         public override void OnKeyboardDownHoldCode(int key)
         {
