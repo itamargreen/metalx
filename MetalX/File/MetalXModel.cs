@@ -7,7 +7,6 @@ namespace MetalX
     [Serializable]
     public class MetalXModel : IDisposable
     {
-        //public int Index;
         public string Name;
         public string Path;
         public DateTime CreateTime;

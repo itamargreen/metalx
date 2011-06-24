@@ -24,35 +24,33 @@ namespace MetalHunter
     }
     class MetalHunter
     {
-        List<FormBox> formBoxes = new List<FormBox>();
-
-
         Game game;
 
         public void InitFormBoxes()
         {
-            formBoxes.Add(new FB1(game));
+            game.LoadFormBox(new FB1(game));
         }
 
         public MetalHunter()
         {
             game = new Game("MetalHunter");
+          
             game.Init();
 
             game.LoadAllDotPNG(@".\");
+            game.LoadAllDotMP3(@".\");
+
+            game.MountGameCom(game.SceneManager);
+            game.MountGameCom(game.FormBoxManager);
 
             InitFormBoxes();
-            foreach (FormBox fb in formBoxes)
-            {
-                game.LoadFormBox(fb);
-            }
-
+            
             game.Start();
         }
 
         static void Main()
         {
-            MetalHunter mh = new MetalHunter();
+            MetalHunter MH = new MetalHunter();
         }
     }
 }

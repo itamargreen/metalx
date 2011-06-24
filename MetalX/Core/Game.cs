@@ -50,10 +50,10 @@ namespace MetalX
         /// 帧开始时间
         /// </summary>
         public TimeSpan frameTimeSpan;
-        SoundManager SoundManager;
-        FormBoxManager FormBoxManager;
-        KeyboardManager KeyboardManager;
-        SceneManager SceneManager;
+        public SoundManager SoundManager;
+        public FormBoxManager FormBoxManager;
+        public KeyboardManager KeyboardManager;
+        public SceneManager SceneManager;
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -238,17 +238,17 @@ namespace MetalX
         }
         public void Init()
         {
-            KeyboardManager = new KeyboardManager(this);
-            MountGameCom(KeyboardManager);
-
             SoundManager = new SoundManager(this);
             MountGameCom(SoundManager);
 
-            FormBoxManager = new FormBoxManager(this);
-            //MountGameCom(FormBoxManager);
+            KeyboardManager = new KeyboardManager(this);
+            MountGameCom(KeyboardManager);
 
             SceneManager = new SceneManager(this);
             //MountGameCom(SceneManager);
+
+            FormBoxManager = new FormBoxManager(this);
+            //MountGameCom(FormBoxManager);
         }
         /// <summary>
         /// 启动
@@ -558,10 +558,10 @@ namespace MetalX
             }
             else
             {
-                fx = ((float)dz.X + 0.0f) / (float)s.Width;
-                fy = ((float)dz.Y + 0.0f) / (float)s.Height;
-                tx = ((float)dz.X + (float)dz.Width + 0.0f) / (float)s.Width;
-                ty = ((float)dz.Y + (float)dz.Height + 0.0f) / (float)s.Height;
+                fx = ((float)dz.X + 0.1f) / (float)s.Width;
+                fy = ((float)dz.Y + 0.1f) / (float)s.Height;
+                tx = ((float)dz.X + (float)dz.Width + 0.1f) / (float)s.Width;
+                ty = ((float)dz.Y + (float)dz.Height + 0.1f) / (float)s.Height;
             }
 
             CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
