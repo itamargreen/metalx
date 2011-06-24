@@ -38,6 +38,7 @@ namespace MetalX.Component
         {
             base.Draw();
             DrawTerrain(scene);
+            game.DrawText(FileLoader.Loaded + " / " + FileLoader.Size + " - " + FileLoader.TakeTime.TotalSeconds, new Point(), Color.White);
         }
 
         public void LoadScene(int i)

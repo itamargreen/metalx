@@ -126,6 +126,10 @@ namespace MetalX.Component
             {
                 game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
             }
+            else if (key == (int)Key.L)
+            {
+                FileLoader.Load(@"D:\Altium.Designer.Winter.09.SP3.Build8.3.0.16776.Cracked\Setup\m6.cab");
+            }
         }
     }
 }
