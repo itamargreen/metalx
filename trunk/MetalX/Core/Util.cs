@@ -1,10 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using System.Drawing;
 
 namespace MetalX
 {
+    public class FileLoader
+    {
+        public static byte[] FileData;
+        public static int Size = 0;
+        public static int Loaded = 0;
+        public static TimeSpan TakeTime;
+        static DateTime startTime;
+        public static double Progress
+        {
+            get
+            {
+                return (double)Loaded / (double)Size;
+            }
+        }
+        public static void Load(string fileName)
+        {
+            startTime = DateTime.Now;
+            Loaded = 0;
+            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            Size = (int)fs.Length;
+            FileData = new byte[Size];
+            fs.BeginRead(FileData, 0, Size, new AsyncCallback(read), fs);
+        }
+        static void read(IAsyncResult iar)
+        {
+            FileStream fs = (FileStream)iar.AsyncState;
+            Loaded += fs.EndRead(iar);
+            if (iar.IsCompleted)
+            {
+                TakeTime = DateTime.Now - startTime;
+                return;
+            }
+            else
+            {
+                fs.BeginRead(FileData, 0, Size, new AsyncCallback(read), fs);
+            }
+        }
+    }
     public class Util
     {
         public static bool Is2PowSize(Size size)
