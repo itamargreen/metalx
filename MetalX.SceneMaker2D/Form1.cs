@@ -278,7 +278,7 @@ namespace MetalX.SceneMaker2D
             {
                 ui_mus_slt.Items.Add(game.Audios[i].Name);
             }
-        }      
+        }
         void new_scene(Size sizepixel, Size tilesizepixel)
         {
             left_rect = new Rectangle();
@@ -289,6 +289,7 @@ namespace MetalX.SceneMaker2D
             }
             game = new Game(pictureBox1);
 
+            game.Init();
             game.LoadAllDotPNG(@".\");
             game.LoadAllDotMP3(@".\");
 
@@ -322,7 +323,6 @@ namespace MetalX.SceneMaker2D
 
             tabControl1.SelectedIndex = 1;
 
-            game.Init();
             game.MountGameCom(sceneMaker2D);
             game.Start();
         }
@@ -337,6 +337,7 @@ namespace MetalX.SceneMaker2D
             game = new Game(pictureBox1);
             //game.LoadAllDotMXT(@".\");
             //game.LoadAllDotMXA(@".\");
+            game.Init();
             game.LoadAllDotPNG(@".\");
             game.LoadAllDotMP3(@".\");
 
@@ -359,7 +360,6 @@ namespace MetalX.SceneMaker2D
 
             tabControl1.SelectedIndex = 1;
 
-            game.Init();
             game.MountGameCom(sceneMaker2D);
             game.Start();
         }
@@ -383,7 +383,7 @@ namespace MetalX.SceneMaker2D
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -559,8 +559,8 @@ namespace MetalX.SceneMaker2D
             else if (tabControl2.SelectedIndex == 1)
             {
                 Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
-                
-                paint_code(p, e,scene_code_layer);
+
+                paint_code(p, e, scene_code_layer);
             }
         }
 
@@ -660,7 +660,7 @@ namespace MetalX.SceneMaker2D
             sceneMaker2D.drawingLayer = sl - ui_ly_slt.SelectedIndex;
             ui_mouse_pos.Text = "选中层" + sceneMaker2D.drawingLayer.ToString();
         }
-        
+
         private void ui_ly_slt_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (ui_ly_slt.SelectedIndex == -1)
@@ -670,11 +670,11 @@ namespace MetalX.SceneMaker2D
             int sl = ui_ly_slt.Items.Count - 1;
             if (e.NewValue.ToString() == "Unchecked")
             {
-                sceneMaker2D.scene.TileLayers[sl-ui_ly_slt.SelectedIndex].Visible = false;
+                sceneMaker2D.scene.TileLayers[sl - ui_ly_slt.SelectedIndex].Visible = false;
             }
             else
             {
-                sceneMaker2D.scene.TileLayers[sl-ui_ly_slt.SelectedIndex].Visible = true;
+                sceneMaker2D.scene.TileLayers[sl - ui_ly_slt.SelectedIndex].Visible = true;
             }
         }
 
@@ -717,7 +717,7 @@ namespace MetalX.SceneMaker2D
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                Text = openFileName = ofd.FileName;                
+                Text = openFileName = ofd.FileName;
                 new_scene(openFileName);
             }
         }
@@ -936,7 +936,7 @@ namespace MetalX.SceneMaker2D
             if (toolStripComboBox1.Text == "Direct3D")
             {
                 game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
-            } 
+            }
             else if (toolStripComboBox1.Text == "Direct2D")
             {
                 game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
@@ -948,7 +948,27 @@ namespace MetalX.SceneMaker2D
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {            
+        {
+        }
+
+        private void 替换纹理名ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //string source = "室内墙", target = "室内墙体";
+            //for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
+            //    for (int j = 0; j < sceneMaker2D.scene.TileLayers[i].Tiles.Count; j++)
+            //        for (int k = 0; k < sceneMaker2D.scene.TileLayers[i].Tiles[j].Frames.Count; k++)
+            //        {
+            //            if (sceneMaker2D.scene.TileLayers[i].Tiles[j].Frames[k].TextureFileName == source)
+            //            {
+            //                sceneMaker2D.scene.TileLayers[i].Tiles[j].Frames[k].TextureFileName = target;
+            //            }
+            //        }
+        }
+
+        private void 放大ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            game.Options.X += 1;
+            game.SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), game.Options.X);
         }
     }
 }

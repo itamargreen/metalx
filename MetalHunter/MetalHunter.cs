@@ -36,6 +36,7 @@ namespace MetalHunter
             game = new Game("MetalHunter");
           
             game.Init();
+            
 
             game.LoadAllDotPNG(@".\");
             game.LoadAllDotMP3(@".\");

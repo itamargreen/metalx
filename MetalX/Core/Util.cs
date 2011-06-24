@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
-
+using Microsoft.DirectX;
 namespace MetalX
 {
     public class FileLoader
@@ -39,12 +39,16 @@ namespace MetalX
             }
             else
             {
-                fs.BeginRead(FileData, 0, Size, new AsyncCallback(read), fs);
+                fs.BeginRead(FileData, Loaded, 512, new AsyncCallback(read), fs);
             }
         }
     }
     public class Util
     {
+        public static Vector3 Point2Vector3(Point p, float z)
+        {
+            return new Vector3(p.X, p.Y, z);
+        }
         public static bool Is2PowSize(Size size)
         {
             if (Is2Pow(size.Width) && Is2Pow(size.Height))

@@ -41,6 +41,7 @@ namespace MetalX
         /// </summary>
         public Audios Audios;
         public Scenes Scenes;
+        public Characters Characters;
         public FormBoxes FormBoxes;
         /// <summary>
         /// 帧开始时间
@@ -166,10 +167,6 @@ namespace MetalX
             Options = new Options();
             Devices = new Devices(this);
             Devices.Window.FormClosing += new FormClosingEventHandler(WindowClosing);
-            Textures = new Textures();
-            Audios = new Audios();
-            Scenes = new Scenes();
-            FormBoxes = new FormBoxes();
         }
 
         void WindowClosing(object sender, FormClosingEventArgs e)
@@ -182,11 +179,6 @@ namespace MetalX
             Name = name;
             Options = new Options();
             Devices = new Devices(control, this);
-            Models = new Models();
-            Textures = new Textures();
-            Audios = new Audios();
-            Scenes = new Scenes();
-            FormBoxes = new FormBoxes();
         }
 
         #endregion
@@ -238,6 +230,13 @@ namespace MetalX
         }
         public void Init()
         {
+            Models = new Models();
+            Textures = new Textures();
+            Audios = new Audios();
+            Scenes = new Scenes();
+            FormBoxes = new FormBoxes();
+            Characters = new Characters();
+
             SoundManager = new SoundManager(this);
             MountGameCom(SoundManager);
 
@@ -262,10 +261,13 @@ namespace MetalX
             }
             totalFrames = 0;
             SetCamera(
-                new Vector3(0, 0, -(float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(22.5 * Math.PI / 180.0))),
-                new Vector3(0, 0, 0));
+                new Vector3(0, 0, 22.5f),
+                new Vector3(),
+                Options.X);
             SetLight(
-                new Vector3(0, 0, -(float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(22.5 * Math.PI / 180.0))),
+                new Vector3(0, 0, 22.5f),
+                new Vector3(),
+                Options.X,
                 false);
             isRunning = true;
             while (isRunning)
@@ -282,7 +284,7 @@ namespace MetalX
         /// </summary>
         void Frame()
         {
-            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.CornflowerBlue, 0, 0);
+            Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.Black, 0, 0);
             Devices.D3DDev.BeginScene();
             foreach (GameCom metalXGameCom in GameComs)
             {
@@ -372,14 +374,21 @@ namespace MetalX
         /// 设置灯光
         /// </summary>
         /// <param name="value">开/关</param>
-        public void SetLight(Vector3 location, bool value)
+        public void SetLight(Vector3 location,Vector3 lookAt,float zoom, bool value)
         {
-            Devices.D3DDev.RenderState.Lighting = value;
+            location.Z = -((float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(location.Z * Math.PI / 180.0))) / zoom;
+
+            Devices.D3DDev.Lights[0].Direction = lookAt;
+            Devices.D3DDev.Lights[0].Position = location;
             Devices.D3DDev.Lights[0].Enabled = value;
+
+            Devices.D3DDev.RenderState.Lighting = value;
 
             Devices.D3DDev.RenderState.AlphaBlendEnable = true;
             Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
             Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
+
+            //Devices.D3DDev.RenderState.CullMode = Cull.None;
 
             //Devices.D3DDev.Lights[0].Type = LightType.Point;
             //Devices.D3DDev.Lights[0].Ambient = Color.White;
@@ -393,14 +402,11 @@ namespace MetalX
         /// </summary>
         /// <param name="location">位置</param>
         /// <param name="lookAt">视点位置</param>
-        public void SetCamera(Vector3 location, Vector3 lookAt)
+        public void SetCamera(Vector3 location, Vector3 lookAt,float zoom)
         {
-            //Devices.D3DDev.Lights[0].Position = location;
-            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / (float)Devices.D3DDev.PresentationParameters.BackBufferHeight, -100, 100);
+            location.Z = -((float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(location.Z * Math.PI / 180.0))) / zoom;
+            Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / (float)Devices.D3DDev.PresentationParameters.BackBufferHeight, -1000, 100);
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
-
-            Devices.D3DDev.Lights[0].Direction = lookAt;
-            Devices.D3DDev.Lights[0].Position = location;
         }
         #region Load File Method
         public void LoadFormBox(FormBox fb)
@@ -523,6 +529,13 @@ namespace MetalX
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
                 DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
         }
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 v3, Size size, Color color)
+        {
+            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+                DrawMetalXTextureDirect3D(t, dz, v3, size, color);
+            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                DrawMetalXTextureDirect2D(t, dz, v3, size, color);
+        }
         /// <summary>
         /// 绘制MetalX格式纹理
         /// </summary>
@@ -591,10 +604,13 @@ namespace MetalX
                 return;
             }
 
+            loc.X = loc.X / 2;
+            loc.Y = loc.Y / 2;
+            //loc.Z = -360f;
             Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
-
             Point p = new Point((int)loc.X, (int)loc.Y);
-            Devices.Sprite.Draw2D(t.MEMTexture, dz, dz, p, color);
+            //Devices.Sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), p, color);
+            Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), loc, color);
 
             Devices.Sprite.End();
         }

@@ -80,7 +80,7 @@ namespace MetalX.SceneMaker2D
                 depth -= 10f;
             }
             label1.Text = depth.ToString();
-            game.SetCamera(new Vector3(0, 0, depth), new Vector3());
+            game.SetCamera(new Vector3(0, 0, depth), new Vector3(), 1);
         }
 
         private void ui_pack_Click(object sender, EventArgs e)

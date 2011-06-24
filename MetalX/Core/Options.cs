@@ -7,52 +7,16 @@ namespace MetalX
     public class Options
     {
         public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct3D;
-        float x=1f;
-        Size tileSize = new Size(48, 48);
-        string rootPath = @".\";
-        Size windowSize= new Size(800, 600);
+        public float X = 1f;
+        public Size TileSize = new Size(48, 48);
+        public string RootPath = @".\";
+        public Size WindowSize = new Size(800, 600);
 
-        public float X
-        {
-            set
-            {
-                x = value;
-            }
-            get
-            {
-                return x;
-            }
-        }
-        public Size TileSize
-        {
-            get
-            {
-                return tileSize;
-            }
-            set
-            {
-                tileSize = value;
-            }
-        }
         public Size TileSizeX
         {
             get
             {
-                return new Size((int)(tileSize.Width * x), (int)(tileSize.Height * x));
-            }
-        }
-        public string RootPath
-        {
-            get
-            {
-                return rootPath;
-            }
-        }
-        public Size WindowSize
-        {
-            get
-            {
-                return windowSize;
+                return new Size((int)(TileSize.Width * X), (int)(TileSize.Height * X));
             }
         }
 

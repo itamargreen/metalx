@@ -9,13 +9,16 @@ namespace MetalX.Data
     [Serializable]
     public class CHR
     {
+
+
         public string Name;
-        
-        public int TextureIndex;
+
+        public int TextureIndex = -1;
         public string TextureFileName;
-        public Size TileSizePixel;
-       
-        public float MoveSpeed;
+        public Size TileSizePixel = new Size(24, 24);
+
+        public float MoveSpeed = 4f;
+        public float NeedMovePixel;
         public Direction Direction;
 
         public Vector3 PreLocation;
