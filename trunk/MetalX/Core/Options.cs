@@ -7,10 +7,10 @@ namespace MetalX
     public class Options
     {
         public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct3D;
-        float x;
-        Size tileSize;
-        string rootPath;
-        Size windowSize;
+        float x=1f;
+        Size tileSize = new Size(48, 48);
+        string rootPath = @".\";
+        Size windowSize= new Size(800, 600);
 
         public float X
         {
@@ -58,10 +58,6 @@ namespace MetalX
 
         public Options()
         {
-            x = 1f;
-            rootPath = @".\";
-            windowSize = new Size(800, 600);
-            tileSize = new Size(16, 16);
         }
     }
 }

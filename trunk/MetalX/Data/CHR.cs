@@ -22,8 +22,8 @@ namespace MetalX.Data
         public Vector3 Location;
         public Vector3 NextLocation;
 
-        public string AtSceneName;
-        public int AtSceneIndex;
+        public string InSceneName;
+        public int InSceneIndex;
 
         public bool CanMove;
         public bool CanTurn;
