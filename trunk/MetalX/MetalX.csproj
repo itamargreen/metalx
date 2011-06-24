@@ -72,6 +72,7 @@
     <Compile Include="Core\Defines.cs" />
     <Compile Include="Data\Item.cs" />
     <Compile Include="Resource\Audios.cs" />
+    <Compile Include="Resource\Characters.cs" />
     <Compile Include="Resource\Scenes.cs" />
     <Compile Include="Resource\Texts.cs" />
     <Compile Include="Resource\Textures.cs" />

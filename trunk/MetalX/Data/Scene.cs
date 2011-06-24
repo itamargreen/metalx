@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 
+using Microsoft.DirectX;
+
 namespace MetalX.Data
 {
     [Serializable]
@@ -52,6 +54,19 @@ namespace MetalX.Data
         /// <summary>
         /// 场景位置
         /// </summary>
+        public Vector3 Location = new Vector3();
+        public Point LocationPoint
+        {
+            get
+            {
+                return new Point((int)Location.X, (int)Location.Y);
+            }
+            set
+            {
+                Location.X = value.X;
+                Location.Y = value.Y;
+            }
+        }
         //[NonSerialized]
         //public Location Location;
 

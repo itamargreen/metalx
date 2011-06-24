@@ -37,6 +37,7 @@ namespace MetalX.Component
                         foreach (GameCom gc in game.GameComs)
                         {
                             gc.SetKeyboardEvent(i, KeyState.Down);
+                            gc.SetKeyboardEvent(i, KeyState.DownHold);
                         }
                     }
                     keyboardStateBackup[i] = true;
