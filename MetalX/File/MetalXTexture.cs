@@ -13,10 +13,26 @@ namespace MetalX
         public string Version;
 
         public byte[] TextureData;
-        public Size SizePixel, TileSizePixel;
+        public Size SizePixel;
+        public Size SizePixel2X
+        {
+            get
+            {
+                return new Size(SizePixel.Width * 2, SizePixel.Height * 2);
+            }
+        }
+        public Size TileSizePixel;
+        public Size TileSizePixel2X
+        {
+            get
+            {
+                return new Size(TileSizePixel.Width * 2, TileSizePixel.Height * 2);
+            }
+        }
 
         [NonSerialized]
         public Microsoft.DirectX.Direct3D.Texture MEMTexture;
+        public Microsoft.DirectX.Direct3D.Texture MEMTexture2X;
 
         public MetalXTexture()
         {

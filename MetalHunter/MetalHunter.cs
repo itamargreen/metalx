@@ -35,14 +35,13 @@ namespace MetalHunter
         {
             game = new Game("MetalHunter");
           
-            game.Init();
-            
+            game.Init();            
 
             game.LoadAllDotPNG(@".\");
             game.LoadAllDotMP3(@".\");
 
-            game.MountGameCom(game.SceneManager);
-            game.MountGameCom(game.FormBoxManager);
+            //game.MountGameCom(game.SceneManager);
+            //game.MountGameCom(game.FormBoxManager);
 
             InitFormBoxes();
             

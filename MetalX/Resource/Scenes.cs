@@ -54,7 +54,7 @@ namespace MetalX.Resource
         {
             items.RemoveAt(i);
         }
-        public Scene LoadDotMXScene(string pathName ,Game g)
+        public Scene LoadDotMXScene(Game g,string pathName)
         {
             Scene scene  = (Scene)Util.LoadObject(pathName);
 

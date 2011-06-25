@@ -6,11 +6,11 @@ namespace MetalX
 {
     public class Options
     {
-        public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct3D;
+        public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct2D;
         public float X = 1f;
-        public Size TileSize = new Size(48, 48);
         public string RootPath = @".\";
         public Size WindowSize = new Size(800, 600);
+        public Size TileSize = new Size(48, 48);
 
         public Size TileSizeX
         {

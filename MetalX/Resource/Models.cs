@@ -62,7 +62,7 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX模型</returns>
-        public MetalXModel LoadDotX(string fileName, Game g)
+        public MetalXModel LoadDotX(Game g,string fileName)
         {
             GraphicsStream adj;
             ExtendedMaterial[] extendedMaterials;
@@ -103,7 +103,7 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX模型</returns>
-        public MetalXModel LoadDotMXM(string fileName,Game g)
+        public MetalXModel LoadDotMXM(Game g,string fileName)
         {
             MetalXModel model = (MetalXModel)Util.LoadObject(fileName);
 

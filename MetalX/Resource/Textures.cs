@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 using Microsoft.DirectX.Direct3D;
 
@@ -83,16 +84,38 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX纹理</returns>
-        public MetalXTexture LoadDotPNG(string fileName,Game g)
+        public MetalXTexture LoadDotPNG( Game g,string fileName)
         {
             MetalXTexture texture = new MetalXTexture();
             texture.Name = Path.GetFileNameWithoutExtension(fileName);
             texture.TextureData = File.ReadAllBytes(fileName);
-            Bitmap bmp = new Bitmap(new MemoryStream(texture.TextureData));            
+
+            Image img = Image.FromStream(new MemoryStream(texture.TextureData));
+
+            Bitmap bmp = new Bitmap(img);
+
             texture.SizePixel = bmp.Size;
+            //bmp.MakeTransparent(Color.Pink);
             texture.TileSizePixel = new Size(24, 24);
-            //texture.MEMTexture = TextureLoader.FromFile(g.Devices.D3DDev, fileName, texture.SizePixel.Width+1, texture.SizePixel.Height+1, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
-            texture.MEMTexture = new Texture(g.Devices.D3DDev, bmp, Usage.None, Pool.Managed);
+            //texture.MEMTexture = new Texture(g.Devices.D3DDev, bmp, Usage.None, Pool.Managed);
+            texture.MEMTexture = TextureLoader.FromStream(g.Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+
+            Bitmap bmp2x = new Bitmap(bmp.Size.Width * 2, bmp.Size.Height * 2);
+            ////bmp2x.MakeTransparent(Color.Pink);
+            //Graphics graph = Graphics.FromImage(bmp2x);
+            //graph.InterpolationMode = InterpolationMode.NearestNeighbor;
+            //graph.DrawImage(bmp, new Rectangle(new Point(), bmp2x.Size), new Rectangle(new Point(), bmp.Size), GraphicsUnit.Pixel);
+            ////texture.MEMTexture2X = new Texture(g.Devices.D3DDev, bmp2x, Usage.None, Pool.Managed);
+            //MemoryStream ms = new MemoryStream();
+            //bmp2x.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            //ms.Position = 0;
+            texture.MEMTexture2X = TextureLoader.FromStream(g.Devices.D3DDev, new MemoryStream(texture.TextureData), bmp2x.Width, bmp2x.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+            
+            bmp.Dispose();
+            img.Dispose();
+            bmp2x.Dispose();
+            //graph.Dispose();
+
             return texture;
         }
         /// <summary>
@@ -100,7 +123,7 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX纹理</returns>
-        public MetalXTexture LoadDotMXT(string fileName, Game g)
+        public MetalXTexture LoadDotMXT(Game g,string fileName)
         {
             MetalXTexture texture = new MetalXTexture();
             texture = (MetalXTexture)Util.LoadObject(fileName);
