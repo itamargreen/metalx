@@ -51,10 +51,10 @@ namespace MetalX
         /// 帧开始时间
         /// </summary>
         public TimeSpan frameTimeSpan;
-        public SoundManager SoundManager;
-        public FormBoxManager FormBoxManager;
-        public KeyboardManager KeyboardManager;
-        public SceneManager SceneManager;
+        SoundManager SoundManager;
+        FormBoxManager FormBoxManager;
+        KeyboardManager KeyboardManager;
+        SceneManager SceneManager;
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -72,6 +72,15 @@ namespace MetalX
             get
             {
                 return Options.TileSizeX.Width;
+            }
+        }
+        public Point CenterLocation
+        {
+            get
+            {
+                return new Point(
+                    (Options.WindowSize.Width / Options.TileSizeX.Width + 1) * TilePixel,
+                    (Options.WindowSize.Height / Options.TileSizeX.Height + 1) * TilePixel);
             }
         }
         //public bool FPSCanRead
@@ -372,7 +381,7 @@ namespace MetalX
         }
         public void LoadScene(string pathName)
         {
-            Scenes.Add(Scenes.LoadDotMXScene(this,pathName));
+            Scenes.Add(Scenes.LoadDotMXScene(this, pathName));
         }
         public void LoadAllDotMXA(string pathName)
         {
@@ -399,8 +408,9 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.mp3");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXAudio mxa = Audios.LoadDotMP3(fi.FullName);
-                    Audios.Add(mxa);
+                    Audios.LoadDotMP3(fi.FullName);
+                    //MetalXAudio mxa = Audios.LoadDotMP3(fi.FullName);
+                    //Audios.Add(mxa);
                 }
             }
         }
@@ -431,8 +441,9 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.png");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXTexture mxt = Textures.LoadDotPNG(this,fi.FullName );
-                    Textures.Add(mxt);
+                    Textures.LoadDotPNG(this, fi.FullName);
+                    //MetalXTexture mxt = Textures.LoadDotPNG(this,fi.FullName );
+                    //Textures.Add(mxt);
                 }
             }
         }
