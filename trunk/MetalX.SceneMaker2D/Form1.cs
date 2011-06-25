@@ -346,7 +346,7 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(game);
 
-            sceneMaker2D.scene = game.Scenes.LoadDotMXScene(fileName, game);
+            sceneMaker2D.scene = game.Scenes.LoadDotMXScene(game,fileName);
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)

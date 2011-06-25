@@ -67,6 +67,13 @@ namespace MetalX
 
         #endregion
         #region 属性
+        public int TilePixel
+        {
+            get
+            {
+                return Options.TileSizeX.Width;
+            }
+        }
         //public bool FPSCanRead
         //{
         //    get
@@ -183,51 +190,7 @@ namespace MetalX
 
         #endregion
         #region 方法
-        public void PlayMXA(string name)
-        {
-            SoundManager.PlayMXA(name);
-        }
-        public void PlayMXA(int i)
-        {
-            SoundManager.PlayMXA(i);
-        }
-        public void PlayMXA(Stream stm)
-        {
-            SoundManager.PlayMXA(stm);
-        }
-        public void PlayMP3(string name)
-        {
-            SoundManager.PlayMP3(name);
-        }
-        public void StopMXA()
-        {
-            SoundManager.Stop();
-        }
-        public double ProgressMXA
-        {
-            get
-            {
-                return SoundManager.Progress;
-            }
-            set
-            {
-                SoundManager.Progress = value;
-            }
-        }
-        public bool PlayingMXA
-        {
-            get
-            {
-                return SoundManager.Playing;
-            }
-        }
-        public bool PlayingMP3
-        {
-            get
-            {
-                return SoundManager.Playing;
-            }
-        }
+
         public void Init()
         {
             Models = new Models();
@@ -244,10 +207,10 @@ namespace MetalX
             MountGameCom(KeyboardManager);
 
             SceneManager = new SceneManager(this);
-            //MountGameCom(SceneManager);
+            MountGameCom(SceneManager);
 
             FormBoxManager = new FormBoxManager(this);
-            //MountGameCom(FormBoxManager);
+            MountGameCom(FormBoxManager);
         }
         /// <summary>
         /// 启动
@@ -260,15 +223,8 @@ namespace MetalX
                 Devices.Window.Show();
             }
             totalFrames = 0;
-            SetCamera(
-                new Vector3(0, 0, 22.5f),
-                new Vector3(),
-                Options.X);
-            SetLight(
-                new Vector3(0, 0, 22.5f),
-                new Vector3(),
-                Options.X,
-                false);
+            SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), Options.X);
+            SetLight(new Vector3(0, 0, 22.5f), new Vector3(), Options.X, false);
             isRunning = true;
             while (isRunning)
             {
@@ -382,11 +338,12 @@ namespace MetalX
             Devices.D3DDev.Lights[0].Position = location;
             Devices.D3DDev.Lights[0].Enabled = value;
 
-            Devices.D3DDev.RenderState.Lighting = value;
 
             Devices.D3DDev.RenderState.AlphaBlendEnable = true;
             Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
             Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
+
+            Devices.D3DDev.RenderState.Lighting = value;
 
             //Devices.D3DDev.RenderState.CullMode = Cull.None;
 
@@ -415,7 +372,7 @@ namespace MetalX
         }
         public void LoadScene(string pathName)
         {
-            Scenes.Add(Scenes.LoadDotMXScene(pathName, this));
+            Scenes.Add(Scenes.LoadDotMXScene(this,pathName));
         }
         public void LoadAllDotMXA(string pathName)
         {
@@ -458,7 +415,7 @@ namespace MetalX
                     FileInfo[] fis = di.GetFiles("*.mxt");
                     foreach (FileInfo fi in fis)
                     {
-                        MetalXTexture mxt = Textures.LoadDotMXT(fi.FullName, this);
+                        MetalXTexture mxt = Textures.LoadDotMXT(this,fi.FullName);
                         Textures.Add(mxt);
                     }
                 }
@@ -474,7 +431,7 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.png");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXTexture mxt = Textures.LoadDotPNG(fi.FullName, this);
+                    MetalXTexture mxt = Textures.LoadDotPNG(this,fi.FullName );
                     Textures.Add(mxt);
                 }
             }
@@ -604,13 +561,14 @@ namespace MetalX
                 return;
             }
 
-            loc.X = loc.X / 2;
-            loc.Y = loc.Y / 2;
-            //loc.Z = -360f;
+            dz.X = dz.X * (size.Width / dz.Width);
+            dz.Y = dz.Y * (size.Height / dz.Height);
+            dz.Size = size;
+
             Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
-            Point p = new Point((int)loc.X, (int)loc.Y);
-            //Devices.Sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), p, color);
-            Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), loc, color);
+
+            Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
+            //Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), loc, color);
 
             Devices.Sprite.End();
         }
@@ -689,6 +647,53 @@ namespace MetalX
             DrawLine(tx, fy, tx, ty, color);
             DrawLine(tx, ty, fx, ty, color);
             DrawLine(fx, fy, fx, ty, color);
+        }
+        #endregion
+        #region PlayAudio
+        public void PlayMXA(string name)
+        {
+            SoundManager.PlayMXA(name);
+        }
+        public void PlayMXA(int i)
+        {
+            SoundManager.PlayMXA(i);
+        }
+        public void PlayMXA(Stream stm)
+        {
+            SoundManager.PlayMXA(stm);
+        }
+        public void PlayMP3(string name)
+        {
+            SoundManager.PlayMP3(name);
+        }
+        public void StopMXA()
+        {
+            SoundManager.Stop();
+        }
+        public double ProgressMXA
+        {
+            get
+            {
+                return SoundManager.Progress;
+            }
+            set
+            {
+                SoundManager.Progress = value;
+            }
+        }
+        public bool PlayingMXA
+        {
+            get
+            {
+                return SoundManager.Playing;
+            }
+        }
+        public bool PlayingMP3
+        {
+            get
+            {
+                return SoundManager.Playing;
+            }
         }
         #endregion
         #endregion

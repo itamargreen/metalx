@@ -43,23 +43,30 @@ namespace MetalX.Component
             base.Code();
             if (me.NeedMovePixel > 0)
             {
+                float movePixel = me.MoveSpeed;
+                if (me.NeedMovePixel < me.MoveSpeed)
+                {
+                    movePixel = me.NeedMovePixel;
+                }
+
+                me.NeedMovePixel -= movePixel;
+                
                 if (me.Direction == Direction.U)
                 {
-                    scene.Location.Y = scene.Location.Y + me.MoveSpeed;
-                } 
+                    scene.Location.Y = scene.Location.Y + movePixel;
+                }
                 else if (me.Direction == Direction.L)
                 {
-                    scene.Location.X = scene.Location.X + me.MoveSpeed;
+                    scene.Location.X = scene.Location.X + movePixel;
                 }
                 else if (me.Direction == Direction.D)
                 {
-                    scene.Location.Y = scene.Location.Y - me.MoveSpeed;
+                    scene.Location.Y = scene.Location.Y - movePixel;
                 }
                 else if (me.Direction == Direction.R)
                 {
-                    scene.Location.X = scene.Location.X - me.MoveSpeed;
+                    scene.Location.X = scene.Location.X - movePixel;
                 }
-                me.NeedMovePixel -= me.MoveSpeed;
             }
         }
 
@@ -124,9 +131,16 @@ namespace MetalX.Component
             {
                 chr.TextureIndex = game.Textures.GetIndex(chr.TextureFileName);
             }
-            Rectangle dz=new Rectangle();
+            Rectangle dz = new Rectangle();
             dz.Y = (int)chr.Direction * game.Textures[chr.TextureIndex].TileSizePixel.Height;
-            dz.X = (((int)((float)game.Options.TileSizeX.Width - chr.NeedMovePixel)) / (game.Options.TileSizeX.Width / 4) + 1) * game.Textures[chr.TextureIndex].TileSizePixel.Width;
+            if (chr.NeedMovePixel > 0)
+            {
+                dz.X = (((int)((float)game.Options.TileSizeX.Width - chr.NeedMovePixel)) / (game.Options.TileSizeX.Width / 4) + 1) * game.Textures[chr.TextureIndex].TileSizePixel.Width;
+            }
+            else
+            {
+                dz.X = 0;
+            }
             dz.Width = game.Textures[chr.TextureIndex].TileSizePixel.Width;
             dz.Height = game.Textures[chr.TextureIndex].TileSizePixel.Height;
             game.DrawMetalXTexture(
@@ -142,9 +156,10 @@ namespace MetalX.Component
             
             if (k == Key.L)
             {
-                game.Scenes.Add(game.Scenes.LoadDotMXScene(@"scenes\test1.mxscene", game));
+                game.Scenes.Add(game.Scenes.LoadDotMXScene(game,@"scenes\test1.mxscene"));
                 LoadScene(0);
                 me.TextureFileName = "CHRS0001";
+                me.MoveSpeed = 4.7f;
             }
             if (k == Key.B)
             {
@@ -160,22 +175,22 @@ namespace MetalX.Component
                 if (k == Key.W)
                 {
                     me.Direction = Direction.U;
-                    me.NeedMovePixel = 48;
+                    me.NeedMovePixel = game.TilePixel;
                 }
                 else if (k == Key.A)
                 {
                     me.Direction = Direction.L;
-                    me.NeedMovePixel = 48;
+                    me.NeedMovePixel = game.TilePixel;
                 }
                 else if (k == Key.S)
                 {
                     me.Direction = Direction.D;
-                    me.NeedMovePixel = 48;
+                    me.NeedMovePixel = game.TilePixel;
                 }
                 else if (k == Key.D)
                 {
                     me.Direction = Direction.R;
-                    me.NeedMovePixel = 48;
+                    me.NeedMovePixel = game.TilePixel;
                 }
             }
         }
