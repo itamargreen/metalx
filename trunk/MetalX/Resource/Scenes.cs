@@ -69,6 +69,7 @@ namespace MetalX.Resource
                     }
                 }
             }
+            //Add(scene);
             return scene;
         }
     }

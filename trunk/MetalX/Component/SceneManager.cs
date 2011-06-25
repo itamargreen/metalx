@@ -53,18 +53,22 @@ namespace MetalX.Component
                 
                 if (me.Direction == Direction.U)
                 {
+                    me.Location.Y = me.Location.Y - movePixel;
                     scene.Location.Y = scene.Location.Y + movePixel;
                 }
                 else if (me.Direction == Direction.L)
                 {
+                    me.Location.X = me.Location.X - movePixel;
                     scene.Location.X = scene.Location.X + movePixel;
                 }
                 else if (me.Direction == Direction.D)
                 {
+                    me.Location.Y = me.Location.Y + movePixel;
                     scene.Location.Y = scene.Location.Y - movePixel;
                 }
                 else if (me.Direction == Direction.R)
                 {
+                    me.Location.X = me.Location.X + movePixel;
                     scene.Location.X = scene.Location.X - movePixel;
                 }
             }
@@ -72,7 +76,7 @@ namespace MetalX.Component
 
         public override void Draw()
         {
-            base.Draw();
+            //base.Draw();
             DrawTerrain(scene);
             DrawPC(me);
             game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.White);
@@ -143,10 +147,12 @@ namespace MetalX.Component
             }
             dz.Width = game.Textures[chr.TextureIndex].TileSizePixel.Width;
             dz.Height = game.Textures[chr.TextureIndex].TileSizePixel.Height;
+            Point p1 = new Point((int)chr.Location.X, (int)chr.Location.Y);
+            Point p2 = new Point((int)scene.Location.X, (int)scene.Location.Y);
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
                 dz,
-                new Point(480, 240),
+                Util.PointAddPoint(p1, p2),
                 game.Options.TileSizeX,
                 Color.White);
         }
@@ -156,20 +162,26 @@ namespace MetalX.Component
             
             if (k == Key.L)
             {
-                game.Scenes.Add(game.Scenes.LoadDotMXScene(game,@"scenes\test1.mxscene"));
+                game.Scenes.LoadDotMXScene(game,@"scenes\test1.mxscene");
                 LoadScene(0);
                 me.TextureFileName = "CHRS0001";
                 me.MoveSpeed = 4.7f;
+                me.Location = Util.Point2Vector3(game.CenterLocation, 0);
             }
-            if (k == Key.B)
+            if (k == Key.O)
             {
-                base.ShockScreen(1000);
+                base.ShockScreen(5000);
             }
 
         }
         public override void OnKeyboardDownHoldCode(int key)
         {
             Key k = (Key)key;
+
+            if (scene == null)
+            {
+                return;
+            }
             if (me.NeedMovePixel <= 0)
             {
                 if (k == Key.W)

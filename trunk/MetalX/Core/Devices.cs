@@ -39,7 +39,7 @@ namespace MetalX
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
             pps.Windowed = true;
 
-            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, Window, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, Window, Microsoft.DirectX.Direct3D.CreateFlags.HardwareVertexProcessing, pps);
 
             Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
             Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("微软雅黑", 10));
@@ -61,7 +61,7 @@ namespace MetalX
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
             pps.Windowed = true;
 
-            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.HardwareVertexProcessing, pps);
 
             Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
             Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("微软雅黑", 10));
