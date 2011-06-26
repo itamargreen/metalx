@@ -77,7 +77,7 @@ namespace MetalX.SceneMaker2D
             //}
         }
 
-        int contains_tile(Point loc)
+        int contains_tile(Vector3 loc)
         {
             int i = 0;
             foreach (Tile tile in sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles)
@@ -108,9 +108,10 @@ namespace MetalX.SceneMaker2D
                 xoo = 0;
                 for (xo = 0; xo < rect.Width; xo += sceneMaker2D.scene.TileSizePixel.Width)
                 {
-                    Point pp = new Point();
+                    Vector3 pp = new Vector3();
                     pp.X = p.X + xo;
                     pp.Y = p.Y + yo;
+                    pp.Z = 0;
 
                     if (pp.X < 0 || pp.Y < 0 || pp.X >= sceneMaker2D.scene.SizePixel.Width || pp.Y >= sceneMaker2D.scene.SizePixel.Height)
                     {
@@ -220,9 +221,10 @@ namespace MetalX.SceneMaker2D
             {
                 for (xo = 0; xo < rect.Width; xo += sceneMaker2D.scene.TileSizePixel.Width)
                 {
-                    Point pp = new Point();
+                    Vector3 pp = new Vector3();
                     pp.X = p.X + xo;
                     pp.Y = p.Y + yo;
+                    pp.Z = 0;
 
                     if (pp.X < 0 || pp.Y < 0 || pp.X >= sceneMaker2D.scene.SizePixel.Width || pp.Y >= sceneMaker2D.scene.SizePixel.Height)
                     {
@@ -317,8 +319,6 @@ namespace MetalX.SceneMaker2D
             }
             ui_ly_slt.SetSelected(lc - 1, true);
 
-            sceneMaker2D.scene.CodeLayers.Add(new CodeLayer());
-
             pictureBox1.Size = sceneMaker2D.scene.SizePixel;
 
             tabControl1.SelectedIndex = 1;
@@ -346,7 +346,46 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(game);
 
-            sceneMaker2D.scene = game.Scenes.LoadDotMXScene(game,fileName);
+            game.Scenes.LoadDotMXScene(game, fileName);
+            sceneMaker2D.scene = game.Scenes[0];
+
+            ui_ly_slt.Items.Clear();
+            for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
+            {
+                ui_ly_slt.Items.Add(sceneMaker2D.scene.TileLayers.Count - 1 - i);
+                ui_ly_slt.SetItemChecked(i, true);
+            }
+            ui_ly_slt.SetSelected(sceneMaker2D.scene.TileLayers.Count - 1, true);
+
+            pictureBox1.Size = sceneMaker2D.scene.SizePixel;
+
+            tabControl1.SelectedIndex = 1;
+
+            game.MountGameCom(sceneMaker2D);
+            game.Start();
+        }
+        void new_scenexml(string fileName)
+        {
+            left_rect = new Rectangle();
+            right_rect = new Rectangle();
+            if (game != null)
+            {
+                game.Stop();
+            }
+            game = new Game(pictureBox1);
+            //game.LoadAllDotMXT(@".\");
+            //game.LoadAllDotMXA(@".\");
+            game.Init();
+            game.LoadAllDotPNG(@".\");
+            game.LoadAllDotMP3(@".\");
+
+            update_pic_list();
+            update_mus_list();
+
+            sceneMaker2D = new SceneMaker2D(game);
+
+            game.Scenes.LoadDotMXSceneDotXML(game, fileName);
+            sceneMaker2D.scene = game.Scenes[0];
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
@@ -689,10 +728,9 @@ namespace MetalX.SceneMaker2D
                 splitContainer1.Panel1Collapsed = true;
             }
         }
-
-        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        void saveto(string filename)
         {
-            if (openFileName == null)
+            if (filename == null)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "MetalX Scene File|*.MXScene";
@@ -700,6 +738,10 @@ namespace MetalX.SceneMaker2D
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     openFileName = sfd.FileName;
+                    if (sceneMaker2D.scene.CodeLayers.Count > 1)
+                    {
+                        sceneMaker2D.scene.CodeLayers.RemoveAt(1);
+                    }
                     Util.SaveObject(openFileName, sceneMaker2D.scene);
                     Text = openFileName;
                 }
@@ -709,16 +751,47 @@ namespace MetalX.SceneMaker2D
                 Util.SaveObject(openFileName, sceneMaker2D.scene);
             }
         }
+        void savetoxml(string filename)
+        {
+            if (filename == null)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "MetalX Scene File|*.MXScene";
+                sfd.RestoreDirectory = true;
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    openFileName = sfd.FileName;
+                    if (sceneMaker2D.scene.CodeLayers.Count > 1)
+                    {
+                        sceneMaker2D.scene.CodeLayers.RemoveAt(1);
+                    }
+                    Util.SaveObjectXML(openFileName + ".xml", sceneMaker2D.scene);
+                    Text = openFileName;
+                }
+            }
+            else
+            {
+                Util.SaveObject(openFileName, sceneMaker2D.scene);
+            }
+        }
+
 
         private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "MetalX Scene File|*.MXScene";
+            ofd.Filter = "MetalX Scene File|*.MXScene|XML File|*.XML";
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 Text = openFileName = ofd.FileName;
-                new_scene(openFileName);
+                if (ofd.FilterIndex==1)
+                {
+                    new_scene(openFileName);
+                }
+                else
+                {
+                    new_scenexml(openFileName);
+                }
             }
         }
 
@@ -727,17 +800,13 @@ namespace MetalX.SceneMaker2D
             tabControl1.SelectedIndex = 0;
         }
 
+        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveto(openFileName);
+        }      
         private void 另存为ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "MetalX Scene File|*.MXScene";
-            sfd.RestoreDirectory = true;
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                openFileName = sfd.FileName;
-                Util.SaveObject(openFileName, sceneMaker2D.scene);
-                Text = openFileName;
-            }
+            saveto(null);
         }
 
         private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -808,7 +877,7 @@ namespace MetalX.SceneMaker2D
         {
             if (e.KeyCode == Keys.I)
             {
-                int i = contains_tile(sceneMaker2D.penLoc);
+                int i = contains_tile(Util.Point2Vector3(sceneMaker2D.penLoc, 0));
                 if (i > -1)
                 {
                     ui_aniframec.Text = "" + sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][i].FrameCount;
@@ -970,5 +1039,12 @@ namespace MetalX.SceneMaker2D
             game.Options.X += 1;
             game.SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), game.Options.X);
         }
+
+        private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            savetoxml(null);
+        }
+
+       
     }
 }

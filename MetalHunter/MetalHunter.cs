@@ -28,7 +28,7 @@ namespace MetalHunter
 
         public void InitFormBoxes()
         {
-            game.LoadFormBox(new FB1(game));
+            game.FormBoxes.LoadDotMXFormBox(new FB1(game));
         }
 
         public MetalHunter()
@@ -40,10 +40,9 @@ namespace MetalHunter
             game.LoadAllDotPNG(@".\");
             game.LoadAllDotMP3(@".\");
 
-            //game.MountGameCom(game.SceneManager);
-            //game.MountGameCom(game.FormBoxManager);
-
             InitFormBoxes();
+
+            game.Scenes.LoadDotMXScene(game, @"scenes\test.mxscene");
             
             game.Start();
         }

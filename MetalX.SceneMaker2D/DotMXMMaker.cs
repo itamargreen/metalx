@@ -113,7 +113,7 @@ namespace MetalX.SceneMaker2D
             {
                 if (ofd.FileName != string.Empty)
                 {
-                    modelViewer.model = game.Models.LoadDotMXM( game,ofd.FileName);
+                    //modelViewer.model = game.Models.LoadDotMXM( game,ofd.FileName);
                     filename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
                     game.Start();
                 }
@@ -129,7 +129,7 @@ namespace MetalX.SceneMaker2D
             {
                 if (ofd.FileName != string.Empty)
                 {
-                    modelViewer.t = game.Textures.LoadDotMXT(game,ofd.FileName);
+                    //modelViewer.t = game.Textures.LoadDotMXT(game,ofd.FileName);
                     game.Start();
                 }
             }

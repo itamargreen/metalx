@@ -103,7 +103,7 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX模型</returns>
-        public MetalXModel LoadDotMXM(Game g,string fileName)
+        public void LoadDotMXM(Game g,string fileName)
         {
             MetalXModel model = (MetalXModel)Util.LoadObject(fileName);
 
@@ -126,7 +126,7 @@ namespace MetalX.Resource
             }
             model.MEMCount = extendedMaterials.Length;
 
-            return model;
+            Add(model);
         }
     }
 

@@ -49,6 +49,10 @@ namespace MetalX
         {
             return new Vector3(p.X, p.Y, z);
         }
+        public static Point Vector32Point(Vector3 v3)
+        {
+            return new Point((int)v3.X, (int)v3.Y);
+        }
         public static bool Is2PowSize(Size size)
         {
             if (Is2Pow(size.Width) && Is2Pow(size.Height))
@@ -56,6 +60,14 @@ namespace MetalX
                 return true;
             }
             return false;
+        }
+        public static Vector3 Vector3AddVector3(Vector3 v31, Vector3 v32)
+        {
+            return new Vector3(v31.X + v32.X, v31.Y + v32.Y, v31.Z + v31.Z);
+        }
+        public static Vector3 Vector3SubVector3(Vector3 v31, Vector3 v32)
+        {
+            return new Vector3(v31.X - v32.X, v31.Y - v32.Y, v31.Z - v31.Z);
         }
         public static bool Is2Pow(int num)
         {
@@ -132,9 +144,9 @@ namespace MetalX
             memStream.Close();
             return newobj;
         }
-        public static object LoadObjectXML(string FileName, object obj)
+        public static object LoadObjectXML(string FileName, Type type)
         {
-            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(obj.GetType());
+            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(type);
             object o = xs.Deserialize(System.IO.File.OpenRead(FileName));
             return o;
         }
