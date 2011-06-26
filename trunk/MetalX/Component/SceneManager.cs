@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
+using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 
 using MetalX.Data;
@@ -37,10 +38,8 @@ namespace MetalX.Component
             : base(g)
         {
         }
-
-        public override void Code()
+        void moveCode()
         {
-            base.Code();
             if (me.NeedMovePixel > 0)
             {
                 float movePixel = me.MoveSpeed;
@@ -50,36 +49,55 @@ namespace MetalX.Component
                 }
 
                 me.NeedMovePixel -= movePixel;
-                
+
                 if (me.Direction == Direction.U)
                 {
-                    me.Location.Y = me.Location.Y - movePixel;
-                    scene.Location.Y = scene.Location.Y + movePixel;
+                    me.RealLocation.Y -= movePixel;
+                    if (scene.RealLocation.Y < 0)
+                    {
+                        scene.RealLocation.Y += movePixel;
+                    }
                 }
                 else if (me.Direction == Direction.L)
                 {
-                    me.Location.X = me.Location.X - movePixel;
-                    scene.Location.X = scene.Location.X + movePixel;
+                    me.RealLocation.X -= movePixel;
+                    if (scene.RealLocation.X < 0)
+                    {
+                        scene.RealLocation.X += movePixel;
+                    }
                 }
                 else if (me.Direction == Direction.D)
                 {
-                    me.Location.Y = me.Location.Y + movePixel;
-                    scene.Location.Y = scene.Location.Y - movePixel;
+                    me.RealLocation.Y += movePixel;
+                    if (scene.RealLocation.Y > -scene.SizePixel.Height/2)
+                    {
+                        scene.RealLocation.Y -= movePixel;
+                    }
                 }
                 else if (me.Direction == Direction.R)
                 {
-                    me.Location.X = me.Location.X + movePixel;
-                    scene.Location.X = scene.Location.X - movePixel;
+                    me.RealLocation.X += movePixel;
+                    if (scene.RealLocation.X > -(scene.SizePixel.Width - game.TilePixel) / 2)
+                    {
+                        scene.RealLocation.X -= movePixel;
+                    }
                 }
             }
+        }
+        public override void Code()
+        {
+            base.Code();
+            moveCode();
         }
 
         public override void Draw()
         {
             //base.Draw();
-            DrawTerrain(scene);
-            DrawPC(me);
-            game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.White);
+            DrawScene(scene);
+            //DrawPC(me);
+            if(scene!=null)
+
+            game.DrawText("FPS: " + game.AverageFPS + "\n" + scene.RealLocation, new Point(), Color.White);
             //game.DrawText(FileLoader.Loaded + " / " + FileLoader.Size + " - " + FileLoader.TakeTime.TotalSeconds, new Point(), Color.White);
         }
 
@@ -90,30 +108,43 @@ namespace MetalX.Component
 
         bool IsInWindow(Point pos)
         {
-            Point p = Util.PointAddPoint(pos, scene.LocationPoint);
+            Point p = Util.PointAddPoint(pos, scene.RealLocationPoint);
             if (p.X < (0 - 1) * game.Options.TileSizeX.Width || p.Y < (0 - 1) * game.Options.TileSizeX.Height || p.X > (game.Options.WindowSize.Width / game.Options.TileSizeX.Width + 1) * game.Options.TileSizeX.Width || p.Y > (game.Options.WindowSize.Height / game.Options.TileSizeX.Height + 1) * game.Options.TileSizeX.Height)
             {
                 return false;
             }
             return true;
         }
-
-        void DrawTerrain(Scene s)
+        void DrawScene(Scene s)
         {
             if (s == null)
             {
                 return;
             }
+            int l = 0;
+
             foreach (TileLayer tl in s.TileLayers)
             {
+                int lastl = s.CodeLayer[me.LastLocation].DrawLayer;
+                int nextl = s.CodeLayer[me.NextLocation].DrawLayer;
+                int drawl = s.CodeLayer[me.GetDrawLocation(game.TilePixel, lastl, nextl)].DrawLayer;
+
+
+                if (l == drawl)
+                {
+                    DrawPC(me);
+                    //game.DrawText("drawing layer:\n" + l, new Point(0, 120), Color.White);
+                }
+     
                 foreach (Tile t in tl.Tiles)
                 {
-                    if (IsInWindow(t.Location))
+                    if (IsInWindow(t.LocationPoint))
                     {
                         game.DrawMetalXTexture(
                             game.Textures[t[frameIndex].TextureIndex],
                             t[frameIndex].DrawZone,
-                            Util.Point2Vector3(Util.PointAddPoint(s.LocationPoint, Util.PointAddPoint(t.Location, GlobalOffset)), (scene.Location.Z + GlobalOffset.X + GlobalOffset.Y) * 8),
+                            //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
+                            Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffsetPixel), t.Location),
                             s.TileSizePixel,
                             Util.MixColor(t[frameIndex].ColorFilter, ColorFilter)
                         );
@@ -123,6 +154,7 @@ namespace MetalX.Component
                         //Console.Beep();
                     }
                 }
+                l++;
             }
         }
         void DrawPC(CHR chr)
@@ -145,10 +177,9 @@ namespace MetalX.Component
             {
                 dz.X = 0;
             }
-            dz.Width = game.Textures[chr.TextureIndex].TileSizePixel.Width;
-            dz.Height = game.Textures[chr.TextureIndex].TileSizePixel.Height;
-            Point p1 = new Point((int)chr.Location.X, (int)chr.Location.Y);
-            Point p2 = new Point((int)scene.Location.X, (int)scene.Location.Y);
+            dz.Size = game.Textures[chr.TextureIndex].TileSizePixel;
+            Point p1 = new Point((int)chr.RealLocation.X, (int)chr.RealLocation.Y +game.SpriteOffsetPixel);
+            Point p2 = new Point((int)scene.RealLocation.X, (int)scene.RealLocation.Y);
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
                 dz,
@@ -162,17 +193,25 @@ namespace MetalX.Component
             
             if (k == Key.L)
             {
-                game.Scenes.LoadDotMXScene(game,@"scenes\test1.mxscene");
+                //game.Scenes.LoadDotMXScene(game,@"scenes\test1.mxscene");
                 LoadScene(0);
                 me.TextureFileName = "CHRS0001";
-                me.MoveSpeed = 4.7f;
-                me.Location = Util.Point2Vector3(game.CenterLocation, 0);
+                me.MoveSpeed = 3f;
+                me.RealLocation = Util.Point2Vector3(game.CenterLocation, 0);
+                me.RealLocation.X += 3 * game.TilePixel;
             }
-            if (k == Key.O)
+            else if (k == Key.O)
             {
                 base.ShockScreen(5000);
             }
-
+            else if (k == Key.U)
+            {
+                base.FallOutSceen(1000);
+            }
+            else if (k == Key.I)
+            {
+                base.FallInSceen(1000);
+            }
         }
         public override void OnKeyboardDownHoldCode(int key)
         {
@@ -182,27 +221,55 @@ namespace MetalX.Component
             {
                 return;
             }
-            if (me.NeedMovePixel <= 0)
+            if (me.NeedMovePixel == 0)
             {
                 if (k == Key.W)
                 {
                     me.Direction = Direction.U;
-                    me.NeedMovePixel = game.TilePixel;
+                    Vector3 loc = me.RealLocation;
+                    loc.Y -= game.TilePixel;
+                    if (scene.CodeLayer[loc].CHRCanRch)
+                    {
+                        me.LastLocation = me.RealLocation;
+                        me.NextLocation = loc;
+                        me.NeedMovePixel = game.TilePixel;
+                    }
                 }
                 else if (k == Key.A)
                 {
                     me.Direction = Direction.L;
-                    me.NeedMovePixel = game.TilePixel;
+                    Vector3 loc = me.RealLocation;
+                    loc.X -= game.TilePixel;
+                    if (scene.CodeLayer[loc].CHRCanRch)
+                    {
+                        me.LastLocation = me.RealLocation;
+                        me.NextLocation = loc;
+                        me.NeedMovePixel = game.TilePixel;
+                    }
                 }
                 else if (k == Key.S)
                 {
                     me.Direction = Direction.D;
-                    me.NeedMovePixel = game.TilePixel;
+                    Vector3 loc = me.RealLocation;
+                    loc.Y += game.TilePixel;
+                    if (scene.CodeLayer[loc].CHRCanRch)
+                    {
+                        me.LastLocation = me.RealLocation;
+                        me.NextLocation = loc;
+                        me.NeedMovePixel = game.TilePixel;
+                    }
                 }
                 else if (k == Key.D)
                 {
                     me.Direction = Direction.R;
-                    me.NeedMovePixel = game.TilePixel;
+                    Vector3 loc = me.RealLocation;
+                    loc.X += game.TilePixel;
+                    if (scene.CodeLayer[loc].CHRCanRch)
+                    {
+                        me.LastLocation = me.RealLocation;
+                        me.NextLocation = loc;
+                        me.NeedMovePixel = game.TilePixel;
+                    }
                 }
             }
         }

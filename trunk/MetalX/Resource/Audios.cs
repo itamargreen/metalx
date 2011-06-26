@@ -78,7 +78,6 @@ namespace MetalX.Resource
             MetalXAudio mxa = new MetalXAudio();
             mxa.Name = Path.GetFileNameWithoutExtension(fileName);
             mxa.AudioData = File.ReadAllBytes(fileName);
-            Add(mxa);
             return mxa;
         }
         /// <summary>
@@ -86,9 +85,10 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX音频</returns>
-        public MetalXAudio LoadDotMXA(string fileName)
+        public void LoadDotMXA(string fileName)
         {
-            return (MetalXAudio)Util.LoadObject(fileName);
+            MetalXAudio mxa = (MetalXAudio)Util.LoadObject(fileName);
+            Add(mxa);
         }
     }
 }

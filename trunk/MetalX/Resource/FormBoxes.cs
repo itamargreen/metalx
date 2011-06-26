@@ -54,6 +54,9 @@ namespace MetalX.Resource
         {
             items.RemoveAt(i);
         }
-
+        public void LoadDotMXFormBox(FormBox fb)
+        {
+            Add(fb);
+        }
     }
 }

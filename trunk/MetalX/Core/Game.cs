@@ -74,13 +74,21 @@ namespace MetalX
                 return Options.TileSizeX.Width;
             }
         }
+        public int SpriteOffsetPixel
+        {
+            get
+            {
+                return 0;
+                //return TilePixel / 3;
+            }
+        }
         public Point CenterLocation
         {
             get
             {
                 return new Point(
-                    (Options.WindowSize.Width / Options.TileSizeX.Width + 1) * TilePixel,
-                    (Options.WindowSize.Height / Options.TileSizeX.Height + 1) * TilePixel);
+                    (Options.WindowSize.Width / Options.TileSizeX.Width/2 + 1) * TilePixel,
+                    (Options.WindowSize.Height / Options.TileSizeX.Height/2 + 1) * TilePixel);
             }
         }
         //public bool FPSCanRead
@@ -375,14 +383,7 @@ namespace MetalX
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
         }
         #region Load File Method
-        public void LoadFormBox(FormBox fb)
-        {
-            FormBoxes.Add(fb);
-        }
-        public void LoadScene(string pathName)
-        {
-            Scenes.Add(Scenes.LoadDotMXScene(this, pathName));
-        }
+
         public void LoadAllDotMXA(string pathName)
         {
             List<string> dirName = new List<string>();
@@ -393,8 +394,7 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.mxa");
                 foreach (FileInfo fi in fis)
                 {
-                    MetalXAudio mxa = Audios.LoadDotMXA(fi.FullName);
-                    Audios.Add(mxa);
+                    Audios.LoadDotMXA(fi.FullName);
                 }
             }
         }
@@ -408,9 +408,9 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.mp3");
                 foreach (FileInfo fi in fis)
                 {
-                    Audios.LoadDotMP3(fi.FullName);
-                    //MetalXAudio mxa = Audios.LoadDotMP3(fi.FullName);
-                    //Audios.Add(mxa);
+                    //Audios.LoadDotMP3(fi.FullName);
+                    MetalXAudio mxa = Audios.LoadDotMP3(fi.FullName);
+                    Audios.Add(mxa);
                 }
             }
         }
@@ -425,8 +425,7 @@ namespace MetalX
                     FileInfo[] fis = di.GetFiles("*.mxt");
                     foreach (FileInfo fi in fis)
                     {
-                        MetalXTexture mxt = Textures.LoadDotMXT(this,fi.FullName);
-                        Textures.Add(mxt);
+                        Textures.LoadDotMXT(this,fi.FullName);
                     }
                 }
             }
@@ -441,9 +440,9 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.png");
                 foreach (FileInfo fi in fis)
                 {
-                    Textures.LoadDotPNG(this, fi.FullName);
-                    //MetalXTexture mxt = Textures.LoadDotPNG(this,fi.FullName );
-                    //Textures.Add(mxt);
+                    //Textures.LoadDotPNG(this, fi.FullName);
+                    MetalXTexture mxt = Textures.LoadDotPNG(this, fi.FullName);
+                    Textures.Add(mxt);
                 }
             }
         }
@@ -572,14 +571,23 @@ namespace MetalX
                 return;
             }
 
-            dz.X = dz.X * (size.Width / dz.Width);
-            dz.Y = dz.Y * (size.Height / dz.Height);
-            dz.Size = size;
+            loc.Z = 0;
 
             Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
 
-            Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
-            //Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), loc, color);
+            if (size.Width / dz.Width == 2)
+            {
+                dz.X = dz.X * (size.Width / dz.Width);
+                dz.Y = dz.Y * (size.Height / dz.Height);
+                dz.Size = size;
+                Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), loc, color);
+                //Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
+            }
+            else
+            {
+                Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), loc, color);
+                //Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
+            }
 
             Devices.Sprite.End();
         }

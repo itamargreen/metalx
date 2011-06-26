@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+using Microsoft.DirectX;
 namespace MetalX
 {
     public class GameCom
@@ -74,7 +74,7 @@ namespace MetalX
             }
         }
         #region for shock
-        protected Point GlobalOffset;
+        protected Vector3 ScreenOffsetPixel;
         DateTime ShockBeginTime;
         int ShockTime = 500;
         int ShockRange = 4;
@@ -101,7 +101,7 @@ namespace MetalX
         {
             if (IsShocking)
             {
-                GlobalOffset = new Point();
+                ScreenOffsetPixel = new Vector3();
                 TimeSpan ts = DateTime.Now - ShockBeginTime;
                 if (ts.TotalMilliseconds > ShockTime)
                 {
@@ -111,10 +111,13 @@ namespace MetalX
                 {
                     int x = Util.Roll(0, ShockRange);
                     int y = Util.Roll(0, ShockRange);
+                    int z = Util.Roll(0, ShockRange);
                     x -= (ShockRange / 2);
                     y -= (ShockRange / 2);
-                    GlobalOffset.X += x;
-                    GlobalOffset.Y += y;
+                    z -= (ShockRange / 2);
+                    ScreenOffsetPixel.X += x;
+                    ScreenOffsetPixel.Y += y;
+                    ScreenOffsetPixel.Z += z;
                 }
             }
         }

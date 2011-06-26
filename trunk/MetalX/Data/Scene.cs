@@ -54,17 +54,17 @@ namespace MetalX.Data
         /// <summary>
         /// 场景位置
         /// </summary>
-        public Vector3 Location = new Vector3();
-        public Point LocationPoint
+        public Vector3 RealLocation = new Vector3();
+        public Point RealLocationPoint
         {
             get
             {
-                return new Point((int)Location.X, (int)Location.Y);
+                return new Point((int)RealLocation.X, (int)RealLocation.Y);
             }
             set
             {
-                Location.X = value.X;
-                Location.Y = value.Y;
+                RealLocation.X = value.X;
+                RealLocation.Y = value.Y;
             }
         }
         //[NonSerialized]
@@ -78,6 +78,13 @@ namespace MetalX.Data
         /// 代码层
         /// </summary>
         public List<CodeLayer> CodeLayers = new List<CodeLayer>();
+        public CodeLayer CodeLayer
+        {
+            get
+            {
+                return CodeLayers[0];
+            }
+        }
 
         public Scene()
         { 
@@ -92,8 +99,9 @@ namespace MetalX.Data
             {
                 for (int x = 0; x < Size.Width; x++)
                 {
-                    CodeLayers[0].Codes.Add(new Code());
-                    CodeLayers[0].Codes[i++].Location = new Point(x * TileSizePixel.Width, y * TileSizePixel.Height);
+                    CodeLayer.Codes.Add(new Code());
+                    CodeLayer.Codes[i++].Location = new Point(x * TileSizePixel.Width, y * TileSizePixel.Height);
+
                 }
             }
         }
@@ -127,7 +135,7 @@ namespace MetalX.Data
             {
                 foreach (Tile t in Tiles)
                 {
-                    if (t.Location == p)
+                    if (t.LocationPoint == p)
                     {
                         return t;
                     }
@@ -161,7 +169,14 @@ namespace MetalX.Data
         /// <summary>
         /// 位置
         /// </summary>
-        public Point Location;
+        public Vector3 Location;
+        public Point LocationPoint
+        {
+            get
+            {
+                return new Point((int)Location.X, (int)Location.Y);
+            }
+        }
         /// <summary>
         /// 帧索引
         /// </summary>
@@ -251,6 +266,28 @@ namespace MetalX.Data
     public class CodeLayer
     {
         public List<Code> Codes = new List<Code>();
+        public Code this[Vector3 v3]
+        {
+            get
+            {
+                return this[(int)v3.X, (int)v3.Y];
+            }           
+            set
+            {
+                this[(int)v3.X, (int)v3.Y] = value;
+            }
+        }
+        public Code this[Point p]
+        {
+            get
+            {
+                return this[p.X, p.Y];
+            }
+            set
+            {
+                this[p.X, p.Y] = value;
+            }
+        }
         public Code this[int x, int y]
         {
             get
@@ -259,7 +296,7 @@ namespace MetalX.Data
                 {
                     if (Codes[i].Location == new Point(x, y))
                     {
-                        return Codes[i];
+                        return this[i];
                     }
                 }
                 return null;
@@ -270,31 +307,7 @@ namespace MetalX.Data
                 {
                     if (Codes[i].Location == new Point(x, y))
                     {
-                        Codes[i] = value;
-                    }
-                }
-            }
-        }
-        public Code this[Point p]
-        {
-            get
-            {
-                for (int i = 0; i < Codes.Count; i++)
-                {
-                    if (Codes[i].Location == p)
-                    {
-                        return Codes[i];
-                    }
-                }
-                return null;
-            }
-            set
-            {
-                for (int i = 0; i < Codes.Count; i++)
-                {
-                    if (Codes[i].Location == p)
-                    {
-                        Codes[i] = value;
+                        this[i] = value;
                     }
                 }
             }
@@ -305,6 +318,11 @@ namespace MetalX.Data
             {
                 return Codes[i];
             }
+            set
+            {
+                Codes[i] = value;
+            }
+
         }
     }
     [Serializable]
@@ -329,7 +347,7 @@ namespace MetalX.Data
         /// <summary>
         /// 精灵绘制所在层
         /// </summary>
-        public int DrawLayer = 0;
+        public int DrawLayer = 5;
         /// <summary>
         /// 可上移
         /// </summary>
