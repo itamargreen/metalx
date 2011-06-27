@@ -18,14 +18,7 @@ namespace MetalX.Resource
         {
             get
             {
-                for (int i = 0; i < items.Count; i++)
-                {
-                    if (items[i].Name == name)
-                    {
-                        return items[i];
-                    }
-                }
-                return null;
+                return this[GetIndex(name)];
             }
         }
         public int GetIndex(string tname)

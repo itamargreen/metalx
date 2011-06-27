@@ -24,7 +24,7 @@ namespace MetalX.Data
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreateTime;
+        public DateTime CreateTime = DateTime.Now;
         /// <summary>
         /// 版本
         /// </summary>
@@ -32,7 +32,7 @@ namespace MetalX.Data
         /// <summary>
         /// 帧间隔
         /// </summary>
-        public int FrameInterval = 500;
+        public int FrameInterval = 300;
         /// <summary>
         /// 场景尺寸
         /// </summary>

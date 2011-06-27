@@ -25,20 +25,13 @@ namespace MetalX.Resource
                 return items[i];
             }
         }
-        //public MetalXTexture this[string name]
-        //{
-        //    get
-        //    {
-        //        for (int i = 0; i < items.Count; i++)
-        //        {
-        //            if (items[i].Name == name)
-        //            {
-        //                return items[i];
-        //            }
-        //        }
-        //        return null;
-        //    }
-        //}
+        public MetalXTexture this[string name]
+        {
+            get
+            {
+                return this[GetIndex(name)];
+            }
+        }
         public int GetIndex(string tname)
         {
             for (int i = 0; i < items.Count; i++)

@@ -71,6 +71,7 @@
     <Compile Include="Component\FormBoxManager.cs" />
     <Compile Include="Core\Defines.cs" />
     <Compile Include="Data\Item.cs" />
+    <Compile Include="Data\CheckPoint.cs" />
     <Compile Include="Resource\Audios.cs" />
     <Compile Include="Resource\Characters.cs" />
     <Compile Include="Resource\Scenes.cs" />
