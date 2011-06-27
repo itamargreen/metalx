@@ -270,7 +270,11 @@ namespace MetalX
                     metalXGameCom.Draw();
                 }
             }
-            Devices.D3DDev.EndScene();
+            try
+            {
+                Devices.D3DDev.EndScene();
+            }
+            catch { return; }
             Devices.D3DDev.Present();
             Application.DoEvents();
             totalFrames++;
@@ -383,7 +387,21 @@ namespace MetalX
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
         }
         #region Load File Method
-
+        public void LoadCheckPoint(int i)
+        {
+            CheckPoint checkPoint = (CheckPoint)Util.LoadObject("cp" + i.ToString("d2"));
+            i = Scenes.GetIndex(checkPoint.SceneName);
+            SceneManager.LoadScene(i, checkPoint.SceneRealLocation);
+            Characters.ME = checkPoint.ME;
+        }
+        public void SaveCheckPoint(int i)
+        {
+            CheckPoint checkPoint = new CheckPoint();
+            checkPoint.SceneName = Scenes[SceneManager.SceneIndex].Name;
+            checkPoint.SceneRealLocation = Scenes[SceneManager.SceneIndex].RealLocation;
+            checkPoint.ME = Characters.ME;
+            Util.SaveObject("cp" + i.ToString("d2"), checkPoint);
+        }
         public void LoadAllDotMXA(string pathName)
         {
             List<string> dirName = new List<string>();
@@ -572,8 +590,14 @@ namespace MetalX
             }
 
             loc.Z = 0;
-
-            Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+            try
+            {
+                Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+            }
+            catch
+            {
+                return;
+            }
 
             if (size.Width / dz.Width == 2)
             {
@@ -606,7 +630,11 @@ namespace MetalX
         }
         public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
         {
-            Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+            try
+            {
+                Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+            }
+            catch { return; }
             Devices.Font.DrawText(Devices.Sprite, text, point, color);
             Devices.Sprite.End();
         }

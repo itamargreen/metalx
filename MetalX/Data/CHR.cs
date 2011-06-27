@@ -15,8 +15,8 @@ namespace MetalX.Data
         public string TextureFileName;
         public Size TileSizePixel = new Size(24, 24);
 
-        public float MoveSpeed = 4f;
-        public float NeedMovePixel;
+        public float MoveSpeed = 3f;
+        public float NeedMovePixel = 0;
         public Direction Direction;
 
         public Vector3 LastLocation;
@@ -96,8 +96,8 @@ namespace MetalX.Data
         //            (int)NextLocation.Z / unit * unit);
         //}
         #endregion
-        
-        public Vector3 GetStopLocation(int unit)
+
+        public Vector3 GetStayLocation(int unit)
         {
             Vector3 v3 = new Vector3(
                     (int)RealLocation.X / unit * unit,
@@ -116,9 +116,33 @@ namespace MetalX.Data
             }
             return v3;
         }
-        public Vector3 GetDrawLocation(int unit,int lastl,int nextl)
+        public Vector3 GetFrontLocation(int unit)
         {
-            Vector3 v3 = GetStopLocation(unit);
+            Vector3 v3 = NextLocation;
+            if (NeedMovePixel == 0)
+            {
+                if (Direction == Direction.U)
+                {
+                    v3.Y -= unit;
+                }
+                else if (Direction == Direction.D)
+                {
+                    v3.Y += unit;
+                }
+                else if (Direction == Direction.L)
+                {
+                    v3.X -= unit;
+                }
+                else if (Direction == Direction.R)
+                {
+                    v3.X += unit;
+                }
+            }
+            return v3;
+        }
+        public Vector3 GetDrawLocation(int unit, int lastl, int nextl)
+        {
+            Vector3 v3 = GetStayLocation(unit);
             float movedPixel = unit - NeedMovePixel;
             if (NeedMovePixel > 0)
             {
@@ -162,7 +186,7 @@ namespace MetalX.Data
 
             return v3;
         }
-        
+
         public string InSceneName;
         public int InSceneIndex;
 

@@ -12,6 +12,17 @@ namespace MetalX.Component
     public class SceneManager : GameCom
     {
         int sceneIndex = -1;
+        public int SceneIndex
+        {
+            get
+            {
+                return sceneIndex;
+            }
+            //set
+            //{
+            //    sceneIndex = value;
+            //}
+        }
         Scene scene
         {
             get
@@ -30,7 +41,6 @@ namespace MetalX.Component
                 return game.Characters.ME;
             }
         }
-        //Point sceneLocation = new Point();
         int frameIndex = 0;
         DateTime lastFrameBeginTime = DateTime.Now;
 
@@ -69,7 +79,7 @@ namespace MetalX.Component
                 else if (me.Direction == Direction.D)
                 {
                     me.RealLocation.Y += movePixel;
-                    if (scene.RealLocation.Y > -scene.SizePixel.Height/2)
+                    if (scene.RealLocation.Y > -scene.SizePixel.Height / 2)
                     {
                         scene.RealLocation.Y -= movePixel;
                     }
@@ -93,17 +103,19 @@ namespace MetalX.Component
         public override void Draw()
         {
             //base.Draw();
+            if (scene == null)
+            {
+                return;
+            }
             DrawScene(scene);
-            //DrawPC(me);
-            if(scene!=null)
-
-            game.DrawText("FPS: " + game.AverageFPS + "\n" + scene.RealLocation, new Point(), Color.White);
-            //game.DrawText(FileLoader.Loaded + " / " + FileLoader.Size + " - " + FileLoader.TakeTime.TotalSeconds, new Point(), Color.White);
+            game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.White);
+            game.DrawText("RealLoc: " + scene.RealLocation + "\nLastLoc: " + me.LastLocation + "\nNextLoc: " + me.NextLocation, new Point(0, 120), Color.White);
         }
 
-        public void LoadScene(int i)
+        public void LoadScene(int i, Vector3 realLoc)
         {
             sceneIndex = i;
+            scene.RealLocation = realLoc;
         }
 
         bool IsInWindow(Point pos)
@@ -133,9 +145,8 @@ namespace MetalX.Component
                 if (l == drawl)
                 {
                     DrawPC(me);
-                    //game.DrawText("drawing layer:\n" + l, new Point(0, 120), Color.White);
                 }
-     
+
                 foreach (Tile t in tl.Tiles)
                 {
                     if (IsInWindow(t.LocationPoint))
@@ -148,10 +159,6 @@ namespace MetalX.Component
                             s.TileSizePixel,
                             Util.MixColor(t[frameIndex].ColorFilter, ColorFilter)
                         );
-                    }
-                    else
-                    {
-                        //Console.Beep();
                     }
                 }
                 l++;
@@ -178,7 +185,7 @@ namespace MetalX.Component
                 dz.X = 0;
             }
             dz.Size = game.Textures[chr.TextureIndex].TileSizePixel;
-            Point p1 = new Point((int)chr.RealLocation.X, (int)chr.RealLocation.Y +game.SpriteOffsetPixel);
+            Point p1 = new Point((int)chr.RealLocation.X, (int)chr.RealLocation.Y + game.SpriteOffsetPixel);
             Point p2 = new Point((int)scene.RealLocation.X, (int)scene.RealLocation.Y);
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
@@ -190,19 +197,53 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(int key)
         {
             Key k = (Key)key;
-            
-            if (k == Key.L)
+
+            //if (k == Key.L)
+            //{
+            //    LoadScene(0, new Vector3());
+
+            //    me.TextureFileName = "CHRS0001";
+            //    me.MoveSpeed = 3f;
+            //    me.RealLocation = Util.Point2Vector3(game.CenterLocation, 0);
+            //    me.RealLocation.X += 3 * game.TilePixel;
+            //    me.LastLocation = me.NextLocation = me.RealLocation;
+            //}
+            //else 
+            if (k == Key.F1)
             {
-                //game.Scenes.LoadDotMXScene(game,@"scenes\test1.mxscene");
-                LoadScene(0);
-                me.TextureFileName = "CHRS0001";
-                me.MoveSpeed = 3f;
-                me.RealLocation = Util.Point2Vector3(game.CenterLocation, 0);
-                me.RealLocation.X += 3 * game.TilePixel;
+                game.SaveCheckPoint(1);
+            }
+            else if (k == Key.F2)
+            {
+                game.SaveCheckPoint(2);
+            }
+            else if (k == Key.F3)
+            {
+                game.SaveCheckPoint(3);
+            }
+            else if (k == Key.F4)
+            {
+                game.SaveCheckPoint(4);
+            }
+            else if (k == Key.D1)
+            {
+                game.LoadCheckPoint(1);
+            }
+            else if (k == Key.D2)
+            {
+                game.LoadCheckPoint(2);
+            }
+            else if (k == Key.D3)
+            {
+                game.LoadCheckPoint(3);
+            }
+            else if (k == Key.D4)
+            {
+                game.LoadCheckPoint(4);
             }
             else if (k == Key.O)
             {
-                base.ShockScreen(5000);
+                base.ShockScreen(1000);
             }
             else if (k == Key.U)
             {
@@ -226,8 +267,7 @@ namespace MetalX.Component
                 if (k == Key.W)
                 {
                     me.Direction = Direction.U;
-                    Vector3 loc = me.RealLocation;
-                    loc.Y -= game.TilePixel;
+                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
                     if (scene.CodeLayer[loc].CHRCanRch)
                     {
                         me.LastLocation = me.RealLocation;
@@ -238,8 +278,7 @@ namespace MetalX.Component
                 else if (k == Key.A)
                 {
                     me.Direction = Direction.L;
-                    Vector3 loc = me.RealLocation;
-                    loc.X -= game.TilePixel;
+                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
                     if (scene.CodeLayer[loc].CHRCanRch)
                     {
                         me.LastLocation = me.RealLocation;
@@ -250,8 +289,7 @@ namespace MetalX.Component
                 else if (k == Key.S)
                 {
                     me.Direction = Direction.D;
-                    Vector3 loc = me.RealLocation;
-                    loc.Y += game.TilePixel;
+                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
                     if (scene.CodeLayer[loc].CHRCanRch)
                     {
                         me.LastLocation = me.RealLocation;
@@ -262,8 +300,7 @@ namespace MetalX.Component
                 else if (k == Key.D)
                 {
                     me.Direction = Direction.R;
-                    Vector3 loc = me.RealLocation;
-                    loc.X += game.TilePixel;
+                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
                     if (scene.CodeLayer[loc].CHRCanRch)
                     {
                         me.LastLocation = me.RealLocation;

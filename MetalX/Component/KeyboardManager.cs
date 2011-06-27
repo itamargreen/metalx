@@ -38,6 +38,10 @@ namespace MetalX.Component
                         {
                             gc.SetKeyboardEvent(i, KeyState.Down);
                             gc.SetKeyboardEvent(i, KeyState.DownHold);
+                            if ((Key)i == Key.Escape)
+                            {
+                                game.Exit();
+                            }
                         }
                     }
                     keyboardStateBackup[i] = true;
