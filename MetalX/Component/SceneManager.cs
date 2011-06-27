@@ -109,7 +109,7 @@ namespace MetalX.Component
             }
             DrawScene(scene);
             game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.White);
-            game.DrawText("RealLoc: " + scene.RealLocation + "\nLastLoc: " + me.LastLocation + "\nNextLoc: " + me.NextLocation, new Point(0, 120), Color.White);
+            //game.DrawText("RealLoc: " + scene.RealLocation + "\nLastLoc: " + me.LastLocation + "\nNextLoc: " + me.NextLocation, new Point(0, 120), Color.White);
         }
 
         public void LoadScene(int i, Vector3 realLoc)
@@ -118,9 +118,8 @@ namespace MetalX.Component
             scene.RealLocation = realLoc;
         }
 
-        bool IsInWindow(Point pos)
+        bool IsInWindow(Point p)
         {
-            Point p = Util.PointAddPoint(pos, scene.RealLocationPoint);
             if (p.X < (0 - 1) * game.Options.TileSizeX.Width || p.Y < (0 - 1) * game.Options.TileSizeX.Height || p.X > (game.Options.WindowSize.Width / game.Options.TileSizeX.Width + 1) * game.Options.TileSizeX.Width || p.Y > (game.Options.WindowSize.Height / game.Options.TileSizeX.Height + 1) * game.Options.TileSizeX.Height)
             {
                 return false;
@@ -140,7 +139,7 @@ namespace MetalX.Component
                 int lastl = s.CodeLayer[me.LastLocation].DrawLayer;
                 int nextl = s.CodeLayer[me.NextLocation].DrawLayer;
                 int drawl = s.CodeLayer[me.GetDrawLocation(game.TilePixel, lastl, nextl)].DrawLayer;
-
+                int nodrawl = s.CodeLayer[me.NextLocation].RchDisappear;
 
                 if (l == drawl)
                 {
@@ -149,16 +148,20 @@ namespace MetalX.Component
 
                 foreach (Tile t in tl.Tiles)
                 {
-                    if (IsInWindow(t.LocationPoint))
+                    if (IsInWindow(Util.PointAddPoint(t.LocationPoint, scene.RealLocationPoint)))
                     {
-                        game.DrawMetalXTexture(
-                            game.Textures[t[frameIndex].TextureIndex],
-                            t[frameIndex].DrawZone,
-                            //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
-                            Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffsetPixel), t.Location),
-                            s.TileSizePixel,
-                            Util.MixColor(t[frameIndex].ColorFilter, ColorFilter)
-                        );
+                        if (nodrawl != l)
+                        {
+                            game.DrawMetalXTexture(
+                                game.Textures[t[frameIndex].TextureIndex],
+                                t[frameIndex].DrawZone,
+                                //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
+                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffsetPixel), t.Location),
+                                s.TileSizePixel,
+                                Util.MixColor(t[frameIndex].ColorFilter, ColorFilter)
+                            );
+                        }
+
                     }
                 }
                 l++;
@@ -197,62 +200,6 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(int key)
         {
             Key k = (Key)key;
-
-            //if (k == Key.L)
-            //{
-            //    LoadScene(0, new Vector3());
-
-            //    me.TextureFileName = "CHRS0001";
-            //    me.MoveSpeed = 3f;
-            //    me.RealLocation = Util.Point2Vector3(game.CenterLocation, 0);
-            //    me.RealLocation.X += 3 * game.TilePixel;
-            //    me.LastLocation = me.NextLocation = me.RealLocation;
-            //}
-            //else 
-            if (k == Key.F1)
-            {
-                game.SaveCheckPoint(1);
-            }
-            else if (k == Key.F2)
-            {
-                game.SaveCheckPoint(2);
-            }
-            else if (k == Key.F3)
-            {
-                game.SaveCheckPoint(3);
-            }
-            else if (k == Key.F4)
-            {
-                game.SaveCheckPoint(4);
-            }
-            else if (k == Key.D1)
-            {
-                game.LoadCheckPoint(1);
-            }
-            else if (k == Key.D2)
-            {
-                game.LoadCheckPoint(2);
-            }
-            else if (k == Key.D3)
-            {
-                game.LoadCheckPoint(3);
-            }
-            else if (k == Key.D4)
-            {
-                game.LoadCheckPoint(4);
-            }
-            else if (k == Key.O)
-            {
-                base.ShockScreen(1000);
-            }
-            else if (k == Key.U)
-            {
-                base.FallOutSceen(1000);
-            }
-            else if (k == Key.I)
-            {
-                base.FallInSceen(1000);
-            }
         }
         public override void OnKeyboardDownHoldCode(int key)
         {

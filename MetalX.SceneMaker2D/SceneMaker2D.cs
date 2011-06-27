@@ -11,7 +11,26 @@ namespace MetalX.SceneMaker2D
     public class SceneMaker2D : GameCom
     {
         public bool drawGrid;
-        public bool drawCode;
+        public bool drawCod;
+        public bool drawCode
+        {
+            get
+            {
+                return drawCod;
+            }
+            set
+            {
+                drawCod = value;
+                if (value)
+                {
+                    ColorFilter = Color.FromArgb(200, ColorFilter);
+                }
+                else
+                {
+                    ColorFilter = Color.White;
+                }
+            }
+        }
         public bool drawPen;
         public int drawCodeLayer=0;
         public Rectangle dragRect;
@@ -105,7 +124,7 @@ namespace MetalX.SceneMaker2D
             if (drawGrid||drawCode)
             {
                 draw_grid();
-            }
+            }            
             if (drawCode)
             {
                 draw_code();
@@ -146,6 +165,7 @@ namespace MetalX.SceneMaker2D
         }
         void draw_code()
         {
+            Point o = new Point(8, 8);
             if (drawCodeLayer == 0)
             {
                 foreach (Code c in scene.CodeLayers[0].Codes)
@@ -155,7 +175,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    game.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str,Util.PointAddPoint(o, c.Location), Color.White);
                 }
             }
             else if (drawCodeLayer == 1)
@@ -167,7 +187,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    game.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, Util.PointAddPoint(o, c.Location), Color.White);
                 }
             }
             else if (drawCodeLayer == 2)
@@ -179,7 +199,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    game.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, Util.PointAddPoint(o, c.Location), Color.White);
                 }
             }
             else if (drawCodeLayer == 3)
@@ -191,7 +211,7 @@ namespace MetalX.SceneMaker2D
                     {
                         str = "x";
                     }
-                    game.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, Util.PointAddPoint(o, c.Location), Color.White);
                 }
             }
             else if (drawCodeLayer == 4)
@@ -199,7 +219,15 @@ namespace MetalX.SceneMaker2D
                 foreach (Code c in scene.CodeLayers[0].Codes)
                 {
                     string str = c.DrawLayer.ToString();
-                    game.DrawText(str, c.Location, Color.Red);
+                    game.DrawText(str, Util.PointAddPoint(o, c.Location), Color.White);
+                }
+            }
+            else if (drawCodeLayer == 5)
+            {
+                foreach (Code c in scene.CodeLayers[0].Codes)
+                {
+                    string str = c.RchDisappear.ToString();
+                    game.DrawText(str, Util.PointAddPoint(o, c.Location), Color.White);
                 }
             }
             //for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)

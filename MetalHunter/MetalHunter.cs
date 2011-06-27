@@ -35,15 +35,17 @@ namespace MetalHunter
         {
             game = new Game("MetalHunter");
           
-            game.Init();            
-
-            game.LoadAllDotPNG(@".\");
+            game.InitData();
+            game.InitCom();
+            
+            game.LoadAllDotPNG(@".\", new Size(16, 16));
             game.LoadAllDotMP3(@".\");
-
+            
             InitFormBoxes();
 
-            game.Scenes.LoadDotMXScene(game, @"scenes\test.mxscene");
-            
+            game.Scenes.LoadDotMXScene(game, @"scenes\mm\laduo.mxscene");
+
+
             game.Start();
         }
 

@@ -156,7 +156,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.另保存为XML格式ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.输出optionsxmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -204,7 +204,6 @@
             this.toolStripSeparator2,
             this.保存ToolStripMenuItem,
             this.另存为ToolStripMenuItem,
-            this.另保存为XML格式ToolStripMenuItem,
             this.toolStripSeparator1,
             this.退出ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
@@ -215,7 +214,7 @@
             // 
             this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
             this.新建ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.新建ToolStripMenuItem.Text = "新建";
             this.新建ToolStripMenuItem.Click += new System.EventHandler(this.新建ToolStripMenuItem_Click);
             // 
@@ -223,40 +222,42 @@
             // 
             this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
             this.打开ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.打开ToolStripMenuItem.Text = "打开";
             this.打开ToolStripMenuItem.Click += new System.EventHandler(this.打开ToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(179, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(187, 6);
             // 
             // 保存ToolStripMenuItem
             // 
             this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
             this.保存ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.保存ToolStripMenuItem.Text = "保存";
             this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
             // 
             // 另存为ToolStripMenuItem
             // 
             this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
-            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.另存为ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.S)));
+            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.另存为ToolStripMenuItem.Text = "另存为";
             this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.另存为ToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(179, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
             this.退出ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
@@ -381,8 +382,8 @@
             "Direct2D"});
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
-            this.toolStripComboBox1.Text = "Direct3D";
-            this.toolStripComboBox1.TextUpdate += new System.EventHandler(this.toolStripComboBox1_TextUpdate);
+            this.toolStripComboBox1.Text = "Direct2D";
+            this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
             // 
             // toolStripSeparator7
             // 
@@ -427,7 +428,8 @@
             this.工具ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.纹理工具ToolStripMenuItem,
             this.音频工具ToolStripMenuItem,
-            this.模型工具ToolStripMenuItem});
+            this.模型工具ToolStripMenuItem,
+            this.输出optionsxmlToolStripMenuItem});
             this.工具ToolStripMenuItem.Name = "工具ToolStripMenuItem";
             this.工具ToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
             this.工具ToolStripMenuItem.Text = "插件";
@@ -435,21 +437,21 @@
             // 纹理工具ToolStripMenuItem
             // 
             this.纹理工具ToolStripMenuItem.Name = "纹理工具ToolStripMenuItem";
-            this.纹理工具ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.纹理工具ToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.纹理工具ToolStripMenuItem.Text = "纹理";
             this.纹理工具ToolStripMenuItem.Click += new System.EventHandler(this.纹理工具ToolStripMenuItem_Click);
             // 
             // 音频工具ToolStripMenuItem
             // 
             this.音频工具ToolStripMenuItem.Name = "音频工具ToolStripMenuItem";
-            this.音频工具ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.音频工具ToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.音频工具ToolStripMenuItem.Text = "音频";
             this.音频工具ToolStripMenuItem.Click += new System.EventHandler(this.音频工具ToolStripMenuItem_Click);
             // 
             // 模型工具ToolStripMenuItem
             // 
             this.模型工具ToolStripMenuItem.Name = "模型工具ToolStripMenuItem";
-            this.模型工具ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.模型工具ToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.模型工具ToolStripMenuItem.Text = "模型";
             this.模型工具ToolStripMenuItem.Click += new System.EventHandler(this.模型工具ToolStripMenuItem_Click);
             // 
@@ -617,7 +619,7 @@
             this.ui_sinw.Name = "ui_sinw";
             this.ui_sinw.Size = new System.Drawing.Size(31, 21);
             this.ui_sinw.TabIndex = 209;
-            this.ui_sinw.Text = "48";
+            this.ui_sinw.Text = "32";
             // 
             // ui_sinh
             // 
@@ -625,7 +627,7 @@
             this.ui_sinh.Name = "ui_sinh";
             this.ui_sinh.Size = new System.Drawing.Size(31, 21);
             this.ui_sinh.TabIndex = 210;
-            this.ui_sinh.Text = "48";
+            this.ui_sinh.Text = "32";
             // 
             // label10
             // 
@@ -650,7 +652,7 @@
             this.ui_scenew.Name = "ui_scenew";
             this.ui_scenew.Size = new System.Drawing.Size(31, 21);
             this.ui_scenew.TabIndex = 201;
-            this.ui_scenew.Text = "32";
+            this.ui_scenew.Text = "20";
             // 
             // ui_sceneh
             // 
@@ -658,7 +660,7 @@
             this.ui_sceneh.Name = "ui_sceneh";
             this.ui_sceneh.Size = new System.Drawing.Size(31, 21);
             this.ui_sceneh.TabIndex = 202;
-            this.ui_sceneh.Text = "24";
+            this.ui_sceneh.Text = "15";
             // 
             // label11
             // 
@@ -808,11 +810,12 @@
             this.ui_codelayer_slt.FormattingEnabled = true;
             this.ui_codelayer_slt.ItemHeight = 12;
             this.ui_codelayer_slt.Items.AddRange(new object[] {
-            "CHR",
-            "MTL",
-            "SHP",
-            "FLT",
-            "DRAW"});
+            "CHR可到达",
+            "MTL可到达",
+            "SHP可到达",
+            "FLT可到达",
+            "精灵绘制层",
+            "精灵到达消失层"});
             this.ui_codelayer_slt.Location = new System.Drawing.Point(6, 6);
             this.ui_codelayer_slt.Name = "ui_codelayer_slt";
             this.ui_codelayer_slt.Size = new System.Drawing.Size(270, 172);
@@ -1363,12 +1366,12 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // 另保存为XML格式ToolStripMenuItem
+            // 输出optionsxmlToolStripMenuItem
             // 
-            this.另保存为XML格式ToolStripMenuItem.Name = "另保存为XML格式ToolStripMenuItem";
-            this.另保存为XML格式ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.另保存为XML格式ToolStripMenuItem.Text = "另保存为(XML格式)";
-            this.另保存为XML格式ToolStripMenuItem.Click += new System.EventHandler(this.另保存为XML格式ToolStripMenuItem_Click);
+            this.输出optionsxmlToolStripMenuItem.Name = "输出optionsxmlToolStripMenuItem";
+            this.输出optionsxmlToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.输出optionsxmlToolStripMenuItem.Text = "输出options.xml";
+            this.输出optionsxmlToolStripMenuItem.Click += new System.EventHandler(this.输出optionsxmlToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1547,7 +1550,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem 放大ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-        private System.Windows.Forms.ToolStripMenuItem 另保存为XML格式ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 输出optionsxmlToolStripMenuItem;
     }
 }
 

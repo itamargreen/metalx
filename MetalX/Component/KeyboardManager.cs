@@ -42,6 +42,51 @@ namespace MetalX.Component
                             {
                                 game.Exit();
                             }
+                            else if ((Key)i == Key.F1)
+                            {
+                                game.SaveCheckPoint(1);
+                            }
+                            else if ((Key)i == Key.F2)
+                            {
+                                game.SaveCheckPoint(2);
+                            }
+                            else if ((Key)i == Key.F3)
+                            {
+                                game.SaveCheckPoint(3);
+                            }
+                            else if ((Key)i == Key.F4)
+                            {
+                                game.SaveCheckPoint(4);
+                            }
+                            else if ((Key)i == Key.F5)
+                            {
+                                game.LoadCheckPoint(1);
+                            }
+                            else if ((Key)i == Key.F6)
+                            {
+                                game.LoadCheckPoint(2);
+                            }
+                            else if ((Key)i == Key.F7)
+                            {
+                                game.LoadCheckPoint(3);
+                            }
+                            else if ((Key)i == Key.F8)
+                            {
+                                game.LoadCheckPoint(4);
+                            }
+                            else if ((Key)i == Key.O)
+                            {
+                                ShockScreen(1000);
+                            }
+                            else if ((Key)i == Key.U)
+                            {
+                                FallOutSceen(1000);
+                            }
+                            else if ((Key)i == Key.I)
+                            {
+                                FallInSceen(1000);
+                            }
+
                         }
                     }
                     keyboardStateBackup[i] = true;

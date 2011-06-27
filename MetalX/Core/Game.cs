@@ -78,8 +78,8 @@ namespace MetalX
         {
             get
             {
-                return 0;
-                //return TilePixel / 3;
+                //return 0;
+                return -TilePixel / 3;
             }
         }
         public Point CenterLocation
@@ -189,6 +189,11 @@ namespace MetalX
         {
             Name = name;
             Options = new Options();
+            try
+            {
+                Options = (Options)Util.LoadObjectXML("options.xml", typeof(Options));
+            }
+            catch { }
             Devices = new Devices(this);
             Devices.Window.FormClosing += new FormClosingEventHandler(WindowClosing);
         }
@@ -202,13 +207,18 @@ namespace MetalX
         {
             Name = name;
             Options = new Options();
+            try
+            {
+                Options = (Options)Util.LoadObjectXML("options.xml", typeof(Options));
+            }
+            catch { }
             Devices = new Devices(control, this);
         }
 
         #endregion
         #region 方法
 
-        public void Init()
+        public void InitData()
         {
             Models = new Models();
             Textures = new Textures();
@@ -216,7 +226,9 @@ namespace MetalX
             Scenes = new Scenes();
             FormBoxes = new FormBoxes();
             Characters = new Characters();
-
+        }
+        public void InitCom()
+        {
             SoundManager = new SoundManager(this);
             MountGameCom(SoundManager);
 
@@ -389,18 +401,26 @@ namespace MetalX
         #region Load File Method
         public void LoadCheckPoint(int i)
         {
-            CheckPoint checkPoint = (CheckPoint)Util.LoadObject("cp" + i.ToString("d2"));
+            CheckPoint checkPoint = (CheckPoint)Util.LoadObject("cp" + i.ToString("d2") + ".MXCheckPoint");
             i = Scenes.GetIndex(checkPoint.SceneName);
             SceneManager.LoadScene(i, checkPoint.SceneRealLocation);
+            Options.TileSize = Scenes[i].TileSizePixel;
             Characters.ME = checkPoint.ME;
+            Characters.ME.TextureIndex = -1;
+            //Characters.ME.MoveSpeed = 1;
+            //Characters.ME.RealLocation.X -= 96;
         }
         public void SaveCheckPoint(int i)
         {
+            if (Scenes[SceneManager.SceneIndex] == null)
+            {
+                return;
+            }
             CheckPoint checkPoint = new CheckPoint();
             checkPoint.SceneName = Scenes[SceneManager.SceneIndex].Name;
             checkPoint.SceneRealLocation = Scenes[SceneManager.SceneIndex].RealLocation;
             checkPoint.ME = Characters.ME;
-            Util.SaveObject("cp" + i.ToString("d2"), checkPoint);
+            Util.SaveObject("CP" + i.ToString("d2") + ".MXCheckPoint", checkPoint);
         }
         public void LoadAllDotMXA(string pathName)
         {
@@ -448,7 +468,7 @@ namespace MetalX
                 }
             }
         }
-        public void LoadAllDotPNG(string pathName)
+        public void LoadAllDotPNG(string pathName,Size defTileSize)
         {
             List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
@@ -459,7 +479,7 @@ namespace MetalX
                 foreach (FileInfo fi in fis)
                 {
                     //Textures.LoadDotPNG(this, fi.FullName);
-                    MetalXTexture mxt = Textures.LoadDotPNG(this, fi.FullName);
+                    MetalXTexture mxt = Textures.LoadDotPNG(this, fi.FullName, defTileSize);
                     Textures.Add(mxt);
                 }
             }
@@ -599,6 +619,10 @@ namespace MetalX
                 return;
             }
 
+            if (dz.Width == 0)
+            {
+                dz.Width = 1;
+            }
             if (size.Width / dz.Width == 2)
             {
                 dz.X = dz.X * (size.Width / dz.Width);
@@ -626,7 +650,7 @@ namespace MetalX
         /// <param name="color">颜色</param>
         public void DrawText(string text, Point point, Color color)
         {
-            DrawText(text, point, "新宋体", 10, color);
+            DrawText(text, point, "微软雅黑", 14, color);
         }
         public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
         {

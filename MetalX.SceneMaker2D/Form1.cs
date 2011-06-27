@@ -193,6 +193,10 @@ namespace MetalX.SceneMaker2D
                 {
                     sceneMaker2D.scene.CodeLayers[0][p].DrawLayer = l;
                 }
+                else if (sceneMaker2D.drawCodeLayer == 5)
+                {
+                    sceneMaker2D.scene.CodeLayers[0][p].RchDisappear = l;
+                }
             }
             catch { }
         }
@@ -291,8 +295,8 @@ namespace MetalX.SceneMaker2D
             }
             game = new Game(pictureBox1);
 
-            game.Init();
-            game.LoadAllDotPNG(@".\");
+            game.InitData();
+            game.LoadAllDotPNG(@".\", new Size(tilesizepixel.Width / 2, tilesizepixel.Height / 2));
             game.LoadAllDotMP3(@".\");
 
             update_pic_list();
@@ -323,6 +327,7 @@ namespace MetalX.SceneMaker2D
 
             tabControl1.SelectedIndex = 1;
 
+            game.InitCom();
             game.MountGameCom(sceneMaker2D);
             game.Start();
         }
@@ -335,10 +340,9 @@ namespace MetalX.SceneMaker2D
                 game.Stop();
             }
             game = new Game(pictureBox1);
-            //game.LoadAllDotMXT(@".\");
-            //game.LoadAllDotMXA(@".\");
-            game.Init();
-            game.LoadAllDotPNG(@".\");
+            game.InitData();
+            game.InitCom();
+            game.LoadAllDotPNG(@".\", new Size(game.Options.TileSize.Width / 2, game.Options.TileSize.Height / 2));
             game.LoadAllDotMP3(@".\");
 
             update_pic_list();
@@ -373,12 +377,10 @@ namespace MetalX.SceneMaker2D
                 game.Stop();
             }
             game = new Game(pictureBox1);
-            //game.LoadAllDotMXT(@".\");
-            //game.LoadAllDotMXA(@".\");
-            game.Init();
-            game.LoadAllDotPNG(@".\");
+            game.InitData();
+            game.InitCom();
+            game.LoadAllDotPNG(@".\", new Size(game.Options.TileSize.Width / 2, game.Options.TileSize.Height / 2));
             game.LoadAllDotMP3(@".\");
-
             update_pic_list();
             update_mus_list();
 
@@ -386,6 +388,7 @@ namespace MetalX.SceneMaker2D
 
             game.Scenes.LoadDotMXSceneDotXML(game, fileName);
             sceneMaker2D.scene = game.Scenes[0];
+
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
@@ -733,7 +736,7 @@ namespace MetalX.SceneMaker2D
             if (filename == null)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "MetalX Scene File|*.MXScene";
+                sfd.Filter = "MetalX Scene File|*.MXScene|XML File|*.XML";
                 sfd.RestoreDirectory = true;
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
@@ -742,30 +745,14 @@ namespace MetalX.SceneMaker2D
                     {
                         sceneMaker2D.scene.CodeLayers.RemoveAt(1);
                     }
-                    Util.SaveObject(openFileName, sceneMaker2D.scene);
-                    Text = openFileName;
-                }
-            }
-            else
-            {
-                Util.SaveObject(openFileName, sceneMaker2D.scene);
-            }
-        }
-        void savetoxml(string filename)
-        {
-            if (filename == null)
-            {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "MetalX Scene File|*.MXScene";
-                sfd.RestoreDirectory = true;
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    openFileName = sfd.FileName;
-                    if (sceneMaker2D.scene.CodeLayers.Count > 1)
+                    if (sfd.FilterIndex == 1)
                     {
-                        sceneMaker2D.scene.CodeLayers.RemoveAt(1);
+                        Util.SaveObject(openFileName, sceneMaker2D.scene);
                     }
-                    Util.SaveObjectXML(openFileName + ".xml", sceneMaker2D.scene);
+                    else if (sfd.FilterIndex == 2)
+                    {
+                        Util.SaveObjectXML(openFileName, sceneMaker2D.scene);
+                    }
                     Text = openFileName;
                 }
             }
@@ -774,6 +761,29 @@ namespace MetalX.SceneMaker2D
                 Util.SaveObject(openFileName, sceneMaker2D.scene);
             }
         }
+        //void savetoxml(string filename)
+        //{
+        //    if (filename == null)
+        //    {
+        //        SaveFileDialog sfd = new SaveFileDialog();
+        //        sfd.Filter = "MetalX Scene File|*.MXScene";
+        //        sfd.RestoreDirectory = true;
+        //        if (sfd.ShowDialog() == DialogResult.OK)
+        //        {
+        //            openFileName = sfd.FileName;
+        //            if (sceneMaker2D.scene.CodeLayers.Count > 1)
+        //            {
+        //                sceneMaker2D.scene.CodeLayers.RemoveAt(1);
+        //            }
+        //            Util.SaveObjectXML(openFileName + ".xml", sceneMaker2D.scene);
+        //            Text = openFileName;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Util.SaveObject(openFileName, sceneMaker2D.scene);
+        //    }
+        //}
 
 
         private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -862,6 +872,17 @@ namespace MetalX.SceneMaker2D
                         sceneMaker2D.drawPen = false;
                     else
                         sceneMaker2D.drawPen = true;
+                }
+                else if (e.KeyCode == Keys.Subtract)
+                {
+                    scene_code_layer = -1;
+                }
+                else if (e.KeyCode == Keys.Home)
+                {
+                    for (int i = 0; i < sceneMaker2D.scene.CodeLayer.Codes.Count; i++)
+                    {
+                        sceneMaker2D.scene.CodeLayer.Codes[i].RchDisappear = -1;
+                    }
                 }
                 scene_code_layer = e.KeyValue - 48;
                 if (scene_code_layer < 0 || scene_code_layer > 9)
@@ -1000,18 +1021,6 @@ namespace MetalX.SceneMaker2D
             }
         }
 
-        private void toolStripComboBox1_TextUpdate(object sender, EventArgs e)
-        {
-            if (toolStripComboBox1.Text == "Direct3D")
-            {
-                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
-            }
-            else if (toolStripComboBox1.Text == "Direct2D")
-            {
-                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
-            }
-        }
-
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
         }
@@ -1040,10 +1049,31 @@ namespace MetalX.SceneMaker2D
             game.SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), game.Options.X);
         }
 
-        private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            savetoxml(null);
+            if (game == null)
+            {
+                return;
+            }
+            if (toolStripComboBox1.Text == "Direct3D")
+            {
+                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
+            }
+            else if (toolStripComboBox1.Text == "Direct2D")
+            {
+                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
+            }
         }
+
+        private void 输出optionsxmlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Util.SaveObjectXML("options.xml", game.Options);
+        }
+
+        //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    savetoxml(null);
+        //}
 
        
     }
