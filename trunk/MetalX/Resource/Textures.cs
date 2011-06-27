@@ -77,7 +77,7 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX纹理</returns>
-        public MetalXTexture LoadDotPNG( Game g,string fileName)
+        public MetalXTexture LoadDotPNG( Game g,string fileName,Size defTileSize)
         {
             MetalXTexture texture = new MetalXTexture();
             texture.Name = Path.GetFileNameWithoutExtension(fileName);
@@ -89,7 +89,7 @@ namespace MetalX.Resource
 
             texture.SizePixel = bmp.Size;
             //bmp.MakeTransparent(Color.Pink);
-            texture.TileSizePixel = new Size(24, 24);
+            texture.TileSizePixel = defTileSize;
             //texture.MEMTexture = new Texture(g.Devices.D3DDev, bmp, Usage.None, Pool.Managed);
             texture.MEMTexture = TextureLoader.FromStream(g.Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
 

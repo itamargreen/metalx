@@ -148,18 +148,33 @@ namespace MetalX.Data
             {
                 if (Direction == Direction.U)
                 {
-                    if (movedPixel > unit / 3 * 2)
+                    if (nextl > lastl)
                     {
-                        int yo = -unit;
-                        v3.Y += yo;
+                        if (movedPixel > unit / 3)
+                        {
+                            int yo = -unit;
+                            v3.Y += yo;
+                        }
+                    }
+                    else
+                    {
+ 
                     }
                 }
                 else if (Direction == Direction.D)
                 {
-                    if (movedPixel > unit / 3)
+                    if (nextl > lastl)
                     {
                         int yo = unit;
                         v3.Y += yo;
+                    }
+                    else
+                    {
+                        if (movedPixel > unit / 3 * 2)
+                        {
+                            int yo = unit;
+                            v3.Y += yo;
+                        }
                     }
                 }
                 else if (Direction == Direction.L)

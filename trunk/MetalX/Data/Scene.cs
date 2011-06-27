@@ -348,6 +348,7 @@ namespace MetalX.Data
         /// 精灵绘制所在层
         /// </summary>
         public int DrawLayer = 5;
+        public int RchDisappear = -1;
         /// <summary>
         /// 可上移
         /// </summary>

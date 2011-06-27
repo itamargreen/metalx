@@ -13,7 +13,7 @@ namespace MetalX.SceneMaker2D
     {
         public Vector3 xyz;
         public MetalXModel model;
-        public MetalXTexture t;
+        //public MetalXTexture t;
         public ModelMaker(Game g)
             : base(g)
         {
