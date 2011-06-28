@@ -15,7 +15,7 @@ namespace MetalX.Data
         public string TextureFileName;
         public Size TileSizePixel = new Size(24, 24);
 
-        public float MoveSpeed = 3f;
+        public float moveSpeed = 3f;
         public float NeedMovePixel = 0;
         public Direction Direction;
 
@@ -158,7 +158,7 @@ namespace MetalX.Data
                     }
                     else
                     {
- 
+
                     }
                 }
                 else if (Direction == Direction.D)
@@ -221,15 +221,202 @@ namespace MetalX.Data
         public int MP;
         public int MPMax;
 
-        public List<Item> Bag = new List<Item>();
+        List<EquipmentCHR> Equipments = new List<EquipmentCHR>(8);
+        public EquipmentCHR PrimaryWeapon
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.PrimaryWeapon];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.PrimaryWeapon] = value;
+            }
+        }
+        public EquipmentCHR SecondryWeapon
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.SecondryWeapon];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.SecondryWeapon] = value;
+            }
+        }
+        public EquipmentCHR Body
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.Body];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.Body] = value;
+            }
+        }
+        public EquipmentCHR Leg
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.Leg];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.Leg] = value;
+            }
+        }
+        public EquipmentCHR Foot
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.Foot];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.Foot] = value;
+            }
+        }
+        public EquipmentCHR Head
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.Head];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.Head] = value;
+            }
+        }
+        public EquipmentCHR Hand
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.Hand];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.Hand] = value;
+            }
+        }
+        public EquipmentCHR Other
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.Other];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.Other] = value;
+            }
+        }
+        /// <summary>
+        /// 伤害
+        /// </summary>
+        public int Damage
+        {
+            get
+            {
+                int damage = 0;
+                foreach (EquipmentCHR e in Equipments)
+                {
+                    damage += e.Damage;
+                }
+                return damage;
+            }
+        }
+        /// <summary>
+        /// 防御
+        /// </summary>
+        public int Defense
+        {
+            get
+            {
+                int defense = 0;
+                foreach (EquipmentCHR e in Equipments)
+                {
+                    defense += e.Defense;
+                }
+                return defense;
+            }
+        }
+        /// <summary>
+        /// 反应延迟
+        /// </summary>
+        public int Delay
+        {
+            get
+            {
+                int delay = 0;
+                foreach (EquipmentCHR e in Equipments)
+                {
+                    delay += e.Delay;
+                }
+                return delay;
+            }
+        }
+        /// <summary>
+        /// 命中率
+        /// </summary>
+        public float Accurate
+        {
+            get
+            {
+                float accurate = 0;
+                foreach (EquipmentCHR e in Equipments)
+                {
+                    accurate += e.Accurate;
+                }
+                return accurate;
+            }
+        }
+        /// <summary>
+        /// 躲闪率
+        /// </summary>
+        public float Missrate
+        {
+            get
+            {
+                float missrate = 0;
+                foreach (EquipmentCHR e in Equipments)
+                {
+                    missrate += e.Missrate;
+                }
+                return missrate;
+            }
+        }
+        /// <summary>
+        /// 移动速度
+        /// </summary>
+        public float MoveSpeed
+        {
+            get
+            {
+                float speed = 0;
+                foreach (EquipmentCHR e in Equipments)
+                {
+                    speed += e.MoveSpeed;
+                }
+                speed += moveSpeed;
+                return speed;
+            }
+        }
 
+        public List<Item> Bag = new List<Item>();
         public void BagIn(Item item)
         {
             Bag.Add(item);
         }
-        public void BagOut(int i)
+        public void BagOut(Guid guid)
         {
-            Bag.RemoveAt(i);
+            for (int i = 0; i < Bag.Count; i++)
+            {
+                if (Bag[i].GUID == guid)
+                {
+                    Bag.RemoveAt(i);
+                    return;
+                }
+            }
         }
     }
     [Serializable]

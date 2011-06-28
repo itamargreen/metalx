@@ -7,16 +7,18 @@ namespace MetalX.Data
     [Serializable]
     public class Item
     {
+        public Guid GUID = Guid.NewGuid();
         public string Name;
         public string Description;
         public string Icon;
         public int IconIndex;
         public int ReqLevel;
         public int ReqMLevel, ReqELevel, ReqBLevel;
-        public double Weight;
-        public int Gold;
-        public int Endure;
-        public int Upgrade;
+        public float Weight;
+        public float Money;
+        public float Endure = 1;
+        public float Upgrade = 0;
+        public int UpgradeTime = 0;
         public Item GetClone()
         {
             return (Item)MemberwiseClone();
@@ -25,41 +27,55 @@ namespace MetalX.Data
     [Serializable]
     public enum EquipmentCHRType
     {
-        Weapon,
-        Body,
-        Leg,
-        Foot,
-        Head,
-        Hand,
+        PrimaryWeapon = 0,
+        SecondryWeapon = 1,
+        Body = 2,
+        Leg = 3,
+        Foot = 4,
+        Head = 5,
+        Hand = 6,
+        Other=7,
     }
     [Serializable]
     public enum EquipmentMTLType
     {
-        Motor,
-        Body,
-        Primary,
-        Secondry,
-        FuelBox,
-        AmmoBox,
-        ECU,
+        PrimaryWeapon = 0,
+        SecondryWeapon = 1,
+        Motor = 2,
+        Body = 3,
+        FuelBox = 4,
+        AmmoBox = 5,
+        ECU = 6,
+        Other=7,
     }
     [Serializable]
     public class EquipmentCHR : Item
     {
-
+        public EquipmentCHRType EquipmentTyp;
         public int ExtMLevel, ExtELevel, ExtBLevel;
 
         int damage;
         int defense;
-        double accurate;
-        double missrate;
+        float accurate;
+        float missrate;
         int delay;//for ecu
-
+        float moveSpeed;
+        public float MoveSpeed
+        {
+            get
+            {
+                return moveSpeed;
+            }
+            set
+            {
+                moveSpeed = value;
+            }
+        }
         public int Damage
         {
             get
             {
-                return damage + damage * Upgrade / 10;
+                return (int)(damage + damage * Upgrade);
             }
             set
             {
@@ -70,7 +86,7 @@ namespace MetalX.Data
         {
             get
             {
-                return defense + defense * Upgrade / 10;
+                return (int)(defense + defense * Upgrade);
             }
             set
             {
@@ -81,29 +97,29 @@ namespace MetalX.Data
         {
             get
             {
-                return delay - delay * Upgrade / 10;
+                return (int)(delay - delay * Upgrade);
             }
             set
             {
                 delay = value;
             }
         }
-        public double Accurate
+        public float Accurate
         {
             get
             {
-                return accurate + accurate * Upgrade / 10;
+                return accurate + accurate * Upgrade;
             }
             set
             {
                 accurate = value;
             }
         }
-        public double Missrate
+        public float Missrate
         {
             get
             {
-                return missrate + missrate * Upgrade / 10;
+                return missrate + missrate * Upgrade;
             }
             set
             {
@@ -123,46 +139,58 @@ namespace MetalX.Data
 
         int damage;
         int defense;
-        double accurate;
-        double missrate;
-        double load;//for motor
-        double ammoBoxCap, fuelBoxCap;
+        float accurate;
+        float missrate;
+        float load;//for motor
+        float ammoBoxCap, fuelBoxCap;
         int delay;//for ecu
+        float moveSpeed;
+        public float MoveSpeed
+        {
+            get
+            {
+                return moveSpeed;
+            }
+            set
+            {
+                moveSpeed = value;
+            }
+        }
 
         public int Delay
         {
             get
             {
-                return delay - delay * Upgrade / 10;
+                return (int)(delay - delay * Upgrade);
             }
             set
             {
                 delay = value;
             }
         }
-        public double Accurate
+        public float Accurate
         {
             get
             {
-                return accurate + accurate * Upgrade / 10;
+                return accurate + accurate * Upgrade;
             }
             set
             {
                 accurate = value;
             }
         }
-        public double Missrate
+        public float Missrate
         {
             get
             {
-                return missrate + missrate * Upgrade / 10;
+                return missrate + missrate * Upgrade;
             }
             set
             {
                 missrate = value;
             }
         }
-        public double Load
+        public float Load
         {
             get
             {
@@ -177,7 +205,7 @@ namespace MetalX.Data
         {
             get
             {
-                return damage + damage * Upgrade / 10;
+                return (int)(damage + damage * Upgrade);
             }
             set
             {
@@ -188,14 +216,14 @@ namespace MetalX.Data
         {
             get
             {
-                return defense + defense * Upgrade / 10;
+                return (int)(defense + defense * Upgrade);
             }
             set
             {
                 defense = value;
             }
         }
-        public double AmmoBoxCap
+        public float AmmoBoxCap
         {
             get
             {
@@ -206,7 +234,7 @@ namespace MetalX.Data
                 ammoBoxCap = value;
             }
         }
-        public double FuelBoxCap
+        public float FuelBoxCap
         {
             get
             {
@@ -227,7 +255,7 @@ namespace MetalX.Data
     [Serializable]
     public class Supply : Item
     {
-        public int RHP, RMP;
+        public int RecoverHP, RecoverMP;
         new public Supply GetClone()
         {
             return (Supply)MemberwiseClone();
