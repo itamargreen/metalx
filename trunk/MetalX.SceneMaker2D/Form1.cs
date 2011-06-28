@@ -1029,20 +1029,6 @@ namespace MetalX.SceneMaker2D
         {
         }
 
-        private void 替换纹理名ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //string source = "室内墙", target = "室内墙体";
-            //for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
-            //    for (int j = 0; j < sceneMaker2D.scene.TileLayers[i].Tiles.Count; j++)
-            //        for (int k = 0; k < sceneMaker2D.scene.TileLayers[i].Tiles[j].Frames.Count; k++)
-            //        {
-            //            if (sceneMaker2D.scene.TileLayers[i].Tiles[j].Frames[k].TextureFileName == source)
-            //            {
-            //                sceneMaker2D.scene.TileLayers[i].Tiles[j].Frames[k].TextureFileName = target;
-            //            }
-            //        }
-        }
-
         private void 放大ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             game.Options.X += 1;
@@ -1067,6 +1053,10 @@ namespace MetalX.SceneMaker2D
 
         private void 输出optionsxmlToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (game == null)
+            {
+                return;
+            }
             Util.SaveObjectXML("options.xml", game.Options);
         }
 
