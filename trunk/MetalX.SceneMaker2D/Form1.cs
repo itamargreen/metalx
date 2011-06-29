@@ -421,6 +421,7 @@ namespace MetalX.SceneMaker2D
         private void Form1_Load(object sender, EventArgs e)
         {
             splitContainer1.SplitterDistance = 320;
+            //pictureBox1.ContextMenuStrip = menuStrip2;
         }
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -554,6 +555,7 @@ namespace MetalX.SceneMaker2D
         {
             if (tabControl2.SelectedIndex == 0)
             {
+                //ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
                 if (e.Button == MouseButtons.Left)
                 {
                     if (drawing_code)
@@ -612,6 +614,7 @@ namespace MetalX.SceneMaker2D
             {
                 sceneMaker2D.penLoc = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
                 ui_mouse_pos.Text = pointround2(e.Location, sceneMaker2D.scene.TileSizePixel).ToString();
+                ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
             }
             catch
             { }
@@ -658,7 +661,7 @@ namespace MetalX.SceneMaker2D
         {
             if (tabControl2.SelectedIndex == 0)
             {
-
+                //ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
                 if (e.Button == MouseButtons.Right)
                 {
                     try
@@ -1058,6 +1061,18 @@ namespace MetalX.SceneMaker2D
                 return;
             }
             Util.SaveObjectXML("options.xml", game.Options);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation = true;
+            ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
+        }
+
+        private void 取消动画图元ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation = false;
+            ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
         }
 
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)

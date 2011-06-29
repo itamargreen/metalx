@@ -180,11 +180,12 @@ namespace MetalX.Data
         /// <summary>
         /// 帧索引
         /// </summary>
+        public bool IsAnimation = true;
         public int FrameIndex = 0;
         /// <summary>
         /// 帧间隔
         /// </summary>
-        public int FrameInterval = 500;
+        //public int FrameInterval = 500;
         /// <summary>
         /// 帧集合
         /// </summary>
@@ -328,6 +329,7 @@ namespace MetalX.Data
     [Serializable]
     public class Code
     {
+
         /// <summary>
         /// 人物可到达
         /// </summary>

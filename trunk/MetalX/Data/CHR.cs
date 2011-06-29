@@ -13,9 +13,9 @@ namespace MetalX.Data
 
         public int TextureIndex = -1;
         public string TextureFileName;
-        public Size TileSizePixel = new Size(24, 24);
+        //public Size TileSizePixel = new Size(16, 16);
 
-        public float moveSpeed = 3f;
+        public float moveSpeed = 2f;
         public float NeedMovePixel = 0;
         public Direction Direction;
 

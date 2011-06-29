@@ -44,7 +44,7 @@ namespace MetalHunter
             InitFormBoxes();
 
             game.Scenes.LoadDotMXScene(game, @"scenes\mm\laduo.mxscene");
-
+            
 
             game.Start();
         }

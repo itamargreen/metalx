@@ -155,6 +155,10 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ui_is_ani = new System.Windows.Forms.CheckBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.取消动画图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -175,6 +179,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -278,7 +283,7 @@
             // 
             this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
             this.撤销ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.撤销ToolStripMenuItem.Text = "撤销";
             this.撤销ToolStripMenuItem.Click += new System.EventHandler(this.撤销ToolStripMenuItem_Click);
             // 
@@ -286,45 +291,45 @@
             // 
             this.重复ToolStripMenuItem.Name = "重复ToolStripMenuItem";
             this.重复ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.重复ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.重复ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.重复ToolStripMenuItem.Text = "重复";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(132, 6);
             // 
             // 剪切ToolStripMenuItem
             // 
             this.剪切ToolStripMenuItem.Name = "剪切ToolStripMenuItem";
             this.剪切ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.剪切ToolStripMenuItem.Text = "剪切";
             // 
             // 复制ToolStripMenuItem
             // 
             this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
             this.复制ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.复制ToolStripMenuItem.Text = "复制";
             // 
             // 粘贴ToolStripMenuItem
             // 
             this.粘贴ToolStripMenuItem.Name = "粘贴ToolStripMenuItem";
             this.粘贴ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.粘贴ToolStripMenuItem.Text = "粘贴";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(132, 6);
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
             this.删除ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.删除ToolStripMenuItem.Text = "删除";
             // 
             // 查看ToolStripMenuItem
@@ -710,6 +715,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.ui_is_ani);
             this.panel2.Controls.Add(this.ui_ly_slt);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.ui_ly_name);
@@ -736,7 +742,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(199, 131);
+            this.label9.Location = new System.Drawing.Point(198, 116);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(41, 12);
             this.label9.TabIndex = 27;
@@ -744,7 +750,7 @@
             // 
             // ui_ly_name
             // 
-            this.ui_ly_name.Location = new System.Drawing.Point(198, 146);
+            this.ui_ly_name.Location = new System.Drawing.Point(198, 131);
             this.ui_ly_name.Name = "ui_ly_name";
             this.ui_ly_name.Size = new System.Drawing.Size(74, 21);
             this.ui_ly_name.TabIndex = 116;
@@ -1342,6 +1348,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
@@ -1356,6 +1363,38 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // ui_is_ani
+            // 
+            this.ui_is_ani.AutoSize = true;
+            this.ui_is_ani.Location = new System.Drawing.Point(198, 159);
+            this.ui_is_ani.Name = "ui_is_ani";
+            this.ui_is_ani.Size = new System.Drawing.Size(60, 16);
+            this.ui_is_ani.TabIndex = 117;
+            this.ui_is_ani.Text = "是动画";
+            this.ui_is_ani.UseVisualStyleBackColor = true;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.取消动画图元ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(143, 48);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.toolStripMenuItem1.Text = "设为动画图元";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // 取消动画图元ToolStripMenuItem
+            // 
+            this.取消动画图元ToolStripMenuItem.Name = "取消动画图元ToolStripMenuItem";
+            this.取消动画图元ToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.取消动画图元ToolStripMenuItem.Text = "取消动画图元";
+            this.取消动画图元ToolStripMenuItem.Click += new System.EventHandler(this.取消动画图元ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1401,6 +1440,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1533,6 +1573,10 @@
         private System.Windows.Forms.ToolStripMenuItem 放大ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem 输出optionsxmlToolStripMenuItem;
+        private System.Windows.Forms.CheckBox ui_is_ani;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 取消动画图元ToolStripMenuItem;
     }
 }
 
