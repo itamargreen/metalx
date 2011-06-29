@@ -148,7 +148,6 @@ namespace MetalX.SceneMaker2D
                 }
                 yoo += game.Textures[sceneMaker2D.mxtIndex].TileSizePixel.Height;
             }
-            insFrame = false;
             ui_cursorsat.Text = "铅笔";
             pictureBox1.Cursor = bc;
             ui_tilecount.Text = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count.ToString();
@@ -253,6 +252,7 @@ namespace MetalX.SceneMaker2D
                     paint_tile(new Point(x, y), slt_zone);
                 }
             }
+            insFrame = false;
         }
         void del_zone(Rectangle target_zone, Rectangle slt_zone)
         {
