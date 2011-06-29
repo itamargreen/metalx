@@ -37,42 +37,50 @@ namespace MetalX.Component
                         foreach (GameCom gc in game.GameComs)
                         {
                             gc.SetKeyboardEvent(i, KeyState.Down);
-                            gc.SetKeyboardEvent(i, KeyState.DownHold);
+                            //gc.SetKeyboardEvent(i, KeyState.DownHold);
                             if ((Key)i == Key.Escape)
                             {
                                 game.Exit();
                             }
                             else if ((Key)i == Key.F1)
                             {
-                                game.SaveCheckPoint(1);
+                                game.LoadCheckPoint(1);
                             }
                             else if ((Key)i == Key.F2)
                             {
-                                game.SaveCheckPoint(2);
+                                game.LoadCheckPoint(2);
                             }
                             else if ((Key)i == Key.F3)
                             {
-                                game.SaveCheckPoint(3);
+                                game.LoadCheckPoint(3);
                             }
                             else if ((Key)i == Key.F4)
                             {
-                                game.SaveCheckPoint(4);
+                                game.LoadCheckPoint(4);
                             }
                             else if ((Key)i == Key.F5)
                             {
-                                game.LoadCheckPoint(1);
+                                game.SaveCheckPoint(1);
                             }
                             else if ((Key)i == Key.F6)
                             {
-                                game.LoadCheckPoint(2);
+                                game.SaveCheckPoint(2);
                             }
                             else if ((Key)i == Key.F7)
                             {
-                                game.LoadCheckPoint(3);
+                                game.SaveCheckPoint(3);
                             }
                             else if ((Key)i == Key.F8)
                             {
-                                game.LoadCheckPoint(4);
+                                game.SaveCheckPoint(4);
+                            }
+                            else if ((Key)i == Key.F9)
+                            {
+                                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
+                            }
+                            else if ((Key)i == Key.F10)
+                            {
+                                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
                             }
                             else if ((Key)i == Key.O)
                             {

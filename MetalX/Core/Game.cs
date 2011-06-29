@@ -78,17 +78,17 @@ namespace MetalX
         {
             get
             {
-                //return 0;
-                return -TilePixel / 3;
+                return 0;
+                //return -TilePixel / 3;
             }
         }
-        public Point CenterLocation
+        public Vector3 CenterLocation
         {
             get
             {
-                return new Point(
-                    (Options.WindowSize.Width / Options.TileSizeX.Width/2 + 1) * TilePixel,
-                    (Options.WindowSize.Height / Options.TileSizeX.Height/2 + 1) * TilePixel);
+                return new Vector3(
+                    (Options.WindowSize.Width / Options.TileSizeX.Width / 2 + 1) * TilePixel,
+                    (Options.WindowSize.Height / Options.TileSizeX.Height / 2 + 1) * TilePixel, 0);
             }
         }
         //public bool FPSCanRead
@@ -566,6 +566,7 @@ namespace MetalX
             Size s = t.SizePixel;
 
             float fx, fy, tx, ty;
+            float offset = .5f;
 
             if (Util.Is2PowSize(t.SizePixel))
             {
@@ -576,10 +577,10 @@ namespace MetalX
             }
             else
             {
-                fx = ((float)dz.X + 0.1f) / (float)s.Width;
-                fy = ((float)dz.Y + 0.1f) / (float)s.Height;
-                tx = ((float)dz.X + (float)dz.Width + 0.1f) / (float)s.Width;
-                ty = ((float)dz.Y + (float)dz.Height + 0.1f) / (float)s.Height;
+                fx = ((float)dz.X + offset) / (float)s.Width;
+                fy = ((float)dz.Y + offset) / (float)s.Height;
+                tx = ((float)dz.X + (float)dz.Width + offset) / (float)s.Width;
+                ty = ((float)dz.Y + (float)dz.Height + offset) / (float)s.Height;
             }
 
             CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
@@ -591,7 +592,14 @@ namespace MetalX
             vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
             vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
 
-            Devices.D3DDev.SetTexture(0, t.MEMTexture);
+            try
+            {
+                Devices.D3DDev.SetTexture(0, t.MEMTexture);
+            }
+            catch
+            {
+                return;
+            }
             Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Modulate;
 
             Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
