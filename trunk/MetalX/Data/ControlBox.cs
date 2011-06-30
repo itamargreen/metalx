@@ -11,12 +11,7 @@ namespace MetalX.Data
         public bool Visible = true;
         public string Name;
         //public int Index = -1;
-        public Color BGColor;
-        public Color BGTextureFliterColor = Color.White;
-        public int BGTextureIndex = -1;
-        public string BGTextureFileName;
-        public string BGTextureName;
-        public string BGAudio;
+
         public Size Size;
         public Point Location;
         public ControlBox(Game g)
@@ -27,6 +22,12 @@ namespace MetalX.Data
     [Serializable]
     public class FormBox : ControlBox
     {
+        public Color BGColor;
+        public Color BGTextureFliterColor = Color.White;
+        public int BGTextureIndex = -1;
+        //public string BGTextureFileName;
+        public string BGTextureName;
+        public string BGAudio; 
         public event FormBoxEvent OnFormBoxAppear;
         public event FormBoxEvent OnFormBoxDisappear;
         public List<ControlBox> ControlBoxes = new List<ControlBox>();
@@ -131,7 +132,7 @@ namespace MetalX.Data
     [Serializable]
     public class TextureBox : ControlBox
     {
-        public string TextureFileName; 
+        //public string TextureFileName; 
         public string TextureName;
         public int TextureIndex = -1;
         public Color TextureFliterColor = Color.White;
