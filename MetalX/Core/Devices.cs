@@ -32,7 +32,7 @@ namespace MetalX
             Window.Text = g.Name;
             Window.StartPosition = FormStartPosition.CenterScreen;
             Window.Size = g.Options.WindowSize;
-            Window.FormBorderStyle = FormBorderStyle.FixedSingle;
+            Window.FormBorderStyle = FormBorderStyle.None;
             Window.MaximizeBox = false;
             Window.MinimizeBox = false;
 

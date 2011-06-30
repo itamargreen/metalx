@@ -21,6 +21,13 @@ namespace MetalX.Resource
                 return items[i];
             }
         }
+        public FormBox this[string name]
+        {
+            get
+            {
+                return this[GetIndex(name)];
+            }
+        }
         public int GetIndex(string tname)
         {
             for (int i = 0; i < items.Count; i++)

@@ -116,7 +116,7 @@ namespace MetalX.Component
 
         public override void Draw()
         {
-            //base.Draw();
+            base.Draw();
             if (scene == null)
             {
                 return;
@@ -138,6 +138,10 @@ namespace MetalX.Component
             {
                 return false;
             }
+            return true;
+        }
+        bool IsInScene(Point p)
+        {
             return true;
         }
         void DrawScene(Scene s)
@@ -175,7 +179,7 @@ namespace MetalX.Component
                                 game.Textures[t[fi].TextureIndex],
                                 t[fi].DrawZone,
                                 //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
-                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffsetPixel), t.Location),
+                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffset), t.Location),
                                 s.TileSizePixel,
                                 Util.MixColor(t[fi].ColorFilter, ColorFilter)
                             );
@@ -237,48 +241,36 @@ namespace MetalX.Component
             }
             if (me.NeedMovePixel == 0)
             {
-                if (k == Key.W)
+                if (k == Key.W || k == Key.A || k == Key.S || k == Key.D)
                 {
-                    me.Direction = Direction.U;
-                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
-                    if (scene.CodeLayer[loc].CHRCanRch)
+                    if (k == Key.W)
                     {
-                        me.LastLocation = me.RealLocation;
-                        me.NextLocation = loc;
-                        me.NeedMovePixel = game.TilePixel;
+                        me.Direction = Direction.U;
                     }
-                }
-                else if (k == Key.A)
-                {
-                    me.Direction = Direction.L;
-                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
-                    if (scene.CodeLayer[loc].CHRCanRch)
+                    else if (k == Key.A)
                     {
-                        me.LastLocation = me.RealLocation;
-                        me.NextLocation = loc;
-                        me.NeedMovePixel = game.TilePixel;
+                        me.Direction = Direction.L;
                     }
-                }
-                else if (k == Key.S)
-                {
-                    me.Direction = Direction.D;
-                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
-                    if (scene.CodeLayer[loc].CHRCanRch)
+                    else if (k == Key.S)
                     {
-                        me.LastLocation = me.RealLocation;
-                        me.NextLocation = loc;
-                        me.NeedMovePixel = game.TilePixel;
+                        me.Direction = Direction.D;
                     }
-                }
-                else if (k == Key.D)
-                {
-                    me.Direction = Direction.R;
-                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
-                    if (scene.CodeLayer[loc].CHRCanRch)
+                    else if (k == Key.D)
                     {
-                        me.LastLocation = me.RealLocation;
-                        me.NextLocation = loc;
-                        me.NeedMovePixel = game.TilePixel;
+                        me.Direction = Direction.R;
+                    } 
+                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
+                    try
+                    {
+                        if (scene.CodeLayer[loc].CHRCanRch)
+                        {
+                            me.LastLocation = me.RealLocation;
+                            me.NextLocation = loc;
+                            me.NeedMovePixel = game.TilePixel;
+                        }
+                    }
+                    catch
+                    { 
                     }
                 }
             }

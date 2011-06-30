@@ -74,22 +74,29 @@ namespace MetalX
             }
         }
         #region for shock
-        protected Vector3 ScreenOffsetPixel;
+        protected Vector3 ScreenOffset;
+        protected Point ScreenOffsetPoint
+        {
+            get
+            {
+                return new Point((int)ScreenOffset.X, (int)ScreenOffset.Y);
+            }
+        }
         DateTime ShockBeginTime;
-        int ShockTime = 500;
+        double ShockTime = 500;
         int ShockRange = 4;
         bool IsShocking;
-        public void ShockScreen(int ms)
+        public void ShockScreen(double ms)
         {
-            ShockScreen(ms, 4);
+            ShockScreen(ms, 2);
         }
-        public void ShockScreen(int ms, int range)
+        public void ShockScreen(double ms, int range)
         {
-            if (IsShocking)
-            {
+            //if (IsShocking)
+            //{
                 
-            }
-            else
+            //}
+            //else
             {
                 ShockBeginTime = DateTime.Now;
                 ShockTime = ms;
@@ -101,7 +108,7 @@ namespace MetalX
         {
             if (IsShocking)
             {
-                ScreenOffsetPixel = new Vector3();
+                ScreenOffset = new Vector3();
                 TimeSpan ts = DateTime.Now - ShockBeginTime;
                 if (ts.TotalMilliseconds > ShockTime)
                 {
@@ -115,9 +122,9 @@ namespace MetalX
                     x -= (ShockRange / 2);
                     y -= (ShockRange / 2);
                     z -= (ShockRange / 2);
-                    ScreenOffsetPixel.X += x;
-                    ScreenOffsetPixel.Y += y;
-                    ScreenOffsetPixel.Z += z;
+                    ScreenOffset.X += x;
+                    ScreenOffset.Y += y;
+                    ScreenOffset.Z += z;
                 }
             }
         }
@@ -125,10 +132,10 @@ namespace MetalX
         #region for fallout
         bool IsFallOuting = false;
         DateTime FalloutBegineTime;
-        int FalloutTime;
+        double FalloutTime;
         double fallout_interval;
         bool IsFallin;
-        public void FallOutSceen(int ms)
+        public void FallOutSceen(double ms)
         {
             FalloutBegineTime = DateTime.Now;
             FalloutTime = ms;
@@ -136,7 +143,7 @@ namespace MetalX
             IsFallOuting = true;
             IsFallin = false;
         }
-        public void FallInSceen(int ms)
+        public void FallInSceen(double ms)
         {
             FallOutSceen(ms);
             IsFallin = true;

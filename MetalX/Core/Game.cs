@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
@@ -259,11 +260,13 @@ namespace MetalX
             {
                 frameBeginTime = DateTime.Now;
 
+                
                 Frame();
 
                 frameTimeSpan = DateTime.Now - frameBeginTime;
             }
         }
+
         /// <summary>
         /// 每帧
         /// </summary>
@@ -775,6 +778,69 @@ namespace MetalX
             }
         }
         #endregion
+        public void AppearFormBox(string name)
+        {
+            FormBoxManager.Appear(name);
+        }
+        public void AppearFormBox(int i)
+        {
+            FormBoxManager.Appear(i);
+        }
+        List<FormBoxes2Play> formBoxes2Play;
+        public void PlayFormBox(List< FormBoxes2Play> fb2ps)
+        {
+            formBoxes2Play = fb2ps;
+            Thread tmpthd = new Thread(playFormBoxThd);
+            tmpthd.IsBackground = true;
+            tmpthd.Start();
+        }
+        void playFormBoxThd()
+        {
+            foreach (FormBoxes2Play f in formBoxes2Play)
+            {
+                AppearFormBox(f.Name);
+                foreach (TextureEffect te in f.TextureEffectList)
+                {
+                    if (te.Type == TextureEffectType.None)
+                    {
+                        //FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
+                    }
+                    else if (te.Type == TextureEffectType.Shock)
+                    {
+                        FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
+                    }
+                    else if (te.Type == TextureEffectType.FallIn)
+                    {
+                        FormBoxManager.FallInSceen(te.TimeSpan.TotalMilliseconds);
+                    }
+                    else if (te.Type == TextureEffectType.FallOut)
+                    {
+                        FormBoxManager.FallOutSceen(te.TimeSpan.TotalMilliseconds);
+                    }
+                    if (te.IsBlock)
+                    {
+                        Thread.Sleep((int)te.TimeSpan.TotalMilliseconds);
+                    }
+                }
+                FormBoxManager.Disappear();
+            }
+        }
+        //double delayTimeSpanSeconds = 0;
+        //bool isDelaying
+        //{
+        //    get
+        //    {
+        //        if (delayTimeSpanSeconds > 0)
+        //        {
+        //            return true;
+        //        }
+        //        return false;
+        //    }
+        //}
+        //public void Delay(double ms)
+        //{
+        //    delayTimeSpanSeconds = ms;
+        //}
         #endregion
     }
 }

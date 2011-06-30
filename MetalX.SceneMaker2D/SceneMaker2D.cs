@@ -102,7 +102,7 @@ namespace MetalX.SceneMaker2D
                         game.DrawMetalXTexture(
                             game.Textures[t[frameIndex].TextureIndex],
                             t[frameIndex].DrawZone,
-                            Util.PointAddPoint(t.LocationPoint, Util.Vector32Point( ScreenOffsetPixel)),
+                            Util.PointAddPoint(t.LocationPoint, Util.Vector32Point( ScreenOffset)),
                             scene.TileSizePixel,
                             Util.MixColor(t[frameIndex].ColorFilter, ColorFilter)
                             );
