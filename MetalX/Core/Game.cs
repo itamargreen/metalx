@@ -68,13 +68,13 @@ namespace MetalX
 
         #endregion
         #region 属性
-        public int TilePixel
-        {
-            get
-            {
-                return Options.TileSizeX.Width;
-            }
-        }
+        //public int TilePixel
+        //{
+        //    get
+        //    {
+        //        return Options.TileSizeX.Width;
+        //    }
+        //}
         public int SpriteOffsetPixel
         {
             get
@@ -83,15 +83,15 @@ namespace MetalX
                 //return -TilePixel / 3;
             }
         }
-        public Vector3 CenterLocation
-        {
-            get
-            {
-                return new Vector3(
-                    (Options.WindowSize.Width / Options.TileSizeX.Width / 2 + 1) * TilePixel,
-                    (Options.WindowSize.Height / Options.TileSizeX.Height / 2 + 1) * TilePixel, 0);
-            }
-        }
+        //public Vector3 CenterLocation
+        //{
+        //    get
+        //    {
+        //        return new Vector3(
+        //            (Options.WindowSize.Width / Options.TileSizeX.Width / 2 + 1) * TilePixel,
+        //            (Options.WindowSize.Height / Options.TileSizeX.Height / 2 + 1) * TilePixel, 0);
+        //    }
+        //}
         //public bool FPSCanRead
         //{
         //    get

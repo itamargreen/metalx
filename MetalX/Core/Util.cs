@@ -45,6 +45,22 @@ namespace MetalX
     }
     public class Util
     {
+        public static Point PointMulInt(Point v3, int unit)
+        {
+            return new Point(v3.X * unit, v3.Y * unit);
+        }
+        public static Point PointDivInt(Point v3, int unit)
+        {
+            return new Point(v3.X / unit, v3.Y / unit);
+        }
+        public static Vector3 Vector3MulInt(Vector3 v3, int unit)
+        {
+            return new Vector3(v3.X * unit, v3.Y * unit, v3.Z * unit);
+        }
+        public static Vector3 Vector3DivInt(Vector3 v3, int unit)
+        {
+            return new Vector3(v3.X / unit, v3.Y / unit, v3.Z / unit);
+        }
         public static Vector3 Point2Vector3(Point p, float z)
         {
             return new Vector3(p.X, p.Y, z);

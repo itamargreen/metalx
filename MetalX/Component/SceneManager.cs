@@ -156,7 +156,7 @@ namespace MetalX.Component
             {
                 int lastl = s.CodeLayer[me.LastLocation].DrawLayer;
                 int nextl = s.CodeLayer[me.NextLocation].DrawLayer;
-                int drawl = s.CodeLayer[me.GetDrawLocation(game.TilePixel, lastl, nextl)].DrawLayer;
+                int drawl = s.CodeLayer[me.GetDrawLocation(scene.TilePixel, lastl, nextl)].DrawLayer;
                 int nodrawl = s.CodeLayer[me.NextLocation].RchDisappear;
 
                 if (l == drawl)
@@ -168,7 +168,7 @@ namespace MetalX.Component
                 {
                     if (nodrawl != l)
                     {
-                        if (IsInWindow(Util.PointAddPoint(t.LocationPoint, scene.RealLocationPoint)))
+                        if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, scene.TilePixel), scene.RealLocationPoint)))
                         {
                             int fi = t.FrameIndex;
                             if(t.IsAnimation)
@@ -227,7 +227,7 @@ namespace MetalX.Component
             {
                 LoadScene(0, new Vector3());
                 me.TextureFileName = "mm-chr0001";
-                me.RealLocation = game.CenterLocation;
+                //me.RealLocation = game.CenterLocation;
                 me.NextLocation = me.LastLocation = me.RealLocation;
             }
         }
@@ -259,14 +259,14 @@ namespace MetalX.Component
                     {
                         me.Direction = Direction.R;
                     } 
-                    Vector3 loc = me.GetFrontLocation(game.TilePixel);
+                    Vector3 loc = me.GetFrontLocation(scene.TilePixel);
                     try
                     {
                         if (scene.CodeLayer[loc].CHRCanRch)
                         {
                             me.LastLocation = me.RealLocation;
                             me.NextLocation = loc;
-                            me.NeedMovePixel = game.TilePixel;
+                            me.NeedMovePixel = scene.TilePixel;
                         }
                     }
                     catch
