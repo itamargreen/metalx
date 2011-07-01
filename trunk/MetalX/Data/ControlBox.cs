@@ -61,12 +61,12 @@ namespace MetalX.Data
             OnFormBoxDisappear = new FormBoxEvent(OnFormBoxDisappearCode);
         }
 
-        public virtual void OnFormBoxAppearCode(int formBoxIndex)
+        public virtual void OnFormBoxAppearCode()
         {
             //throw new NotImplementedException();
         }
 
-        public virtual void OnFormBoxDisappearCode(int formBoxIndex)
+        public virtual void OnFormBoxDisappearCode()
         {
             //throw new NotImplementedException();
         }
@@ -86,7 +86,7 @@ namespace MetalX.Data
             }
         }
         public bool OneByOne = true;
-        public int Interval = 33;
+        public int Interval = 100;
         DateTime lastCharacterTime;
         public Size FontSize;
         public int SubTextIndex = 0;

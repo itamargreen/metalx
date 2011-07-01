@@ -132,10 +132,11 @@ namespace MetalX.Component
             }
             AppearingFormBoxIndex.Add(i);
             game.FormBoxes[i].Appear();
+            game.FormBoxes[i].OnFormBoxAppearCode();
         }
         public void Disappear()
         {
-            Disappear(AppearingFormBoxIndex.Count - 1);
+            Disappear(AppearingFormBoxIndex[0]);
         }
         public void Disappear(string name)
         {
@@ -146,8 +147,9 @@ namespace MetalX.Component
         {
             try
             {
-                AppearingFormBoxIndex.RemoveAt(i);
                 game.FormBoxes[i].Disappear();
+                game.FormBoxes[i].OnFormBoxDisappearCode();
+                AppearingFormBoxIndex.RemoveAt(i);
             }
             catch { }
         }

@@ -41,6 +41,13 @@ namespace MetalX.Data
         /// 图元物理尺寸
         /// </summary>
         public Size TileSizePixel;
+        public int TilePixel
+        {
+            get
+            {
+                return TileSizePixel.Width;
+            }
+        }
         /// <summary>
         /// 场景物理尺寸
         /// </summary>
@@ -100,7 +107,7 @@ namespace MetalX.Data
                 for (int x = 0; x < Size.Width; x++)
                 {
                     CodeLayer.Codes.Add(new Code());
-                    CodeLayer.Codes[i++].Location = new Point(x * TileSizePixel.Width, y * TileSizePixel.Height);
+                    CodeLayer.Codes[i++].Location = new Point(x, y);
 
                 }
             }
@@ -133,9 +140,23 @@ namespace MetalX.Data
         {
             get
             {
+                return this[p.X, p.Y];
+            }
+        }
+        public Tile this[Vector3 v]
+        {
+            get
+            {
+                return this[(int)v.X, (int)v.Y];
+            }
+        }
+        public Tile this[int x, int y]
+        {
+            get
+            {
                 foreach (Tile t in Tiles)
                 {
-                    if (t.LocationPoint == p)
+                    if (t.LocationPoint == new Point(x, y))
                     {
                         return t;
                     }
@@ -177,6 +198,19 @@ namespace MetalX.Data
                 return new Point((int)Location.X, (int)Location.Y);
             }
         }
+        //public Vector3 GetLocationPixel(int unit)
+        //{
+        //    Vector3 v3 = Location;
+        //    v3.X *= unit;
+        //    v3.Y *= unit;
+        //    v3.Z *= unit;
+        //    return v3;
+        //}
+        //public Point GetLocationPixelPoint(int unit)
+        //{
+        //    Vector3 v3 = GetLocationPixel(unit);
+        //    return new Point((int)v3.X, (int)v3.Y);
+        //}
         /// <summary>
         /// 帧索引
         /// </summary>

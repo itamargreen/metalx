@@ -125,7 +125,7 @@ namespace MetalX.SceneMaker2D
                     tf.DrawZone.Size = game.Textures[sceneMaker2D.mxtIndex].TileSizePixel;
 
                     Tile tile = new Tile();
-                    tile.Location = pp;
+                    tile.Location = Util.Vector3DivInt(pp, sceneMaker2D.scene.TilePixel);
                     tile.Frames.Add(tf);
 
                     int i = contains_tile(tile.Location);
@@ -172,6 +172,7 @@ namespace MetalX.SceneMaker2D
 
             try
             {
+                p = Util.PointDivInt(p, sceneMaker2D.scene.TilePixel);
                 if (sceneMaker2D.drawCodeLayer == 0)
                 {
                     sceneMaker2D.scene.CodeLayers[0][p].CHRCanRch = val;
@@ -201,6 +202,7 @@ namespace MetalX.SceneMaker2D
         }
         void paint_link(Point p)
         {
+            p = Util.PointDivInt(p, sceneMaker2D.scene.TilePixel);
             sceneMaker2D.scene.CodeLayers[0][p].SceneFileName = ui_link_file.Text;
         }
         void paint_link(Rectangle slt_zone)
@@ -233,7 +235,7 @@ namespace MetalX.SceneMaker2D
                     {
                         continue;
                     }
-
+                    pp = Util.Vector3DivInt(pp, sceneMaker2D.scene.TilePixel);
                     int i = contains_tile(pp);
                     if (i > -1)
                     {
@@ -603,8 +605,8 @@ namespace MetalX.SceneMaker2D
             else if (tabControl2.SelectedIndex == 1)
             {
                 Point p = pointround(e.Location, sceneMaker2D.scene.TileSizePixel);
-
                 paint_code(p, e, scene_code_layer);
+                
             }
         }
 
@@ -748,6 +750,24 @@ namespace MetalX.SceneMaker2D
                     {
                         sceneMaker2D.scene.CodeLayers.RemoveAt(1);
                     }
+                    //for (int l = 0; l < sceneMaker2D.scene.TileLayers.Count; l++)
+                    //{
+                    //    for (int i = 0; i < sceneMaker2D.scene.TileLayers[l].Tiles.Count; i++)
+                    //    {
+                    //        Vector3 loc = sceneMaker2D.scene.TileLayers[l][i].Location;
+                    //        loc.X /= sceneMaker2D.scene.TilePixel;
+                    //        loc.Y /= sceneMaker2D.scene.TilePixel;
+                    //        loc.Z /= sceneMaker2D.scene.TilePixel;
+                    //        sceneMaker2D.scene.TileLayers[l][i].Location = loc;
+                    //    }
+                    //} 
+                    //for (int i = 0; i < sceneMaker2D.scene.CodeLayer.Codes.Count; i++)
+                    //{
+                    //    Point loc = sceneMaker2D.scene.CodeLayer.Codes[i].Location;
+                    //    loc.X /= sceneMaker2D.scene.TilePixel;
+                    //    loc.Y /= sceneMaker2D.scene.TilePixel;
+                    //    sceneMaker2D.scene.CodeLayer.Codes[i].Location = loc;
+                    //}
                     if (sfd.FilterIndex == 1)
                     {
                         Util.SaveObject(openFileName, sceneMaker2D.scene);
@@ -832,6 +852,8 @@ namespace MetalX.SceneMaker2D
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
+            contextMenuStrip1.Opacity = 100;
+
             if (sceneMaker2D == null)
             {
                 return;
@@ -840,6 +862,7 @@ namespace MetalX.SceneMaker2D
             if (tabControl2.SelectedIndex == 1)
             {
                 drawing_code = true;
+                contextMenuStrip1.Opacity = 0;
             }
             sceneMaker2D.drawCode = drawing_code;
         }

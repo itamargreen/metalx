@@ -24,26 +24,47 @@ namespace MetalHunter
         public FB1(Game g)
             : base(g)
         {
-            Name = "信息框";
-            Location = new Point(10, 10);
-            Size=new Size(640, 120);
+            Name = "DialogBox";
+            Location = new Point(0,360);
+            Size = new Size(640, 120);
             BGTextureName = "dialog-bgtexture";
 
             MetalX.Data.TextBox TB1 = new MetalX.Data.TextBox(g);
-            TB1.Text = "information box!";
+            TB1.Location = new Point(16, 16);
+            TB1.Text = "MetalHunter!";
+            TB1.Interval = 200;
             TB1.OneByOne = true;
-            
+
             ControlBoxes.Add(TB1);
+        }
+
+        public override void OnFormBoxDisappearCode()
+        {
+            game.Exit();
         }
     }
     class MetalHunter
     {
         Game game;
 
-        public void InitFormBoxes()
+        void InitFormBoxes()
         {
             game.FormBoxes.LoadDotMXFormBox(new EngineLogo(game));
             game.FormBoxes.LoadDotMXFormBox(new FB1(game));
+        }
+
+        void ShowLogo()
+        {
+            List<FormBoxes2Play> fb2p = new List<FormBoxes2Play>();
+            List<TextureEffect> lte = new List<TextureEffect>();
+            lte.Add(new TextureEffect(TextureEffectType.Shock, 3000, false));
+            lte.Add(new TextureEffect(TextureEffectType.FallIn, 1000, true));
+            lte.Add(new TextureEffect(TextureEffectType.None, 1000, true));
+            lte.Add(new TextureEffect(TextureEffectType.FallOut, 1000, true));
+            fb2p.Add(new FormBoxes2Play("EngineLogo", lte));
+            fb2p.Add(new FormBoxes2Play("DialogBox", lte));
+
+            game.PlayFormBox(fb2p);
         }
 
         public MetalHunter()
@@ -58,17 +79,7 @@ namespace MetalHunter
 
             InitFormBoxes();
 
-
-            List<FormBoxes2Play> fb2p = new List<FormBoxes2Play>();
-            List<TextureEffect> lte = new List<TextureEffect>();
-            lte.Add(new TextureEffect(TextureEffectType.Shock, 3000, false));
-            lte.Add(new TextureEffect(TextureEffectType.FallIn, 1000, true));
-            lte.Add(new TextureEffect(TextureEffectType.None, 1000, true));
-            lte.Add(new TextureEffect(TextureEffectType.FallOut, 1000, true));
-            fb2p.Add(new FormBoxes2Play("EngineLogo", lte));
-            fb2p.Add(new FormBoxes2Play("信息框", lte));
-            
-            game.PlayFormBox(fb2p);
+            ShowLogo();
 
             game.Start();
         }
