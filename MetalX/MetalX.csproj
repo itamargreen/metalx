@@ -69,6 +69,7 @@
     <Compile Include="Component\MouseManager.cs" />
     <Compile Include="Component\SceneManager.cs" />
     <Compile Include="Component\FormBoxManager.cs" />
+    <Compile Include="Component\ScriptManager.cs" />
     <Compile Include="Core\Defines.cs" />
     <Compile Include="Data\Item.cs" />
     <Compile Include="Data\CheckPoint.cs" />
@@ -87,7 +88,9 @@
     <Compile Include="File\MetalXTexture.cs" />
     <Compile Include="Data\Scene.cs" />
     <Compile Include="Core\Game.cs" />
-    <Compile Include="Core\Devices.cs" />
+    <Compile Include="Core\Devices.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Resource\Models.cs" />
     <Compile Include="Component\SoundManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

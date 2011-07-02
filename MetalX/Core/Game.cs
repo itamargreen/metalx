@@ -131,7 +131,7 @@ namespace MetalX
         {
             set
             {
-                Devices.Window.Icon = new Icon(value);
+                Devices.GameWindow.Icon = new Icon(value);
             }
         }
         /// <summary>
@@ -196,10 +196,25 @@ namespace MetalX
             }
             catch { }
             Devices = new Devices(this);
-            Devices.Window.FormClosing += new FormClosingEventHandler(WindowClosing);
+            Devices.GameWindow.FormClosing += new FormClosingEventHandler(GameWindowClosing);
+            Devices.GameWindow.Paint += new PaintEventHandler(GameWindowPaint);
         }
 
-        void WindowClosing(object sender, FormClosingEventArgs e)
+        void GameWindowPaint(object sender, PaintEventArgs e)
+        {
+            if (isRunning)
+            {
+                frameBeginTime = DateTime.Now;
+
+                frame();
+
+                frameTimeSpan = DateTime.Now - frameBeginTime;
+
+                Devices.GameWindow.Invalidate();
+                //Devices.GameWindow.Refresh();
+            }
+        }
+        void GameWindowClosing(object sender, FormClosingEventArgs e)
         {
             Exit();
         }
@@ -246,32 +261,35 @@ namespace MetalX
         /// 启动
         /// </summary>
         public void Start()
-        {            
+        {
             gameBeginTime = DateTime.Now;
-            if (Devices.Window != null)
-            {
-                Devices.Window.Show();
-            }
             totalFrames = 0;
             SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), Options.X);
             SetLight(new Vector3(0, 0, 22.5f), new Vector3(), Options.X, false);
+
             isRunning = true;
-            while (isRunning)
+            if (Devices.GameWindow == null)
             {
-                frameBeginTime = DateTime.Now;
+                while (isRunning)
+                {
+                    frameBeginTime = DateTime.Now;
 
-                
-                Frame();
+                    frame();
 
-                frameTimeSpan = DateTime.Now - frameBeginTime;
+                    frameTimeSpan = DateTime.Now - frameBeginTime;
+                }
+            }
+            else
+            {
+                Application.Run(Devices.GameWindow);
             }
         }
-
         /// <summary>
         /// 每帧
         /// </summary>
-        void Frame()
+        void frame()
         {
+            Application.DoEvents();
             Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.Black, 0, 0);
             Devices.D3DDev.BeginScene();
             foreach (GameCom metalXGameCom in GameComs)
@@ -291,7 +309,6 @@ namespace MetalX
             }
             catch { return; }
             Devices.D3DDev.Present();
-            Application.DoEvents();
             totalFrames++;
         }
         //void WaitFrameByFPS()
@@ -630,22 +647,22 @@ namespace MetalX
                 return;
             }
 
-            if (dz.Width == 0)
+            if (dz.Width == 0 || size.Width == 0 || dz.Height == 0 || size.Height == 0)
             {
-                dz.Width = 1;
+                return;
             }
             if (size.Width / dz.Width == 2)
             {
                 dz.X = dz.X * (size.Width / dz.Width);
                 dz.Y = dz.Y * (size.Height / dz.Height);
                 dz.Size = size;
-                Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), loc, color);
-                //Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
+                //Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), loc, color);
+                Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
             }
             else
             {
-                Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), loc, color);
-                //Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
+                //Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), loc, color);
+                Devices.Sprite.Draw2D(t.MEMTexture, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
             }
 
             Devices.Sprite.End();
@@ -661,15 +678,20 @@ namespace MetalX
         /// <param name="color">颜色</param>
         public void DrawText(string text, Point point, Color color)
         {
-            DrawText(text, point, "微软雅黑", 14, color);
+            DrawText(text, point, "微软雅黑", new Size(14, 14), color);
         }
-        public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
+        public void DrawText(string text, Point point, string fontName, Size fontSize, Color color)
         {
             try
             {
                 Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
             }
             catch { return; }
+            FontDescription fd = new FontDescription();
+            fd.FaceName = fontName;
+            fd.Width = fontSize.Width;
+            fd.Height = fontSize.Height;
+            Devices.Font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, fd);
             Devices.Font.DrawText(Devices.Sprite, text, point, color);
             Devices.Sprite.End();
         }
@@ -786,61 +808,51 @@ namespace MetalX
         {
             FormBoxManager.Appear(i);
         }
+
         List<FormBoxes2Play> formBoxes2Play;
+        Thread playFormBoxThd;
         public void PlayFormBox(List< FormBoxes2Play> fb2ps)
         {
             formBoxes2Play = fb2ps;
-            Thread tmpthd = new Thread(playFormBoxThd);
-            tmpthd.IsBackground = true;
-            tmpthd.Start();
+            playFormBoxThd = new Thread(playFormBoxThdFunc);
+            playFormBoxThd.IsBackground = true;
+            playFormBoxThd.Start();
         }
-        void playFormBoxThd()
+        void playFormBoxThdFunc()
         {
             foreach (FormBoxes2Play f in formBoxes2Play)
             {
+                FormBoxManager.FallInSceen(0);
                 AppearFormBox(f.Name);
-                foreach (TextureEffect te in f.TextureEffectList)
+                if (f.TextureEffectList != null)
                 {
-                    if (te.Type == TextureEffectType.None)
+                    foreach (TextureEffect te in f.TextureEffectList)
                     {
-                        //FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
-                    }
-                    else if (te.Type == TextureEffectType.Shock)
-                    {
-                        FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
-                    }
-                    else if (te.Type == TextureEffectType.FallIn)
-                    {
-                        FormBoxManager.FallInSceen(te.TimeSpan.TotalMilliseconds);
-                    }
-                    else if (te.Type == TextureEffectType.FallOut)
-                    {
-                        FormBoxManager.FallOutSceen(te.TimeSpan.TotalMilliseconds);
-                    }
-                    if (te.IsBlock)
-                    {
-                        Thread.Sleep((int)te.TimeSpan.TotalMilliseconds);
+                        if (te.Type == TextureEffectType.None)
+                        {
+                        }
+                        else if (te.Type == TextureEffectType.Shock)
+                        {
+                            FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
+                        }
+                        else if (te.Type == TextureEffectType.FallIn)
+                        {
+                            FormBoxManager.FallInSceen(te.TimeSpan.TotalMilliseconds);
+                        }
+                        else if (te.Type == TextureEffectType.FallOut)
+                        {
+                            FormBoxManager.FallOutSceen(te.TimeSpan.TotalMilliseconds);
+                        }
+                        if (te.IsBlock)
+                        {
+                            Thread.Sleep((int)te.TimeSpan.TotalMilliseconds);
+                        }
                     }
                 }
                 FormBoxManager.Disappear();
             }
         }
-        //double delayTimeSpanSeconds = 0;
-        //bool isDelaying
-        //{
-        //    get
-        //    {
-        //        if (delayTimeSpanSeconds > 0)
-        //        {
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //}
-        //public void Delay(double ms)
-        //{
-        //    delayTimeSpanSeconds = ms;
-        //}
+
         #endregion
     }
 }

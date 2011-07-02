@@ -31,6 +31,7 @@ namespace MetalX
         FallOut,
         FallIn,
         None,
+        NotDisappear,
     }
     public class TextureEffect
     {

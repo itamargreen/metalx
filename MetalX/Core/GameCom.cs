@@ -168,6 +168,10 @@ namespace MetalX
                 else
                 {
                     int frame = (int)((ts.TotalMilliseconds / (double)(FalloutTime)) * 255);
+                    if (frame < 0)
+                    {
+                        frame = 255;
+                    }
                     if (IsFallin)
                     {
                         ColorFilter = Color.FromArgb(255, frame, frame, frame);

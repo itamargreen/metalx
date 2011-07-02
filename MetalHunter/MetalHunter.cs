@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Threading;
 using System.Drawing;
 
 using MetalX;
@@ -8,39 +8,74 @@ using MetalX.Data;
 
 namespace MetalHunter
 {
-    class EngineLogo : FormBox
+    class LogoEngine : FormBox
     {
-        public EngineLogo(Game g)
+        public LogoEngine(Game g)
             :base(g)
         {
-            Name = "EngineLogo";
+            Name = "LogoEngine";
             Location = new Point();
             Size = new Size(640, 480);
             BGTextureName = "engine-logo";
         }
     }
-    class FB1 : FormBox
+    class LogoGame : FormBox
     {
-        public FB1(Game g)
+        public LogoGame(Game g)
             : base(g)
         {
-            Name = "DialogBox";
-            Location = new Point(0,360);
-            Size = new Size(640, 120);
-            BGTextureName = "dialog-bgtexture";
+            Name = "LogoGame";
+            Location = new Point(0, 360);
+            //Size = new Size(640, 120);
+            //BGTextureName = "dialog-bgtexture";
 
-            MetalX.Data.TextBox TB1 = new MetalX.Data.TextBox(g);
-            TB1.Location = new Point(16, 16);
-            TB1.Text = "MetalHunter!";
-            TB1.Interval = 200;
-            TB1.OneByOne = true;
+            TextBox tb1 = new TextBox(g);
+            tb1.Location = new Point(16, 16);
+            tb1.Text = "MetalHunter!";
+            tb1.TextFont = "Airal";
+            tb1.TextFontSize = new Size(36, 36);
+            tb1.Interval = 200;
+            tb1.OneByOne = true;
 
-            ControlBoxes.Add(TB1);
+            ControlBoxes.Add(tb1);
         }
-
         public override void OnFormBoxDisappearCode()
         {
-            game.Exit();
+            //game.AppearFormBox("MenuLoad");
+        }
+    }
+    class MenuLoad : FormBox
+    {
+        public MenuLoad(Game g)
+            : base(g)
+        {
+            Name = "MenuLoad";
+
+            ButtonBox bb1 = new ButtonBox(g);
+            bb1.Location = new Point();
+            bb1.Size = new System.Drawing.Size(640, 160);
+            bb1.WaitTextureBox.TextureName = "dialog-bgtexture";
+            bb1.WaitTextureBox.Size = new System.Drawing.Size(640, 160);
+            bb1.WaitTextBox.Location = new Point(16, 16);
+            bb1.WaitTextBox.Text = "存档1";
+
+            ButtonBox bb2 = new ButtonBox(g);
+            bb2.Location = new Point();
+            bb2.Size = new System.Drawing.Size(640, 160);
+
+            bb2.WaitTextBox.Location = new Point(16, 160 + 16);
+            bb2.WaitTextBox.Text = "存档2";
+
+            ButtonBox bb3 = new ButtonBox(g);
+            bb3.Location = new Point();
+            bb3.Size = new System.Drawing.Size(640, 160);
+
+            bb3.WaitTextBox.Location = new Point(16, 320 + 16);
+            bb3.WaitTextBox.Text = "存档3";
+
+            ControlBoxes.Add(bb1);
+            ControlBoxes.Add(bb2);
+            ControlBoxes.Add(bb3);
         }
     }
     class MetalHunter
@@ -49,8 +84,9 @@ namespace MetalHunter
 
         void InitFormBoxes()
         {
-            game.FormBoxes.LoadDotMXFormBox(new EngineLogo(game));
-            game.FormBoxes.LoadDotMXFormBox(new FB1(game));
+            game.FormBoxes.LoadDotMXFormBox(new LogoEngine(game));
+            game.FormBoxes.LoadDotMXFormBox(new LogoGame(game));
+            game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
         }
 
         void ShowLogo()
@@ -61,8 +97,8 @@ namespace MetalHunter
             lte.Add(new TextureEffect(TextureEffectType.FallIn, 1000, true));
             lte.Add(new TextureEffect(TextureEffectType.None, 1000, true));
             lte.Add(new TextureEffect(TextureEffectType.FallOut, 1000, true));
-            fb2p.Add(new FormBoxes2Play("EngineLogo", lte));
-            fb2p.Add(new FormBoxes2Play("DialogBox", lte));
+            fb2p.Add(new FormBoxes2Play("LogoEngine", lte));
+            fb2p.Add(new FormBoxes2Play("LogoGame", lte));
 
             game.PlayFormBox(fb2p);
         }
@@ -77,7 +113,7 @@ namespace MetalHunter
             game.LoadAllDotPNG(@".\", new Size(16, 16));
             game.LoadAllDotMP3(@".\");
 
-            InitFormBoxes();
+            InitFormBoxes();           
 
             ShowLogo();
 
@@ -86,7 +122,7 @@ namespace MetalHunter
 
         static void Main()
         {
-            MetalHunter MH = new MetalHunter();
+            new MetalHunter();
         }
     }
 }

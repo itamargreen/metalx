@@ -25,7 +25,6 @@ namespace MetalX.Data
         public Color BGColor;
         public Color BGTextureFliterColor = Color.White;
         public int BGTextureIndex = -1;
-        //public string BGTextureFileName;
         public string BGTextureName;
         public string BGAudio; 
         public event FormBoxEvent OnFormBoxAppear;
@@ -63,12 +62,10 @@ namespace MetalX.Data
 
         public virtual void OnFormBoxAppearCode()
         {
-            //throw new NotImplementedException();
         }
 
         public virtual void OnFormBoxDisappearCode()
         {
-            //throw new NotImplementedException();
         }
     }
     [Serializable]
@@ -78,6 +75,8 @@ namespace MetalX.Data
         public Color TextColor = Color.White;
         public int TextIndex = -1;
         public string TextFileName;
+        public string TextFont = "微软雅黑";
+        public Size TextFontSize = new Size(14, 14);
         public string[] Lines
         {
             get
@@ -132,7 +131,6 @@ namespace MetalX.Data
     [Serializable]
     public class TextureBox : ControlBox
     {
-        //public string TextureFileName; 
         public string TextureName;
         public int TextureIndex = -1;
         public Color TextureFliterColor = Color.White;
@@ -200,6 +198,14 @@ namespace MetalX.Data
         public ButtonBox(Game g)
             : base(g)
         {
+            WaitTextureBox = new TextureBox(g);
+            UpTextureBox = new TextureBox(g);
+            DownTextureBox = new TextureBox(g);
+            FocusTextureBox = new TextureBox(g);
+            WaitTextBox = new TextBox(g);
+            UpTextBox = new TextBox(g);
+            DownTextBox = new TextBox(g);
+            FocusTextBox = new TextBox(g);
             OnButtonWait = new ButtonBoxEvent(OnButtonWaitCode);
             OnButtonFocus = new ButtonBoxEvent(OnButtonFocusCode);
             OnButtonDown = new ButtonBoxEvent(OnButtonDownCode);
