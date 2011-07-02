@@ -19,98 +19,103 @@ namespace MetalX.Component
         {
             base.Code();
         }
-
+        void drawFormBox(FormBox fb)
+        {
+            Point pos = Util.PointAddPoint(fb.Location, ScreenOffsetPoint);
+            Color fColor = Util.MixColor(ColorFilter, fb.BGTextureFliterColor);
+            if (fb.BGTextureIndex > -1)
+            {
+                game.DrawMetalXTexture(game.Textures[fb.BGTextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
+            }
+            else
+            {
+                int j = game.Textures.GetIndex(fb.BGTextureName);
+                game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
+            }
+        }
+        void drawTextureBox(TextureBox tb,Point basepos)
+        {
+            basepos = Util.PointAddPoint(basepos, tb.Location);
+            basepos = Util.PointAddPoint(basepos, ScreenOffsetPoint);
+            Color fColor = ColorFilter;
+            
+            fColor = Util.MixColor(fColor, tb.TextureFliterColor);
+            if (tb.TextureIndex > -1)
+            {
+                game.DrawMetalXTexture(game.Textures[tb.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].SizePixel), basepos, tb.Size, fColor);
+            }
+            else
+            {
+                int j = game.Textures.GetIndex(tb.TextureName);
+                if (j < 0)
+                {
+                    return;
+                }
+                tb.TextureIndex = j;
+                game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].SizePixel), basepos, tb.Size, fColor);
+            }
+        }
+        void drawTextBox(TextBox tb, Point basepos)
+        {
+            basepos = Util.PointAddPoint(basepos, tb.Location);
+            basepos = Util.PointAddPoint(basepos, ScreenOffsetPoint);
+            Color fColor = Util.MixColor(ColorFilter, tb.TextColor);
+            if (tb.OneByOne)
+            {
+                game.DrawText(tb.SubText, basepos, tb.TextFont, tb.TextFontSize, fColor);
+            }
+            else
+            {
+                game.DrawText(tb.Text, basepos, tb.TextFont, tb.TextFontSize, fColor);
+            }
+        }
+        void drawButtonBox(ButtonBox bb, Point basepos)
+        {
+            basepos = Util.PointAddPoint(basepos, bb.Location);
+            basepos = Util.PointAddPoint(basepos, ScreenOffsetPoint);
+            if (bb.ButtonBoxState == ButtonBoxState.Down)
+            {
+                drawTextureBox(bb.DownTextureBox, basepos);
+                drawTextBox(bb.DownTextBox, basepos);
+            }
+            else if (bb.ButtonBoxState == ButtonBoxState.Focus)
+            {
+                drawTextureBox(bb.FocusTextureBox, basepos);
+                drawTextBox(bb.FocusTextBox, basepos);
+            }
+            else if (bb.ButtonBoxState == ButtonBoxState.Up)
+            {
+                drawTextureBox(bb.UpTextureBox, basepos);
+                drawTextBox(bb.UpTextBox, basepos);
+            }
+            else if (bb.ButtonBoxState == ButtonBoxState.Wait)
+            {
+                drawTextureBox(bb.WaitTextureBox, basepos);
+                drawTextBox(bb.WaitTextBox, basepos);
+            }
+        }
         public override void Draw()
         {
             base.Draw();
-            foreach (int i in AppearingFormBoxIndex)
+            //foreach (int i in AppearingFormBoxIndex)
+            for (int i = 0; i < AppearingFormBoxIndex.Count; i++)
             {
-                FormBox fb = game.FormBoxes[i];
-                {
-                    Point pos = Util.PointAddPoint(fb.Location, ScreenOffsetPoint);
-                    Color fColor = Util.MixColor(ColorFilter, fb.BGTextureFliterColor);
-                    if (fb.BGTextureIndex > -1)
-                    {
-                        game.DrawMetalXTexture(game.Textures[fb.BGTextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
-                    }
-                    else
-                    {
-                        int j = game.Textures.GetIndex(fb.BGTextureName);
-                        game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
-                    }
-                }
+                FormBox fb = game.FormBoxes[AppearingFormBoxIndex[i]];
+                drawFormBox(fb);
+
                 foreach (ControlBox cb in fb.ControlBoxes)
                 {
-                    Point pos = Util.PointAddPoint(fb.Location, cb.Location);
-                    pos = Util.PointAddPoint(pos, ScreenOffsetPoint);
-                    Color fColor = ColorFilter;
                     if (cb is TextBox)
                     {
-                        fColor = Util.MixColor(fColor, ((TextBox)cb).TextColor);
-                        if (((TextBox)cb).OneByOne)
-                        {
-                            game.DrawText(((TextBox)cb).SubText, pos, fColor);
-                        }
-                        else
-                        {
-                            game.DrawText(((TextBox)cb).Text, pos, fColor);
-                        }
+                        drawTextBox((TextBox)cb, fb.Location);
                     }
                     else if (cb is TextureBox)
                     {
-                        fColor = Util.MixColor(fColor, ((TextureBox)cb).TextureFliterColor);
-                        if (((TextureBox)cb).TextureIndex > -1)
-                        {
-                            game.DrawMetalXTexture(game.Textures[((TextureBox)cb).TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), ((TextureBox)cb).Size), pos, ((TextureBox)cb).Size, fColor);
-                        }
-                        else
-                        {
-                            int j = game.Textures.GetIndex(((TextureBox)cb).TextureName);
-                            game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), ((TextureBox)cb).Size), pos, ((TextureBox)cb).Size, fColor);
-                        }
+                        drawTextureBox((TextureBox)cb, fb.Location);
                     }
                     else if (cb is ButtonBox)
                     {
-                        if (((ButtonBox)cb).ButtonBoxState == ButtonBoxState.Down)
-                        {
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).DownTextureBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).DownTextureBox.TextureFliterColor);
-                            game.DrawMetalXTexture(game.Textures[((ButtonBox)cb).DownTextureBox.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), ((ButtonBox)cb).Size), pos, fColor);
-
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).DownTextBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).DownTextBox.TextColor);
-                            game.DrawText(((ButtonBox)cb).DownTextBox.Text, ((ButtonBox)cb).Location, fColor);
-                        }
-                        else if (((ButtonBox)cb).ButtonBoxState == ButtonBoxState.Focus)
-                        {
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).FocusTextureBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).FocusTextureBox.TextureFliterColor);
-                            game.DrawMetalXTexture(game.Textures[((ButtonBox)cb).FocusTextureBox.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), ((ButtonBox)cb).Size), pos, ((ButtonBox)cb).FocusTextureBox.TextureFliterColor);
-
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).FocusTextBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).FocusTextBox.TextColor);
-                            game.DrawText(((ButtonBox)cb).FocusTextBox.Text, ((ButtonBox)cb).Location, ((ButtonBox)cb).FocusTextBox.TextColor);
-                        }
-                        else if (((ButtonBox)cb).ButtonBoxState == ButtonBoxState.Up)
-                        {
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).UpTextureBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).UpTextureBox.TextureFliterColor);
-                            game.DrawMetalXTexture(game.Textures[((ButtonBox)cb).UpTextureBox.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), ((ButtonBox)cb).Size), pos, ((ButtonBox)cb).UpTextureBox.TextureFliterColor);
-
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).UpTextBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).UpTextBox.TextColor);
-                            game.DrawText(((ButtonBox)cb).UpTextBox.Text, ((ButtonBox)cb).Location, ((ButtonBox)cb).UpTextBox.TextColor);
-                        }
-                        else if (((ButtonBox)cb).ButtonBoxState == ButtonBoxState.Wait)
-                        {
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).WaitTextureBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).WaitTextureBox.TextureFliterColor);
-                            game.DrawMetalXTexture(game.Textures[((ButtonBox)cb).WaitTextureBox.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), ((ButtonBox)cb).Size), pos, ((ButtonBox)cb).WaitTextureBox.TextureFliterColor);
-
-                            pos = Util.PointAddPoint(pos, ((ButtonBox)cb).WaitTextBox.Location);
-                            fColor = Util.MixColor(fColor, ((ButtonBox)cb).WaitTextBox.TextColor);
-                            game.DrawText(((ButtonBox)cb).WaitTextBox.Text, ((ButtonBox)cb).Location, ((ButtonBox)cb).WaitTextBox.TextColor);
-                        }
+                        drawButtonBox((ButtonBox)cb, fb.Location);
                     }
                 }
             }
@@ -136,7 +141,7 @@ namespace MetalX.Component
         }
         public void Disappear()
         {
-            Disappear(AppearingFormBoxIndex[0]);
+            Disappear(AppearingFormBoxIndex[AppearingFormBoxIndex.Count - 1]);
         }
         public void Disappear(string name)
         {
@@ -145,13 +150,13 @@ namespace MetalX.Component
         }
         public void Disappear(int i)
         {
-            try
-            {
+            //try
+            //{
+                AppearingFormBoxIndex.Remove(i);
                 game.FormBoxes[i].Disappear();
                 game.FormBoxes[i].OnFormBoxDisappearCode();
-                AppearingFormBoxIndex.RemoveAt(i);
-            }
-            catch { }
+            //}
+            //catch { }
         }
 
         public override void OnKeyboardUpCode(int key)

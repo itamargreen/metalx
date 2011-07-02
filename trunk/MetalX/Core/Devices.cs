@@ -8,7 +8,7 @@ namespace MetalX
     public class Devices : IDisposable
     {
         Game game;
-        public Form Window;
+        public GameWindow GameWindow;
 
         public Microsoft.DirectX.Direct3D.Device D3DDev;
         public Microsoft.DirectX.DirectSound.Device DSoundDev;
@@ -28,27 +28,20 @@ namespace MetalX
 
         public Devices(Game g)
         {
-            Window = new Form();
-            Window.Text = g.Name;
-            Window.StartPosition = FormStartPosition.CenterScreen;
-            Window.Size = g.Options.WindowSize;
-            Window.FormBorderStyle = FormBorderStyle.None;
-            Window.MaximizeBox = false;
-            Window.MinimizeBox = false;
-
             game = g;
+            GameWindow = new GameWindow(game);            
 
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
             pps.Windowed = true;
 
-            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, Window, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
 
             Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
             Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("微软雅黑", 14));
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
-            DSoundDev.SetCooperativeLevel(Window, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
+            DSoundDev.SetCooperativeLevel(GameWindow, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
 
             DKeyboardDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Keyboard);
             DKeyboardDev.Acquire();
@@ -187,5 +180,18 @@ namespace MetalX
         //    _Sprite = new Microsoft.DirectX.Direct3D.Sprite(_D3DDev); 
         //}
         #endregion
+    } 
+    public class GameWindow : Form
+    {
+        public GameWindow(Game g)
+        {
+            Text = g.Name;
+            StartPosition = FormStartPosition.CenterScreen;
+            Size = g.Options.WindowSize;
+            FormBorderStyle = FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
+        }
     }
 }
