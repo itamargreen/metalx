@@ -5,7 +5,7 @@
 
 .net framework 2.0 œ¬‘ÿµÿ÷∑£®22mb£©:
 
-http://www.microsoft.com/downloads/zh-cn/details.aspx?familyid=0856eacb-4362-4b0d-8edd-aab15c5e04f5&displaylang=zh-cn
+http://www.microsoft.com/downloads/zh-cn/details.aspx?familyid=5b2c0358-915b-4eb5-9b1d-10e506da9d0f&displaylang=zh-cn
 
 
 =========================================================================================

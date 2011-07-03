@@ -53,9 +53,10 @@ namespace MetalX
         /// </summary>
         public TimeSpan frameTimeSpan;
         SoundManager SoundManager;
-        FormBoxManager FormBoxManager;
         KeyboardManager KeyboardManager;
-        SceneManager SceneManager;
+        public FormBoxManager FormBoxManager;
+        public SceneManager SceneManager;
+        ScriptManager ScriptManager;
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -164,7 +165,7 @@ namespace MetalX
             {
                 try
                 {
-                    return (float)(1000 / frameTimeSpan.Ticks);
+                    return (float)(1 / frameTimeSpan.TotalSeconds);
                 }
                 catch
                 {
@@ -245,17 +246,20 @@ namespace MetalX
         }
         public void InitCom()
         {
-            SoundManager = new SoundManager(this);
-            MountGameCom(SoundManager);
-
             KeyboardManager = new KeyboardManager(this);
             MountGameCom(KeyboardManager);
 
+            SoundManager = new SoundManager(this);
+            MountGameCom(SoundManager);
+            
             SceneManager = new SceneManager(this);
             MountGameCom(SceneManager);
 
             FormBoxManager = new FormBoxManager(this);
             MountGameCom(FormBoxManager);
+
+            ScriptManager = new ScriptManager(this);
+            MountGameCom(ScriptManager);          
         }
         /// <summary>
         /// 启动
@@ -263,6 +267,7 @@ namespace MetalX
         public void Start()
         {
             gameBeginTime = DateTime.Now;
+
             totalFrames = 0;
             SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), Options.X);
             SetLight(new Vector3(0, 0, 22.5f), new Vector3(), Options.X, false);
@@ -281,6 +286,7 @@ namespace MetalX
             }
             else
             {
+                //Devices.GameWindow.Show();
                 Application.Run(Devices.GameWindow);
             }
         }
@@ -289,7 +295,6 @@ namespace MetalX
         /// </summary>
         void frame()
         {
-            Application.DoEvents();
             Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.Black, 0, 0);
             Devices.D3DDev.BeginScene();
             foreach (GameCom metalXGameCom in GameComs)
@@ -310,6 +315,7 @@ namespace MetalX
             catch { return; }
             Devices.D3DDev.Present();
             totalFrames++;
+            Application.DoEvents();
         }
         //void WaitFrameByFPS()
         //{
@@ -456,22 +462,22 @@ namespace MetalX
                 }
             }
         }
-        public void LoadAllDotMP3(string pathName)
-        {
-            List<string> dirName = new List<string>();
-            Util.EnumDir(pathName, dirName);
-            foreach (string pName in dirName)
-            {
-                DirectoryInfo di = new DirectoryInfo(pName);
-                FileInfo[] fis = di.GetFiles("*.mp3");
-                foreach (FileInfo fi in fis)
-                {
-                    //Audios.LoadDotMP3(fi.FullName);
-                    MetalXAudio mxa = Audios.LoadDotMP3(fi.FullName);
-                    Audios.Add(mxa);
-                }
-            }
-        }
+        //public void LoadAllDotMP3(string pathName)
+        //{
+        //    List<string> dirName = new List<string>();
+        //    Util.EnumDir(pathName, dirName);
+        //    foreach (string pName in dirName)
+        //    {
+        //        DirectoryInfo di = new DirectoryInfo(pName);
+        //        FileInfo[] fis = di.GetFiles("*.mp3");
+        //        foreach (FileInfo fi in fis)
+        //        {
+        //            //Audios.LoadDotMP3(fi.FullName);
+        //            MetalXAudio mxa = Audios.LoadDotMP3(fi.FullName);
+        //            Audios.Add(mxa);
+        //        }
+        //    }
+        //}
         public void LoadAllDotMXT(string pathName)
         {
             List<string> dirName = new List<string>();
@@ -684,16 +690,22 @@ namespace MetalX
         {
             try
             {
-                Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+                using (Devices.Font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize.Height)))
+                {
+                    //FontDescription fd = new FontDescription();
+                    //fd.FaceName = fontName;
+                    //fd.Width = fontSize.Width;
+                    //fd.Height = fontSize.Height;
+
+                    Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+
+                    Devices.Font.DrawText(Devices.Sprite, text, point, color);
+
+                    Devices.Sprite.End();
+
+                }
             }
-            catch { return; }
-            FontDescription fd = new FontDescription();
-            fd.FaceName = fontName;
-            fd.Width = fontSize.Width;
-            fd.Height = fontSize.Height;
-            Devices.Font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, fd);
-            Devices.Font.DrawText(Devices.Sprite, text, point, color);
-            Devices.Sprite.End();
+            catch { }
         }
         #endregion
         #region Direct2D
@@ -754,27 +766,27 @@ namespace MetalX
         }
         #endregion
         #region PlayAudio
-        public void PlayMXA(string name)
+        public void PlayMetalXAudio(string name)
         {
-            SoundManager.PlayMXA(name);
+            SoundManager.PlayMetalXAudio(name);
         }
-        public void PlayMXA(int i)
+        public void PlayMetalXAudio(int i)
         {
-            SoundManager.PlayMXA(i);
+            SoundManager.PlayMetalXAudio(i);
         }
-        public void PlayMXA(Stream stm)
+        public void PlayMetalXAudio(Stream stm)
         {
-            SoundManager.PlayMXA(stm);
+            SoundManager.PlayMetalXAudio(stm);
         }
-        public void PlayMP3(string name)
+        public void PlayMP3(string fileName)
         {
-            SoundManager.PlayMP3(name);
+            SoundManager.PlayMP3(fileName);
         }
-        public void StopMXA()
+        public void StopAudio()
         {
             SoundManager.Stop();
         }
-        public double ProgressMXA
+        public double PlayingProgress
         {
             get
             {
@@ -785,14 +797,7 @@ namespace MetalX
                 SoundManager.Progress = value;
             }
         }
-        public bool PlayingMXA
-        {
-            get
-            {
-                return SoundManager.Playing;
-            }
-        }
-        public bool PlayingMP3
+        public bool IsPlayingAudio
         {
             get
             {
@@ -800,59 +805,66 @@ namespace MetalX
             }
         }
         #endregion
-        public void AppearFormBox(string name)
+        public void ExecuteScript(string cmd)
         {
-            FormBoxManager.Appear(name);
+            ScriptManager.Execute(cmd);
         }
-        public void AppearFormBox(int i)
+        public void ExecuteMetalXScript(string file)
         {
-            FormBoxManager.Appear(i);
+            ScriptManager.ExecuteDotMXScript(file);
         }
+        //public void AppearFormBox(string name)
+        //{
+        //    FormBoxManager.Appear(name);
+        //}
+        //public void AppearFormBox(int i)
+        //{
+        //    FormBoxManager.Appear(i);
+        //}
 
-        List<FormBoxes2Play> formBoxes2Play;
-        Thread playFormBoxThd;
-        public void PlayFormBox(List< FormBoxes2Play> fb2ps)
-        {
-            formBoxes2Play = fb2ps;
-            playFormBoxThd = new Thread(playFormBoxThdFunc);
-            playFormBoxThd.IsBackground = true;
-            playFormBoxThd.Start();
-        }
-        void playFormBoxThdFunc()
-        {
-            foreach (FormBoxes2Play f in formBoxes2Play)
-            {
-                FormBoxManager.FallInSceen(0);
-                AppearFormBox(f.Name);
-                if (f.TextureEffectList != null)
-                {
-                    foreach (TextureEffect te in f.TextureEffectList)
-                    {
-                        if (te.Type == TextureEffectType.None)
-                        {
-                        }
-                        else if (te.Type == TextureEffectType.Shock)
-                        {
-                            FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
-                        }
-                        else if (te.Type == TextureEffectType.FallIn)
-                        {
-                            FormBoxManager.FallInSceen(te.TimeSpan.TotalMilliseconds);
-                        }
-                        else if (te.Type == TextureEffectType.FallOut)
-                        {
-                            FormBoxManager.FallOutSceen(te.TimeSpan.TotalMilliseconds);
-                        }
-                        if (te.IsBlock)
-                        {
-                            Thread.Sleep((int)te.TimeSpan.TotalMilliseconds);
-                        }
-                    }
-                }
-                FormBoxManager.Disappear();
-            }
-        }
-
+        //List<FormBoxes2Play> formBoxes2Play;
+        //Thread playFormBoxThd;
+        //public void PlayFormBox(List< FormBoxes2Play> fb2ps)
+        //{
+        //    formBoxes2Play = fb2ps;
+        //    playFormBoxThd = new Thread(playFormBoxThdFunc);
+        //    playFormBoxThd.IsBackground = true;
+        //    playFormBoxThd.Start();
+        //}
+        //void playFormBoxThdFunc()
+        //{
+        //    foreach (FormBoxes2Play f in formBoxes2Play)
+        //    {
+        //        FormBoxManager.FallInSceen(0);
+        //        AppearFormBox(f.Name);
+        //        if (f.TextureEffectList != null)
+        //        {
+        //            foreach (TextureEffect te in f.TextureEffectList)
+        //            {
+        //                if (te.Type == TextureEffectType.None)
+        //                {
+        //                }
+        //                else if (te.Type == TextureEffectType.Shock)
+        //                {
+        //                    FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
+        //                }
+        //                else if (te.Type == TextureEffectType.FallIn)
+        //                {
+        //                    FormBoxManager.FallInSceen(te.TimeSpan.TotalMilliseconds);
+        //                }
+        //                else if (te.Type == TextureEffectType.FallOut)
+        //                {
+        //                    FormBoxManager.FallOutSceen(te.TimeSpan.TotalMilliseconds);
+        //                }
+        //                if (te.IsBlock)
+        //                {
+        //                    Thread.Sleep((int)te.TimeSpan.TotalMilliseconds);
+        //                }
+        //            }
+        //        }
+        //        FormBoxManager.Disappear();
+        //    }
+        //}
         #endregion
     }
 }
