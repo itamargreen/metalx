@@ -1,0 +1,9 @@
+mp3 audios\logo-engine.mp3
+appear LogoEngine
+fallin ui 2000
+delay 2000
+shock ui 2000
+delay 3000
+fallout ui 2000
+delay 2000
+exit

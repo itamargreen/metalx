@@ -89,20 +89,6 @@ namespace MetalHunter
             game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
         }
 
-        void ShowLogo()
-        {
-            List<FormBoxes2Play> fb2p = new List<FormBoxes2Play>();
-            List<TextureEffect> lte = new List<TextureEffect>();
-            lte.Add(new TextureEffect(TextureEffectType.Shock, 3000, false));
-            lte.Add(new TextureEffect(TextureEffectType.FallIn, 1000, true));
-            lte.Add(new TextureEffect(TextureEffectType.None, 1000, true));
-            lte.Add(new TextureEffect(TextureEffectType.FallOut, 1000, true));
-            fb2p.Add(new FormBoxes2Play("LogoEngine", lte));
-            fb2p.Add(new FormBoxes2Play("LogoGame", lte));
-
-            game.PlayFormBox(fb2p);
-        }
-
         public MetalHunter()
         {
             game = new Game("MetalHunter");
@@ -111,11 +97,10 @@ namespace MetalHunter
             game.InitCom();
 
             game.LoadAllDotPNG(@".\", new Size(16, 16));
-            game.LoadAllDotMP3(@".\");
 
-            InitFormBoxes();           
-
-            ShowLogo();
+            InitFormBoxes();
+            
+            game.ExecuteMetalXScript("script");
 
             game.Start();
         }

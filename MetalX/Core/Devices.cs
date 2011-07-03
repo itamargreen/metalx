@@ -16,6 +16,7 @@ namespace MetalX
         public Microsoft.DirectX.DirectInput.Device DMouseDev;
 
         public Microsoft.DirectX.Direct3D.Font Font;
+        //public Microsoft.DirectX.Direct3D.FontDescription FontDescription;
         public Microsoft.DirectX.Direct3D.Sprite Sprite;
 
         public SizeF D3DDevSizePixel

@@ -204,10 +204,10 @@ namespace MetalX.Component
             }
             catch { }
         }
-        public void PlayMXA(string musicName) { PlayMXA(game.Audios.GetIndex(musicName)); }
-        public void PlayMXA(int i) { PlayMXA(new System.IO.MemoryStream(game.Audios[i].AudioData)); }
-        public void PlayMP3(string fileName) { PlayMXA(new System.IO.MemoryStream(System.IO.File.ReadAllBytes(fileName))); }
-        public void PlayMXA(System.IO.Stream stream)
+        public void PlayMetalXAudio(string musicName) { PlayMetalXAudio(game.Audios.GetIndex(musicName)); }
+        public void PlayMetalXAudio(int i) { PlayMetalXAudio(new System.IO.MemoryStream(game.Audios[i].AudioData)); }
+        public void PlayMP3(string fileName) { PlayMetalXAudio(new System.IO.MemoryStream(System.IO.File.ReadAllBytes(fileName))); }
+        public void PlayMetalXAudio(System.IO.Stream stream)
         {
             Load(stream);
             mp3Stream.Read(buff, 0, halfSize);

@@ -299,7 +299,7 @@ namespace MetalX.SceneMaker2D
 
             game.InitData();
             game.LoadAllDotPNG(@".\", new Size(tilesizepixel.Width / 2, tilesizepixel.Height / 2));
-            game.LoadAllDotMP3(@".\");
+            //game.LoadAllDotMP3(@".\");
 
             update_pic_list();
             update_mus_list();
@@ -345,7 +345,7 @@ namespace MetalX.SceneMaker2D
             game.InitData();
             game.InitCom();
             game.LoadAllDotPNG(@".\", new Size(game.Options.TileSize.Width / 2, game.Options.TileSize.Height / 2));
-            game.LoadAllDotMP3(@".\");
+            //game.LoadAllDotMP3(@".\");
 
             update_pic_list();
             update_mus_list();
@@ -382,7 +382,7 @@ namespace MetalX.SceneMaker2D
             game.InitData();
             game.InitCom();
             game.LoadAllDotPNG(@".\", new Size(game.Options.TileSize.Width / 2, game.Options.TileSize.Height / 2));
-            game.LoadAllDotMP3(@".\");
+            //game.LoadAllDotMP3(@".\");
             update_pic_list();
             update_mus_list();
 
@@ -991,21 +991,21 @@ namespace MetalX.SceneMaker2D
             {
                 return;
             }
-            game.PlayMXA(ui_mus_slt.Text);
+            game.PlayMetalXAudio(ui_mus_slt.Text);
             timer1.Enabled = true;
         }
 
         private void ui_stop_Click(object sender, EventArgs e)
         {
-            game.StopMXA();
+            game.StopAudio();
             timer1.Enabled = false;
             ui_proc.Value = 0;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ui_proc.Value = (int)(game.ProgressMXA * 50);
-            if (!game.PlayingMXA)
+            ui_proc.Value = (int)(game.PlayingProgress * 50);
+            if (!game.IsPlayingAudio)
             {
                 timer1.Enabled = false;
             }
@@ -1013,7 +1013,7 @@ namespace MetalX.SceneMaker2D
 
         private void ui_proc_Scroll(object sender, EventArgs e)
         {
-            game.ProgressMXA = (double)ui_proc.Value / ui_proc.Maximum;
+            game.PlayingProgress = (double)ui_proc.Value / ui_proc.Maximum;
         }
 
         private void ui_loadmp3_Click(object sender, EventArgs e)
