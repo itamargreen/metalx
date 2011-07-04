@@ -1004,8 +1004,8 @@ namespace MetalX.SceneMaker2D
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ui_proc.Value = (int)(game.PlayingProgress * 50);
-            if (!game.IsPlayingAudio)
+            ui_proc.Value = (int)(game.AudioPlayingProgress * 50);
+            if (!game.AudioIsPlaying)
             {
                 timer1.Enabled = false;
             }
@@ -1013,7 +1013,7 @@ namespace MetalX.SceneMaker2D
 
         private void ui_proc_Scroll(object sender, EventArgs e)
         {
-            game.PlayingProgress = (double)ui_proc.Value / ui_proc.Maximum;
+            game.AudioPlayingProgress = (double)ui_proc.Value / ui_proc.Maximum;
         }
 
         private void ui_loadmp3_Click(object sender, EventArgs e)

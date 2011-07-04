@@ -21,17 +21,32 @@ namespace MetalX.Component
         }
         void drawFormBox(FormBox fb)
         {
-            Point pos = Util.PointAddPoint(fb.Location, ScreenOffsetPoint);
-            Color fColor = Util.MixColor(ColorFilter, fb.BGTextureFliterColor);
-            if (fb.BGTextureIndex > -1)
+            foreach (ControlBox cb in fb.ControlBoxes)
             {
-                game.DrawMetalXTexture(game.Textures[fb.BGTextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
+                if (cb is TextBox)
+                {
+                    drawTextBox((TextBox)cb, fb.Location);
+                }
+                else if (cb is TextureBox)
+                {
+                    drawTextureBox((TextureBox)cb, fb.Location);
+                }
+                else if (cb is ButtonBox)
+                {
+                    drawButtonBox((ButtonBox)cb, fb.Location);
+                }
             }
-            else
-            {
-                int j = game.Textures.GetIndex(fb.BGTextureName);
-                game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
-            }
+            //Point pos = Util.PointAddPoint(fb.Location, ScreenOffsetPoint);
+            //Color fColor = Util.MixColor(ColorFilter, fb.BGTextureFliterColor);
+            //if (fb.BGTextureIndex > -1)
+            //{
+            //    game.DrawMetalXTexture(game.Textures[fb.BGTextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
+            //}
+            //else
+            //{
+            //    int j = game.Textures.GetIndex(fb.BGTextureName);
+            //    game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
+            //}
         }
         void drawTextureBox(TextureBox tb,Point basepos)
         {
@@ -97,27 +112,10 @@ namespace MetalX.Component
         public override void Draw()
         {
             base.Draw();
-            //foreach (int i in AppearingFormBoxIndex)
             for (int i = 0; i < AppearingFormBoxIndex.Count; i++)
             {
                 FormBox fb = game.FormBoxes[AppearingFormBoxIndex[i]];
                 drawFormBox(fb);
-
-                foreach (ControlBox cb in fb.ControlBoxes)
-                {
-                    if (cb is TextBox)
-                    {
-                        drawTextBox((TextBox)cb, fb.Location);
-                    }
-                    else if (cb is TextureBox)
-                    {
-                        drawTextureBox((TextureBox)cb, fb.Location);
-                    }
-                    else if (cb is ButtonBox)
-                    {
-                        drawButtonBox((ButtonBox)cb, fb.Location);
-                    }
-                }
             }
         }
 
