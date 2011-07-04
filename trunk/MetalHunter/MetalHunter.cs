@@ -53,7 +53,13 @@ namespace MetalHunter
             bb1.WaitTextureBox.TextureName = "dialog-bgtexture";
             bb1.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
             bb1.WaitTextBox.Location = new Point(16, 16);
-            bb1.WaitTextBox.Text = "存档1";
+            bb1.WaitTextBox.Text = "存档1"; 
+            
+            bb1.FocusTextureBox.TextureName = "dialog-bgtexture";
+            bb1.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb1.FocusTextBox.Location = new Point(16, 18);
+            bb1.FocusTextBox.Text = "存档1";
+            bb1.FocusTextBox.TextColor = Color.Pink;
 
             ButtonBox bb2 = new ButtonBox(g);
             bb2.Location = new Point(0,120);
@@ -63,13 +69,25 @@ namespace MetalHunter
             bb2.WaitTextBox.Location = new Point(16, 16);
             bb2.WaitTextBox.Text = "存档2";
 
+            bb2.FocusTextureBox.TextureName = "dialog-bgtexture";
+            bb2.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb2.FocusTextBox.Location = new Point(16, 18);
+            bb2.FocusTextBox.Text = "存档2";
+            bb2.FocusTextBox.TextColor = Color.Pink;
+
             ButtonBox bb3 = new ButtonBox(g);
             bb3.Location = new Point(0, 240);
             bb3.Size = new System.Drawing.Size(640, 120);
             bb3.WaitTextureBox.TextureName = "dialog-bgtexture";
             bb3.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
             bb3.WaitTextBox.Location = new Point(16, 16);
-            bb3.WaitTextBox.Text = "存档3"; 
+            bb3.WaitTextBox.Text = "存档3";
+
+            bb3.FocusTextureBox.TextureName = "dialog-bgtexture";
+            bb3.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb3.FocusTextBox.Location = new Point(16, 18);
+            bb3.FocusTextBox.Text = "存档3";
+            bb3.FocusTextBox.TextColor = Color.Pink;
             
             ButtonBox bb4 = new ButtonBox(g);
             bb4.Location = new Point(0, 360);
@@ -78,6 +96,12 @@ namespace MetalHunter
             bb4.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
             bb4.WaitTextBox.Location = new Point(16, 16);
             bb4.WaitTextBox.Text = "存档4";
+
+            bb4.FocusTextureBox.TextureName = "dialog-bgtexture";
+            bb4.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb4.FocusTextBox.Location = new Point(16, 18);
+            bb4.FocusTextBox.Text = "存档4";
+            bb4.FocusTextBox.TextColor = Color.Pink;
 
             ControlBoxes.Add(bb1);
             ControlBoxes.Add(bb2);

@@ -12,8 +12,8 @@ disappear LogoEngine
 fallin ui 1
 appear LogoGame
 delay 1000
-fallout ui 1000
-delay 1000
+fallout ui 1500
+delay 1500
 
 fallin ui 1
 appear MenuLoad

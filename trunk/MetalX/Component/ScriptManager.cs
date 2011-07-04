@@ -8,20 +8,30 @@ namespace MetalX.Component
 {
     public class ScriptManager : GameCom
     {
-        Queue<string> commands = new Queue<string>();
-        public ScriptManager(Game g)
-            : base(g)
-        {
-        }
-
+        Stack<string> cmdbak = new Stack<string>();
         DateTime delayStartTime = DateTime.Now;
+        string text = "";
+        bool drawText = false;
+        bool isBig = false; string cur;
+        double delayTime = 0;
+        double delayLeftTime = 0;
+        bool exe = false; Queue<string> commands = new Queue<string>();
+
+
         TimeSpan delayEclipseTimeSpan
         {
             get
             {
                 return DateTime.Now - delayStartTime;
             }
+        }      
+        
+        public ScriptManager(Game g)
+            : base(g)
+        {
         }
+
+
         public override void Code()
         {
             if (delayLeftTime > 0)
@@ -30,23 +40,36 @@ namespace MetalX.Component
             }
             else
             {
-                if (commands.Count > 0)
+                if (exe)
                 {
-                    execute(commands.Dequeue());
+                    if (commands.Count > 0)
+                    {
+                        execute(commands.Dequeue());
+                    }
+                    else
+                    {
+                        exe = false;
+                    }
                 }
+            }
+            if (DateTime.Now.Millisecond < 500)
+            {
+                cur = "_";
+            }
+            else
+            {
+                cur = "";
             }
         }
         public override void Draw()
         {
             if (drawText)
-                game.DrawText(text, new System.Drawing.Point(), ColorFilter);
-            //game.DrawText("fps: " + game.AverageFPS + "\ndelay left time: " + delayLeftTime, new System.Drawing.Point(), ColorFilter);
+                game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
         }
-        double delayTime = 0;
-        double delayLeftTime = 0;
 
         void execute(string cmd)
         {
+
             //cmd = cmd.ToLower();
             string[] kw = cmd.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             kw[0] = kw[0].ToLower();
@@ -135,7 +158,8 @@ namespace MetalX.Component
                 }
             }
         }
-        public void Execute(string cmd)
+
+        public void AppendCommand(string cmd)
         {
             string[] cmds = cmd.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string c in cmds)
@@ -146,19 +170,24 @@ namespace MetalX.Component
                 }
             }
         }
+        public void Execute()
+        {
+            exe = true;
+        }        
+        public void Execute(string cmd)
+        {
+            AppendCommand(cmd);
+            Execute();
+        }
         public void ExecuteDotMXScript(string fileName)
         {
             Execute(System.IO.File.ReadAllText(fileName + ".mxscript"));
         }
 
-        string text = "";
-        bool drawText = false;
-        bool isBig = false;
-
         public override void OnKeyboardUpCode(int key)
         {
             Key k = (Key)key;
-            if (k == Key.LeftShift)
+            if (k == Key.LeftShift || k == Key.RightControl)
             {
                 isBig = false;
             }
@@ -166,18 +195,7 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(int key)
         {
             Key k = (Key)key;
-            //if (k == Key.CapsLock)
-            //{
-            //    if (isBig)
-            //    {
-            //        isBig = false;
-            //    }
-            //    else
-            //    {
-            //        isBig = true;
-            //    }
-            //}
-            if (k == Key.LeftShift)
+            if (k == Key.LeftShift || k == Key.RightControl)
             {
                 isBig = true;
             }
@@ -194,19 +212,40 @@ namespace MetalX.Component
             }
             else if (k == Key.Return)
             {
-                try
+                string[] cmds = text.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                if (cmds.Length > 0)
                 {
-                    string[] cmds = text.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     string cmd = cmds[cmds.Length - 1];
-                    execute(cmd);
+                    cmdbak.Push(cmd);
+                    if (isBig)
+                    {
+                        Execute(cmd);
+                    }
+                    else
+                    {
+                        //if (cmd == "run")
+                        //{
+                        //    text = text.Remove(text.Length - 4);
+                        //    Execute();
+                        //}
+                        //else
+                        {
+                            AppendCommand(cmd);
+                        }
+                    }
                     text += "\n";
                 }
-                catch
-                { }
             }
             else if (k == Key.Space)
             {
                 text += " ";
+            }
+            else if (k == Key.Up)
+            {
+                if (cmdbak.Count > 0)
+                {
+                    text += cmdbak.Pop();
+                }
             }
             else if (k == Key.BackSpace)
             {
@@ -219,6 +258,7 @@ namespace MetalX.Component
             {
                 if (drawText)
                 {
+                    #region convert key
                     string ks = "";
                     if (k == Key.A)
                     {
@@ -324,6 +364,47 @@ namespace MetalX.Component
                     {
                         ks = "z";
                     }
+                    else if (k == Key.D0 || k == Key.NumPad0)
+                    {
+                        ks = "0";
+                    }
+                    else if (k == Key.D1 || k == Key.NumPad1)
+                    {
+                        ks = "1";
+                    }
+                    else if (k == Key.D2 || k == Key.NumPad2)
+                    {
+                        ks = "2";
+                    }
+                    else if (k == Key.D3 || k == Key.NumPad3)
+                    {
+                        ks = "3";
+                    }
+                    else if (k == Key.D4 || k == Key.NumPad4)
+                    {
+                        ks = "4";
+                    }
+                    else if (k == Key.D5 || k == Key.NumPad5)
+                    {
+                        ks = "5";
+                    }
+                    else if (k == Key.D6 || k == Key.NumPad6)
+                    {
+                        ks = "6";
+                    }
+                    else if (k == Key.D7 || k == Key.NumPad7)
+                    {
+                        ks = "7";
+                    }
+                    else if (k == Key.D8 || k == Key.NumPad8)
+                    {
+                        ks = "8";
+                    }
+                    else if (k == Key.D9 || k == Key.NumPad9)
+                    {
+                        ks = "9";
+                    }
+                    #endregion
                     //else
                     //{
                     //    ks = k.ToString();

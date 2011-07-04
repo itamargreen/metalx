@@ -10,6 +10,14 @@ namespace MetalX.Component
     public class FormBoxManager : GameCom
     {
         List<int> AppearingFormBoxIndex = new List<int>();
+        FormBox AppearingFormBox
+        {
+            get
+            {
+                int i = AppearingFormBoxIndex[AppearingFormBoxIndex.Count - 1];
+                return game.FormBoxes[i];
+            }
+        }
 
         public FormBoxManager(Game g)
             : base(g)
@@ -36,17 +44,6 @@ namespace MetalX.Component
                     drawButtonBox((ButtonBox)cb, fb.Location);
                 }
             }
-            //Point pos = Util.PointAddPoint(fb.Location, ScreenOffsetPoint);
-            //Color fColor = Util.MixColor(ColorFilter, fb.BGTextureFliterColor);
-            //if (fb.BGTextureIndex > -1)
-            //{
-            //    game.DrawMetalXTexture(game.Textures[fb.BGTextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
-            //}
-            //else
-            //{
-            //    int j = game.Textures.GetIndex(fb.BGTextureName);
-            //    game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), fb.Size), pos, fb.Size, fColor);
-            //}
         }
         void drawTextureBox(TextureBox tb,Point basepos)
         {
@@ -157,25 +154,18 @@ namespace MetalX.Component
             //catch { }
         }
 
-        public override void OnKeyboardUpCode(int key)
+
+        public override void OnKeyboardDownCode(int key)
         {
-            //base.OnKeyboardUpCode(key);
-            //if (key == (int)Key.J)
-            //{
-            //    Appear(0);
-            //}
-            //else if (key == (int)Key.K)
-            //{
-            //    Disappear(0);
-            //}
-            //else if (key == (int)Key.Space)
-            //{
-            //    game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
-            //}
-            //else if (key == (int)Key.L)
-            //{
-            //    FileLoader.Load(@"e:\[幻彩壁纸第一辑].Fantasy.Wallpapers.1920×1200.400P.rar");
-            //}
+            Key k = (Key)key;
+            if (k == Key.W || k == Key.A)
+            {
+                AppearingFormBox.FocusLastButtonBox();
+            }
+            else if (k == Key.S || k == Key.D)
+            {
+                AppearingFormBox.FocusNextButtonBox();
+            }
         }
     }
 }
