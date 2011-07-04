@@ -22,6 +22,85 @@ namespace MetalX.Data
     [Serializable]
     public class FormBox : ControlBox
     {
+        public int ButtonBoxCount
+        {
+            get
+            {
+                int c = 0;
+                foreach (ControlBox cb in ControlBoxes)
+                {
+                    if (cb is ButtonBox)
+                    {
+                        c++;
+                    }
+                }
+                return c;
+            }
+        }
+        public int FocusButtonBoxIndex
+        {
+            get
+            {
+                int c = 0;
+                foreach (ControlBox cb in ControlBoxes)
+                {
+                    if (cb is ButtonBox)
+                    {
+                        if (((ButtonBox)cb).ButtonBoxState == ButtonBoxState.Focus)
+                        {
+                            return c;
+                        }
+                        c++;
+                    }
+                }
+                return -1;
+            }
+        }
+        public void SetButtonBoxState(int i, ButtonBoxState bbs)
+        {
+            int j = 0;
+            for (int k = 0; k < ControlBoxes.Count; k++)
+            {
+                if (ControlBoxes[k] is ButtonBox)
+                {
+                    if (j == i)
+                    {
+                        ((ButtonBox)ControlBoxes[k]).ButtonBoxState = bbs;
+                        return;
+                    }
+                    j++;
+                }
+            }
+        }
+        public void FocusNextButtonBox()
+        {
+            int i = FocusButtonBoxIndex;
+            i++;
+            if (i >= ButtonBoxCount)
+            {
+                i = 0;
+            }
+            WaitAllButtonBox();
+            SetButtonBoxState(i, ButtonBoxState.Focus);
+        }
+        public void FocusLastButtonBox()
+        {
+            int i = FocusButtonBoxIndex;
+            i--;
+            if (i < 0)
+            {
+                i = ButtonBoxCount - 1;
+            }
+            WaitAllButtonBox();
+            SetButtonBoxState(i, ButtonBoxState.Focus);
+        }
+        public void WaitAllButtonBox()
+        {
+            for (int i = 0; i < ButtonBoxCount; i++)
+            {
+                SetButtonBoxState(i, ButtonBoxState.Wait);
+            }
+        }
         public TextureBox BGTextureBox;
         public event FormBoxEvent OnFormBoxAppear;
         public event FormBoxEvent OnFormBoxDisappear;
@@ -82,7 +161,7 @@ namespace MetalX.Data
                 return Text.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
             }
         }
-        public bool OneByOne = true;
+        public bool OneByOne = false;
         public int Interval = 100;
         DateTime lastCharacterTime;
         public Size FontSize;
