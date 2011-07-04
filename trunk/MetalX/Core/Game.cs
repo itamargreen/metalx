@@ -269,6 +269,7 @@ namespace MetalX
             gameBeginTime = DateTime.Now;
 
             totalFrames = 0;
+
             SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), Options.X);
             SetLight(new Vector3(0, 0, 22.5f), new Vector3(), Options.X, false);
 
@@ -537,35 +538,35 @@ namespace MetalX
             if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
                 DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
+                DrawMetalXTextureDirect2D(t, dz, point, dz.Size, color);
         }
-        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Rectangle ddz, Color color)
-        {
-            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
-                DrawMetalXTextureDirect3D(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
-            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
-        }
+        //public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Rectangle ddz, Color color)
+        //{
+        //    if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+        //        DrawMetalXTextureDirect3D(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
+        //    else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+        //        DrawMetalXTextureDirect2D(t, dz, ddz.Location, ddz.Size, color);
+        //}
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Size size, Color color)
         {
             if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
                 DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+                DrawMetalXTextureDirect2D(t, dz, point, size, color);
         }
-        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, PointF point, Size size, Color color)
-        {
-            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
-                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
-            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
-        }
+        //public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, PointF point, Size size, Color color)
+        //{
+        //    if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+        //        DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+        //    else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+        //        DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+        //}
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 v3, Size size, Color color)
         {
             if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
                 DrawMetalXTextureDirect3D(t, dz, v3, size, color);
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, v3, size, color);
+                DrawMetalXTextureDirect2D(t, dz, Util.Vector32Point(v3), size, color);
         }
         /// <summary>
         /// 绘制MetalX格式纹理
@@ -575,6 +576,10 @@ namespace MetalX
         /// <param name="c">颜色</param>
         void DrawMetalXTextureDirect3D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
         {
+            if (Devices.D3DDev.Disposed)
+            {
+                return;
+            } 
             if (t == null)
             {
                 return;
@@ -592,7 +597,7 @@ namespace MetalX
             Size s = t.SizePixel;
 
             float fx, fy, tx, ty;
-            float offset = .5f;
+            float offset = 0.1f;
 
             if (Util.Is2PowSize(t.SizePixel))
             {
@@ -636,42 +641,42 @@ namespace MetalX
             //Devices.D3DDev.SetStreamSource(0, vb, 0);
             //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
-        void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
+        void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Point loc, Size size, Color color)
         {
+            if (Devices.D3DDev.Disposed)
+            {
+                return;
+            }
             if (t == null)
             {
                 return;
             }
 
-            loc.Z = 0;
-            try
+            //loc.Z = 0;
+            using (Sprite sprite = new Sprite(Devices.D3DDev))
             {
-                Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
-            }
-            catch
-            {
-                return;
-            }
+                sprite.Begin(SpriteFlags.AlphaBlend);
 
-            if (dz.Width == 0 || size.Width == 0 || dz.Height == 0 || size.Height == 0)
-            {
-                return;
-            }
-            if (size.Width / dz.Width == 2)
-            {
-                dz.X = dz.X * (size.Width / dz.Width);
-                dz.Y = dz.Y * (size.Height / dz.Height);
-                dz.Size = size;
-                //Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), loc, color);
-                Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
-            }
-            else
-            {
-                //Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), loc, color);
-                Devices.Sprite.Draw2D(t.MEMTexture, dz, dz, new Point((int)loc.X, (int)loc.Y), color);
-            }
+                if (dz.Width == 0 || size.Width == 0 || dz.Height == 0 || size.Height == 0)
+                {
+                    return;
+                }
+                if (size.Width / dz.Width == 2)
+                {
+                    dz.X = dz.X * 2;
+                    dz.Y = dz.Y * 2;
+                    dz.Size = size;
+                    sprite.Draw(t.MEMTexture2X, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+                    //sprite.Draw2D(t.MEMTexture2X, dz, dz, loc, color);
+                }
+                else
+                {
+                    sprite.Draw(t.MEMTexture, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+                    //sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
+                }
 
-            Devices.Sprite.End();
+                sprite.End();
+            }
         }
 
         #endregion
@@ -684,28 +689,31 @@ namespace MetalX
         /// <param name="color">颜色</param>
         public void DrawText(string text, Point point, Color color)
         {
-            DrawText(text, point, "微软雅黑", new Size(14, 14), color);
+            DrawText(text, point, "新宋体", 9f, color);
         }
-        public void DrawText(string text, Point point, string fontName, Size fontSize, Color color)
+        public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
         {
-            try
+            if (Devices.D3DDev.Disposed)
             {
-                using (Devices.Font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize.Height)))
+                return;
+            }
+            using (Sprite sprite = new Sprite(Devices.D3DDev))
+            {
+                using (Microsoft.DirectX.Direct3D.Font font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize)))
                 {
                     //FontDescription fd = new FontDescription();
                     //fd.FaceName = fontName;
                     //fd.Width = fontSize.Width;
                     //fd.Height = fontSize.Height;
 
-                    Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+                    sprite.Begin(SpriteFlags.AlphaBlend);
 
-                    Devices.Font.DrawText(Devices.Sprite, text, point, color);
+                    font.DrawText(sprite, text, point, color);
 
-                    Devices.Sprite.End();
+                    sprite.End();
 
                 }
             }
-            catch { }
         }
         #endregion
         #region Direct2D
@@ -770,14 +778,6 @@ namespace MetalX
         {
             SoundManager.PlayMetalXAudio(name);
         }
-        public void PlayMetalXAudio(int i)
-        {
-            SoundManager.PlayMetalXAudio(i);
-        }
-        public void PlayMetalXAudio(Stream stm)
-        {
-            SoundManager.PlayMetalXAudio(stm);
-        }
         public void PlayMP3(string fileName)
         {
             SoundManager.PlayMP3(fileName);
@@ -786,7 +786,7 @@ namespace MetalX
         {
             SoundManager.Stop();
         }
-        public double PlayingProgress
+        public double AudioPlayingProgress
         {
             get
             {
@@ -797,7 +797,7 @@ namespace MetalX
                 SoundManager.Progress = value;
             }
         }
-        public bool IsPlayingAudio
+        public bool AudioIsPlaying
         {
             get
             {

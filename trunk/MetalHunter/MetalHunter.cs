@@ -15,8 +15,8 @@ namespace MetalHunter
         {
             Name = "LogoEngine";
             Location = new Point();
-            Size = new Size(640, 480);
-            BGTextureName = "engine-logo";
+            BGTextureBox.TextureName = "engine-logo";
+            BGTextureBox.Size = new Size(640, 480);
         }
     }
     class LogoGame : FormBox
@@ -32,16 +32,12 @@ namespace MetalHunter
             TextBox tb1 = new TextBox(g);
             tb1.Location = new Point(16, 16);
             tb1.Text = "MetalHunter!";
-            tb1.TextFont = "Airal";
-            tb1.TextFontSize = new Size(36, 36);
+            tb1.TextFont = "Consolas";
+            tb1.TextFontSize = 36;
             tb1.Interval = 200;
             tb1.OneByOne = true;
 
             ControlBoxes.Add(tb1);
-        }
-        public override void OnFormBoxDisappearCode()
-        {
-            //game.AppearFormBox("MenuLoad");
         }
     }
     class MenuLoad : FormBox
@@ -53,29 +49,58 @@ namespace MetalHunter
 
             ButtonBox bb1 = new ButtonBox(g);
             bb1.Location = new Point();
-            bb1.Size = new System.Drawing.Size(640, 160);
+            bb1.Size = new System.Drawing.Size(640, 120);
             bb1.WaitTextureBox.TextureName = "dialog-bgtexture";
-            bb1.WaitTextureBox.Size = new System.Drawing.Size(640, 160);
+            bb1.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
             bb1.WaitTextBox.Location = new Point(16, 16);
             bb1.WaitTextBox.Text = "存档1";
 
             ButtonBox bb2 = new ButtonBox(g);
-            bb2.Location = new Point();
-            bb2.Size = new System.Drawing.Size(640, 160);
-
-            bb2.WaitTextBox.Location = new Point(16, 160 + 16);
+            bb2.Location = new Point(0,120);
+            bb2.Size = new System.Drawing.Size(640, 120);
+            bb2.WaitTextureBox.TextureName = "dialog-bgtexture";
+            bb2.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb2.WaitTextBox.Location = new Point(16, 16);
             bb2.WaitTextBox.Text = "存档2";
 
             ButtonBox bb3 = new ButtonBox(g);
-            bb3.Location = new Point();
-            bb3.Size = new System.Drawing.Size(640, 160);
-
-            bb3.WaitTextBox.Location = new Point(16, 320 + 16);
-            bb3.WaitTextBox.Text = "存档3";
+            bb3.Location = new Point(0, 240);
+            bb3.Size = new System.Drawing.Size(640, 120);
+            bb3.WaitTextureBox.TextureName = "dialog-bgtexture";
+            bb3.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb3.WaitTextBox.Location = new Point(16, 16);
+            bb3.WaitTextBox.Text = "存档3"; 
+            
+            ButtonBox bb4 = new ButtonBox(g);
+            bb4.Location = new Point(0, 360);
+            bb4.Size = new System.Drawing.Size(640, 120);
+            bb4.WaitTextureBox.TextureName = "dialog-bgtexture";
+            bb4.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb4.WaitTextBox.Location = new Point(16, 16);
+            bb4.WaitTextBox.Text = "存档4";
 
             ControlBoxes.Add(bb1);
             ControlBoxes.Add(bb2);
             ControlBoxes.Add(bb3);
+            ControlBoxes.Add(bb4);
+        }
+    }
+    class MessageBox : FormBox
+    {
+        public MessageBox(Game g)
+            : base(g)
+        {
+            Name = "MessageBox";
+            Location = new Point(0, 360);
+
+            TextBox tb1 = new TextBox(g);
+            tb1.Location = new Point(16, 16);
+            tb1.Text = "MessageBox!";
+            tb1.TextFont = "Consolas";
+            tb1.Interval = 200;
+            tb1.OneByOne = true;
+
+            ControlBoxes.Add(tb1);
         }
     }
     class MetalHunter
@@ -87,6 +112,7 @@ namespace MetalHunter
             game.FormBoxes.LoadDotMXFormBox(new LogoEngine(game));
             game.FormBoxes.LoadDotMXFormBox(new LogoGame(game));
             game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
+            game.FormBoxes.LoadDotMXFormBox(new MessageBox(game));
         }
 
         public MetalHunter()

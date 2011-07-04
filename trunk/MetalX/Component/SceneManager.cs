@@ -223,13 +223,13 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(int key)
         {
             Key k = (Key)key;
-            if (k == Key.L)
-            {
-                LoadScene(0, new Vector3());
-                me.TextureFileName = "mm-chr0001";
-                //me.RealLocation = game.CenterLocation;
-                me.NextLocation = me.LastLocation = me.RealLocation;
-            }
+            //if (k == Key.L)
+            //{
+            //    LoadScene(0, new Vector3());
+            //    me.TextureFileName = "mm-chr0001";
+            //    //me.RealLocation = game.CenterLocation;
+            //    me.NextLocation = me.LastLocation = me.RealLocation;
+            //}
         }
         public override void OnKeyboardDownHoldCode(int key)
         {

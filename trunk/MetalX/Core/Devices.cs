@@ -15,9 +15,8 @@ namespace MetalX
         public Microsoft.DirectX.DirectInput.Device DKeyboardDev;
         public Microsoft.DirectX.DirectInput.Device DMouseDev;
 
-        public Microsoft.DirectX.Direct3D.Font Font;
-        //public Microsoft.DirectX.Direct3D.FontDescription FontDescription;
-        public Microsoft.DirectX.Direct3D.Sprite Sprite;
+        //public Microsoft.DirectX.Direct3D.Font Font;
+        //public Microsoft.DirectX.Direct3D.Sprite Sprite;
 
         public SizeF D3DDevSizePixel
         {
@@ -38,9 +37,6 @@ namespace MetalX
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
 
-            Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
-            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("微软雅黑", 14));
-
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(GameWindow, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
 
@@ -60,9 +56,6 @@ namespace MetalX
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
 
-            Sprite = new Microsoft.DirectX.Direct3D.Sprite(D3DDev);
-            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, new System.Drawing.Font("微软雅黑", 14));
-
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(control, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
 
@@ -74,7 +67,6 @@ namespace MetalX
         }
         public void Dispose()
         {
-            Sprite.Dispose();
             D3DDev.Dispose();
             DSoundDev.Dispose();
             DKeyboardDev.Dispose();

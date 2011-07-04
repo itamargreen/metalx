@@ -22,11 +22,7 @@ namespace MetalX.Data
     [Serializable]
     public class FormBox : ControlBox
     {
-        public Color BGColor;
-        public Color BGTextureFliterColor = Color.White;
-        public int BGTextureIndex = -1;
-        public string BGTextureName;
-        public string BGAudio; 
+        public TextureBox BGTextureBox;
         public event FormBoxEvent OnFormBoxAppear;
         public event FormBoxEvent OnFormBoxDisappear;
         public List<ControlBox> ControlBoxes = new List<ControlBox>();
@@ -56,6 +52,8 @@ namespace MetalX.Data
         public FormBox(Game g)
             : base(g)
         {
+            BGTextureBox = new TextureBox(g);
+            ControlBoxes.Add(BGTextureBox);
             OnFormBoxAppear = new FormBoxEvent(OnFormBoxAppearCode);
             OnFormBoxDisappear = new FormBoxEvent(OnFormBoxDisappearCode);
         }
@@ -75,8 +73,8 @@ namespace MetalX.Data
         public Color TextColor = Color.White;
         public int TextIndex = -1;
         public string TextFileName;
-        public string TextFont = "微软雅黑";
-        public Size TextFontSize = new Size(14, 14);
+        public string TextFont = "新宋体";
+        public float TextFontSize = 9f;
         public string[] Lines
         {
             get
