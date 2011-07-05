@@ -123,7 +123,7 @@ namespace MetalX.Component
                 return;
             }
             DrawScene(scene);
-            game.DrawText("RealLoc:\n" + me.RealLocation + "\nLastLoc:\n" + me.LastLocation + "\nFrontLoc:\n" + me.FrontLocation, new Point(0, 120), Color.White);
+            //game.DrawText("RealLoc:\n" + me.RealLocation + "\nLastLoc:\n" + me.LastLocation + "\nFrontLoc:\n" + me.FrontLocation, new Point(0, 120), Color.White);
         }
 
         public void EnterScene(string fileName, Vector3 realLoc)
@@ -234,16 +234,7 @@ namespace MetalX.Component
                 game.Options.TileSizeX,
                 Color.White);
         }
-        public override void OnKeyboardDownCode(int key)
-        {
-            Key k = (Key)key;
-            if (k == Key.L)
-            {
-                //LoadScene(0, new Vector3());
-                //me.TextureName = "mmr-chrs0001";
-                //me.RealLocation = game.CenterLocation;
-            }
-        }
+        
         public override void OnKeyboardDownHoldCode(int key)
         {
             Key k = (Key)key;

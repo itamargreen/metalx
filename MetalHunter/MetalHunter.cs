@@ -16,7 +16,7 @@ namespace MetalHunter
             Name = "LogoEngine";
             Location = new Point();
             BGTextureBox.TextureName = "engine-logo";
-            BGTextureBox.Size = new Size(800, 600);
+            BGTextureBox.Size = new Size(640, 480);
         }
     }
     class LogoGame : FormBox
@@ -125,7 +125,7 @@ namespace MetalHunter
 
         void bb1_OnButtonDown()
         {
-            game.AppendScript(@"closeallbox");
+            game.AppendScript(@"gui close all");
             game.AppendScript(@"enter scenes\mmr\test.mxscene 0 0");
             game.AppendScript(@"me move 12 7");
             game.AppendScript(@"me skin mmr-chrs0001");
@@ -177,7 +177,6 @@ namespace MetalHunter
 
             game.Start();
         }
-
         static void Main()
         {
             new MetalHunter();

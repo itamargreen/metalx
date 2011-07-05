@@ -170,7 +170,7 @@ namespace MetalX.Data
         public int TextIndex = -1;
         public string TextFileName;
         public string TextFont = "新宋体";
-        public float TextFontSize = 9f;
+        public int TextFontSize = 12;
         public string[] Lines
         {
             get
