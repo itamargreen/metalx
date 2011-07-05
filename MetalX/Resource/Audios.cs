@@ -78,10 +78,11 @@ namespace MetalX.Resource
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX音频</returns>
-        public void LoadDotMXA(string fileName)
+        public MetalXAudio LoadDotMXA(string fileName)
         {
             MetalXAudio mxa = (MetalXAudio)Util.LoadObject(fileName);
             Add(mxa);
+            return mxa;
         }
     }
 }

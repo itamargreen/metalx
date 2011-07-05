@@ -40,7 +40,7 @@ namespace MetalX
         /// <summary>
         /// 音频管理器
         /// </summary>
-        public Audios Audios;
+        //public Audios Audios;
         public Scenes Scenes;
         public Characters Characters;
         public FormBoxes FormBoxes;
@@ -80,8 +80,8 @@ namespace MetalX
         {
             get
             {
-                return 0;
-                //return -TilePixel / 3;
+                //return 0;
+                return -Options.TileSizeX.Width / 3;
             }
         }
         //public Vector3 CenterLocation
@@ -212,6 +212,8 @@ namespace MetalX
                 frameTimeSpan = DateTime.Now - frameBeginTime;
 
                 Devices.GameWindow.Invalidate();
+
+                //WaitFrameByAverageFPS();
                 //Devices.GameWindow.Refresh();
             }
         }
@@ -239,7 +241,7 @@ namespace MetalX
         {
             Models = new Models();
             Textures = new Textures();
-            Audios = new Audios();
+            //Audios = new Audios();
             Scenes = new Scenes();
             FormBoxes = new FormBoxes();
             Characters = new Characters();
@@ -288,6 +290,14 @@ namespace MetalX
             else
             {
                 //Devices.GameWindow.Show();
+                //while (isRunning)
+                //{
+                //    frameBeginTime = DateTime.Now;
+
+                //    frame();
+
+                //    frameTimeSpan = DateTime.Now - frameBeginTime;
+                //}
                 Application.Run(Devices.GameWindow);
             }
         }
@@ -296,6 +306,10 @@ namespace MetalX
         /// </summary>
         void frame()
         {
+            if (Devices.D3DDev.Disposed)
+            {
+                return;
+            }
             Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.Black, 0, 0);
             Devices.D3DDev.BeginScene();
             foreach (GameCom metalXGameCom in GameComs)
@@ -309,11 +323,11 @@ namespace MetalX
                     metalXGameCom.Draw();
                 }
             }
-            try
+            if (Devices.D3DDev.Disposed)
             {
-                Devices.D3DDev.EndScene();
+                return;
             }
-            catch { return; }
+            Devices.D3DDev.EndScene();
             Devices.D3DDev.Present();
             totalFrames++;
             Application.DoEvents();
@@ -429,9 +443,7 @@ namespace MetalX
         public void LoadCheckPoint(int i)
         {
             CheckPoint checkPoint = (CheckPoint)Util.LoadObject("cp" + i.ToString("d2") + ".MXCheckPoint");
-            i = Scenes.GetIndex(checkPoint.SceneName);
-            SceneManager.LoadScene(i, checkPoint.SceneRealLocation);
-            Options.TileSize = Scenes[i].TileSizePixel;
+            Options.TileSize = Scenes[checkPoint.SceneName].TileSizePixel;
             Characters.ME = checkPoint.ME;
             Characters.ME.TextureIndex = -1;
             //Characters.ME.MoveSpeed = 1;
@@ -449,20 +461,20 @@ namespace MetalX
             checkPoint.ME = Characters.ME;
             Util.SaveObject("CP" + i.ToString("d2") + ".MXCheckPoint", checkPoint);
         }
-        public void LoadAllDotMXA(string pathName)
-        {
-            List<string> dirName = new List<string>();
-            Util.EnumDir(pathName, dirName);
-            foreach (string pName in dirName)
-            {
-                DirectoryInfo di = new DirectoryInfo(pName);
-                FileInfo[] fis = di.GetFiles("*.mxa");
-                foreach (FileInfo fi in fis)
-                {
-                    Audios.LoadDotMXA(fi.FullName);
-                }
-            }
-        }
+        //public void LoadAllDotMXA(string pathName)
+        //{
+        //    List<string> dirName = new List<string>();
+        //    Util.EnumDir(pathName, dirName);
+        //    foreach (string pName in dirName)
+        //    {
+        //        DirectoryInfo di = new DirectoryInfo(pName);
+        //        FileInfo[] fis = di.GetFiles("*.mxa");
+        //        foreach (FileInfo fi in fis)
+        //        {
+        //            Audios.LoadDotMXA(fi.FullName);
+        //        }
+        //    }
+        //}
         //public void LoadAllDotMP3(string pathName)
         //{
         //    List<string> dirName = new List<string>();
@@ -579,7 +591,7 @@ namespace MetalX
             if (Devices.D3DDev.Disposed)
             {
                 return;
-            } 
+            }
             if (t == null)
             {
                 return;
@@ -613,6 +625,9 @@ namespace MetalX
                 tx = ((float)dz.X + (float)dz.Width + offset) / (float)s.Width;
                 ty = ((float)dz.Y + (float)dz.Height + offset) / (float)s.Height;
             }
+            Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
+            Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Modulate;
+            Devices.D3DDev.SetTexture(0, t.MEMTexture);
 
             CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
             vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
@@ -623,22 +638,10 @@ namespace MetalX
             vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
             vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
 
-            try
-            {
-                Devices.D3DDev.SetTexture(0, t.MEMTexture);
-            }
-            catch
-            {
-                return;
-            }
-            Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Modulate;
-
-            Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
 
-            //vb = new VertexBuffer(typeof(CustomVertex.PositionColoredTextured), 6, Devices.D3DDev, Usage.None, CustomVertex.PositionColoredTextured.Format, Pool.Managed);
-            //vb.SetData(vertexs, 0, LockFlags.None);
-            //Devices.D3DDev.SetStreamSource(0, vb, 0);
+            //Devices.VertexBuffer.SetData(vertexs, 0, LockFlags.None);
+            //Devices.D3DDev.SetStreamSource(0, Devices.VertexBuffer, 0);
             //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
         void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Point loc, Size size, Color color)
@@ -805,9 +808,13 @@ namespace MetalX
             }
         }
         #endregion
-        public void ExecuteScript(string cmd)
+        public void ExecuteScript()
         {
-            ScriptManager.Execute(cmd);
+            ScriptManager.Execute();
+        }
+        public void AppendScript(string cmd)
+        {
+            ScriptManager.AppendCommand(cmd);
         }
         public void ExecuteMetalXScript(string file)
         {

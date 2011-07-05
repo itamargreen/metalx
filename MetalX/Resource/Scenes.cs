@@ -62,7 +62,7 @@ namespace MetalX.Resource
         {
             items.RemoveAt(i);
         }
-        public void LoadDotMXScene(Game g, string pathName)
+        public Scene LoadDotMXScene(Game g, string pathName)
         {
             Scene scene = (Scene)Util.LoadObject(pathName);
 
@@ -77,9 +77,11 @@ namespace MetalX.Resource
                     }
                 }
             }
+            //items.Clear();
             Add(scene);
+            return scene;
         }
-        public void LoadDotMXSceneDotXML(Game g, string pathName)
+        public Scene LoadDotXML(Game g, string pathName)
         {
             Scene scene = (Scene)Util.LoadObjectXML(pathName, typeof(Scene));
 
@@ -95,7 +97,10 @@ namespace MetalX.Resource
                     }
                 }
             }
+            //items.Clear();
             Add(scene);
+
+            return scene;
         }
     }
 }

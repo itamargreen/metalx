@@ -23,17 +23,18 @@ namespace MetalX.Component
             //    sceneIndex = value;
             //}
         }
-        Scene scene
-        {
-            get
-            {
-                if (sceneIndex < 0)
-                {
-                    return null;
-                }
-                return game.Scenes[sceneIndex];
-            }
-        }
+        //Scene scene
+        //{
+        //    get
+        //    {
+        //        if (sceneIndex < 0)
+        //        {
+        //            return null;
+        //        }
+        //        return game.Scenes[sceneIndex];
+        //    }
+        //}
+        Scene scene;
         PC me
         {
             get
@@ -122,14 +123,23 @@ namespace MetalX.Component
                 return;
             }
             DrawScene(scene);
-            game.DrawText("FPS: " + game.AverageFPS, new Point(), Color.White);
-            //game.DrawText("RealLoc: " + scene.RealLocation + "\nLastLoc: " + me.LastLocation + "\nNextLoc: " + me.NextLocation, new Point(0, 120), Color.White);
+            game.DrawText("RealLoc:\n" + me.RealLocation + "\nLastLoc:\n" + me.LastLocation + "\nFrontLoc:\n" + me.FrontLocation, new Point(0, 120), Color.White);
         }
 
-        public void LoadScene(int i, Vector3 realLoc)
+        public void EnterScene(string fileName, Vector3 realLoc)
         {
-            sceneIndex = i;
+            scene = game.Scenes.LoadDotMXScene(game, fileName);
             scene.RealLocation = realLoc;
+        }
+
+        public void MoveMe(Vector3 v3)
+        {
+            me.NextLocation = me.LastLocation = v3;
+            me.RealLocation = Util.Vector3MulInt(v3, scene.TilePixel);
+        }
+        public void SkinMe(string name)
+        {
+            me.TextureName = name;
         }
 
         bool IsInWindow(Point p)
@@ -171,7 +181,7 @@ namespace MetalX.Component
                         if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, scene.TilePixel), scene.RealLocationPoint)))
                         {
                             int fi = t.FrameIndex;
-                            if(t.IsAnimation)
+                            if (t.IsAnimation)
                             {
                                 fi = frameIndex;
                             }
@@ -179,7 +189,7 @@ namespace MetalX.Component
                                 game.Textures[t[fi].TextureIndex],
                                 t[fi].DrawZone,
                                 //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
-                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffset), t.Location),
+                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffset), Util.Vector3MulInt(t.Location, s.TilePixel)),
                                 s.TileSizePixel,
                                 Util.MixColor(t[fi].ColorFilter, ColorFilter)
                             );
@@ -192,13 +202,17 @@ namespace MetalX.Component
         }
         void DrawPC(CHR chr)
         {
-            if (chr.TextureFileName == null)
+            if (chr == null)
+            {
+                return;
+            }
+            if (chr.TextureName == null)
             {
                 return;
             }
             if (chr.TextureIndex < 0)
             {
-                chr.TextureIndex = game.Textures.GetIndex(chr.TextureFileName);
+                chr.TextureIndex = game.Textures.GetIndex(chr.TextureName);
             }
             Rectangle dz = new Rectangle();
             dz.Y = (int)chr.Direction * game.Textures[chr.TextureIndex].TileSizePixel.Height;
@@ -223,13 +237,12 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(int key)
         {
             Key k = (Key)key;
-            //if (k == Key.L)
-            //{
-            //    LoadScene(0, new Vector3());
-            //    me.TextureFileName = "mm-chr0001";
-            //    //me.RealLocation = game.CenterLocation;
-            //    me.NextLocation = me.LastLocation = me.RealLocation;
-            //}
+            if (k == Key.L)
+            {
+                //LoadScene(0, new Vector3());
+                //me.TextureName = "mmr-chrs0001";
+                //me.RealLocation = game.CenterLocation;
+            }
         }
         public override void OnKeyboardDownHoldCode(int key)
         {
@@ -258,19 +271,13 @@ namespace MetalX.Component
                     else if (k == Key.D)
                     {
                         me.Direction = Direction.R;
-                    } 
-                    Vector3 loc = me.GetFrontLocation(scene.TilePixel);
-                    try
-                    {
-                        if (scene.CodeLayer[loc].CHRCanRch)
-                        {
-                            me.LastLocation = me.RealLocation;
-                            me.NextLocation = loc;
-                            me.NeedMovePixel = scene.TilePixel;
-                        }
                     }
-                    catch
-                    { 
+                    Vector3 loc = me.FrontLocation;
+                    if (scene.CodeLayer[loc].CHRCanRch)
+                    {
+                        me.LastLocation = Util.Vector3DivInt(me.RealLocation, scene.TilePixel);
+                        me.NextLocation = loc;
+                        me.NeedMovePixel += scene.TilePixel;
                     }
                 }
             }

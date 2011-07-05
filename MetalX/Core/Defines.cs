@@ -5,8 +5,8 @@ namespace MetalX
 {
     public delegate void KeyboardEvent(int key);
     public delegate void FormBoxEvent();
-    public delegate void ButtonBoxEvent(int buttnBoxIndex);
-    public delegate void TextBoxEvent(int textBoxIndex);
+    public delegate void ButtonBoxEvent();
+    public delegate void TextBoxEvent();
     public enum ButtonBoxState
     {
         Wait,

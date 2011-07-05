@@ -37,26 +37,63 @@ namespace MetalX.Data
                 return c;
             }
         }
-        public int FocusButtonBoxIndex
+        public int NowButtonBoxIndex = -1;
+        //public int FocusButtonBoxIndex
+        //{
+        //    get
+        //    {
+        //        int c = 0;
+        //        foreach (ControlBox cb in ControlBoxes)
+        //        {
+        //            if (cb is ButtonBox)
+        //            {
+        //                if (((ButtonBox)cb).ButtonBoxState == ButtonBoxState.Focus)
+        //                {
+        //                    return c;
+        //                }
+        //                c++;
+        //            }
+        //        }
+        //        return -1;
+        //    }
+        //}
+        public void DownNowButtonBox()
         {
-            get
-            {
-                int c = 0;
-                foreach (ControlBox cb in ControlBoxes)
-                {
-                    if (cb is ButtonBox)
-                    {
-                        if (((ButtonBox)cb).ButtonBoxState == ButtonBoxState.Focus)
-                        {
-                            return c;
-                        }
-                        c++;
-                    }
-                }
-                return -1;
-            }
+            setButtonBoxState(NowButtonBoxIndex, ButtonBoxState.Down);
         }
-        public void SetButtonBoxState(int i, ButtonBoxState bbs)
+        public void UpNowButtonBox()
+        {
+            setButtonBoxState(NowButtonBoxIndex, ButtonBoxState.Up);
+        }
+        public void FocusNowButtonBox()
+        {
+            setButtonBoxState(NowButtonBoxIndex, ButtonBoxState.Focus);
+        }
+        public void FocusNextButtonBox()
+        {
+            int i = NowButtonBoxIndex;
+            i++;
+            if (i >= ButtonBoxCount)
+            {
+                i = 0;
+            }
+            WaitAllButtonBox();
+            setButtonBoxState(i, ButtonBoxState.Focus);
+            NowButtonBoxIndex = i;
+        }
+        public void FocusLastButtonBox()
+        {
+            int i = NowButtonBoxIndex;
+            i--;
+            if (i < 0)
+            {
+                i = ButtonBoxCount - 1;
+            }
+            WaitAllButtonBox();
+            setButtonBoxState(i, ButtonBoxState.Focus);
+            NowButtonBoxIndex = i;
+        }     
+        void setButtonBoxState(int i, ButtonBoxState bbs)
         {
             int j = 0;
             for (int k = 0; k < ControlBoxes.Count; k++)
@@ -65,40 +102,18 @@ namespace MetalX.Data
                 {
                     if (j == i)
                     {
-                        ((ButtonBox)ControlBoxes[k]).ButtonBoxState = bbs;
+                        ((ButtonBox)ControlBoxes[k]).ButtonBoxState = bbs;                        
                         return;
                     }
                     j++;
                 }
             }
         }
-        public void FocusNextButtonBox()
-        {
-            int i = FocusButtonBoxIndex;
-            i++;
-            if (i >= ButtonBoxCount)
-            {
-                i = 0;
-            }
-            WaitAllButtonBox();
-            SetButtonBoxState(i, ButtonBoxState.Focus);
-        }
-        public void FocusLastButtonBox()
-        {
-            int i = FocusButtonBoxIndex;
-            i--;
-            if (i < 0)
-            {
-                i = ButtonBoxCount - 1;
-            }
-            WaitAllButtonBox();
-            SetButtonBoxState(i, ButtonBoxState.Focus);
-        }
         public void WaitAllButtonBox()
         {
             for (int i = 0; i < ButtonBoxCount; i++)
             {
-                SetButtonBoxState(i, ButtonBoxState.Wait);
+                setButtonBoxState(i, ButtonBoxState.Wait);
             }
         }
         public TextureBox BGTextureBox;
@@ -123,10 +138,12 @@ namespace MetalX.Data
                 }
             }
             Visible = true;
+            OnFormBoxAppear();
         }
         public void Disappear()
         {
             Visible = false;
+            OnFormBoxDisappear();
         }
         public FormBox(Game g)
             : base(g)
@@ -193,7 +210,7 @@ namespace MetalX.Data
         {
             OnSubTextShowDone = new TextBoxEvent(OnSubTextShowDoneCode);
         }
-        public virtual void OnSubTextShowDoneCode(int textBoxIndex)
+        public virtual void OnSubTextShowDoneCode()
         { 
         }
         public void LoadText(string pathName, bool onebyone, int interval)
@@ -218,7 +235,34 @@ namespace MetalX.Data
     [Serializable]
     public class ButtonBox : ControlBox
     {
-        public ButtonBoxState ButtonBoxState;
+        ButtonBoxState buttonBoxState;
+        public ButtonBoxState ButtonBoxState
+        {
+            get
+            {
+                return buttonBoxState;
+            }
+            set
+            {
+                buttonBoxState = value;
+                if (value == ButtonBoxState.Up)
+                {
+                    OnButtonUp();
+                }
+                else if (value == ButtonBoxState.Down)
+                {
+                    OnButtonDown();
+                }
+                else if (value == ButtonBoxState.Focus)
+                {
+                    OnButtonFocus();
+                }
+                else if (value == ButtonBoxState.Wait)
+                {
+                    OnButtonWait();
+                }
+            }
+        }
 
         public TextureBox WaitTextureBox;
         public TextureBox FocusTextureBox;
@@ -235,42 +279,42 @@ namespace MetalX.Data
         public event ButtonBoxEvent OnButtonUp;
         public event ButtonBoxEvent OnButtonWait;
 
-        void HideAll()
-        {
-            WaitTextureBox.Visible = FocusTextureBox.Visible = DownTextureBox.Visible = UpTextureBox.Visible = false;
-        }
-        /// <summary>
-        /// 转换到等待状态
-        /// </summary>
-        public void Wait()
-        {
-            HideAll();
-            WaitTextureBox.Visible = true;
-        }
-        /// <summary>
-        /// 转换到选中状态
-        /// </summary>
-        public void Focus()
-        {
-            HideAll();
-            FocusTextureBox.Visible = true;
-        }
-        /// <summary>
-        /// 转换到按下状态
-        /// </summary>
-        public void Down()
-        {
-            HideAll();
-            DownTextureBox.Visible = true;
-        }
-        /// <summary>
-        /// 转换到抬起状态
-        /// </summary>
-        public void Up()
-        {
-            HideAll();
-            UpTextureBox.Visible = true;
-        }
+        //void HideAll()
+        //{
+        //    WaitTextureBox.Visible = FocusTextureBox.Visible = DownTextureBox.Visible = UpTextureBox.Visible = false;
+        //}
+        ///// <summary>
+        ///// 转换到等待状态
+        ///// </summary>
+        //public void Wait()
+        //{
+        //    HideAll();
+        //    WaitTextureBox.Visible = true;
+        //}
+        ///// <summary>
+        ///// 转换到选中状态
+        ///// </summary>
+        //public void Focus()
+        //{
+        //    HideAll();
+        //    FocusTextureBox.Visible = true;
+        //}
+        ///// <summary>
+        ///// 转换到按下状态
+        ///// </summary>
+        //public void Down()
+        //{
+        //    HideAll();
+        //    DownTextureBox.Visible = true;
+        //}
+        ///// <summary>
+        ///// 转换到抬起状态
+        ///// </summary>
+        //public void Up()
+        //{
+        //    HideAll();
+        //    UpTextureBox.Visible = true;
+        //}
 
         public ButtonBox(Game g)
             : base(g)
@@ -289,19 +333,19 @@ namespace MetalX.Data
             OnButtonUp = new ButtonBoxEvent(OnButtonUpCode);
         }
 
-        public virtual void OnButtonUpCode(int buttnBoxIndex)
+        public virtual void OnButtonUpCode()
         {
         }
 
-        public virtual void OnButtonDownCode(int buttnBoxIndex)
+        public virtual void OnButtonDownCode()
         {
         }
 
-        public virtual void OnButtonFocusCode(int buttnBoxIndex)
+        public virtual void OnButtonFocusCode()
         {
         }
 
-        public virtual void OnButtonWaitCode(int buttnBoxIndex)
+        public virtual void OnButtonWaitCode()
         {
         }
     }

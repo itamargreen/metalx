@@ -12,10 +12,10 @@ namespace MetalX.Data
         public string Name;
 
         public int TextureIndex = -1;
-        public string TextureFileName;
+        public string TextureName;
         //public Size TileSizePixel = new Size(16, 16);
 
-        public float moveSpeed = 2f;
+        float moveSpeed = 2f;
         public float NeedMovePixel = 0;
         public Direction Direction;
 
@@ -97,45 +97,45 @@ namespace MetalX.Data
         //}
         #endregion
 
+        public Vector3 FrontLocation
+        {
+            get
+            {
+                Vector3 v3 = NextLocation;
+                if (NeedMovePixel == 0)
+                {
+                    if (Direction == Direction.U)
+                    {
+                        v3.Y--;
+                    }
+                    else if (Direction == Direction.D)
+                    {
+                        v3.Y++;
+                    }
+                    else if (Direction == Direction.L)
+                    {
+                        v3.X--;
+                    }
+                    else if (Direction == Direction.R)
+                    {
+                        v3.X++;
+                    }
+                }
+                return v3;
+            }
+        }
         public Vector3 GetStayLocation(int unit)
         {
-            Vector3 v3 = new Vector3(
-                    (int)RealLocation.X / unit * unit,
-                    (int)RealLocation.Y / unit * unit,
-                    (int)RealLocation.Z / unit * unit);
+            Vector3 v3 = Util.Vector3DivInt(RealLocation,unit);
             if (NeedMovePixel > 0)
             {
                 if (Direction == Direction.U)
                 {
-                    v3 = new Vector3(v3.X, v3.Y + unit, v3.Z);
+                    v3.Y++;
                 }
                 else if (Direction == Direction.L)
                 {
-                    v3 = new Vector3(v3.X + unit, v3.Y, v3.Z);
-                }
-            }
-            return v3;
-        }
-        public Vector3 GetFrontLocation(int unit)
-        {
-            Vector3 v3 = NextLocation;
-            if (NeedMovePixel == 0)
-            {
-                if (Direction == Direction.U)
-                {
-                    v3.Y -= unit;
-                }
-                else if (Direction == Direction.D)
-                {
-                    v3.Y += unit;
-                }
-                else if (Direction == Direction.L)
-                {
-                    v3.X -= unit;
-                }
-                else if (Direction == Direction.R)
-                {
-                    v3.X += unit;
+                    v3.X++;
                 }
             }
             return v3;
@@ -150,10 +150,9 @@ namespace MetalX.Data
                 {
                     if (nextl > lastl)
                     {
-                        if (movedPixel > unit / 3)
+                        if (movedPixel > unit / 3*1)
                         {
-                            int yo = -unit;
-                            v3.Y += yo;
+                            v3.Y--;
                         }
                     }
                     else
@@ -165,15 +164,13 @@ namespace MetalX.Data
                 {
                     if (nextl > lastl)
                     {
-                        int yo = unit;
-                        v3.Y += yo;
+                        v3.Y++;
                     }
                     else
                     {
-                        if (movedPixel > unit / 3 * 2)
+                        if (movedPixel > unit / 3 *2)
                         {
-                            int yo = unit;
-                            v3.Y += yo;
+                            v3.Y++;
                         }
                     }
                 }
@@ -183,8 +180,7 @@ namespace MetalX.Data
                     { }
                     else
                     {
-                        int xo = -unit;
-                        v3.X += xo;
+                        v3.X--;
                     }
                 }
                 else if (Direction == Direction.R)
@@ -193,8 +189,7 @@ namespace MetalX.Data
                     { }
                     else
                     {
-                        int xo = unit;
-                        v3.X += xo;
+                        v3.X++;
                     }
                 }
             }

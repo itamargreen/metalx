@@ -14,15 +14,17 @@ namespace MetalX.Component
         {
             get
             {
-                int i = AppearingFormBoxIndex[AppearingFormBoxIndex.Count - 1];
-                return game.FormBoxes[i];
+                if (AppearingFormBoxIndex.Count > 0)
+                {
+                    int i = AppearingFormBoxIndex[AppearingFormBoxIndex.Count - 1];
+                    return game.FormBoxes[i];
+                }
+                return null;
             }
         }
-
         public FormBoxManager(Game g)
             : base(g)
         { }
-
         public override void Code()
         {
             base.Code();
@@ -132,7 +134,7 @@ namespace MetalX.Component
             }
             AppearingFormBoxIndex.Add(i);
             game.FormBoxes[i].Appear();
-            game.FormBoxes[i].OnFormBoxAppearCode();
+            //game.FormBoxes[i].OnFormBoxAppearCode();
         }
         public void Disappear()
         {
@@ -145,18 +147,25 @@ namespace MetalX.Component
         }
         public void Disappear(int i)
         {
-            //try
-            //{
-                AppearingFormBoxIndex.Remove(i);
-                game.FormBoxes[i].Disappear();
-                game.FormBoxes[i].OnFormBoxDisappearCode();
-            //}
-            //catch { }
+            AppearingFormBoxIndex.Remove(i);
+            game.FormBoxes[i].Disappear();
+            //game.FormBoxes[i].OnFormBoxDisappearCode();
         }
-
+        public void DisappearAll()
+        {
+            while (AppearingFormBoxIndex.Count > 0)
+            {
+                Disappear(AppearingFormBoxIndex[0]);
+            }
+        }
 
         public override void OnKeyboardDownCode(int key)
         {
+            if (AppearingFormBoxIndex.Count < 1)
+            {
+                return;
+            }
+
             Key k = (Key)key;
             if (k == Key.W || k == Key.A)
             {
@@ -165,6 +174,24 @@ namespace MetalX.Component
             else if (k == Key.S || k == Key.D)
             {
                 AppearingFormBox.FocusNextButtonBox();
+            }
+            else if (k == Key.J)
+            {
+                AppearingFormBox.DownNowButtonBox();
+            }
+        }
+        public override void OnKeyboardUpCode(int key)
+        {
+            if (AppearingFormBoxIndex.Count < 1)
+            {
+                return;
+            } 
+            
+            Key k = (Key)key;
+            if (k == Key.J)
+            {
+                AppearingFormBox.UpNowButtonBox();
+                AppearingFormBox.FocusNowButtonBox();
             }
         }
     }

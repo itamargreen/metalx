@@ -14,6 +14,8 @@ namespace MetalX.Component
         public KeyboardManager(Game g)
             : base(g)
         {
+            DisableAll();
+            Enable = true;
             //keyboardthd = new Thread(keyboardHandle);
             //keyboardthd.IsBackground = true;
             //keyboardthd.Start();
@@ -38,63 +40,7 @@ namespace MetalX.Component
                         {
                             gc.SetKeyboardEvent(i, KeyState.Down);
                             //gc.SetKeyboardEvent(i, KeyState.DownHold);
-                            if ((Key)i == Key.Escape)
-                            {
-                                game.Exit();
-                            }
-                            else if ((Key)i == Key.F1)
-                            {
-                                game.LoadCheckPoint(1);
-                            }
-                            else if ((Key)i == Key.F2)
-                            {
-                                game.LoadCheckPoint(2);
-                            }
-                            else if ((Key)i == Key.F3)
-                            {
-                                game.LoadCheckPoint(3);
-                            }
-                            else if ((Key)i == Key.F4)
-                            {
-                                game.LoadCheckPoint(4);
-                            }
-                            else if ((Key)i == Key.F5)
-                            {
-                                game.SaveCheckPoint(1);
-                            }
-                            else if ((Key)i == Key.F6)
-                            {
-                                game.SaveCheckPoint(2);
-                            }
-                            else if ((Key)i == Key.F7)
-                            {
-                                game.SaveCheckPoint(3);
-                            }
-                            else if ((Key)i == Key.F8)
-                            {
-                                game.SaveCheckPoint(4);
-                            }
-                            else if ((Key)i == Key.F9)
-                            {
-                                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
-                            }
-                            else if ((Key)i == Key.F10)
-                            {
-                                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
-                            }
-                            else if ((Key)i == Key.O)
-                            {
-                                ShockScreen(1000);
-                            }
-                            else if ((Key)i == Key.U)
-                            {
-                                FallOutSceen(1000);
-                            }
-                            else if ((Key)i == Key.I)
-                            {
-                                FallInSceen(1000);
-                            }
-
+                            
                         }
                     }
                     keyboardStateBackup[i] = true;
