@@ -16,8 +16,7 @@ namespace MetalX.Component
         double delayTime = 0;
         double delayLeftTime = 0;
         bool exe = false; Queue<string> commands = new Queue<string>();
-
-
+        
         TimeSpan delayEclipseTimeSpan
         {
             get
@@ -28,10 +27,9 @@ namespace MetalX.Component
         
         public ScriptManager(Game g)
             : base(g)
-        {
+        {            
         }
-
-
+        
         public override void Code()
         {
             if (delayLeftTime > 0)
@@ -52,24 +50,27 @@ namespace MetalX.Component
                     }
                 }
             }
-            if (DateTime.Now.Millisecond < 500)
-            {
-                cur = "_";
-            }
-            else
-            {
-                cur = "";
-            }
+
         }
         public override void Draw()
         {
             if (drawText)
+            {
+                if (DateTime.Now.Millisecond < 500)
+                {
+                    cur = "_";
+                }
+                else
+                {
+                    cur = "";
+                }
                 game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
+            }
+            game.DrawText("FPS: " + game.AverageFPS.ToString("f1"), new System.Drawing.Point(720, 0), ColorFilter);
         }
 
         void execute(string cmd)
         {
-
             //cmd = cmd.ToLower();
             string[] kw = cmd.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             kw[0] = kw[0].ToLower();
@@ -78,6 +79,10 @@ namespace MetalX.Component
                 if (kw[0] == "exit")
                 {
                     game.Exit();
+                }
+                else if (kw[0] == "closeallbox")
+                {
+                    game.FormBoxManager.DisappearAll();
                 }
             }
             else if (kw.Length == 2)
@@ -100,61 +105,78 @@ namespace MetalX.Component
                 {
                     game.PlayMP3(kw[1]);
                 }
+
             }
             else if (kw.Length == 3)
             {
-                if (kw[0] == "shock")
+                if (kw[0] == "scene")
                 {
                     double ms = double.Parse(kw[2]);
-                    if (kw[1] == "scene")
+                    if (kw[1] == "shock")
                     {
                         game.SceneManager.ShockScreen(ms);
                     }
-                    else if (kw[1] == "ui")
-                    {
-                        game.FormBoxManager.ShockScreen(ms);
-                    }
-                }
-                else if (kw[0] == "fallout")
-                {
-                    double ms = double.Parse(kw[2]);
-                    if (kw[1] == "scene")
+                    else if (kw[1] == "fallout")
                     {
                         game.SceneManager.FallOutSceen(ms);
                     }
-                    else if (kw[1] == "ui")
-                    {
-                        game.FormBoxManager.FallOutSceen(ms);
-                    }
-                }
-                else if (kw[0] == "fallin")
-                {
-                    double ms = double.Parse(kw[2]);
-                    if (kw[1] == "scene")
+                    else if (kw[1] == "fallin")
                     {
                         game.SceneManager.FallInSceen(ms);
                     }
-                    else if (kw[1] == "ui")
+                }
+                else if (kw[0] == "gui")
+                {
+                    double ms = double.Parse(kw[2]);
+                    if (kw[1] == "shock")
+                    {
+                        game.FormBoxManager.ShockScreen(ms);
+                    }
+                    else if (kw[1] == "fallout")
+                    {
+                        game.FormBoxManager.FallOutSceen(ms);
+                    }
+                    else if (kw[1] == "fallin")
                     {
                         game.FormBoxManager.FallInSceen(ms);
                     }
                 }
-
+                else if (kw[0] == "me")
+                {
+                    if (kw[1] == "skin")
+                    {
+                        game.SceneManager.SkinMe(kw[2]);
+                    }
+                }
             }
             else if (kw.Length == 4)
             {
-                if (kw[0] == "shock")
+                if (kw[0] == "scene")
                 {
                     double ms = double.Parse(kw[2]);
                     int range = int.Parse(kw[3]);
-                    if (kw[1] == "scene")
+                    if (kw[1] == "shock")
                     {
                         game.SceneManager.ShockScreen(ms, range);
                     }
-                    else if (kw[1] == "ui")
+                }
+                else if (kw[0] == "enter")
+                {
+                    Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
+                    v3.X = float.Parse(kw[2]);
+                    v3.Y = float.Parse(kw[3]);
+                    game.SceneManager.EnterScene(kw[1], v3);
+                }
+                else if (kw[0] == "me")
+                {
+                    if (kw[1] == "move")
                     {
-                        game.FormBoxManager.ShockScreen(ms, range);
+                        Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
+                        v3.X = float.Parse(kw[2]);
+                        v3.Y = float.Parse(kw[3]);
+                        game.SceneManager.MoveMe(v3);
                     }
+
                 }
             }
         }
@@ -195,19 +217,69 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(int key)
         {
             Key k = (Key)key;
-            if (k == Key.LeftShift || k == Key.RightControl)
+            if (k == Key.LeftShift || k == Key.RightShift || k == Key.RightControl)
             {
                 isBig = true;
             }
-            if (k == Key.F12)
+            if (k== Key.Escape)
+            {
+                game.Exit();
+            }
+            else if (k== Key.F1)
+            {
+                game.LoadCheckPoint(1);
+            }
+            else if (k== Key.F2)
+            {
+                game.LoadCheckPoint(2);
+            }
+            else if (k== Key.F3)
+            {
+                game.LoadCheckPoint(3);
+            }
+            else if (k== Key.F4)
+            {
+                game.LoadCheckPoint(4);
+            }
+            else if (k== Key.F5)
+            {
+                game.SaveCheckPoint(1);
+            }
+            else if (k== Key.F6)
+            {
+                game.SaveCheckPoint(2);
+            }
+            else if (k== Key.F7)
+            {
+                game.SaveCheckPoint(3);
+            }
+            else if (k== Key.F8)
+            {
+                game.SaveCheckPoint(4);
+            }
+            else if (k== Key.F9)
+            {
+                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
+            }
+            else if (k == Key.F10)
+            {
+                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
+            }
+            else if (k == Key.F11)
+            {
+                //game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
+            }
+            else if (k == Key.F12)
             {
                 if (drawText)
                 {
                     drawText = false;
+                    game.SceneManager.Controllable = true;
                 }
                 else
                 {
                     drawText = true;
+                    game.SceneManager.Controllable = false;
                 }
             }
             else if (k == Key.Return)
@@ -223,15 +295,7 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        //if (cmd == "run")
-                        //{
-                        //    text = text.Remove(text.Length - 4);
-                        //    Execute();
-                        //}
-                        //else
-                        {
-                            AppendCommand(cmd);
-                        }
+                        AppendCommand(cmd);
                     }
                     text += "\n";
                 }

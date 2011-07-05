@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
-
+using Microsoft.DirectX.Direct3D;
 namespace MetalX
 {
     public class Devices : IDisposable
@@ -14,6 +14,7 @@ namespace MetalX
         public Microsoft.DirectX.DirectSound.Device DSoundDev;
         public Microsoft.DirectX.DirectInput.Device DKeyboardDev;
         public Microsoft.DirectX.DirectInput.Device DMouseDev;
+        public Microsoft.DirectX.Direct3D.VertexBuffer VertexBuffer;
 
         //public Microsoft.DirectX.Direct3D.Font Font;
         //public Microsoft.DirectX.Direct3D.Sprite Sprite;
@@ -36,6 +37,7 @@ namespace MetalX
             pps.Windowed = true;
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(GameWindow, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
@@ -45,6 +47,8 @@ namespace MetalX
 
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
+
+            VertexBuffer = new VertexBuffer(typeof(CustomVertex.PositionColoredTextured), 6, D3DDev, Usage.None, CustomVertex.PositionColoredTextured.Format, Pool.Managed);
         }
         public Devices(Control control, Game g)
         {
@@ -55,6 +59,7 @@ namespace MetalX
             pps.Windowed = true;
 
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
             DSoundDev.SetCooperativeLevel(control, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
@@ -64,6 +69,8 @@ namespace MetalX
 
             DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
             DMouseDev.Acquire();
+
+            VertexBuffer = new VertexBuffer(typeof(CustomVertex.PositionColoredTextured), 6, D3DDev, Usage.None, CustomVertex.PositionColoredTextured.Format, Pool.Managed);
         }
         public void Dispose()
         {
@@ -184,7 +191,7 @@ namespace MetalX
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint |  ControlStyles.UserPaint | ControlStyles.Opaque, true);
         }
     }
 }

@@ -2,20 +2,20 @@
 
 fallout ui 1
 appear LogoEngine
-shock ui 3000
-fallin ui 1000
+gui shock 3000
+gui fallin 1000
 delay 2000
-fallout ui 1000
+gui fallout 1000
 delay 1000
 disappear LogoEngine
 
-fallin ui 1
+gui fallin 1
 appear LogoGame
 delay 1000
-fallout ui 1500
+gui fallout 1500
 delay 1500
 
-fallin ui 1
+gui fallin 1
 appear MenuLoad
 
 //exit

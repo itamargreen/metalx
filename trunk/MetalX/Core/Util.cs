@@ -273,8 +273,6 @@ namespace MetalX
             {
                 //y = 0 - y;
             }
-
-
             return new System.Drawing.PointF((float)(x), (float)(y));
         }
         public static float Radian2Degree(float rad)

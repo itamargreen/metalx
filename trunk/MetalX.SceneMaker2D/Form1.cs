@@ -282,10 +282,10 @@ namespace MetalX.SceneMaker2D
         {
             ui_mus_slt.Text = "";
             ui_mus_slt.Items.Clear();
-            for (int i = 0; i < game.Audios.Count; i++)
-            {
-                ui_mus_slt.Items.Add(game.Audios[i].Name);
-            }
+            //for (int i = 0; i < game.Audios.Count; i++)
+            //{
+            //    ui_mus_slt.Items.Add(game.Audios[i].Name);
+            //}
         }
         void new_scene(Size sizepixel, Size tilesizepixel)
         {
@@ -388,7 +388,7 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(game);
 
-            game.Scenes.LoadDotMXSceneDotXML(game, fileName);
+            game.Scenes.LoadDotXML(game, fileName);
             sceneMaker2D.scene = game.Scenes[0];
 
 
@@ -760,7 +760,7 @@ namespace MetalX.SceneMaker2D
                     //        loc.Z /= sceneMaker2D.scene.TilePixel;
                     //        sceneMaker2D.scene.TileLayers[l][i].Location = loc;
                     //    }
-                    //} 
+                    //}
                     //for (int i = 0; i < sceneMaker2D.scene.CodeLayer.Codes.Count; i++)
                     //{
                     //    Point loc = sceneMaker2D.scene.CodeLayer.Codes[i].Location;

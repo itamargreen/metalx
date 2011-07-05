@@ -16,7 +16,7 @@ namespace MetalHunter
             Name = "LogoEngine";
             Location = new Point();
             BGTextureBox.TextureName = "engine-logo";
-            BGTextureBox.Size = new Size(640, 480);
+            BGTextureBox.Size = new Size(800, 600);
         }
     }
     class LogoGame : FormBox
@@ -48,18 +48,32 @@ namespace MetalHunter
             Name = "MenuLoad";
 
             ButtonBox bb1 = new ButtonBox(g);
+            bb1.OnButtonDown += new ButtonBoxEvent(bb1_OnButtonDown);
             bb1.Location = new Point();
             bb1.Size = new System.Drawing.Size(640, 120);
+
             bb1.WaitTextureBox.TextureName = "dialog-bgtexture";
             bb1.WaitTextureBox.Size = new System.Drawing.Size(640, 120);
             bb1.WaitTextBox.Location = new Point(16, 16);
-            bb1.WaitTextBox.Text = "存档1"; 
-            
+            bb1.WaitTextBox.Text = "存档1";
+
             bb1.FocusTextureBox.TextureName = "dialog-bgtexture";
             bb1.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
             bb1.FocusTextBox.Location = new Point(16, 18);
             bb1.FocusTextBox.Text = "存档1";
             bb1.FocusTextBox.TextColor = Color.Pink;
+
+            bb1.DownTextureBox.TextureName = "dialog-bgtexture";
+            bb1.DownTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb1.DownTextBox.Location = new Point(16, 18);
+            bb1.DownTextBox.Text = "存档1";
+            bb1.DownTextBox.TextColor = Color.Green;
+
+            bb1.UpTextureBox.TextureName = "dialog-bgtexture";
+            bb1.UpTextureBox.Size = new System.Drawing.Size(640, 120);
+            bb1.UpTextBox.Location = new Point(16, 18);
+            bb1.UpTextBox.Text = "存档1";
+            bb1.UpTextBox.TextColor = Color.Yellow;
 
             ButtonBox bb2 = new ButtonBox(g);
             bb2.Location = new Point(0,120);
@@ -108,6 +122,15 @@ namespace MetalHunter
             ControlBoxes.Add(bb3);
             ControlBoxes.Add(bb4);
         }
+
+        void bb1_OnButtonDown()
+        {
+            game.AppendScript(@"closeallbox");
+            game.AppendScript(@"enter scenes\mmr\test.mxscene 0 0");
+            game.AppendScript(@"me move 12 7");
+            game.AppendScript(@"me skin mmr-chrs0001");
+            game.ExecuteScript();
+        }
     }
     class MessageBox : FormBox
     {
@@ -146,7 +169,7 @@ namespace MetalHunter
             game.InitData();
             game.InitCom();
 
-            game.LoadAllDotPNG(@".\", new Size(16, 16));
+            game.LoadAllDotPNG(@".\", new Size(24, 24));
 
             InitFormBoxes();
             
