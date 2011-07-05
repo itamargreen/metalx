@@ -28,8 +28,6 @@ namespace MetalX
         }
         void init()
         { 
-               DSoundDev = new Microsoft.DirectX.DirectSound.Device();
-               DSoundDev.SetCooperativeLevel(GameWindow, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
 
                DKeyboardDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Keyboard);
                DKeyboardDev.Acquire();
@@ -57,6 +55,9 @@ namespace MetalX
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
             D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
 
+            DSoundDev = new Microsoft.DirectX.DirectSound.Device();
+            DSoundDev.SetCooperativeLevel(GameWindow, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
+            
             init();
 
             game = g;
@@ -70,6 +71,9 @@ namespace MetalX
             D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
             D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
 
+            DSoundDev = new Microsoft.DirectX.DirectSound.Device();
+            DSoundDev.SetCooperativeLevel(control, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
+            
             init();
             game = g;
         }

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TextureDrawMode>Direct2D</TextureDrawMode>
+  <X>1</X>
+  <RootPath>.\</RootPath>
+  <WindowSize>
+    <Width>640</Width>
+    <Height>480</Height>
+  </WindowSize>
+  <TileSize>
+    <Width>48</Width>
+    <Height>48</Height>
+  </TileSize>
+</Options>
