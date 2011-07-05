@@ -66,7 +66,7 @@ namespace MetalX.Component
                 }
                 game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
             }
-            game.DrawText("FPS: " + game.AverageFPS.ToString("f1"), new System.Drawing.Point(720, 0), ColorFilter);
+            game.DrawText("FPS: " + game.AverageFPS.ToString("f1"), new System.Drawing.Point(550, 0), ColorFilter);
         }
 
         void execute(string cmd)
@@ -80,9 +80,9 @@ namespace MetalX.Component
                 {
                     game.Exit();
                 }
-                else if (kw[0] == "closeallbox")
+                else if (kw[0] == "clr")
                 {
-                    game.FormBoxManager.DisappearAll();
+                    text = "";
                 }
             }
             else if (kw.Length == 2)
@@ -92,14 +92,6 @@ namespace MetalX.Component
                     double ms = double.Parse(kw[1]);
                     delayLeftTime = delayTime = ms;
                     delayStartTime = DateTime.Now;
-                }
-                else if (kw[0] == "appear")
-                {
-                    game.FormBoxManager.Appear(kw[1]);
-                }
-                else if (kw[0] == "disappear")
-                {
-                    game.FormBoxManager.Disappear(kw[1]);
                 }
                 else if (kw[0] == "mp3")
                 {
@@ -127,18 +119,36 @@ namespace MetalX.Component
                 }
                 else if (kw[0] == "gui")
                 {
-                    double ms = double.Parse(kw[2]);
+                    
                     if (kw[1] == "shock")
                     {
+                        double ms = double.Parse(kw[2]);
                         game.FormBoxManager.ShockScreen(ms);
                     }
                     else if (kw[1] == "fallout")
                     {
+                        double ms = double.Parse(kw[2]);
                         game.FormBoxManager.FallOutSceen(ms);
                     }
                     else if (kw[1] == "fallin")
                     {
+                        double ms = double.Parse(kw[2]);
                         game.FormBoxManager.FallInSceen(ms);
+                    }
+                    else if (kw[1] == "close")
+                    {
+                        if (kw[2] == "all")
+                        {
+                            game.FormBoxManager.DisappearAll();
+                        }
+                    }
+                    else if (kw[1] == "appear")
+                    {
+                        game.FormBoxManager.Appear(kw[2]);
+                    }
+                    else if (kw[1] == "disappear")
+                    {
+                        game.FormBoxManager.Disappear(kw[2]);
                     }
                 }
                 else if (kw[0] == "me")
@@ -186,10 +196,15 @@ namespace MetalX.Component
             string[] cmds = cmd.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string c in cmds)
             {
-                if (c.Substring(0, 2) != "//")
+                try
                 {
-                    commands.Enqueue(c);
+                    if (c.Substring(0, 2) != "//")
+                    {
+                        
+                        commands.Enqueue(c);
+                    }
                 }
+                catch { }
             }
         }
         public void Execute()
@@ -203,7 +218,9 @@ namespace MetalX.Component
         }
         public void ExecuteDotMXScript(string fileName)
         {
-            Execute(System.IO.File.ReadAllText(fileName + ".mxscript"));
+            string cmds = System.IO.File.ReadAllText(fileName + ".mxscript");
+            text += cmds + "\n";
+            Execute(cmds);
         }
 
         public override void OnKeyboardUpCode(int key)

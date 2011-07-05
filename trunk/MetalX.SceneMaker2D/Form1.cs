@@ -422,6 +422,10 @@ namespace MetalX.SceneMaker2D
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Options o = (Options)Util.LoadObjectXML("options.xml", typeof(Options));
+            ui_sinw.Text = o.TileSizeX.Width + "";
+            ui_sinh.Text = o.TileSizeX.Height + "";
+            toolStripComboBox1.Text = o.TextureDrawMode.ToString();
             splitContainer1.SplitterDistance = 320;
             //pictureBox1.ContextMenuStrip = menuStrip2;
         }

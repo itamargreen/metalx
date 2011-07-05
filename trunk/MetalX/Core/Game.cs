@@ -211,10 +211,10 @@ namespace MetalX
 
                 frameTimeSpan = DateTime.Now - frameBeginTime;
 
-                Devices.GameWindow.Invalidate();
+                //Devices.GameWindow.Invalidate();
 
                 //WaitFrameByAverageFPS();
-                //Devices.GameWindow.Refresh();
+                Devices.GameWindow.Refresh();
             }
         }
         void GameWindowClosing(object sender, FormClosingEventArgs e)
@@ -312,17 +312,28 @@ namespace MetalX
             }
             Devices.D3DDev.Clear(Microsoft.DirectX.Direct3D.ClearFlags.Target, Color.Black, 0, 0);
             Devices.D3DDev.BeginScene();
-            foreach (GameCom metalXGameCom in GameComs)
+            for (int i = 0; i < GameComs.Count; i++)
             {
-                if (metalXGameCom.Enable)
+                if (GameComs[i].Enable)
                 {
-                    metalXGameCom.Code();
-                }
-                if (metalXGameCom.Visible)
+                    GameComs[i].Code();
+                } 
+                if (GameComs[i].Visible)
                 {
-                    metalXGameCom.Draw();
+                    GameComs[i].Draw();
                 }
             }
+            //foreach (GameCom metalXGameCom in GameComs)
+            //{
+            //    if (metalXGameCom.Enable)
+            //    {
+            //        metalXGameCom.Code();
+            //    }
+            //    if (metalXGameCom.Visible)
+            //    {
+            //        metalXGameCom.Draw();
+            //    }
+            //}
             if (Devices.D3DDev.Disposed)
             {
                 return;
@@ -638,11 +649,11 @@ namespace MetalX
             vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
             vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
 
-            Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
+            //Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
 
-            //Devices.VertexBuffer.SetData(vertexs, 0, LockFlags.None);
-            //Devices.D3DDev.SetStreamSource(0, Devices.VertexBuffer, 0);
-            //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+            Devices.VertexBuffer.SetData(vertexs, 0, LockFlags.None);
+            Devices.D3DDev.SetStreamSource(0, Devices.VertexBuffer, 0);
+            Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
         void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Point loc, Size size, Color color)
         {
@@ -656,29 +667,29 @@ namespace MetalX
             }
 
             //loc.Z = 0;
-            using (Sprite sprite = new Sprite(Devices.D3DDev))
+            //using (Sprite sprite = new Sprite(Devices.D3DDev))
             {
-                sprite.Begin(SpriteFlags.AlphaBlend);
+                Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
 
-                if (dz.Width == 0 || size.Width == 0 || dz.Height == 0 || size.Height == 0)
-                {
-                    return;
-                }
+                //if (dz.Width == 0 || size.Width == 0 || dz.Height == 0 || size.Height == 0)
+                //{
+                //    return;
+                //}
                 if (size.Width / dz.Width == 2)
                 {
                     dz.X = dz.X * 2;
                     dz.Y = dz.Y * 2;
                     dz.Size = size;
-                    sprite.Draw(t.MEMTexture2X, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+                    Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
                     //sprite.Draw2D(t.MEMTexture2X, dz, dz, loc, color);
                 }
                 else
                 {
-                    sprite.Draw(t.MEMTexture, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+                    Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
                     //sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
                 }
 
-                sprite.End();
+                Devices.Sprite.End();
             }
         }
 
@@ -692,28 +703,34 @@ namespace MetalX
         /// <param name="color">颜色</param>
         public void DrawText(string text, Point point, Color color)
         {
-            DrawText(text, point, "新宋体", 9f, color);
+            DrawText(text, point, "新宋体", 12, color);
         }
-        public void DrawText(string text, Point point, string fontName, float fontSize, Color color)
+        public void DrawText(string text, Point point, string fontName, int fontSize, Color color)
         {
             if (Devices.D3DDev.Disposed)
             {
                 return;
             }
-            using (Sprite sprite = new Sprite(Devices.D3DDev))
+            //fontSize = -fontSize;
+            if (Devices.Font.Description.FaceName.Substring(0, fontName.Length) != fontName || Devices.Font.Description.Height != fontSize)
             {
-                using (Microsoft.DirectX.Direct3D.Font font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize)))
+                Devices.Font.Dispose();
+                Devices.Font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize - 3));
+            }
+            //using (Sprite sprite = new Sprite(Devices.D3DDev))
+            {
+                //using (Microsoft.DirectX.Direct3D.Font font = new Microsoft.DirectX.Direct3D.Font(Devices.D3DDev, new System.Drawing.Font(fontName, fontSize)))
                 {
                     //FontDescription fd = new FontDescription();
                     //fd.FaceName = fontName;
                     //fd.Width = fontSize.Width;
                     //fd.Height = fontSize.Height;
 
-                    sprite.Begin(SpriteFlags.AlphaBlend);
+                    Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
 
-                    font.DrawText(sprite, text, point, color);
+                    Devices.Font.DrawText(Devices.Sprite, text, point, color);
 
-                    sprite.End();
+                    Devices.Sprite.End();
 
                 }
             }
