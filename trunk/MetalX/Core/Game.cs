@@ -81,7 +81,7 @@ namespace MetalX
             get
             {
                 //return 0;
-                return -Options.TileSizeX.Width / 3;
+                return -Options.TilePixel / 3;
             }
         }
         //public Vector3 CenterLocation
@@ -211,10 +211,10 @@ namespace MetalX
 
                 frameTimeSpan = DateTime.Now - frameBeginTime;
 
-                //Devices.GameWindow.Invalidate();
+                Devices.GameWindow.Invalidate();
 
                 //WaitFrameByAverageFPS();
-                Devices.GameWindow.Refresh();
+                //Devices.GameWindow.Refresh();
             }
         }
         void GameWindowClosing(object sender, FormClosingEventArgs e)
@@ -454,7 +454,7 @@ namespace MetalX
         public void LoadCheckPoint(int i)
         {
             CheckPoint checkPoint = (CheckPoint)Util.LoadObject("cp" + i.ToString("d2") + ".MXCheckPoint");
-            Options.TileSize = Scenes[checkPoint.SceneName].TileSizePixel;
+            Options.TileSizePixel = Scenes[checkPoint.SceneName].TileSizePixel;
             Characters.ME = checkPoint.ME;
             Characters.ME.TextureIndex = -1;
             //Characters.ME.MoveSpeed = 1;

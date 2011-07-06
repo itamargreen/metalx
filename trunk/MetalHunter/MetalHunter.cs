@@ -177,6 +177,7 @@ namespace MetalHunter
 
             game.Start();
         }
+        [STAThread]
         static void Main()
         {
             new MetalHunter();

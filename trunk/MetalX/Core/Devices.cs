@@ -194,11 +194,12 @@ namespace MetalX
         {
             Text = g.Name;
             StartPosition = FormStartPosition.CenterScreen;
-            Size = g.Options.WindowSize;
-            FormBorderStyle = FormBorderStyle.None;
+            Size = g.Options.WindowSizePixel;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.Opaque, true);
+            
         }
     }
 }
