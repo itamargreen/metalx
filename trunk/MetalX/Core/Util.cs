@@ -79,11 +79,11 @@ namespace MetalX
         }
         public static Vector3 Vector3AddVector3(Vector3 v31, Vector3 v32)
         {
-            return new Vector3(v31.X + v32.X, v31.Y + v32.Y, v31.Z + v31.Z);
+            return new Vector3(v31.X + v32.X, v31.Y + v32.Y, v31.Z + v32.Z);
         }
         public static Vector3 Vector3SubVector3(Vector3 v31, Vector3 v32)
         {
-            return new Vector3(v31.X - v32.X, v31.Y - v32.Y, v31.Z - v31.Z);
+            return new Vector3(v31.X - v32.X, v31.Y - v32.Y, v31.Z - v32.Z);
         }
         public static bool Is2Pow(int num)
         {

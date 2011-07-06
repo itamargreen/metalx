@@ -25,7 +25,7 @@ namespace MetalHunter
             : base(g)
         {
             Name = "LogoGame";
-            Location = new Point(0, 360);
+            Location = new Point(0, 400);
             //Size = new Size(640, 120);
             //BGTextureName = "dialog-bgtexture";
 
