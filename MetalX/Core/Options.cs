@@ -9,14 +9,17 @@ namespace MetalX
         public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct2D;
         public float X = 1f;
         public string RootPath = @".\";
-        public Size WindowSize = new Size(640, 480);
-        public Size TileSize = new Size(32, 32);
-
-        public Size TileSizeX
+        public Size WindowSizePixel = new Size(640, 480);
+        public Size TileSizePixel = new Size(48, 48);
+        public int TilePixel
+        {
+            get { return TileSizePixelX.Width; }
+        }
+        public Size TileSizePixelX
         {
             get
             {
-                return new Size((int)(TileSize.Width * X), (int)(TileSize.Height * X));
+                return new Size((int)(TileSizePixel.Width * X), (int)(TileSizePixel.Height * X));
             }
         }
     }

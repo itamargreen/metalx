@@ -80,7 +80,7 @@ namespace MetalX.Component
                 else if (me.Direction == Direction.D)
                 {
                     me.RealLocation.Y += movePixel;
-                    if (scene.RealLocation.Y + scene.SizePixel.Height > game.Options.WindowSize.Height)
+                    if (scene.RealLocation.Y + scene.SizePixel.Height > game.Options.WindowSizePixel.Height)
                     {
                         scene.RealLocation.Y -= movePixel;
                     }
@@ -88,7 +88,7 @@ namespace MetalX.Component
                 else if (me.Direction == Direction.R)
                 {
                     me.RealLocation.X += movePixel;
-                    if (scene.RealLocation.X + scene.SizePixel.Width > game.Options.WindowSize.Width)
+                    if (scene.RealLocation.X + scene.SizePixel.Width > game.Options.WindowSizePixel.Width)
                     {
                         scene.RealLocation.X -= movePixel;
                     }
@@ -130,12 +130,13 @@ namespace MetalX.Component
         {
             scene = game.Scenes.LoadDotMXScene(game, fileName);
             scene.RealLocation = realLoc;
+            game.Options.TileSizePixel = scene.TileSizePixel;
         }
 
         public void MoveMe(Vector3 v3)
         {
             me.NextLocation = me.LastLocation = v3;
-            me.RealLocation = Util.Vector3MulInt(v3, scene.TilePixel);
+            me.RealLocation = Util.Vector3MulInt(v3, game.Options.TilePixel);
         }
         public void SkinMe(string name)
         {
@@ -144,7 +145,7 @@ namespace MetalX.Component
 
         bool IsInWindow(Point p)
         {
-            if (p.X < (0 - 1) * game.Options.TileSizeX.Width || p.Y < (0 - 1) * game.Options.TileSizeX.Height || p.X > (game.Options.WindowSize.Width / game.Options.TileSizeX.Width + 1) * game.Options.TileSizeX.Width || p.Y > (game.Options.WindowSize.Height / game.Options.TileSizeX.Height + 1) * game.Options.TileSizeX.Height)
+            if (p.X < (0 - 1) * game.Options.TileSizePixelX.Width || p.Y < (0 - 1) * game.Options.TileSizePixelX.Height || p.X > (game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width + 1) * game.Options.TileSizePixelX.Width || p.Y > (game.Options.WindowSizePixel.Height / game.Options.TileSizePixelX.Height + 1) * game.Options.TileSizePixelX.Height)
             {
                 return false;
             }
@@ -166,7 +167,7 @@ namespace MetalX.Component
             {
                 int lastl = s.CodeLayer[me.LastLocation].DrawLayer;
                 int nextl = s.CodeLayer[me.NextLocation].DrawLayer;
-                int drawl = s.CodeLayer[me.GetDrawLocation(scene.TilePixel, lastl, nextl)].DrawLayer;
+                int drawl = s.CodeLayer[me.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
                 int nodrawl = s.CodeLayer[me.NextLocation].RchDisappear;
 
                 if (l == drawl)
@@ -178,7 +179,7 @@ namespace MetalX.Component
                 {
                     if (nodrawl != l)
                     {
-                        if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, scene.TilePixel), scene.RealLocationPoint)))
+                        if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, game.Options.TilePixel), scene.RealLocationPoint)))
                         {
                             int fi = t.FrameIndex;
                             if (t.IsAnimation)
@@ -189,8 +190,8 @@ namespace MetalX.Component
                                 game.Textures[t[fi].TextureIndex],
                                 t[fi].DrawZone,
                                 //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
-                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffset), Util.Vector3MulInt(t.Location, s.TilePixel)),
-                                s.TileSizePixel,
+                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffset), Util.Vector3MulInt(t.Location, game.Options.TilePixel)),
+                                game.Options.TileSizePixelX,
                                 Util.MixColor(t[fi].ColorFilter, ColorFilter)
                             );
                         }
@@ -218,7 +219,7 @@ namespace MetalX.Component
             dz.Y = (int)chr.Direction * game.Textures[chr.TextureIndex].TileSizePixel.Height;
             if (chr.NeedMovePixel > 0)
             {
-                dz.X = (((int)((float)game.Options.TileSizeX.Width - chr.NeedMovePixel)) / (game.Options.TileSizeX.Width / 4) + 1) * game.Textures[chr.TextureIndex].TileSizePixel.Width;
+                dz.X = (((int)((float)game.Options.TilePixel - chr.NeedMovePixel)) / (game.Options.TileSizePixelX.Width / 4) + 1) * game.Textures[chr.TextureIndex].TileSizePixel.Width;
             }
             else
             {
@@ -227,11 +228,12 @@ namespace MetalX.Component
             dz.Size = game.Textures[chr.TextureIndex].TileSizePixel;
             Point p1 = new Point((int)chr.RealLocation.X, (int)chr.RealLocation.Y + game.SpriteOffsetPixel);
             Point p2 = new Point((int)scene.RealLocation.X, (int)scene.RealLocation.Y);
+            p2 = Util.PointAddPoint(p2, Util.Vector32Point(ScreenOffset));
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
                 dz,
                 Util.PointAddPoint(p1, p2),
-                game.Options.TileSizeX,
+                game.Options.TileSizePixelX,
                 Color.White);
         }
         
@@ -266,9 +268,9 @@ namespace MetalX.Component
                     Vector3 loc = me.FrontLocation;
                     if (scene.CodeLayer[loc].CHRCanRch)
                     {
-                        me.LastLocation = Util.Vector3DivInt(me.RealLocation, scene.TilePixel);
+                        me.LastLocation = Util.Vector3DivInt(me.RealLocation, game.Options.TilePixel);
                         me.NextLocation = loc;
-                        me.NeedMovePixel += scene.TilePixel;
+                        me.NeedMovePixel += game.Options.TilePixel;
                     }
                 }
             }

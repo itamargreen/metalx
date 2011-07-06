@@ -234,7 +234,7 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(int key)
         {
             Key k = (Key)key;
-            if (k == Key.LeftShift || k == Key.RightShift || k == Key.RightControl)
+            if (k == Key.LeftShift || k == Key.RightShift || k == Key.LeftControl || k == Key.RightControl)
             {
                 isBig = true;
             }
@@ -276,11 +276,11 @@ namespace MetalX.Component
             }
             else if (k== Key.F9)
             {
-                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
+                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
             }
             else if (k == Key.F10)
             {
-                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
+                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
             }
             else if (k == Key.F11)
             {
@@ -313,8 +313,8 @@ namespace MetalX.Component
                     else
                     {
                         AppendCommand(cmd);
+                        text += "\n";
                     }
-                    text += "\n";
                 }
             }
             else if (k == Key.Space)
