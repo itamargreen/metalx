@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 
+using MetalX.Data;
+
 namespace MetalX.Resource
 {
     public class Audios
     {
-        List<MetalXAudio> items = new List<MetalXAudio>();
-        public MetalXAudio this[int i]
+        List<FileLink> items = new List<FileLink>();
+        public FileLink this[int i]
         {
             get
             {
                 return items[i];
             }
         }
-        public MetalXAudio this[string name]
+        public FileLink this[string name]
         {
             get
             {
@@ -39,50 +41,25 @@ namespace MetalX.Resource
                 return items.Count;
             }
         }
-        public void Add(MetalXAudio audio)
+        public void Add(FileLink fl)
         {
-            foreach (MetalXAudio mxt in items)
+            foreach (FileLink fileLink in items)
             {
-                if (mxt.Name == audio.Name)
+                if (fileLink.Name == fl.Name)
                 {
                     return;
                 }
             }
-            //if (items.Contains(audio))
-            //{
-            //    return;
-            //}
-            items.Add(audio);
+            items.Add(fl);
         }
-        public void Del(MetalXAudio audio)
+        public void Del(string name)
         {
-            items.Remove(audio);
+            int i = GetIndex(name);
+            Del(i);
         }
         public void Del(int i)
         {
             items.RemoveAt(i);
-        }        /// <summary>
-        /// 加载.MP3文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX音频</returns>
-        public MetalXAudio LoadDotMP3(string fileName)
-        {
-            MetalXAudio mxa = new MetalXAudio();
-            mxa.Name = Path.GetFileNameWithoutExtension(fileName);
-            mxa.AudioData = File.ReadAllBytes(fileName);
-            return mxa;
-        }
-        /// <summary>
-        /// 加载.MXA文件
-        /// </summary>
-        /// <param name="fileName">文件路径+文件名</param>
-        /// <returns>MetalX音频</returns>
-        public MetalXAudio LoadDotMXA(string fileName)
-        {
-            MetalXAudio mxa = (MetalXAudio)Util.LoadObject(fileName);
-            Add(mxa);
-            return mxa;
-        }
+        }       
     }
 }

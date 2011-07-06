@@ -10,6 +10,6 @@ namespace MetalX.Data
         public string SceneName;
         public DateTime SaveTime = DateTime.Now;
         public PC ME;
-        public Microsoft.DirectX.Vector3 SceneRealLocation;
+        public Microsoft.DirectX.Vector3 SceneRealLocationPixel;
     }
 }

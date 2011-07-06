@@ -50,7 +50,7 @@ namespace MetalX.Component
         void drawTextureBox(TextureBox tb,Point basepos)
         {
             basepos = Util.PointAddPoint(basepos, tb.Location);
-            basepos = Util.PointAddPoint(basepos, ScreenOffsetPoint);
+            basepos = Util.PointAddPoint(basepos, ScreenOffsetPixelPoint);
             Color fColor = ColorFilter;
             
             fColor = Util.MixColor(fColor, tb.TextureFliterColor);
@@ -72,7 +72,7 @@ namespace MetalX.Component
         void drawTextBox(TextBox tb, Point basepos)
         {
             basepos = Util.PointAddPoint(basepos, tb.Location);
-            basepos = Util.PointAddPoint(basepos, ScreenOffsetPoint);
+            basepos = Util.PointAddPoint(basepos, ScreenOffsetPixelPoint);
             Color fColor = Util.MixColor(ColorFilter, tb.TextColor);
             if (tb.OneByOne)
             {
@@ -86,7 +86,7 @@ namespace MetalX.Component
         void drawButtonBox(ButtonBox bb, Point basepos)
         {
             basepos = Util.PointAddPoint(basepos, bb.Location);
-            basepos = Util.PointAddPoint(basepos, ScreenOffsetPoint);
+            basepos = Util.PointAddPoint(basepos, ScreenOffsetPixelPoint);
             if (bb.ButtonBoxState == ButtonBoxState.Down)
             {
                 drawTextureBox(bb.DownTextureBox, basepos);

@@ -90,6 +90,7 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.ui_is_ani = new System.Windows.Forms.CheckBox();
             this.ui_ly_slt = new System.Windows.Forms.CheckedListBox();
             this.label9 = new System.Windows.Forms.Label();
             this.ui_ly_name = new System.Windows.Forms.TextBox();
@@ -152,13 +153,27 @@
             this.label12 = new System.Windows.Forms.Label();
             this.ui_mus_lib = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.ui_npctexturename = new System.Windows.Forms.TextBox();
+            this.ui_npcpic = new System.Windows.Forms.PictureBox();
+            this.ui_npcdel = new System.Windows.Forms.Button();
+            this.ui_npcadd = new System.Windows.Forms.Button();
+            this.label25 = new System.Windows.Forms.Label();
+            this.ui_npctxt = new System.Windows.Forms.RichTextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.ui_npcy = new System.Windows.Forms.TextBox();
+            this.ui_npcx = new System.Windows.Forms.TextBox();
+            this.ui_npcdir = new System.Windows.Forms.ComboBox();
+            this.ui_npcname = new System.Windows.Forms.TextBox();
+            this.ui_npclist = new System.Windows.Forms.CheckedListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.ui_is_ani = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.取消动画图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -178,6 +193,8 @@
             this.tabPage4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ui_npcpic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -728,6 +745,16 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(276, 180);
             this.panel2.TabIndex = 22;
+            // 
+            // ui_is_ani
+            // 
+            this.ui_is_ani.AutoSize = true;
+            this.ui_is_ani.Location = new System.Drawing.Point(198, 159);
+            this.ui_is_ani.Name = "ui_is_ani";
+            this.ui_is_ani.Size = new System.Drawing.Size(60, 16);
+            this.ui_is_ani.TabIndex = 117;
+            this.ui_is_ani.Text = "是动画";
+            this.ui_is_ani.UseVisualStyleBackColor = true;
             // 
             // ui_ly_slt
             // 
@@ -1339,12 +1366,162 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.ui_npctexturename);
+            this.tabPage3.Controls.Add(this.ui_npcpic);
+            this.tabPage3.Controls.Add(this.ui_npcdel);
+            this.tabPage3.Controls.Add(this.ui_npcadd);
+            this.tabPage3.Controls.Add(this.label25);
+            this.tabPage3.Controls.Add(this.ui_npctxt);
+            this.tabPage3.Controls.Add(this.label24);
+            this.tabPage3.Controls.Add(this.label23);
+            this.tabPage3.Controls.Add(this.label22);
+            this.tabPage3.Controls.Add(this.label21);
+            this.tabPage3.Controls.Add(this.ui_npcy);
+            this.tabPage3.Controls.Add(this.ui_npcx);
+            this.tabPage3.Controls.Add(this.ui_npcdir);
+            this.tabPage3.Controls.Add(this.ui_npcname);
+            this.tabPage3.Controls.Add(this.ui_npclist);
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(290, 772);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "NPC编辑";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // ui_npctexturename
+            // 
+            this.ui_npctexturename.Location = new System.Drawing.Point(62, 291);
+            this.ui_npctexturename.Name = "ui_npctexturename";
+            this.ui_npctexturename.Size = new System.Drawing.Size(100, 21);
+            this.ui_npctexturename.TabIndex = 14;
+            // 
+            // ui_npcpic
+            // 
+            this.ui_npcpic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ui_npcpic.Location = new System.Drawing.Point(223, 238);
+            this.ui_npcpic.Name = "ui_npcpic";
+            this.ui_npcpic.Size = new System.Drawing.Size(64, 64);
+            this.ui_npcpic.TabIndex = 13;
+            this.ui_npcpic.TabStop = false;
+            this.ui_npcpic.Click += new System.EventHandler(this.ui_npcpic_Click);
+            // 
+            // ui_npcdel
+            // 
+            this.ui_npcdel.Location = new System.Drawing.Point(212, 205);
+            this.ui_npcdel.Name = "ui_npcdel";
+            this.ui_npcdel.Size = new System.Drawing.Size(75, 23);
+            this.ui_npcdel.TabIndex = 12;
+            this.ui_npcdel.Text = "删除";
+            this.ui_npcdel.UseVisualStyleBackColor = true;
+            this.ui_npcdel.Click += new System.EventHandler(this.ui_npcdel_Click);
+            // 
+            // ui_npcadd
+            // 
+            this.ui_npcadd.Location = new System.Drawing.Point(212, 492);
+            this.ui_npcadd.Name = "ui_npcadd";
+            this.ui_npcadd.Size = new System.Drawing.Size(75, 23);
+            this.ui_npcadd.TabIndex = 11;
+            this.ui_npcadd.Text = "添加";
+            this.ui_npcadd.UseVisualStyleBackColor = true;
+            this.ui_npcadd.Click += new System.EventHandler(this.ui_npcadd_Click);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(3, 321);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(53, 12);
+            this.label25.TabIndex = 10;
+            this.label25.Text = "对话文本";
+            // 
+            // ui_npctxt
+            // 
+            this.ui_npctxt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ui_npctxt.Location = new System.Drawing.Point(62, 318);
+            this.ui_npctxt.Name = "ui_npctxt";
+            this.ui_npctxt.Size = new System.Drawing.Size(225, 168);
+            this.ui_npctxt.TabIndex = 9;
+            this.ui_npctxt.Text = "";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(109, 267);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(11, 12);
+            this.label24.TabIndex = 8;
+            this.label24.Text = "Y";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(45, 267);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(11, 12);
+            this.label23.TabIndex = 7;
+            this.label23.Text = "X";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(27, 240);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(29, 12);
+            this.label22.TabIndex = 6;
+            this.label22.Text = "朝向";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(27, 214);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(29, 12);
+            this.label21.TabIndex = 5;
+            this.label21.Text = "名字";
+            // 
+            // ui_npcy
+            // 
+            this.ui_npcy.Location = new System.Drawing.Point(126, 264);
+            this.ui_npcy.Name = "ui_npcy";
+            this.ui_npcy.Size = new System.Drawing.Size(36, 21);
+            this.ui_npcy.TabIndex = 4;
+            // 
+            // ui_npcx
+            // 
+            this.ui_npcx.Location = new System.Drawing.Point(62, 264);
+            this.ui_npcx.Name = "ui_npcx";
+            this.ui_npcx.Size = new System.Drawing.Size(36, 21);
+            this.ui_npcx.TabIndex = 3;
+            // 
+            // ui_npcdir
+            // 
+            this.ui_npcdir.FormattingEnabled = true;
+            this.ui_npcdir.Items.AddRange(new object[] {
+            "U",
+            "D",
+            "L",
+            "R"});
+            this.ui_npcdir.Location = new System.Drawing.Point(62, 238);
+            this.ui_npcdir.Name = "ui_npcdir";
+            this.ui_npcdir.Size = new System.Drawing.Size(100, 20);
+            this.ui_npcdir.TabIndex = 2;
+            this.ui_npcdir.Text = "U";
+            // 
+            // ui_npcname
+            // 
+            this.ui_npcname.Location = new System.Drawing.Point(62, 211);
+            this.ui_npcname.Name = "ui_npcname";
+            this.ui_npcname.Size = new System.Drawing.Size(100, 21);
+            this.ui_npcname.TabIndex = 1;
+            this.ui_npcname.Text = "noname";
+            // 
+            // ui_npclist
+            // 
+            this.ui_npclist.FormattingEnabled = true;
+            this.ui_npclist.Location = new System.Drawing.Point(3, 3);
+            this.ui_npclist.Name = "ui_npclist";
+            this.ui_npclist.Size = new System.Drawing.Size(284, 196);
+            this.ui_npclist.TabIndex = 0;
             // 
             // pictureBox1
             // 
@@ -1359,20 +1536,6 @@
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // ui_is_ani
-            // 
-            this.ui_is_ani.AutoSize = true;
-            this.ui_is_ani.Location = new System.Drawing.Point(198, 159);
-            this.ui_is_ani.Name = "ui_is_ani";
-            this.ui_is_ani.Size = new System.Drawing.Size(60, 16);
-            this.ui_is_ani.TabIndex = 117;
-            this.ui_is_ani.Text = "是动画";
-            this.ui_is_ani.UseVisualStyleBackColor = true;
             // 
             // contextMenuStrip1
             // 
@@ -1395,6 +1558,10 @@
             this.取消动画图元ToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.取消动画图元ToolStripMenuItem.Text = "取消动画图元";
             this.取消动画图元ToolStripMenuItem.Click += new System.EventHandler(this.取消动画图元ToolStripMenuItem_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -1439,6 +1606,9 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ui_npcpic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1577,6 +1747,21 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 取消动画图元ToolStripMenuItem;
+        private System.Windows.Forms.CheckedListBox ui_npclist;
+        private System.Windows.Forms.TextBox ui_npcname;
+        private System.Windows.Forms.ComboBox ui_npcdir;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.RichTextBox ui_npctxt;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox ui_npcy;
+        private System.Windows.Forms.TextBox ui_npcx;
+        private System.Windows.Forms.Button ui_npcdel;
+        private System.Windows.Forms.Button ui_npcadd;
+        private System.Windows.Forms.PictureBox ui_npcpic;
+        private System.Windows.Forms.TextBox ui_npctexturename;
     }
 }
 

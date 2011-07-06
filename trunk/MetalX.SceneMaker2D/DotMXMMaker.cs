@@ -97,7 +97,7 @@ namespace MetalX.SceneMaker2D
             {
                 if (ofd.FileName != string.Empty)
                 {
-                    modelViewer.model = game.Models.LoadDotX(game,ofd.FileName);
+                    modelViewer.model = game.LoadDotX(ofd.FileName);
                     filename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
                     game.Start();
                 }

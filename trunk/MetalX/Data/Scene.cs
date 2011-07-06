@@ -61,17 +61,17 @@ namespace MetalX.Data
         /// <summary>
         /// 场景位置
         /// </summary>
-        public Vector3 RealLocation = new Vector3();
-        public Point RealLocationPoint
+        public Vector3 RealLocationPixel = new Vector3();
+        public Point RealLocationPixelPoint
         {
             get
             {
-                return new Point((int)RealLocation.X, (int)RealLocation.Y);
+                return new Point((int)RealLocationPixel.X, (int)RealLocationPixel.Y);
             }
             set
             {
-                RealLocation.X = value.X;
-                RealLocation.Y = value.Y;
+                RealLocationPixel.X = value.X;
+                RealLocationPixel.Y = value.Y;
             }
         }
         //[NonSerialized]
@@ -81,10 +81,12 @@ namespace MetalX.Data
         /// 图元层
         /// </summary>
         public List<TileLayer> TileLayers = new List<TileLayer>();
+        public List<NPC> NPCs = new List<NPC>();
+        public List<FileLink> Musics = new List<FileLink>();
         /// <summary>
         /// 代码层
         /// </summary>
-        public List<CodeLayer> CodeLayers = new List<CodeLayer>();
+        List<CodeLayer> CodeLayers = new List<CodeLayer>();
         public CodeLayer CodeLayer
         {
             get
