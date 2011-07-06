@@ -63,34 +63,34 @@ namespace MetalX.Component
 
                 if (me.Direction == Direction.U)
                 {
-                    me.RealLocation.Y -= movePixel;
-                    if (scene.RealLocation.Y < 0)
+                    me.RealLocationPixel.Y -= movePixel;
+                    if (scene.RealLocationPixel.Y < 0)
                     {
-                        scene.RealLocation.Y += movePixel;
+                        scene.RealLocationPixel.Y += movePixel;
                     }
                 }
                 else if (me.Direction == Direction.L)
                 {
-                    me.RealLocation.X -= movePixel;
-                    if (scene.RealLocation.X < 0)
+                    me.RealLocationPixel.X -= movePixel;
+                    if (scene.RealLocationPixel.X < 0)
                     {
-                        scene.RealLocation.X += movePixel;
+                        scene.RealLocationPixel.X += movePixel;
                     }
                 }
                 else if (me.Direction == Direction.D)
                 {
-                    me.RealLocation.Y += movePixel;
-                    if (scene.RealLocation.Y + scene.SizePixel.Height > game.Options.WindowSizePixel.Height)
+                    me.RealLocationPixel.Y += movePixel;
+                    if (scene.RealLocationPixel.Y + scene.SizePixel.Height > game.Options.WindowSizePixel.Height)
                     {
-                        scene.RealLocation.Y -= movePixel;
+                        scene.RealLocationPixel.Y -= movePixel;
                     }
                 }
                 else if (me.Direction == Direction.R)
                 {
-                    me.RealLocation.X += movePixel;
-                    if (scene.RealLocation.X + scene.SizePixel.Width > game.Options.WindowSizePixel.Width)
+                    me.RealLocationPixel.X += movePixel;
+                    if (scene.RealLocationPixel.X + scene.SizePixel.Width > game.Options.WindowSizePixel.Width)
                     {
-                        scene.RealLocation.X -= movePixel;
+                        scene.RealLocationPixel.X -= movePixel;
                     }
                 }
             }
@@ -128,15 +128,15 @@ namespace MetalX.Component
 
         public void EnterScene(string fileName, Vector3 realLoc)
         {
-            scene = game.Scenes.LoadDotMXScene(game, fileName);
-            scene.RealLocation = realLoc;
+            scene = game.LoadDotMXScene(fileName);
+            scene.RealLocationPixel = realLoc;
             game.Options.TileSizePixel = scene.TileSizePixel;
         }
 
         public void MoveMe(Vector3 v3)
         {
             me.NextLocation = me.LastLocation = v3;
-            me.RealLocation = Util.Vector3MulInt(v3, game.Options.TilePixel);
+            me.SetRealLocation(v3, game.Options.TilePixel);
         }
         public void SkinMe(string name)
         {
@@ -175,11 +175,20 @@ namespace MetalX.Component
                     DrawPC(me);
                 }
 
+                foreach (NPC npc in s.NPCs)
+                {
+                    int npcdrawl = s.CodeLayer[npc.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
+                    if (l == npcdrawl)
+                    {
+                        DrawNPC(npc);
+                    }
+                }
+
                 foreach (Tile t in tl.Tiles)
                 {
                     if (nodrawl != l)
                     {
-                        if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, game.Options.TilePixel), scene.RealLocationPoint)))
+                        if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, game.Options.TilePixel), scene.RealLocationPixelPoint)))
                         {
                             int fi = t.FrameIndex;
                             if (t.IsAnimation)
@@ -190,7 +199,7 @@ namespace MetalX.Component
                                 game.Textures[t[fi].TextureIndex],
                                 t[fi].DrawZone,
                                 //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
-                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocation, ScreenOffset), Util.Vector3MulInt(t.Location, game.Options.TilePixel)),
+                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocationPixel, ScreenOffsetPixel), Util.Vector3MulInt(t.Location, game.Options.TilePixel)),
                                 game.Options.TileSizePixelX,
                                 Util.MixColor(t[fi].ColorFilter, ColorFilter)
                             );
@@ -226,12 +235,12 @@ namespace MetalX.Component
                 dz.X = 0;
             }
             dz.Size = game.Textures[chr.TextureIndex].TileSizePixel;
-            Vector3 v31 = chr.RealLocation;
+            Vector3 v31 = chr.RealLocationPixel;
             v31.Y += game.SpriteOffsetPixel;
-            v31.X += scene.RealLocation.X;
-            v31.Y += scene.RealLocation.Y;
-            v31.Z += scene.RealLocation.Z;
-            v31 = Util.Vector3AddVector3(v31, ScreenOffset);
+            v31.X += scene.RealLocationPixel.X;
+            v31.Y += scene.RealLocationPixel.Y;
+            v31.Z += scene.RealLocationPixel.Z;
+            v31 = Util.Vector3AddVector3(v31, ScreenOffsetPixel);
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
                 dz,
@@ -239,7 +248,45 @@ namespace MetalX.Component
                 game.Options.TileSizePixelX,
                 Color.White);
         }
-        
+        void DrawNPC(NPC npc)
+        {
+            if (npc == null)
+            {
+                return;
+            }
+            if (npc.TextureName == null)
+            {
+                return;
+            }
+            if (npc.TextureIndex < 0)
+            {
+                npc.TextureIndex = game.Textures.GetIndex(npc.TextureName);
+            }
+            Rectangle dz = new Rectangle();
+            dz.Y = (int)npc.Direction * game.Textures[npc.TextureIndex].TileSizePixel.Height;
+            if (npc.NeedMovePixel > 0)
+            {
+                dz.X = (((int)((float)game.Options.TilePixel - npc.NeedMovePixel)) / (game.Options.TileSizePixelX.Width / 4) + 1) * game.Textures[npc.TextureIndex].TileSizePixel.Width;
+            }
+            else
+            {
+                dz.X = 0;
+            }
+            dz.Size = game.Textures[npc.TextureIndex].TileSizePixel;
+            Vector3 v31 = npc.RealLocationPixel;
+            v31.Y += game.SpriteOffsetPixel;
+            v31.X += scene.RealLocationPixel.X;
+            v31.Y += scene.RealLocationPixel.Y;
+            v31.Z += scene.RealLocationPixel.Z;
+            v31 = Util.Vector3AddVector3(v31, ScreenOffsetPixel);
+            game.DrawMetalXTexture(
+                game.Textures[npc.TextureIndex],
+                dz,
+                v31,
+                game.Options.TileSizePixelX,
+                Color.White);
+        }
+ 
         public override void OnKeyboardDownHoldCode(int key)
         {
             Key k = (Key)key;
@@ -271,7 +318,7 @@ namespace MetalX.Component
                     Vector3 loc = me.FrontLocation;
                     if (scene.CodeLayer[loc].CHRCanRch)
                     {
-                        me.LastLocation = Util.Vector3DivInt(me.RealLocation, game.Options.TilePixel);
+                        me.LastLocation = Util.Vector3DivInt(me.RealLocationPixel, game.Options.TilePixel);
                         me.NextLocation = loc;
                         me.NeedMovePixel += game.Options.TilePixel;
                     }

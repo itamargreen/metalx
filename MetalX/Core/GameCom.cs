@@ -74,12 +74,12 @@ namespace MetalX
             }
         }
         #region for shock
-        protected Vector3 ScreenOffset;
-        protected Point ScreenOffsetPoint
+        protected Vector3 ScreenOffsetPixel;
+        protected Point ScreenOffsetPixelPoint
         {
             get
             {
-                return new Point((int)ScreenOffset.X, (int)ScreenOffset.Y);
+                return new Point((int)ScreenOffsetPixel.X, (int)ScreenOffsetPixel.Y);
             }
         }
         DateTime ShockBeginTime;
@@ -108,7 +108,7 @@ namespace MetalX
         {
             if (IsShocking)
             {
-                ScreenOffset = new Vector3();
+                ScreenOffsetPixel = new Vector3();
                 TimeSpan ts = DateTime.Now - ShockBeginTime;
                 if (ts.TotalMilliseconds > ShockTime)
                 {
@@ -123,9 +123,9 @@ namespace MetalX
                     y -= (ShockRange / 2);
                     z -= (ShockRange / 2);
                     z *= 10;
-                    ScreenOffset.X += x;
-                    ScreenOffset.Y += y;
-                    ScreenOffset.Z += z;
+                    ScreenOffsetPixel.X += x;
+                    ScreenOffsetPixel.Y += y;
+                    ScreenOffsetPixel.Z += z;
                 }
             }
         }

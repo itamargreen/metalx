@@ -175,27 +175,27 @@ namespace MetalX.SceneMaker2D
                 p = Util.PointDivInt(p, sceneMaker2D.scene.TilePixel);
                 if (sceneMaker2D.drawCodeLayer == 0)
                 {
-                    sceneMaker2D.scene.CodeLayers[0][p].CHRCanRch = val;
+                    sceneMaker2D.scene.CodeLayer[p].CHRCanRch = val;
                 }
                 else if (sceneMaker2D.drawCodeLayer == 1)
                 {
-                    sceneMaker2D.scene.CodeLayers[0][p].MTLCanRch = val;
+                    sceneMaker2D.scene.CodeLayer[p].MTLCanRch = val;
                 }
                 else if (sceneMaker2D.drawCodeLayer == 2)
                 {
-                    sceneMaker2D.scene.CodeLayers[0][p].SHPCanRch = val;
+                    sceneMaker2D.scene.CodeLayer[p].SHPCanRch = val;
                 }
                 else if (sceneMaker2D.drawCodeLayer == 3)
                 {
-                    sceneMaker2D.scene.CodeLayers[0][p].FLTCanRch = val;
+                    sceneMaker2D.scene.CodeLayer[p].FLTCanRch = val;
                 }
                 else if (sceneMaker2D.drawCodeLayer == 4)
                 {
-                    sceneMaker2D.scene.CodeLayers[0][p].DrawLayer = l;
+                    sceneMaker2D.scene.CodeLayer[p].DrawLayer = l;
                 }
                 else if (sceneMaker2D.drawCodeLayer == 5)
                 {
-                    sceneMaker2D.scene.CodeLayers[0][p].RchDisappear = l;
+                    sceneMaker2D.scene.CodeLayer[p].RchDisappear = l;
                 }
             }
             catch { }
@@ -203,7 +203,7 @@ namespace MetalX.SceneMaker2D
         void paint_link(Point p)
         {
             p = Util.PointDivInt(p, sceneMaker2D.scene.TilePixel);
-            sceneMaker2D.scene.CodeLayers[0][p].SceneFileName = ui_link_file.Text;
+            sceneMaker2D.scene.CodeLayer[p].SceneFileName = ui_link_file.Text;
         }
         void paint_link(Rectangle slt_zone)
         {
@@ -354,8 +354,8 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(game);
 
-            game.Scenes.LoadDotMXScene(game, fileName);
-            sceneMaker2D.scene = game.Scenes[0];
+            
+            sceneMaker2D.scene = game.LoadDotMXScene(fileName);
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
@@ -390,8 +390,8 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(game);
 
-            game.Scenes.LoadDotXML(game, fileName);
-            sceneMaker2D.scene = game.Scenes[0];
+            
+            sceneMaker2D.scene = game.LoadDotXMLScene(fileName);
 
 
             ui_ly_slt.Items.Clear();
@@ -747,14 +747,14 @@ namespace MetalX.SceneMaker2D
             if (filename == null)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "MetalX Scene File|*.MXScene|XML File|*.XML";
+                sfd.Filter = "MetalX Scene File|*.MXScene|XML Scene File|*.XMLScene";
                 sfd.RestoreDirectory = true;
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     openFileName = sfd.FileName;
-                    if (sceneMaker2D.scene.CodeLayers.Count > 1)
+                    if (sceneMaker2D.scene.CodeLayer.Codes.Count > 1)
                     {
-                        sceneMaker2D.scene.CodeLayers.RemoveAt(1);
+                        sceneMaker2D.scene.CodeLayer.Codes.RemoveAt(1);
                     }
                     //for (int l = 0; l < sceneMaker2D.scene.TileLayers.Count; l++)
                     //{
@@ -818,7 +818,7 @@ namespace MetalX.SceneMaker2D
         private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "MetalX Scene File|*.MXScene|XML File|*.XML";
+            ofd.Filter = "MetalX Scene File|*.MXScene|XML Scene File|*.XMLScene";
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -1102,6 +1102,68 @@ namespace MetalX.SceneMaker2D
         {
             sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation = false;
             ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
+        }
+
+        void update_npc_list()
+        {
+            ui_npclist.Items.Clear();
+            foreach (NPC npc in sceneMaker2D.scene.NPCs)
+            {
+                ui_npclist.Items.Add(npc.Name);
+            }
+        }
+
+        private void ui_npcpic_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "*.png|*.png";
+                ofd.RestoreDirectory = true;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    ui_npctexturename.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
+                }
+            }
+        }
+        //string npctexture;
+        private void ui_npcadd_Click(object sender, EventArgs e)
+        {
+            NPC npc = new NPC();
+            npc.TextureName = ui_npctexturename.Text;
+            npc.Name = ui_npcname.Text;
+            npc.SetRealLocation(int.Parse(ui_npcx.Text), int.Parse(ui_npcy.Text), 0, game.Options.TilePixel);
+            Direction dir = Direction.U;
+            if (ui_npcdir.Text == "U")
+            {
+                dir = Direction.U;
+            }
+            else if (ui_npcdir.Text == "L")
+            {
+                dir = Direction.L;
+            }
+            else if (ui_npcdir.Text == "D")
+            {
+                dir = Direction.D;
+            }
+            else if (ui_npcdir.Text == "R")
+            {
+                dir = Direction.R;
+            }
+            npc.Direction = dir;
+            npc.DialogText = ui_npctxt.Text;
+
+            if (sceneMaker2D.scene.NPCs == null)
+            {
+                sceneMaker2D.scene.NPCs = new List<NPC>();
+            }
+            sceneMaker2D.scene.NPCs.Add(npc);
+
+            update_npc_list();
+        }
+
+        private void ui_npcdel_Click(object sender, EventArgs e)
+        {
+
         }
 
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)

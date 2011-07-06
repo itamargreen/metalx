@@ -21,6 +21,16 @@ namespace MetalX.Data
 
         public Vector3 LastLocation;
         public Vector3 RealLocation;
+        public Vector3 RealLocationPixel;
+        public void SetRealLocation(int x, int y, int z, int unit)
+        {
+            SetRealLocation(new Vector3(x, y, z), unit);
+        }
+        public void SetRealLocation(Vector3 v3, int unit)
+        {
+            RealLocation = v3;
+            RealLocationPixel = Util.Vector3MulInt(RealLocation, unit);
+        }
         public Vector3 NextLocation;
         #region old
         //public Vector3 GetLogicLastLocation(int unit)
@@ -126,7 +136,7 @@ namespace MetalX.Data
         }
         public Vector3 GetStayLocation(int unit)
         {
-            Vector3 v3 = Util.Vector3DivInt(RealLocation,unit);
+            Vector3 v3 = Util.Vector3DivInt(RealLocationPixel, unit);
             if (NeedMovePixel > 0)
             {
                 if (Direction == Direction.U)
@@ -198,7 +208,7 @@ namespace MetalX.Data
         }
 
         public string InSceneName;
-        public int InSceneIndex;
+        public int InSceneIndex = -1;
 
         public bool CanMove;
         public bool CanTurn;
@@ -419,5 +429,9 @@ namespace MetalX.Data
     { }
     [Serializable]
     public class NPC : CHR
-    { }
+    {
+        //public Direction DefaultDirection;
+        //public Vector3 DefaultLocation;
+        public string DialogText;
+    }
 }

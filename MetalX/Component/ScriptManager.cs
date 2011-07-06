@@ -73,6 +73,10 @@ namespace MetalX.Component
         {
             //cmd = cmd.ToLower();
             string[] kw = cmd.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            if (kw.Length == 0)
+            {
+                return;
+            }
             kw[0] = kw[0].ToLower();
             if (kw.Length == 1)
             {
@@ -242,38 +246,38 @@ namespace MetalX.Component
             {
                 game.Exit();
             }
-            else if (k== Key.F1)
-            {
-                game.LoadCheckPoint(1);
-            }
-            else if (k== Key.F2)
-            {
-                game.LoadCheckPoint(2);
-            }
-            else if (k== Key.F3)
-            {
-                game.LoadCheckPoint(3);
-            }
-            else if (k== Key.F4)
-            {
-                game.LoadCheckPoint(4);
-            }
-            else if (k== Key.F5)
-            {
-                game.SaveCheckPoint(1);
-            }
-            else if (k== Key.F6)
-            {
-                game.SaveCheckPoint(2);
-            }
-            else if (k== Key.F7)
-            {
-                game.SaveCheckPoint(3);
-            }
-            else if (k== Key.F8)
-            {
-                game.SaveCheckPoint(4);
-            }
+            //else if (k== Key.F1)
+            //{
+            //    game.LoadCheckPoint(1);
+            //}
+            //else if (k== Key.F2)
+            //{
+            //    game.LoadCheckPoint(2);
+            //}
+            //else if (k== Key.F3)
+            //{
+            //    game.LoadCheckPoint(3);
+            //}
+            //else if (k== Key.F4)
+            //{
+            //    game.LoadCheckPoint(4);
+            //}
+            //else if (k== Key.F5)
+            //{
+            //    game.SaveCheckPoint(1);
+            //}
+            //else if (k== Key.F6)
+            //{
+            //    game.SaveCheckPoint(2);
+            //}
+            //else if (k== Key.F7)
+            //{
+            //    game.SaveCheckPoint(3);
+            //}
+            //else if (k== Key.F8)
+            //{
+            //    game.SaveCheckPoint(4);
+            //}
             else if (k== Key.F9)
             {
                 game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
