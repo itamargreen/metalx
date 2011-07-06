@@ -226,13 +226,16 @@ namespace MetalX.Component
                 dz.X = 0;
             }
             dz.Size = game.Textures[chr.TextureIndex].TileSizePixel;
-            Point p1 = new Point((int)chr.RealLocation.X, (int)chr.RealLocation.Y + game.SpriteOffsetPixel);
-            Point p2 = new Point((int)scene.RealLocation.X, (int)scene.RealLocation.Y);
-            p2 = Util.PointAddPoint(p2, Util.Vector32Point(ScreenOffset));
+            Vector3 v31 = chr.RealLocation;
+            v31.Y += game.SpriteOffsetPixel;
+            v31.X += scene.RealLocation.X;
+            v31.Y += scene.RealLocation.Y;
+            v31.Z += scene.RealLocation.Z;
+            v31 = Util.Vector3AddVector3(v31, ScreenOffset);
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
                 dz,
-                Util.PointAddPoint(p1, p2),
+                v31,
                 game.Options.TileSizePixelX,
                 Color.White);
         }

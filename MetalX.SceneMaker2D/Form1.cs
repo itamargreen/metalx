@@ -287,7 +287,7 @@ namespace MetalX.SceneMaker2D
             //    ui_mus_slt.Items.Add(game.Audios[i].Name);
             //}
         }
-        void new_scene(Size sizepixel, Size tilesizepixel)
+        void new_scene(Size size, Size tilesizepixel)
         {
             left_rect = new Rectangle();
             right_rect = new Rectangle();
@@ -295,6 +295,9 @@ namespace MetalX.SceneMaker2D
             {
                 game.Stop();
             }
+
+            pictureBox1.Size = new Size(size.Width * tilesizepixel.Width, size.Height * tilesizepixel.Height);
+
             game = new Game(pictureBox1);
 
             game.InitData();
@@ -306,8 +309,8 @@ namespace MetalX.SceneMaker2D
 
             sceneMaker2D = new SceneMaker2D(game);
 
-            int sw = sizepixel.Width;
-            int sh = sizepixel.Height;
+            int sw = size.Width;
+            int sh = size.Height;
             int tw = tilesizepixel.Width;
             int th = tilesizepixel.Height;
 
@@ -325,7 +328,6 @@ namespace MetalX.SceneMaker2D
             }
             ui_ly_slt.SetSelected(lc - 1, true);
 
-            pictureBox1.Size = sceneMaker2D.scene.SizePixel;
 
             tabControl1.SelectedIndex = 1;
 

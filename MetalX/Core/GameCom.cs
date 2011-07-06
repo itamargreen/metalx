@@ -122,6 +122,7 @@ namespace MetalX
                     x -= (ShockRange / 2);
                     y -= (ShockRange / 2);
                     z -= (ShockRange / 2);
+                    z *= 10;
                     ScreenOffset.X += x;
                     ScreenOffset.Y += y;
                     ScreenOffset.Z += z;

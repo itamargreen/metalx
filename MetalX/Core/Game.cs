@@ -212,9 +212,6 @@ namespace MetalX
                 frameTimeSpan = DateTime.Now - frameBeginTime;
 
                 Devices.GameWindow.Invalidate();
-
-                //WaitFrameByAverageFPS();
-                //Devices.GameWindow.Refresh();
             }
         }
         void GameWindowClosing(object sender, FormClosingEventArgs e)
@@ -231,7 +228,7 @@ namespace MetalX
                 Options = (Options)Util.LoadObjectXML("options.xml", typeof(Options));
             }
             catch { }
-            Devices = new Devices(control, this);
+            Devices = new Devices(this, control);
         }
 
         #endregion
@@ -241,7 +238,6 @@ namespace MetalX
         {
             Models = new Models();
             Textures = new Textures();
-            //Audios = new Audios();
             Scenes = new Scenes();
             FormBoxes = new FormBoxes();
             Characters = new Characters();
@@ -267,7 +263,8 @@ namespace MetalX
         /// 启动
         /// </summary>
         public void Start()
-        {
+        {            
+            //ToggleToFullScreen();
             gameBeginTime = DateTime.Now;
 
             totalFrames = 0;
@@ -300,6 +297,14 @@ namespace MetalX
                 //}
                 Application.Run(Devices.GameWindow);
             }
+        }
+        public void SetResolution(int w,int h)
+        {
+
+        }
+        public void ToggleToFullScreen()
+        {
+
         }
         /// <summary>
         /// 每帧
@@ -563,13 +568,6 @@ namespace MetalX
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
                 DrawMetalXTextureDirect2D(t, dz, point, dz.Size, color);
         }
-        //public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Rectangle ddz, Color color)
-        //{
-        //    if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
-        //        DrawMetalXTextureDirect3D(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
-        //    else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-        //        DrawMetalXTextureDirect2D(t, dz, ddz.Location, ddz.Size, color);
-        //}
         public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Size size, Color color)
         {
             if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
@@ -577,6 +575,20 @@ namespace MetalX
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
                 DrawMetalXTextureDirect2D(t, dz, point, size, color);
         }
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 v3, Size size, Color color)
+        {
+            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+                DrawMetalXTextureDirect3D(t, dz, v3, size, color);
+            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                DrawMetalXTextureDirect2D(t, dz, Util.Vector32Point(v3), size, color);
+        }        
+        //public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Rectangle ddz, Color color)
+        //{
+        //    if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
+        //        DrawMetalXTextureDirect3D(t, dz, new Vector3(ddz.X, ddz.Y, 0), ddz.Size, color);
+        //    else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+        //        DrawMetalXTextureDirect2D(t, dz, ddz.Location, ddz.Size, color);
+        //}        
         //public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, PointF point, Size size, Color color)
         //{
         //    if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
@@ -584,13 +596,7 @@ namespace MetalX
         //    else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
         //        DrawMetalXTextureDirect2D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
         //}
-        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 v3, Size size, Color color)
-        {
-            if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
-                DrawMetalXTextureDirect3D(t, dz, v3, size, color);
-            else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, Util.Vector32Point(v3), size, color);
-        }
+        CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
         /// <summary>
         /// 绘制MetalX格式纹理
         /// </summary>
@@ -607,6 +613,8 @@ namespace MetalX
             {
                 return;
             }
+
+            Devices.D3DDev.SetTexture(0, t.MEMTexture);
 
             int w, h;
             w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
@@ -636,11 +644,7 @@ namespace MetalX
                 tx = ((float)dz.X + (float)dz.Width + offset) / (float)s.Width;
                 ty = ((float)dz.Y + (float)dz.Height + offset) / (float)s.Height;
             }
-            Devices.D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
-            Devices.D3DDev.TextureState[0].AlphaOperation = TextureOperation.Modulate;
-            Devices.D3DDev.SetTexture(0, t.MEMTexture);
 
-            CustomVertex.PositionColoredTextured[] vertexs = new CustomVertex.PositionColoredTextured[6];
             vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
             vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
             vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - size.Height, loc.Z, color.ToArgb(), fx, ty);
@@ -649,11 +653,10 @@ namespace MetalX
             vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
             vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
 
-            //Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
+            Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
 
-            Devices.VertexBuffer.SetData(vertexs, 0, LockFlags.None);
-            Devices.D3DDev.SetStreamSource(0, Devices.VertexBuffer, 0);
-            Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+            //Devices.VertexBuffer.SetData(vertexs, 0, LockFlags.None);            
+            //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
         void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Point loc, Size size, Color color)
         {
@@ -666,31 +669,23 @@ namespace MetalX
                 return;
             }
 
-            //loc.Z = 0;
-            //using (Sprite sprite = new Sprite(Devices.D3DDev))
+            Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+
+            if (size.Width / dz.Width == 2)
             {
-                Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
-
-                //if (dz.Width == 0 || size.Width == 0 || dz.Height == 0 || size.Height == 0)
-                //{
-                //    return;
-                //}
-                if (size.Width / dz.Width == 2)
-                {
-                    dz.X = dz.X * 2;
-                    dz.Y = dz.Y * 2;
-                    dz.Size = size;
-                    Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
-                    //sprite.Draw2D(t.MEMTexture2X, dz, dz, loc, color);
-                }
-                else
-                {
-                    Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
-                    //sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
-                }
-
-                Devices.Sprite.End();
+                dz.X = dz.X * 2;
+                dz.Y = dz.Y * 2;
+                dz.Size = size;
+                Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+                //sprite.Draw2D(t.MEMTexture2X, dz, dz, loc, color);
             }
+            else
+            {
+                Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+                //sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
+            }
+
+            Devices.Sprite.End();
         }
 
         #endregion
@@ -837,58 +832,7 @@ namespace MetalX
         {
             ScriptManager.ExecuteDotMXScript(file);
         }
-        //public void AppearFormBox(string name)
-        //{
-        //    FormBoxManager.Appear(name);
-        //}
-        //public void AppearFormBox(int i)
-        //{
-        //    FormBoxManager.Appear(i);
-        //}
 
-        //List<FormBoxes2Play> formBoxes2Play;
-        //Thread playFormBoxThd;
-        //public void PlayFormBox(List< FormBoxes2Play> fb2ps)
-        //{
-        //    formBoxes2Play = fb2ps;
-        //    playFormBoxThd = new Thread(playFormBoxThdFunc);
-        //    playFormBoxThd.IsBackground = true;
-        //    playFormBoxThd.Start();
-        //}
-        //void playFormBoxThdFunc()
-        //{
-        //    foreach (FormBoxes2Play f in formBoxes2Play)
-        //    {
-        //        FormBoxManager.FallInSceen(0);
-        //        AppearFormBox(f.Name);
-        //        if (f.TextureEffectList != null)
-        //        {
-        //            foreach (TextureEffect te in f.TextureEffectList)
-        //            {
-        //                if (te.Type == TextureEffectType.None)
-        //                {
-        //                }
-        //                else if (te.Type == TextureEffectType.Shock)
-        //                {
-        //                    FormBoxManager.ShockScreen(te.TimeSpan.TotalMilliseconds);
-        //                }
-        //                else if (te.Type == TextureEffectType.FallIn)
-        //                {
-        //                    FormBoxManager.FallInSceen(te.TimeSpan.TotalMilliseconds);
-        //                }
-        //                else if (te.Type == TextureEffectType.FallOut)
-        //                {
-        //                    FormBoxManager.FallOutSceen(te.TimeSpan.TotalMilliseconds);
-        //                }
-        //                if (te.IsBlock)
-        //                {
-        //                    Thread.Sleep((int)te.TimeSpan.TotalMilliseconds);
-        //                }
-        //            }
-        //        }
-        //        FormBoxManager.Disappear();
-        //    }
-        //}
         #endregion
     }
 }

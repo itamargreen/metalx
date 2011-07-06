@@ -9,6 +9,7 @@ namespace MetalX
     {
         Game game;
         public GameWindow GameWindow;
+        public Control GameControl;
 
         public Microsoft.DirectX.Direct3D.Device D3DDev;
         public Microsoft.DirectX.DirectSound.Device DSoundDev;
@@ -27,55 +28,67 @@ namespace MetalX
             }
         }
         void init()
-        { 
+        {
+            Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
+            pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
+            pps.Windowed = !game.Options.FullScreen;
+            pps.BackBufferCount = 2;
+            pps.PresentationInterval = PresentInterval.One;
 
-               DKeyboardDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Keyboard);
-               DKeyboardDev.Acquire();
+            if (GameWindow == null)
+            {
+                //pps.BackBufferWidth = GameControl.Width;
+                //pps.BackBufferHeight = GameControl.Height;
+                D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameControl, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            }
+            else
+            {
+                pps.BackBufferWidth = GameWindow.Width;
+                pps.BackBufferHeight = GameWindow.Height;
+                D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
+            }
+            D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
+            D3DDev.ShowCursor(false);
 
-               DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
-               DMouseDev.Acquire();
+            DSoundDev = new Microsoft.DirectX.DirectSound.Device();
+            if (GameWindow == null)
+            {
+                DSoundDev.SetCooperativeLevel(GameControl, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
+            }
+            else
+            {
+                DSoundDev.SetCooperativeLevel(GameWindow, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
+            }
+            
+            DKeyboardDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Keyboard);
+            DKeyboardDev.Acquire();
 
-               VertexBuffer = new VertexBuffer(typeof(CustomVertex.PositionColoredTextured), 6, D3DDev, Usage.None, CustomVertex.PositionColoredTextured.Format, Pool.Managed);
+            DMouseDev = new Microsoft.DirectX.DirectInput.Device(Microsoft.DirectX.DirectInput.SystemGuid.Mouse);
+            DMouseDev.Acquire();
 
-               Sprite = new Sprite(D3DDev);
+            VertexBuffer = new VertexBuffer(typeof(CustomVertex.PositionColoredTextured), 6, D3DDev, Usage.None, CustomVertex.PositionColoredTextured.Format, Pool.Managed);
 
-               FontDescription fd = new FontDescription();
-               fd.FaceName = "新宋体";
-               fd.Height = -12;
-               Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, fd);
+            D3DDev.SetStreamSource(0, VertexBuffer, 0);
+            D3DDev.TextureState[0].AlphaOperation = TextureOperation.Modulate;
+
+            Sprite = new Sprite(D3DDev);
+
+            FontDescription fd = new FontDescription();
+            fd.FaceName = "新宋体";
+            fd.Height = -12;
+            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, fd);
         }
         public Devices(Game g)
-        {
-            GameWindow = new GameWindow(g);            
-
-            Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
-            pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
-            pps.Windowed = true;
-
-            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
-            D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
-
-            DSoundDev = new Microsoft.DirectX.DirectSound.Device();
-            DSoundDev.SetCooperativeLevel(GameWindow, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
-            
-            init();
-
+        {            
             game = g;
+            GameWindow = new MetalX.GameWindow(g);
+            init();
         }
-        public Devices(Control control, Game g)
+        public Devices(Game g, Control c)
         {
-            Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
-            pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
-            pps.Windowed = true;
-
-            D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, control, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
-            D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
-
-            DSoundDev = new Microsoft.DirectX.DirectSound.Device();
-            DSoundDev.SetCooperativeLevel(control, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
-            
-            init();
             game = g;
+            GameControl = c;
+            init();
         }
         public void Dispose()
         {
@@ -199,7 +212,6 @@ namespace MetalX
             MaximizeBox = false;
             MinimizeBox = false;
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.Opaque, true);
-            
         }
     }
 }
