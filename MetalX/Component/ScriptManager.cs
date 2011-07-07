@@ -190,7 +190,7 @@ namespace MetalX.Component
                 }
                 else if (kw[0] == "me")
                 {
-                    if (kw[1] == "move")
+                    if (kw[1] == "jump")
                     {
                         Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
                         v3.X = float.Parse(kw[2]);
