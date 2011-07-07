@@ -244,6 +244,8 @@ namespace MetalX
 
             FormBoxes = new FormBoxes();
             Characters = new Characters();
+
+            FormBoxes.Add(new MetalX.Resource.MessageBox(this));
         }
         public void InitCom()
         {

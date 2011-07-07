@@ -40,56 +40,6 @@ namespace MetalHunter
             ControlBoxes.Add(tb1);
         }
     }
-    class MessageBox : FormBox
-    {
-        TextBox tb1;
-        public MessageBox(Game g)
-            : base(g)
-        {
-            Name = "MessageBox";
-            Location = new Point(0, 360);
-            //Size = new Size(640, 120);
-            //BGTextureName = "dialog-bgtexture";
-
-            tb1 = new TextBox(g);
-            tb1.Location = new Point(16, 16);
-            tb1.Text = "";
-            tb1.FontName = "Consolas";
-            tb1.FontSize = 16;
-            tb1.Interval = 200;
-            tb1.OneByOne = true;
-
-            ControlBoxes.Add(tb1);
-        }
-        public override void OnFormBoxAppearCode(object arg)
-        {
-            if (arg is TextBox)
-            {
-                tb1.Text = ((TextBox)arg).Text;
-            }
-        }
-        //public void Close()
-        //{
-        //    //game.AppendAndExecuteScript("gui disappear " + Name);
-        //}
-        //public void Show(string text, string fontName, int fontSize, int interval, bool obo)
-        //{
-        //    tb1.Text = text;
-        //    tb1.FontName = fontName;
-        //    tb1.FontSize = fontSize;
-        //    tb1.Interval = interval;
-        //    tb1.OneByOne = obo;
-        //    //game.AppendAndExecuteScript("gui appear " + Name);
-        //}
-        //public void Show(string text, bool obo)
-        //{
-        //    Show(text, tb1.FontName, tb1.FontSize, tb1.Interval, obo);
-        //}
-        //public void Show(string text)
-        //{
-        //    Show(text, tb1.FontName, tb1.FontSize, tb1.Interval, tb1.OneByOne);
-        //}
-    }
     class MenuLoad : FormBox
     {
         public MenuLoad(Game g)
@@ -177,29 +127,11 @@ namespace MetalHunter
         {
             game.AppendScript(@"gui close all");
             game.AppendScript(@"enter scenes\mmr\test.mxscene 0 0");
-            game.AppendScript(@"me move 12 7");
+            game.AppendScript(@"me jump 12 7");
             game.AppendScript(@"me skin mmr-chrs0001");
             game.ExecuteScript();
         }
     }
-    //class MessageBox : FormBox
-    //{
-    //    public MessageBox(Game g)
-    //        : base(g)
-    //    {
-    //        Name = "MessageBox";
-    //        Location = new Point(0, 360);
-
-    //        TextBox tb1 = new TextBox(g);
-    //        tb1.Location = new Point(16, 16);
-    //        tb1.Text = "MessageBox!";
-    //        tb1.TextFont = "Consolas";
-    //        tb1.Interval = 200;
-    //        tb1.OneByOne = true;
-
-    //        ControlBoxes.Add(tb1);
-    //    }
-    //}
     class MetalHunter
     {
         Game game;
@@ -209,7 +141,6 @@ namespace MetalHunter
             game.FormBoxes.LoadDotMXFormBox(new LogoEngine(game));
             game.FormBoxes.LoadDotMXFormBox(new LogoGame(game));
             game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
-            game.FormBoxes.LoadDotMXFormBox(new MessageBox(game));
         }
 
         public MetalHunter()
