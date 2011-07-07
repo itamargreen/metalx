@@ -122,6 +122,10 @@ namespace MetalX.Data
         public List<ControlBox> ControlBoxes = new List<ControlBox>();
         public void Appear()
         {
+            Appear(null);
+        }
+        public void Appear(object arg)
+        {
             //if (Visible)
             //{
             //    return;
@@ -138,12 +142,16 @@ namespace MetalX.Data
                 }
             }
             Visible = true;
-            OnFormBoxAppear();
+            OnFormBoxAppear(arg);
         }
         public void Disappear()
         {
+            Disappear(null);
+        }
+        public void Disappear(object arg)
+        {
             Visible = false;
-            OnFormBoxDisappear();
+            OnFormBoxDisappear(arg);
         }
         public FormBox(Game g)
             : base(g)
@@ -154,11 +162,11 @@ namespace MetalX.Data
             OnFormBoxDisappear = new FormBoxEvent(OnFormBoxDisappearCode);
         }
 
-        public virtual void OnFormBoxAppearCode()
+        public virtual void OnFormBoxAppearCode(object arg)
         {
         }
 
-        public virtual void OnFormBoxDisappearCode()
+        public virtual void OnFormBoxDisappearCode(object arg)
         {
         }
     }
@@ -166,11 +174,11 @@ namespace MetalX.Data
     public class TextBox : ControlBox
     {
         public string Text;
-        public Color TextColor = Color.White;
+        public Color FontColor = Color.White;
         public int TextIndex = -1;
         public string TextFileName;
-        public string TextFont = "新宋体";
-        public int TextFontSize = 12;
+        public string FontName = "新宋体";
+        public int FontSize = 12;
         public string[] Lines
         {
             get
@@ -181,7 +189,6 @@ namespace MetalX.Data
         public bool OneByOne = false;
         public int Interval = 100;
         DateTime lastCharacterTime;
-        public Size FontSize;
         public int SubTextIndex = 0;
         public event TextBoxEvent OnSubTextShowDone;
         public string SubText
@@ -199,7 +206,7 @@ namespace MetalX.Data
                     else
                     {
                         //OneByOne = false;
-                        //OnTextBoxShowDone();
+                        OnSubTextShowDone(null);
                     }
                 }
                 return Text.Substring(0, SubTextIndex);
@@ -210,7 +217,7 @@ namespace MetalX.Data
         {
             OnSubTextShowDone = new TextBoxEvent(OnSubTextShowDoneCode);
         }
-        public virtual void OnSubTextShowDoneCode()
+        public virtual void OnSubTextShowDoneCode(object arg)
         { 
         }
         public void LoadText(string pathName, bool onebyone, int interval)
@@ -247,19 +254,19 @@ namespace MetalX.Data
                 buttonBoxState = value;
                 if (value == ButtonBoxState.Up)
                 {
-                    OnButtonUp();
+                    OnButtonUp(null);
                 }
                 else if (value == ButtonBoxState.Down)
                 {
-                    OnButtonDown();
+                    OnButtonDown(null);
                 }
                 else if (value == ButtonBoxState.Focus)
                 {
-                    OnButtonFocus();
+                    OnButtonFocus(null);
                 }
                 else if (value == ButtonBoxState.Wait)
                 {
-                    OnButtonWait();
+                    OnButtonWait(null);
                 }
             }
         }
@@ -333,19 +340,19 @@ namespace MetalX.Data
             OnButtonUp = new ButtonBoxEvent(OnButtonUpCode);
         }
 
-        public virtual void OnButtonUpCode()
+        public virtual void OnButtonUpCode(object arg)
         {
         }
 
-        public virtual void OnButtonDownCode()
+        public virtual void OnButtonDownCode(object arg)
         {
         }
 
-        public virtual void OnButtonFocusCode()
+        public virtual void OnButtonFocusCode(object arg)
         {
         }
 
-        public virtual void OnButtonWaitCode()
+        public virtual void OnButtonWaitCode(object arg)
         {
         }
     }

@@ -151,10 +151,7 @@ namespace MetalX.Component
             }
             return true;
         }
-        bool IsInScene(Point p)
-        {
-            return true;
-        }
+
         void DrawScene(Scene s)
         {
             if (s == null)
@@ -258,7 +255,7 @@ namespace MetalX.Component
             {
                 return;
             }
-            if (npc.TextureIndex < 0)
+            //if (npc.TextureIndex < 0)
             {
                 npc.TextureIndex = game.Textures.GetIndex(npc.TextureName);
             }
@@ -286,7 +283,51 @@ namespace MetalX.Component
                 game.Options.TileSizePixelX,
                 Color.White);
         }
- 
+        bool IsInScene(Scene s, Vector3 p)
+        {
+            if (p.X < 0)
+            {
+                return false;
+            }
+            if (p.Y < 0)
+            {
+                return false;
+            }
+            if (p.X >= s.Size.Width)
+            {
+                return false;
+            }
+            if (p.Y >= s.Size.Height)
+            {
+                return false;
+            }
+            return true;
+        }
+        bool IsNobody(Scene s, Vector3 v3)
+        {
+            foreach (NPC npc in s.NPCs)
+            {
+                if (npc.RealLocation == v3)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        bool IsNobody(Scene s, Vector3 v3, out int index)
+        {
+            index = 0;
+            foreach (NPC npc in s.NPCs)
+            {
+                if (npc.RealLocation == v3)
+                {
+                    return false;
+                }
+                index++;
+            }
+            index = -1;
+            return true;
+        }
         public override void OnKeyboardDownHoldCode(int key)
         {
             Key k = (Key)key;
@@ -316,11 +357,28 @@ namespace MetalX.Component
                         me.Direction = Direction.R;
                     }
                     Vector3 loc = me.FrontLocation;
-                    if (scene.CodeLayer[loc].CHRCanRch)
+                    if (IsInScene(scene, loc) == false)
                     {
-                        me.LastLocation = Util.Vector3DivInt(me.RealLocationPixel, game.Options.TilePixel);
-                        me.NextLocation = loc;
-                        me.NeedMovePixel += game.Options.TilePixel;
+                        return;
+                    }
+                    if (IsNobody(scene, loc) == false)
+                    {
+                        return;
+                    }
+                    if (scene.CodeLayer[loc].CHRCanRch == false)
+                    {
+                        return;
+                    }
+                    me.LastLocation = Util.Vector3DivInt(me.RealLocationPixel, game.Options.TilePixel);
+                    me.RealLocation = me.NextLocation = loc;
+                    me.NeedMovePixel += game.Options.TilePixel;
+                }
+                else if (k == Key.J)
+                {
+                    int i = -1;
+                    if (IsNobody(scene, me.FrontLocation,out i) == false)
+                    {
+                        game.AppendAndExecuteScript("msg " + scene.NPCs[i].DialogText);
                     }
                 }
             }

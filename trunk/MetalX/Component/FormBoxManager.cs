@@ -73,14 +73,14 @@ namespace MetalX.Component
         {
             basepos = Util.PointAddPoint(basepos, tb.Location);
             basepos = Util.PointAddPoint(basepos, ScreenOffsetPixelPoint);
-            Color fColor = Util.MixColor(ColorFilter, tb.TextColor);
+            Color fColor = Util.MixColor(ColorFilter, tb.FontColor);
             if (tb.OneByOne)
             {
-                game.DrawText(tb.SubText, basepos, tb.TextFont, tb.TextFontSize, fColor);
+                game.DrawText(tb.SubText, basepos, tb.FontName, tb.FontSize, fColor);
             }
             else
             {
-                game.DrawText(tb.Text, basepos, tb.TextFont, tb.TextFontSize, fColor);
+                game.DrawText(tb.Text, basepos, tb.FontName, tb.FontSize, fColor);
             }
         }
         void drawButtonBox(ButtonBox bb, Point basepos)
@@ -121,9 +121,18 @@ namespace MetalX.Component
         public void Appear(string name)
         {
             int i = game.FormBoxes.GetIndex(name);
-            Appear(i);
+            Appear(i, null);
+        }
+        public void Appear(string name,object arg)
+        {
+            int i = game.FormBoxes.GetIndex(name);
+            Appear(i, arg);
         }
         public void Appear(int i)
+        {
+            Appear(i, null);
+        }
+        public void Appear(int i,object arg)
         {
             for (int j = 0; j < AppearingFormBoxIndex.Count; j++)
             {
@@ -133,7 +142,7 @@ namespace MetalX.Component
                 }
             }
             AppearingFormBoxIndex.Add(i);
-            game.FormBoxes[i].Appear();
+            game.FormBoxes[i].Appear(arg);
             //game.FormBoxes[i].OnFormBoxAppearCode();
         }
         public void Disappear()
@@ -192,6 +201,10 @@ namespace MetalX.Component
             {
                 AppearingFormBox.UpNowButtonBox();
                 AppearingFormBox.FocusNowButtonBox();
+            }
+            else if (k == Key.K)
+            {
+                Disappear();
             }
         }
     }

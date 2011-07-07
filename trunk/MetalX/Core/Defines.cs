@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace MetalX
 {
     public delegate void KeyboardEvent(int key);
-    public delegate void FormBoxEvent();
-    public delegate void ButtonBoxEvent();
-    public delegate void TextBoxEvent();
+    public delegate void FormBoxEvent(object arg);
+    public delegate void ButtonBoxEvent(object arg);
+    public delegate void TextBoxEvent(object arg);
     public enum ButtonBoxState
     {
         Wait,
