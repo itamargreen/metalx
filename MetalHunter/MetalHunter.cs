@@ -32,13 +32,63 @@ namespace MetalHunter
             TextBox tb1 = new TextBox(g);
             tb1.Location = new Point(16, 16);
             tb1.Text = "MetalHunter!";
-            tb1.TextFont = "Consolas";
-            tb1.TextFontSize = 36;
+            tb1.FontName = "Consolas";
+            tb1.FontSize = 36;
             tb1.Interval = 200;
             tb1.OneByOne = true;
 
             ControlBoxes.Add(tb1);
         }
+    }
+    class MessageBox : FormBox
+    {
+        TextBox tb1;
+        public MessageBox(Game g)
+            : base(g)
+        {
+            Name = "MessageBox";
+            Location = new Point(0, 360);
+            //Size = new Size(640, 120);
+            //BGTextureName = "dialog-bgtexture";
+
+            tb1 = new TextBox(g);
+            tb1.Location = new Point(16, 16);
+            tb1.Text = "";
+            tb1.FontName = "Consolas";
+            tb1.FontSize = 16;
+            tb1.Interval = 200;
+            tb1.OneByOne = true;
+
+            ControlBoxes.Add(tb1);
+        }
+        public override void OnFormBoxAppearCode(object arg)
+        {
+            if (arg is TextBox)
+            {
+                tb1.Text = ((TextBox)arg).Text;
+            }
+        }
+        //public void Close()
+        //{
+        //    //game.AppendAndExecuteScript("gui disappear " + Name);
+        //}
+        //public void Show(string text, string fontName, int fontSize, int interval, bool obo)
+        //{
+        //    tb1.Text = text;
+        //    tb1.FontName = fontName;
+        //    tb1.FontSize = fontSize;
+        //    tb1.Interval = interval;
+        //    tb1.OneByOne = obo;
+        //    //game.AppendAndExecuteScript("gui appear " + Name);
+        //}
+        //public void Show(string text, bool obo)
+        //{
+        //    Show(text, tb1.FontName, tb1.FontSize, tb1.Interval, obo);
+        //}
+        //public void Show(string text)
+        //{
+        //    Show(text, tb1.FontName, tb1.FontSize, tb1.Interval, tb1.OneByOne);
+        //}
     }
     class MenuLoad : FormBox
     {
@@ -61,19 +111,19 @@ namespace MetalHunter
             bb1.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
             bb1.FocusTextBox.Location = new Point(16, 18);
             bb1.FocusTextBox.Text = "存档1";
-            bb1.FocusTextBox.TextColor = Color.Pink;
+            bb1.FocusTextBox.FontColor = Color.Pink;
 
             bb1.DownTextureBox.TextureName = "dialog-bgtexture";
             bb1.DownTextureBox.Size = new System.Drawing.Size(640, 120);
             bb1.DownTextBox.Location = new Point(16, 18);
             bb1.DownTextBox.Text = "存档1";
-            bb1.DownTextBox.TextColor = Color.Green;
+            bb1.DownTextBox.FontColor = Color.Green;
 
             bb1.UpTextureBox.TextureName = "dialog-bgtexture";
             bb1.UpTextureBox.Size = new System.Drawing.Size(640, 120);
             bb1.UpTextBox.Location = new Point(16, 18);
             bb1.UpTextBox.Text = "存档1";
-            bb1.UpTextBox.TextColor = Color.Yellow;
+            bb1.UpTextBox.FontColor = Color.Yellow;
 
             ButtonBox bb2 = new ButtonBox(g);
             bb2.Location = new Point(0,120);
@@ -87,7 +137,7 @@ namespace MetalHunter
             bb2.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
             bb2.FocusTextBox.Location = new Point(16, 18);
             bb2.FocusTextBox.Text = "存档2";
-            bb2.FocusTextBox.TextColor = Color.Pink;
+            bb2.FocusTextBox.FontColor = Color.Pink;
 
             ButtonBox bb3 = new ButtonBox(g);
             bb3.Location = new Point(0, 240);
@@ -101,7 +151,7 @@ namespace MetalHunter
             bb3.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
             bb3.FocusTextBox.Location = new Point(16, 18);
             bb3.FocusTextBox.Text = "存档3";
-            bb3.FocusTextBox.TextColor = Color.Pink;
+            bb3.FocusTextBox.FontColor = Color.Pink;
             
             ButtonBox bb4 = new ButtonBox(g);
             bb4.Location = new Point(0, 360);
@@ -115,7 +165,7 @@ namespace MetalHunter
             bb4.FocusTextureBox.Size = new System.Drawing.Size(640, 120);
             bb4.FocusTextBox.Location = new Point(16, 18);
             bb4.FocusTextBox.Text = "存档4";
-            bb4.FocusTextBox.TextColor = Color.Pink;
+            bb4.FocusTextBox.FontColor = Color.Pink;
 
             ControlBoxes.Add(bb1);
             ControlBoxes.Add(bb2);
@@ -123,7 +173,7 @@ namespace MetalHunter
             ControlBoxes.Add(bb4);
         }
 
-        void bb1_OnButtonDown()
+        void bb1_OnButtonDown(object arg)
         {
             game.AppendScript(@"gui close all");
             game.AppendScript(@"enter scenes\mmr\test.mxscene 0 0");
@@ -132,24 +182,24 @@ namespace MetalHunter
             game.ExecuteScript();
         }
     }
-    class MessageBox : FormBox
-    {
-        public MessageBox(Game g)
-            : base(g)
-        {
-            Name = "MessageBox";
-            Location = new Point(0, 360);
+    //class MessageBox : FormBox
+    //{
+    //    public MessageBox(Game g)
+    //        : base(g)
+    //    {
+    //        Name = "MessageBox";
+    //        Location = new Point(0, 360);
 
-            TextBox tb1 = new TextBox(g);
-            tb1.Location = new Point(16, 16);
-            tb1.Text = "MessageBox!";
-            tb1.TextFont = "Consolas";
-            tb1.Interval = 200;
-            tb1.OneByOne = true;
+    //        TextBox tb1 = new TextBox(g);
+    //        tb1.Location = new Point(16, 16);
+    //        tb1.Text = "MessageBox!";
+    //        tb1.TextFont = "Consolas";
+    //        tb1.Interval = 200;
+    //        tb1.OneByOne = true;
 
-            ControlBoxes.Add(tb1);
-        }
-    }
+    //        ControlBoxes.Add(tb1);
+    //    }
+    //}
     class MetalHunter
     {
         Game game;

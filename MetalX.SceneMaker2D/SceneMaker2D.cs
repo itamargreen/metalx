@@ -126,7 +126,7 @@ namespace MetalX.SceneMaker2D
             {
                 foreach (NPC npc in scene.NPCs)
                 {
-                    drawNPC(npc);
+                    draw_npc(npc);
                 }
             }
             if(drawPen)
@@ -143,7 +143,7 @@ namespace MetalX.SceneMaker2D
 
             //game.DrawText(" FPS: " + game.AverageFPS.ToString("f1"), new Point(), Color.White);
         }
-        void drawNPC(NPC npc)
+        void draw_npc(NPC npc)
         {
             if (npc == null)
             {
@@ -153,7 +153,7 @@ namespace MetalX.SceneMaker2D
             {
                 return;
             }
-            if (npc.TextureIndex < 0)
+            //if (npc.TextureIndex < 0)
             {
                 npc.TextureIndex = game.Textures.GetIndex(npc.TextureName);
             }

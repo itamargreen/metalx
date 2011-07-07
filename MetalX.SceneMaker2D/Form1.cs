@@ -353,10 +353,10 @@ namespace MetalX.SceneMaker2D
             update_mus_list();
 
             sceneMaker2D = new SceneMaker2D(game);
-
-            
+                        
             sceneMaker2D.scene = game.LoadDotMXScene(fileName);
 
+            update_npc_list();
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
             {
@@ -393,6 +393,8 @@ namespace MetalX.SceneMaker2D
             
             sceneMaker2D.scene = game.LoadDotXMLScene(fileName);
 
+
+            update_npc_list();
 
             ui_ly_slt.Items.Clear();
             for (int i = 0; i < sceneMaker2D.scene.TileLayers.Count; i++)
@@ -1103,13 +1105,13 @@ namespace MetalX.SceneMaker2D
             sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation = false;
             ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
         }
-
+        #region npc operation
         void update_npc_list()
         {
             ui_npclist.Items.Clear();
             foreach (NPC npc in sceneMaker2D.scene.NPCs)
             {
-                ui_npclist.Items.Add(npc.Name);
+                ui_npclist.Items.Add(npc.Name + " (" + npc.RealLocation.X + "," + npc.RealLocation.Y + ")");
             }
         }
 
@@ -1125,7 +1127,6 @@ namespace MetalX.SceneMaker2D
                 }
             }
         }
-        //string npctexture;
         private void ui_npcadd_Click(object sender, EventArgs e)
         {
             NPC npc = new NPC();
@@ -1163,9 +1164,86 @@ namespace MetalX.SceneMaker2D
 
         private void ui_npcdel_Click(object sender, EventArgs e)
         {
-
+            int i = ui_npclist.SelectedIndex;
+            if (i < 0)
+            {
+                return;
+            } 
+            sceneMaker2D.scene.NPCs.RemoveAt(i);
+            update_npc_list();
         }
 
+        private void ui_npclist_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int i = ui_npclist.SelectedIndex;
+            if (i < 0)
+            {
+                return;
+            }
+            NPC npc = sceneMaker2D.scene.NPCs[i];
+
+            ui_npcname.Text = npc.Name;
+            ui_npcx.Text = npc.RealLocation.X+"";
+            ui_npcy.Text = npc.RealLocation.Y+"";
+            ui_npctxt.Text = npc.DialogText;
+            ui_npctexturename.Text = npc.TextureName;
+            if (npc.Direction == Direction.U)
+            {
+                ui_npcdir.Text = "U";
+            }
+            else if (npc.Direction == Direction.L)
+            {
+                ui_npcdir.Text = "L";
+            }
+            else if (npc.Direction == Direction.D)
+            {
+                ui_npcdir.Text = "D";
+            }
+            else if (npc.Direction == Direction.R)
+            {
+                ui_npcdir.Text = "R";
+            }
+        }
+        #endregion
+
+        private void ui_npcmodify_Click(object sender, EventArgs e)
+        {
+            int i = ui_npclist.SelectedIndex;
+            if (i < 0)
+            {
+                return;
+            }
+            NPC npc = new NPC();
+            npc.TextureName = ui_npctexturename.Text;
+            npc.Name = ui_npcname.Text;
+            npc.SetRealLocation(int.Parse(ui_npcx.Text), int.Parse(ui_npcy.Text), 0, game.Options.TilePixel);
+            Direction dir = Direction.U;
+            if (ui_npcdir.Text == "U")
+            {
+                dir = Direction.U;
+            }
+            else if (ui_npcdir.Text == "L")
+            {
+                dir = Direction.L;
+            }
+            else if (ui_npcdir.Text == "D")
+            {
+                dir = Direction.D;
+            }
+            else if (ui_npcdir.Text == "R")
+            {
+                dir = Direction.R;
+            }
+            npc.Direction = dir;
+            npc.DialogText = ui_npctxt.Text;
+
+            if (sceneMaker2D.scene.NPCs == null)
+            {
+                sceneMaker2D.scene.NPCs = new List<NPC>();
+            }
+            sceneMaker2D.scene.NPCs[i] = npc;
+            update_npc_list();
+        }
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)
         //{
         //    savetoxml(null);

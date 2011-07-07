@@ -1018,6 +1018,11 @@ namespace MetalX
         {
             ScriptManager.AppendCommand(cmd);
         }
+        public void AppendAndExecuteScript(string cmd)
+        {
+            AppendScript(cmd);
+            ExecuteScript();
+        }
         public void ExecuteMetalXScript(string file)
         {
             ScriptManager.ExecuteDotMXScript(file);

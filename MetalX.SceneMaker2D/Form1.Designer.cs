@@ -174,6 +174,8 @@
             this.取消动画图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ui_npcmodify = new System.Windows.Forms.Button();
+            this.label26 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -1366,6 +1368,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label26);
+            this.tabPage3.Controls.Add(this.ui_npcmodify);
             this.tabPage3.Controls.Add(this.ui_npctexturename);
             this.tabPage3.Controls.Add(this.ui_npcpic);
             this.tabPage3.Controls.Add(this.ui_npcdel);
@@ -1522,6 +1526,7 @@
             this.ui_npclist.Name = "ui_npclist";
             this.ui_npclist.Size = new System.Drawing.Size(284, 196);
             this.ui_npclist.TabIndex = 0;
+            this.ui_npclist.SelectedIndexChanged += new System.EventHandler(this.ui_npclist_SelectedIndexChanged);
             // 
             // pictureBox1
             // 
@@ -1562,6 +1567,25 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // ui_npcmodify
+            // 
+            this.ui_npcmodify.Location = new System.Drawing.Point(131, 492);
+            this.ui_npcmodify.Name = "ui_npcmodify";
+            this.ui_npcmodify.Size = new System.Drawing.Size(75, 23);
+            this.ui_npcmodify.TabIndex = 15;
+            this.ui_npcmodify.Text = "修改";
+            this.ui_npcmodify.UseVisualStyleBackColor = true;
+            this.ui_npcmodify.Click += new System.EventHandler(this.ui_npcmodify_Click);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(3, 294);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(53, 12);
+            this.label26.TabIndex = 16;
+            this.label26.Text = "皮肤纹理";
             // 
             // Form1
             // 
@@ -1762,6 +1786,8 @@
         private System.Windows.Forms.Button ui_npcadd;
         private System.Windows.Forms.PictureBox ui_npcpic;
         private System.Windows.Forms.TextBox ui_npctexturename;
+        private System.Windows.Forms.Button ui_npcmodify;
+        private System.Windows.Forms.Label label26;
     }
 }
 

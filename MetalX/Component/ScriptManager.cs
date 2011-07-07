@@ -4,6 +4,8 @@ using System.Text;
 
 using Microsoft.DirectX.DirectInput;
 
+using MetalX.Data;
+
 namespace MetalX.Component
 {
     public class ScriptManager : GameCom
@@ -101,7 +103,12 @@ namespace MetalX.Component
                 {
                     game.PlayMP3(kw[1]);
                 }
-
+                else if (kw[0] == "msg")
+                {
+                    TextBox tb = new TextBox(game);
+                    tb.Text = kw[1];
+                    game.FormBoxManager.Appear("MessageBox", tb);
+                }
             }
             else if (kw.Length == 3)
             {
