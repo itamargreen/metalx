@@ -309,7 +309,8 @@ namespace MetalX
         }
         public void ToggleToFullScreen()
         {
-
+            Devices.D3DDev.PresentationParameters.Windowed = true;
+            Devices.D3DDev.Reset(Devices.D3DDev.PresentationParameters);
         }
         /// <summary>
         /// 每帧
