@@ -90,6 +90,10 @@ namespace MetalX.Component
                 {
                     text = "";
                 }
+                else if (kw[0] == "fullscreen")
+                {
+                    game.ToggleToFullScreen();
+                }
             }
             else if (kw.Length == 2)
             {
