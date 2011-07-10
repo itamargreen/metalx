@@ -268,8 +268,8 @@ namespace MetalX
         /// 启动
         /// </summary>
         public void Start()
-        {            
-            //ToggleToFullScreen();
+        {
+            ToggleToFullScreen();
             gameBeginTime = DateTime.Now;
 
             totalFrames = 0;
@@ -309,7 +309,10 @@ namespace MetalX
         }
         public void ToggleToFullScreen()
         {
-            Devices.D3DDev.PresentationParameters.Windowed = true;
+            Devices.D3DDev.PresentationParameters.Windowed = false;
+            Devices.D3DDev.PresentationParameters.BackBufferWidth = Options.WindowSizePixel.Width;
+            Devices.D3DDev.PresentationParameters.BackBufferHeight = Options.WindowSizePixel.Height;
+            //Devices.D3DDev.Dispose();
             Devices.D3DDev.Reset(Devices.D3DDev.PresentationParameters);
         }
         /// <summary>
