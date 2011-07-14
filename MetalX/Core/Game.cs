@@ -11,12 +11,13 @@ using Microsoft.DirectX.Direct3D;
 using MetalX.Data;
 using MetalX.Component;
 using MetalX.Resource;
-
+using MetalX.Net;
 namespace MetalX
 {
     public class Game : IDisposable
     {
         #region 成员
+        public Clinet NetManager = new Clinet();
         /// <summary>
         /// 名字
         /// </summary>
@@ -269,7 +270,7 @@ namespace MetalX
         /// </summary>
         public void Start()
         {
-            ToggleToFullScreen();
+            //ToggleToFullScreen();
             gameBeginTime = DateTime.Now;
 
             totalFrames = 0;
