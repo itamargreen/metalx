@@ -62,6 +62,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="zlib.net">
@@ -79,6 +80,7 @@
     <Compile Include="Data\FileLink.cs" />
     <Compile Include="Data\Item.cs" />
     <Compile Include="Data\CheckPoint.cs" />
+    <Compile Include="Net\Socket.cs" />
     <Compile Include="Resource\Audios.cs" />
     <Compile Include="Resource\Characters.cs" />
     <Compile Include="Resource\Scenes.cs" />

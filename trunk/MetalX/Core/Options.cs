@@ -8,6 +8,8 @@ namespace MetalX
     {
         public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct3D;
         public bool FullScreen = false;
+        public string ServerIPAddress = "127.0.0.1";
+        public int ServerPort = 8415;
         public float X = 1f;
         public string RootPath = @".\";
         public Size WindowSizePixel = new Size(640, 480);

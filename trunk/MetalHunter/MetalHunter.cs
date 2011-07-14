@@ -76,6 +76,7 @@ namespace MetalHunter
             bb1.UpTextBox.FontColor = Color.Yellow;
 
             ButtonBox bb2 = new ButtonBox(g);
+            bb2.OnButtonDown += new ButtonBoxEvent(bb2_OnButtonDown);
             bb2.Location = new Point(0,120);
             bb2.Size = new System.Drawing.Size(640, 120);
             bb2.WaitTextureBox.TextureName = "dialog-bgtexture";
@@ -90,6 +91,7 @@ namespace MetalHunter
             bb2.FocusTextBox.FontColor = Color.Pink;
 
             ButtonBox bb3 = new ButtonBox(g);
+            bb3.OnButtonDown += new ButtonBoxEvent(bb3_OnButtonDown);
             bb3.Location = new Point(0, 240);
             bb3.Size = new System.Drawing.Size(640, 120);
             bb3.WaitTextureBox.TextureName = "dialog-bgtexture";
@@ -121,6 +123,16 @@ namespace MetalHunter
             ControlBoxes.Add(bb2);
             ControlBoxes.Add(bb3);
             ControlBoxes.Add(bb4);
+        }
+
+        void bb3_OnButtonDown(object arg)
+        {
+            game.NetManager.Send(new byte[] { 50, 51, 52, 53 });
+        }
+
+        void bb2_OnButtonDown(object arg)
+        {
+            game.NetManager.Connect("192.168.1.15", 1987);
         }
 
         void bb1_OnButtonDown(object arg)

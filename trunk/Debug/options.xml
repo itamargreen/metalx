@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <TextureDrawMode>Direct3D</TextureDrawMode>
+  <FullScreen>false</FullScreen>
+  <ServerIPAddress>127.0.0.1</ServerIPAddress>
+  <ServerPort>8415</ServerPort>
   <X>1</X>
   <RootPath>.\</RootPath>
   <WindowSizePixel>
