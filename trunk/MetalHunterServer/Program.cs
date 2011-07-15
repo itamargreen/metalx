@@ -6,16 +6,16 @@ namespace MetalHunterServer
 {
     class Program
     {
-        
+
         static void Main(string[] args)
         {
             Program prog = new Program();
             MetalX.Net.Server server;
-            server = new MetalX.Net.Server("192.168.1.15", 1987);
-            server.OnClientConnected+=new NetEvent(prog.OnClientConnected);
+            server = new MetalX.Net.Server("127.0.0.1", 8415);
+            server.OnClientConnected += new NetEvent(prog.OnClientConnected);
             server.OnClientDisconnected += new NetEvent(prog.OnClientDisconnected);
             server.OnDataReceived += new NetEvent(prog.OnDataReceived);
-            //server.OnDataSent += new NetEvent(prog.OnDataSent);
+            server.OnDataSent += new NetEvent(prog.OnDataSent);
             server.Start();
 
             while (true)
@@ -23,13 +23,15 @@ namespace MetalHunterServer
                 Console.ReadLine();
             }
         }
-
+        void OnDataSent(Session s)
+        {
+            Console.WriteLine(s.Handle + " sent");
+        }
         void OnDataReceived(Session s)
         {
-            //throw new NotImplementedException();
-            Console.WriteLine(s.Data.Length.ToString());
+            Console.WriteLine(s.Handle + " received " + Encoding.Default.GetString(s.Data));
+            s.Socket.Send(s.Data);
         }
-
         void OnClientDisconnected(Session s)
         {
             Console.WriteLine(s.Handle + " disconnected");

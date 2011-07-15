@@ -132,7 +132,7 @@ namespace MetalHunter
 
         void bb2_OnButtonDown(object arg)
         {
-            game.NetManager.Connect("192.168.1.15", 1987);
+            game.NetManager.Connect(game.Options.ServerIPAddress, game.Options.ServerPort);
         }
 
         void bb1_OnButtonDown(object arg)

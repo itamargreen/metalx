@@ -203,19 +203,16 @@ namespace MetalX.Net
         public void Send(Session session, byte[] data)
         {
             sendcount = data.Length;
-            session.Socket.BeginSend(data, 0, sendcount, SocketFlags.None, new AsyncCallback(SendFunc), session.Socket);
+            session.Socket.BeginSend(data, 0, sendcount, SocketFlags.None, new AsyncCallback(SendFunc), session);
         }
         void SendFunc(IAsyncResult iar)
         {
-            //byte[] data = (byte[])iar.AsyncState;
-            //sendcount += session.Socket.EndSend(iar);
-            //int len = data.Length - sendcount;
-            //if (len > 0)
-            //{
-            //    session.Socket.BeginSend(data, sendcount, len, SocketFlags.None, new AsyncCallback(SendFunc), data);
-            //}
-            Socket socket = (Socket)iar.AsyncState;
+            Socket socket = ((Session)iar.AsyncState).Socket;
             int count = socket.EndSend(iar);
+            if (OnDataSent != null)
+            {
+                OnDataSent((Session)iar.AsyncState);
+            }
         }
         void AcceptFunc(IAsyncResult iar)
         {
@@ -235,42 +232,42 @@ namespace MetalX.Net
             }
             else
             {
-                OnServerFull(s);
+                if (OnServerFull != null)
+                {
+                    OnServerFull(s);
+                }
             }
 
-            clientSocket.BeginReceive(rbuffer,0,rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), clientSocket);
+            clientSocket.BeginReceive(rbuffer,0,rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), s);
 
             serverSocket.BeginAccept(new AsyncCallback(AcceptFunc), serverSocket);
         }
 
         void ReceiveFunc(IAsyncResult iar)
         {
-            Socket clientSocket = (Socket)iar.AsyncState;
+            Socket clientSocket = ((Session)iar.AsyncState).Socket;
             int i = sessions.GetIndex(clientSocket.Handle);
             try
             {
                 int count = clientSocket.EndReceive(iar);
                 if (count > 0)
                 {
-                    //int j = 0;
-                    //foreach (ArraySegment<byte> a in buffer)
-                    //{
-                    //    foreach (byte b in a.Array)
-                    //    {
-                    //        sessions[i].Data[j++] = b;
-                    //    }
-                    //}
                     sessions[i].Data = new byte[count];
-                    //rbuffer.CopyTo(sessions[i].Data,0);
                     Array.Copy(rbuffer, 0, sessions[i].Data, 0, count);
-                    OnDataReceived(sessions[i]);
+                    if (OnDataReceived != null)
+                    {
+                        OnDataReceived(sessions[i]);
+                    }
                 }
                 else
                 {
                     sessions[i].Terminate();
-                    OnClientDisconnected(sessions[i]);
+                    if (OnClientDisconnected != null)
+                    {
+                        OnClientDisconnected(sessions[i]);
+                    }
                 }
-                clientSocket.BeginReceive(rbuffer, 0, rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), clientSocket);
+                clientSocket.BeginReceive(rbuffer, 0, rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), (Session)iar.AsyncState);
             }
             catch (SocketException ex)
             {
@@ -311,7 +308,7 @@ namespace MetalX.Net
             Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint iep = new IPEndPoint(IPAddress.Parse(ip), port);
             session.Socket = newsock;
-            session.Socket.BeginConnect(iep, new AsyncCallback(ConnectFunc), newsock);
+            session.Socket.BeginConnect(iep, new AsyncCallback(ConnectFunc), session);
         }
         public void Disconnect()
         {
@@ -322,23 +319,20 @@ namespace MetalX.Net
         public void Send(byte[] data)
         {
             sendcount = data.Length;
-            session.Socket.BeginSend(data, 0, sendcount, SocketFlags.None, new AsyncCallback(SendFunc), session.Socket);
+            session.Socket.BeginSend(data, 0, sendcount, SocketFlags.None, new AsyncCallback(SendFunc), session);
         }
         void SendFunc(IAsyncResult iar)
         {
-            //byte[] data = (byte[])iar.AsyncState;
-            //sendcount += session.Socket.EndSend(iar);
-            //int len = data.Length - sendcount;
-            //if (len > 0)
-            //{
-            //    session.Socket.BeginSend(data, sendcount, len, SocketFlags.None, new AsyncCallback(SendFunc), data);
-            //}
-            Socket socket = (Socket)iar.AsyncState;
+            Socket socket = ((Session)iar.AsyncState).Socket;
             int count = socket.EndSend(iar);
+            if (OnDataSent != null)
+            {
+                OnDataSent((Session)iar.AsyncState);
+            }
         }
         void ConnectFunc(IAsyncResult iar)
         {
-            Socket serverSocket = (Socket)iar.AsyncState;
+            Socket serverSocket = ((Session)iar.AsyncState).Socket;
             serverSocket.EndConnect(iar);
             session.Socket = serverSocket;
             session.IsOnline = true;
@@ -346,25 +340,18 @@ namespace MetalX.Net
             {
                 OnConnected(session);
             }
-            session.Socket.BeginReceive(rbuffer, 0, rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), serverSocket);
+            session.Socket.BeginReceive(rbuffer, 0, rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), (Session)iar.AsyncState);
         }
         void ReceiveFunc(IAsyncResult iar)
         {
-            Socket serverSocket = (Socket)iar.AsyncState;
-            int count = serverSocket.EndReceive(iar);
+            Socket serverSocket = ((Session)iar.AsyncState).Socket;
             try
             {
+                int count = serverSocket.EndReceive(iar);
                 if (count > 0)
                 {
-                    //int j = 0;
-                    //foreach (ArraySegment<byte> a in buffer)
-                    //{
-                    //    foreach (byte b in a.Array)
-                    //    {
-                    //        session.Data[j++] = b;
-                    //    }
-                    //}
-                    session.Data = rbuffer;
+                    session.Data = new byte[count];
+                    Array.Copy(rbuffer, 0, session.Data, 0, count);
                     if (OnDataReceived != null)
                     {
                         OnDataReceived(session);
@@ -373,9 +360,12 @@ namespace MetalX.Net
                 else
                 {
                     session.Terminate();
-                    OnServerDisconnected(session);
+                    if (OnServerDisconnected != null)
+                    {
+                        OnServerDisconnected(session);
+                    }
                 }
-                serverSocket.BeginReceive(rbuffer, 0, rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), serverSocket);
+                serverSocket.BeginReceive(rbuffer, 0, rbuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveFunc), (Session)iar.AsyncState);
             }
             catch (SocketException ex)
             {
