@@ -153,6 +153,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.ui_mus_lib = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label26 = new System.Windows.Forms.Label();
+            this.ui_npcmodify = new System.Windows.Forms.Button();
             this.ui_npctexturename = new System.Windows.Forms.TextBox();
             this.ui_npcpic = new System.Windows.Forms.PictureBox();
             this.ui_npcdel = new System.Windows.Forms.Button();
@@ -174,8 +176,6 @@
             this.取消动画图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.ui_npcmodify = new System.Windows.Forms.Button();
-            this.label26 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -874,7 +874,8 @@
             // 
             // ui_link_clr
             // 
-            this.ui_link_clr.Location = new System.Drawing.Point(247, 3);
+            this.ui_link_clr.Enabled = false;
+            this.ui_link_clr.Location = new System.Drawing.Point(208, 1);
             this.ui_link_clr.Name = "ui_link_clr";
             this.ui_link_clr.Size = new System.Drawing.Size(36, 23);
             this.ui_link_clr.TabIndex = 219;
@@ -883,12 +884,13 @@
             // 
             // ui_link_del
             // 
-            this.ui_link_del.Location = new System.Drawing.Point(208, 3);
+            this.ui_link_del.Location = new System.Drawing.Point(247, 1);
             this.ui_link_del.Name = "ui_link_del";
             this.ui_link_del.Size = new System.Drawing.Size(36, 23);
             this.ui_link_del.TabIndex = 218;
             this.ui_link_del.Text = "删";
             this.ui_link_del.UseVisualStyleBackColor = true;
+            this.ui_link_del.Click += new System.EventHandler(this.ui_link_del_Click);
             // 
             // ui_link_add
             // 
@@ -1017,6 +1019,7 @@
             // 
             // ui_link_slt
             // 
+            this.ui_link_slt.Enabled = false;
             this.ui_link_slt.FormattingEnabled = true;
             this.ui_link_slt.Location = new System.Drawing.Point(3, 3);
             this.ui_link_slt.Name = "ui_link_slt";
@@ -1392,6 +1395,25 @@
             this.tabPage3.Text = "NPC编辑";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(3, 294);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(53, 12);
+            this.label26.TabIndex = 16;
+            this.label26.Text = "皮肤纹理";
+            // 
+            // ui_npcmodify
+            // 
+            this.ui_npcmodify.Location = new System.Drawing.Point(131, 492);
+            this.ui_npcmodify.Name = "ui_npcmodify";
+            this.ui_npcmodify.Size = new System.Drawing.Size(75, 23);
+            this.ui_npcmodify.TabIndex = 15;
+            this.ui_npcmodify.Text = "修改";
+            this.ui_npcmodify.UseVisualStyleBackColor = true;
+            this.ui_npcmodify.Click += new System.EventHandler(this.ui_npcmodify_Click);
+            // 
             // ui_npctexturename
             // 
             this.ui_npctexturename.Location = new System.Drawing.Point(62, 291);
@@ -1567,25 +1589,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // ui_npcmodify
-            // 
-            this.ui_npcmodify.Location = new System.Drawing.Point(131, 492);
-            this.ui_npcmodify.Name = "ui_npcmodify";
-            this.ui_npcmodify.Size = new System.Drawing.Size(75, 23);
-            this.ui_npcmodify.TabIndex = 15;
-            this.ui_npcmodify.Text = "修改";
-            this.ui_npcmodify.UseVisualStyleBackColor = true;
-            this.ui_npcmodify.Click += new System.EventHandler(this.ui_npcmodify_Click);
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(3, 294);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(53, 12);
-            this.label26.TabIndex = 16;
-            this.label26.Text = "皮肤纹理";
             // 
             // Form1
             // 

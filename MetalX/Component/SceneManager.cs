@@ -94,6 +94,21 @@ namespace MetalX.Component
                     }
                 }
             }
+            else
+            {
+                if (scene != null)
+                {
+                    string sname = scene.CodeLayer[me.RealLocation].SceneFileName;
+                    if (sname != null)
+                    {
+                        int dx = scene.CodeLayer[me.RealLocation].DefaultLocation.X;
+                        int dy = scene.CodeLayer[me.RealLocation].DefaultLocation.Y;
+                        game.AppendScript("enter " + game.Scenes[sname].FileName + " " + -dx + " " + -dy);
+                        game.AppendScript("me jump " + dx + " " + dy);
+                        game.ExecuteScript();
+                    }
+                }
+            }
         }
         void frameCode()
         {

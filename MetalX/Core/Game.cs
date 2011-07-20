@@ -527,6 +527,20 @@ namespace MetalX
 
             return scene;
         }
+        public void LoadAllDotMXScene(string pathName)
+        {
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.MXScene");
+                foreach (FileInfo fi in fis)
+                {
+                    Scenes.Add(new FileLink(fi.FullName));
+                }
+            }
+        }
         /// 加载.PNG文件
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>

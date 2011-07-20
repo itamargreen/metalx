@@ -297,6 +297,7 @@ namespace MetalX.SceneMaker2D
         }
         void draw_link(Point p)
         {
+            p = Util.PointMulInt(p, scene.TilePixel);
             game.DrawRect(new Rectangle(p, scene.TileSizePixel), Color.Green);
         }
     }

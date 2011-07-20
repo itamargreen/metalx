@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MetalX.Data
 {
+    [Serializable]
     public class FileLink
     {
         public FileLink()
