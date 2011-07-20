@@ -163,6 +163,7 @@ namespace MetalHunter
             game.InitCom();
 
             game.LoadAllDotPNG(@".\", new Size(24, 24));
+            game.LoadAllDotMXScene(@".\");
 
             InitFormBoxes();
             

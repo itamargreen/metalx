@@ -34,19 +34,19 @@ namespace MetalX.Data
         Foot = 4,
         Head = 5,
         Hand = 6,
-        Other=7,
+        Other = 7,
     }
     [Serializable]
     public enum EquipmentMTLType
     {
         PrimaryWeapon = 0,
         SecondryWeapon = 1,
-        Motor = 2,
-        Body = 3,
-        FuelBox = 4,
-        AmmoBox = 5,
-        ECU = 6,
-        Other=7,
+        SpecialWeapon = 2,
+        Engine = 3,
+        ECU = 4,
+        FuelBox = 5,
+        AmmoBox = 6,
+        Other = 7,
     }
     [Serializable]
     public class EquipmentCHR : Item

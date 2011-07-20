@@ -266,6 +266,12 @@ namespace MetalX.SceneMaker2D
                 }
             }
         }
+        void del_link(Point p)
+        {
+            p = Util.PointDivInt(p, sceneMaker2D.scene.TilePixel);
+            sceneMaker2D.scene.CodeLayer[p].SceneFileName = null;
+            //sceneMaker2D.scene.CodeLayer[p].
+        }
 
         void update_pic_list()
         {
@@ -963,7 +969,7 @@ namespace MetalX.SceneMaker2D
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    ui_link_file.Text = System.IO.Path.GetFileName(ofd.FileName);
+                    ui_link_file.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
                 }
             }
         }
@@ -973,6 +979,10 @@ namespace MetalX.SceneMaker2D
             paint_link(right_rect);
         }
 
+        private void ui_link_del_Click(object sender, EventArgs e)
+        {
+            del_link(right_rect.Location);
+        }
         private void 震动ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             sceneMaker2D.ShockScreen(1000);
@@ -1244,6 +1254,7 @@ namespace MetalX.SceneMaker2D
             sceneMaker2D.scene.NPCs[i] = npc;
             update_npc_list();
         }
+
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)
         //{
         //    savetoxml(null);
