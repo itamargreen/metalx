@@ -307,7 +307,7 @@ namespace MetalX.SceneMaker2D
             game = new Game(pictureBox1);
 
             game.InitData();
-            game.LoadAllDotPNG(@".\", new Size(tilesizepixel.Width / 2, tilesizepixel.Height / 2));
+            game.LoadAllDotPNG(game.Options.RootPath, new Size(tilesizepixel.Width / 2, tilesizepixel.Height / 2));
             //game.LoadAllDotMP3(@".\");
 
             update_pic_list();
@@ -352,7 +352,7 @@ namespace MetalX.SceneMaker2D
             game = new Game(pictureBox1);
             game.InitData();
             game.InitCom();
-            game.LoadAllDotPNG(@".\", new Size(game.Options.TileSizePixel.Width / 2, game.Options.TileSizePixel.Height / 2));
+            game.LoadAllDotPNG(game.Options.RootPath, new Size(game.Options.TileSizePixel.Width / 2, game.Options.TileSizePixel.Height / 2));
             //game.LoadAllDotMP3(@".\");
 
             update_pic_list();
@@ -389,7 +389,7 @@ namespace MetalX.SceneMaker2D
             game = new Game(pictureBox1);
             game.InitData();
             game.InitCom();
-            game.LoadAllDotPNG(@".\", new Size(game.Options.TileSizePixel.Width / 2, game.Options.TileSizePixel.Height / 2));
+            game.LoadAllDotPNG(game.Options.RootPath, new Size(game.Options.TileSizePixel.Width / 2, game.Options.TileSizePixel.Height / 2));
             //game.LoadAllDotMP3(@".\");
             update_pic_list();
             update_mus_list();
@@ -432,12 +432,16 @@ namespace MetalX.SceneMaker2D
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Options o = (Options)Util.LoadObjectXML("options.xml", typeof(Options));
-            ui_sinw.Text = o.TileSizePixelX.Width + "";
-            ui_sinh.Text = o.TileSizePixelX.Height + "";
-            toolStripComboBox1.Text = o.TextureDrawMode.ToString();
-            splitContainer1.SplitterDistance = 320;
-            //pictureBox1.ContextMenuStrip = menuStrip2;
+            try
+            {
+                Options o = (Options)Util.LoadObjectXML("options.xml", typeof(Options));
+                ui_sinw.Text = o.TileSizePixelX.Width + "";
+                ui_sinh.Text = o.TileSizePixelX.Height + "";
+                toolStripComboBox1.Text = o.TextureDrawMode.ToString();
+                splitContainer1.SplitterDistance = 320;
+                //pictureBox1.ContextMenuStrip = menuStrip2;
+            }
+            catch { }
         }
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -1106,18 +1110,24 @@ namespace MetalX.SceneMaker2D
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation = true;
-            ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
+            Point p = Util.PointDivInt(sceneMaker2D.penLoc, game.Options.TilePixel);
+            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][p].IsAnimation = true;
+            ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][p].IsAnimation;
         }
 
         private void 取消动画图元ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation = false;
-            ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][sceneMaker2D.penLoc].IsAnimation;
+            Point p = Util.PointDivInt(sceneMaker2D.penLoc, game.Options.TilePixel);
+            sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][p].IsAnimation = false;
+            ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][p].IsAnimation;
         }
         #region npc operation
         void update_npc_list()
         {
+            if (sceneMaker2D.scene.NPCs == null)
+            {
+                return;
+            }
             ui_npclist.Items.Clear();
             foreach (NPC npc in sceneMaker2D.scene.NPCs)
             {

@@ -186,16 +186,17 @@ namespace MetalX.Component
                 {
                     DrawPC(me);
                 }
-
-                foreach (NPC npc in s.NPCs)
+                if (s.NPCs != null)
                 {
-                    int npcdrawl = s.CodeLayer[npc.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
-                    if (l == npcdrawl)
+                    foreach (NPC npc in s.NPCs)
                     {
-                        DrawNPC(npc);
+                        int npcdrawl = s.CodeLayer[npc.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
+                        if (l == npcdrawl)
+                        {
+                            DrawNPC(npc);
+                        }
                     }
                 }
-
                 foreach (Tile t in tl.Tiles)
                 {
                     if (nodrawl != l)
@@ -248,7 +249,7 @@ namespace MetalX.Component
             }
             dz.Size = game.Textures[chr.TextureIndex].TileSizePixel;
             Vector3 v31 = chr.RealLocationPixel;
-            v31.Y += game.SpriteOffsetPixel;
+            v31.Y += game.Options.SpriteOffsetPixel;
             v31.X += scene.RealLocationPixel.X;
             v31.Y += scene.RealLocationPixel.Y;
             v31.Z += scene.RealLocationPixel.Z;
@@ -286,7 +287,7 @@ namespace MetalX.Component
             }
             dz.Size = game.Textures[npc.TextureIndex].TileSizePixel;
             Vector3 v31 = npc.RealLocationPixel;
-            v31.Y += game.SpriteOffsetPixel;
+            v31.Y += game.Options.SpriteOffsetPixel;
             v31.X += scene.RealLocationPixel.X;
             v31.Y += scene.RealLocationPixel.Y;
             v31.Z += scene.RealLocationPixel.Z;
@@ -320,6 +321,10 @@ namespace MetalX.Component
         }
         bool IsNobody(Scene s, Vector3 v3)
         {
+            if (s.NPCs == null)
+            {
+                return true;
+            }
             foreach (NPC npc in s.NPCs)
             {
                 if (npc.RealLocation == v3)
@@ -331,6 +336,11 @@ namespace MetalX.Component
         }
         bool IsNobody(Scene s, Vector3 v3, out int index)
         {
+            if (s.NPCs == null)
+            {
+                index = -1;
+                return true;
+            } 
             index = 0;
             foreach (NPC npc in s.NPCs)
             {

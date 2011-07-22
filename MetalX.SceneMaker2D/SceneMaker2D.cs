@@ -169,7 +169,7 @@ namespace MetalX.SceneMaker2D
             }
             dz.Size = game.Textures[npc.TextureIndex].TileSizePixel;
             Vector3 v31 = npc.RealLocationPixel;
-            v31.Y += game.SpriteOffsetPixel;
+            v31.Y += game.Options.SpriteOffsetPixel;
             v31.X += scene.RealLocationPixel.X;
             v31.Y += scene.RealLocationPixel.Y;
             v31.Z += scene.RealLocationPixel.Z;

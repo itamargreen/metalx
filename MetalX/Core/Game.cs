@@ -77,14 +77,7 @@ namespace MetalX
         //        return Options.TileSizeX.Width;
         //    }
         //}
-        public int SpriteOffsetPixel
-        {
-            get
-            {
-                //return 0;
-                return -Options.TilePixel / 3;
-            }
-        }
+
         //public Vector3 CenterLocation
         //{
         //    get
@@ -200,6 +193,11 @@ namespace MetalX
             Devices = new Devices(this);
             Devices.GameWindow.FormClosing += new FormClosingEventHandler(GameWindowClosing);
             Devices.GameWindow.Paint += new PaintEventHandler(GameWindowPaint);
+
+            if (Options.FullScreen)
+            {
+                ToggleToFullScreen();
+            }
         }
 
         void GameWindowPaint(object sender, PaintEventArgs e)
@@ -270,7 +268,6 @@ namespace MetalX
         /// </summary>
         public void Start()
         {
-            //ToggleToFullScreen();
             gameBeginTime = DateTime.Now;
 
             totalFrames = 0;
@@ -825,11 +822,17 @@ namespace MetalX
                 return;
             }
 
+            //if (t.Name == "player")
+            //{
+            //    int b = t.SizePixel.Width;
+            //}
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
 
             int w, h;
             w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
             h = Devices.D3DDev.PresentationParameters.BackBufferHeight;
+            //w = Options.WindowSizePixel.Width;
+            //h = Options.WindowSizePixel.Height;
 
             loc.X -= w / 2;
             loc.Y -= h / 2;
@@ -839,21 +842,45 @@ namespace MetalX
             Size s = t.SizePixel;
 
             float fx, fy, tx, ty;
-            float offset = 0.1f;
 
+            //if (Util.Is2Pow(s.Width))
+            //{
+            //    s.Width -= 1;
+            //    fx = ((float)dz.X) / (float)s.Width;
+            //    tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
+            //}
+            //else
+            //{
+            //    s.Width -= 1;
+            //    fx = ((float)dz.X + Options.UVOffsetX) / (float)s.Width;
+            //    tx = ((float)dz.X + (float)dz.Width + Options.UVOffsetX) / (float)s.Width;
+            //}
+
+            //if (Util.Is2Pow(s.Height))
+            //{
+            //    s.Height -= 1;
+            //    fy = ((float)dz.Y) / (float)s.Height;
+            //    ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
+            //}
+            //else
+            //{
+            //    s.Height -= 1;
+            //    fy = ((float)dz.Y + Options.UVOffsetY) / (float)s.Height;
+            //    ty = ((float)dz.Y + (float)dz.Height + Options.UVOffsetX) / (float)s.Height;
+            //}
             if (Util.Is2PowSize(t.SizePixel))
             {
-                fx = ((float)dz.X) / (float)s.Width;
-                fy = ((float)dz.Y) / (float)s.Height;
-                tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
-                ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
+                fx = (float)dz.Left / (float)s.Width;
+                tx = (float)dz.Right / (float)s.Width;
+                fy = (float)dz.Top / (float)s.Height;
+                ty = (float)dz.Bottom / (float)s.Height;
             }
             else
             {
-                fx = ((float)dz.X + offset) / (float)s.Width;
-                fy = ((float)dz.Y + offset) / (float)s.Height;
-                tx = ((float)dz.X + (float)dz.Width + offset) / (float)s.Width;
-                ty = ((float)dz.Y + (float)dz.Height + offset) / (float)s.Height;
+                fx = ((float)dz.Left + Options.UVOffsetX) / (float)s.Width;
+                tx = ((float)dz.Right + Options.UVOffsetX) / (float)s.Width;
+                fy = ((float)dz.Top + Options.UVOffsetY) / (float)s.Height;
+                ty = ((float)dz.Bottom + Options.UVOffsetY) / (float)s.Height;
             }
 
             vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
@@ -888,12 +915,12 @@ namespace MetalX
                 dz.Y = dz.Y * 2;
                 dz.Size = size;
                 Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
-                //sprite.Draw2D(t.MEMTexture2X, dz, dz, loc, color);
+                //Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, loc, color);
             }
             else
             {
                 Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
-                //sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
+                //Devices.Sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
             }
 
             Devices.Sprite.End();

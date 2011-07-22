@@ -1,17 +1,19 @@
 <?xml version="1.0"?>
 <Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <TextureDrawMode>Direct3D</TextureDrawMode>
-  <FullScreen>false</FullScreen>
-  <ServerIPAddress>127.0.0.1</ServerIPAddress>
-  <ServerPort>8415</ServerPort>
+  <FullScreen>true</FullScreen>
   <X>1</X>
-  <RootPath>.\</RootPath>
+  <RootPath>.\mm</RootPath>
   <WindowSizePixel>
     <Width>640</Width>
     <Height>480</Height>
   </WindowSizePixel>
   <TileSizePixel>
-    <Width>48</Width>
-    <Height>48</Height>
+    <Width>32</Width>
+    <Height>32</Height>
   </TileSizePixel>
+  <UVOffsetX>0.1</UVOffsetX>
+  <UVOffsetY>0.1</UVOffsetY>
+  <ServerIP>127.0.0.1</ServerIP>
+  <ServerPort>8415</ServerPort>
 </Options>
