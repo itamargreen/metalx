@@ -9,12 +9,12 @@ gui fallout 1000
 delay 1000
 gui disappear LogoEngine
 
-gui fallin 1
-gui appear LogoGame
-delay 1000
-gui fallout 1500
-delay 1500
-gui disappear LogoGame
+//gui fallin 1
+//gui appear LogoGame
+//delay 1000
+//gui fallout 1500
+//delay 1500
+//gui disappear LogoGame
 
 gui fallin 1
 gui appear MenuLoad

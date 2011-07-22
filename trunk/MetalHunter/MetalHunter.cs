@@ -132,11 +132,16 @@ namespace MetalHunter
 
         void bb2_OnButtonDown(object arg)
         {
-            game.NetManager.Connect(game.Options.ServerIPAddress, game.Options.ServerPort);
+            game.NetManager.Connect(game.Options.ServerIP, game.Options.ServerPort);
         }
 
         void bb1_OnButtonDown(object arg)
         {
+            //game.AppendScript(@"gui close all");
+            //game.AppendScript(@"enter mm\scenes\laduo.mxscene 0 0");
+            //game.AppendScript(@"me jump 12 7");
+            //game.AppendScript(@"me skin player");
+            //game.ExecuteScript();
             game.AppendScript(@"gui close all");
             game.AppendScript(@"enter scenes\mmr\test.mxscene 0 0");
             game.AppendScript(@"me jump 12 7");

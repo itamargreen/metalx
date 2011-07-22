@@ -289,7 +289,23 @@ namespace MetalX.Component
             //{
             //    game.SaveCheckPoint(4);
             //}
-            else if (k== Key.F9)
+            else if (k == Key.F1)
+            {
+                game.Options.UVOffsetX += 0.1f;
+            }
+            else if (k == Key.F2)
+            {
+                game.Options.UVOffsetX -= 0.1f;
+            }
+            else if (k == Key.F3)
+            {
+                game.Options.UVOffsetY += 0.1f;
+            }
+            else if (k == Key.F4)
+            {
+                game.Options.UVOffsetY -= 0.1f;
+            }
+            else if (k == Key.F9)
             {
                 game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
             }

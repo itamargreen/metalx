@@ -31,9 +31,9 @@ namespace MetalX
         {
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
-            pps.Windowed = !game.Options.FullScreen;
+            pps.Windowed = true;
             pps.BackBufferCount = 2;
-            pps.PresentationInterval = PresentInterval.One;
+            pps.PresentationInterval = PresentInterval.Default;
 
             if (GameWindow == null)
             {
@@ -43,8 +43,8 @@ namespace MetalX
             }
             else
             {
-                pps.BackBufferWidth = GameWindow.Width;
-                pps.BackBufferHeight = GameWindow.Height;
+                //pps.BackBufferWidth = GameWindow.Width;
+                //pps.BackBufferHeight = GameWindow.Height;
                 D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
             }
             D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
@@ -208,7 +208,7 @@ namespace MetalX
             Text = g.Name;
             StartPosition = FormStartPosition.CenterScreen;
             Size = g.Options.WindowSizePixel;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.Opaque, true);
