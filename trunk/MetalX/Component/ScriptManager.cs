@@ -170,7 +170,7 @@ namespace MetalX.Component
                 {
                     if (kw[1] == "skin")
                     {
-                        game.SceneManager.SkinMe(kw[2]);
+                        game.SceneManager.MeSkin(kw[2]);
                     }
                 }
             }
@@ -185,13 +185,7 @@ namespace MetalX.Component
                         game.SceneManager.ShockScreen(ms, range);
                     }
                 }
-                else if (kw[0] == "enter")
-                {
-                    Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
-                    v3.X = float.Parse(kw[2]);
-                    v3.Y = float.Parse(kw[3]);
-                    game.SceneManager.EnterScene(kw[1], v3);
-                }
+                
                 else if (kw[0] == "me")
                 {
                     if (kw[1] == "jump")
@@ -199,9 +193,22 @@ namespace MetalX.Component
                         Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
                         v3.X = float.Parse(kw[2]);
                         v3.Y = float.Parse(kw[3]);
-                        game.SceneManager.MoveMe(v3);
+                        game.SceneManager.SceneJump(v3);
                     }
 
+                }
+            }
+            else if (kw.Length == 5)
+            {
+                if (kw[0] == "scene")
+                {
+                    if (kw[1] == "jump")
+                    {
+                        Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
+                        v3.X = float.Parse(kw[3]);
+                        v3.Y = float.Parse(kw[4]);
+                        game.SceneManager.Enter(kw[2], v3);
+                    }
                 }
             }
         }
@@ -233,7 +240,7 @@ namespace MetalX.Component
         }
         public void ExecuteDotMXScript(string fileName)
         {
-            string cmds = System.IO.File.ReadAllText(fileName + ".mxscript");
+            string cmds = System.IO.File.ReadAllText(fileName);
             text += cmds + "\n";
             Execute(cmds);
         }
@@ -515,6 +522,10 @@ namespace MetalX.Component
                     else if (k == Key.D9 || k == Key.NumPad9)
                     {
                         ks = "9";
+                    }
+                    else if (k == Key.Minus)
+                    {
+                        ks = "-";
                     }
                     #endregion
                     //else

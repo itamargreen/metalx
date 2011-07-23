@@ -2,11 +2,11 @@
 
 gui fallout 1
 gui appear LogoEngine
-gui shock 3000
-gui fallin 1000
-delay 2000
-gui fallout 1000
+gui shock 1500
+gui fallin 500
 delay 1000
+gui fallout 500
+delay 500
 gui disappear LogoEngine
 
 //gui fallin 1

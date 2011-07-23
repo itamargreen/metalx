@@ -64,7 +64,7 @@ namespace MetalX.Component
                 if (me.Direction == Direction.U)
                 {
                     me.RealLocationPixel.Y -= movePixel;
-                    if (scene.RealLocationPixel.Y < 0)
+                    //if (scene.RealLocationPixel.Y < 0)
                     {
                         scene.RealLocationPixel.Y += movePixel;
                     }
@@ -72,7 +72,7 @@ namespace MetalX.Component
                 else if (me.Direction == Direction.L)
                 {
                     me.RealLocationPixel.X -= movePixel;
-                    if (scene.RealLocationPixel.X < 0)
+                    //if (scene.RealLocationPixel.X < 0)
                     {
                         scene.RealLocationPixel.X += movePixel;
                     }
@@ -80,7 +80,7 @@ namespace MetalX.Component
                 else if (me.Direction == Direction.D)
                 {
                     me.RealLocationPixel.Y += movePixel;
-                    if (scene.RealLocationPixel.Y + scene.SizePixel.Height > game.Options.WindowSizePixel.Height)
+                    //if (scene.RealLocationPixel.Y + scene.SizePixel.Height > game.Options.WindowSizePixel.Height)
                     {
                         scene.RealLocationPixel.Y -= movePixel;
                     }
@@ -88,7 +88,7 @@ namespace MetalX.Component
                 else if (me.Direction == Direction.R)
                 {
                     me.RealLocationPixel.X += movePixel;
-                    if (scene.RealLocationPixel.X + scene.SizePixel.Width > game.Options.WindowSizePixel.Width)
+                    //if (scene.RealLocationPixel.X + scene.SizePixel.Width > game.Options.WindowSizePixel.Width)
                     {
                         scene.RealLocationPixel.X -= movePixel;
                     }
@@ -96,18 +96,23 @@ namespace MetalX.Component
             }
             else
             {
-                if (scene != null)
+                try
                 {
-                    string sname = scene.CodeLayer[me.RealLocation].SceneFileName;
-                    if (sname != null)
+                    if (scene != null)
                     {
-                        int dx = scene.CodeLayer[me.RealLocation].DefaultLocation.X;
-                        int dy = scene.CodeLayer[me.RealLocation].DefaultLocation.Y;
-                        game.AppendScript("enter " + game.Scenes[sname].FileName + " " + -dx + " " + -dy);
-                        game.AppendScript("me jump " + dx + " " + dy);
-                        game.ExecuteScript();
+                        string sname = scene.CodeLayer[me.RealLocation].SceneFileName;
+                        if (sname != null)
+                        {
+                            int dx = scene.CodeLayer[me.RealLocation].DefaultLocation.X;
+                            int dy = scene.CodeLayer[me.RealLocation].DefaultLocation.Y;
+                            //game.AppendScript("me jump " + dx + " " + dy);
+                            //game.AppendScript("scene jump " + sname + " " + dx + " " + dy);
+                            //game.ExecuteScript();
+                            game.SceneManager.Enter(sname, scene.CodeLayer[me.RealLocation].DefaultLocation);
+                        }
                     }
                 }
+                catch { }
             }
         }
         void frameCode()
@@ -141,20 +146,53 @@ namespace MetalX.Component
             //game.DrawText("RealLoc:\n" + me.RealLocation + "\nLastLoc:\n" + me.LastLocation + "\nFrontLoc:\n" + me.FrontLocation, new Point(0, 120), Color.White);
         }
 
-        public void EnterScene(string fileName, Vector3 realLoc)
+        public void Enter(string fileName, Point p)
         {
-            scene = game.LoadDotMXScene(fileName);
-            scene.RealLocationPixel = realLoc;
-            game.Options.TileSizePixel = scene.TileSizePixel;
+            Enter(fileName, Util.Point2Vector3(p, 0));
         }
+        public void Enter(string fileName, Vector3 realLoc)
+        {
+            string mus = "";
+            try
+            {
+                mus = scene.BGMusics[0];
+            }
+            catch { }
+            scene = null;
+            scene = game.LoadDotMXScene(game.Scenes[fileName].FileName);
+            game.Options.TileSizePixel = scene.TileSizePixel;
 
-        public void MoveMe(Vector3 v3)
+            SceneJump(realLoc);
+
+            if (scene.BGMusics.Count > 0)
+            {
+                if (mus != scene.BGMusics[0])
+                {
+                    game.PlayMP3(game.Audios[scene.BGMusics[0]].FileName, true);
+                }
+            }
+            else
+            {
+                game.StopAudio();
+            }
+        }
+        public void SceneJump(Vector3 realLoc)
+        {
+            Vector3 cp = new Vector3(game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width / 2, game.Options.WindowSizePixel.Height / game.Options.TileSizePixel.Height / 2, 0);
+          
+            MeJump(realLoc);
+            Vector3 v3 = new Vector3(-realLoc.X, -realLoc.Y, 0);
+            v3 = Util.Vector3AddVector3(v3, cp);
+            scene.SetRealLocation(v3, game.Options.TilePixel);
+        }
+        public void MeJump(Vector3 v3)
         {
             me.NextLocation = me.LastLocation = v3;
             me.SetRealLocation(v3, game.Options.TilePixel);
         }
-        public void SkinMe(string name)
+        public void MeSkin(string name)
         {
+            me.TextureIndex = -1;
             me.TextureName = name;
         }
 
