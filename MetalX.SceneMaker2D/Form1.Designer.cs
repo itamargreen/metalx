@@ -176,6 +176,7 @@
             this.取消动画图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ui_changescene = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -567,6 +568,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.ui_changescene);
             this.panel4.Controls.Add(this.label8);
             this.panel4.Controls.Add(this.ui_framedelay);
             this.panel4.Controls.Add(this.label20);
@@ -792,9 +794,11 @@
             this.ui_ly_del.TabIndex = 115;
             this.ui_ly_del.Text = "删除图层";
             this.ui_ly_del.UseVisualStyleBackColor = true;
+            this.ui_ly_del.Click += new System.EventHandler(this.ui_ly_del_Click);
             // 
             // ui_ly_down
             // 
+            this.ui_ly_down.Enabled = false;
             this.ui_ly_down.Location = new System.Drawing.Point(198, 61);
             this.ui_ly_down.Name = "ui_ly_down";
             this.ui_ly_down.Size = new System.Drawing.Size(75, 23);
@@ -804,6 +808,7 @@
             // 
             // ui_ly_up
             // 
+            this.ui_ly_up.Enabled = false;
             this.ui_ly_up.Location = new System.Drawing.Point(198, 32);
             this.ui_ly_up.Name = "ui_ly_up";
             this.ui_ly_up.Size = new System.Drawing.Size(75, 23);
@@ -819,6 +824,7 @@
             this.ui_ly_add.TabIndex = 112;
             this.ui_ly_add.Text = "新建图层";
             this.ui_ly_add.UseVisualStyleBackColor = true;
+            this.ui_ly_add.Click += new System.EventHandler(this.ui_ly_add_Click);
             // 
             // tabPage6
             // 
@@ -1333,6 +1339,7 @@
             this.ui_mus_add.TabIndex = 220;
             this.ui_mus_add.Text = "添加";
             this.ui_mus_add.UseVisualStyleBackColor = true;
+            this.ui_mus_add.Click += new System.EventHandler(this.ui_mus_add_Click);
             // 
             // label13
             // 
@@ -1362,6 +1369,7 @@
             // 
             // ui_mus_lib
             // 
+            this.ui_mus_lib.Enabled = false;
             this.ui_mus_lib.FormattingEnabled = true;
             this.ui_mus_lib.ItemHeight = 12;
             this.ui_mus_lib.Location = new System.Drawing.Point(5, 65);
@@ -1590,6 +1598,16 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // ui_changescene
+            // 
+            this.ui_changescene.Location = new System.Drawing.Point(205, 88);
+            this.ui_changescene.Name = "ui_changescene";
+            this.ui_changescene.Size = new System.Drawing.Size(75, 23);
+            this.ui_changescene.TabIndex = 221;
+            this.ui_changescene.Text = "修改";
+            this.ui_changescene.UseVisualStyleBackColor = true;
+            this.ui_changescene.Click += new System.EventHandler(this.ui_changescene_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1791,6 +1809,7 @@
         private System.Windows.Forms.TextBox ui_npctexturename;
         private System.Windows.Forms.Button ui_npcmodify;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Button ui_changescene;
     }
 }
 

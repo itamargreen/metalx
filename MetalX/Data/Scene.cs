@@ -74,6 +74,10 @@ namespace MetalX.Data
                 RealLocationPixel.Y = value.Y;
             }
         }
+        public void SetRealLocation(Vector3 v3, int unit)
+        {
+            RealLocationPixel = Util.Vector3MulInt(v3, unit);
+        }
         //[NonSerialized]
         //public Location Location;
 
@@ -82,7 +86,7 @@ namespace MetalX.Data
         /// </summary>
         public List<TileLayer> TileLayers = new List<TileLayer>();
         public List<NPC> NPCs = new List<NPC>();
-        public List<FileLink> Musics = new List<FileLink>();
+        public List<string> BGMusics = new List<string>();
         /// <summary>
         /// 代码层
         /// </summary>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <TextureDrawMode>Direct3D</TextureDrawMode>
-  <FullScreen>true</FullScreen>
+  <FullScreen>false</FullScreen>
   <X>1</X>
-  <RootPath>.\mm</RootPath>
+  <RootPath>.\mm\</RootPath>
   <WindowSizePixel>
     <Width>640</Width>
     <Height>480</Height>

@@ -33,7 +33,7 @@ namespace MetalX
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
             pps.Windowed = true;
             pps.BackBufferCount = 2;
-            pps.PresentationInterval = PresentInterval.Default;
+            pps.PresentationInterval = PresentInterval.One;
 
             if (GameWindow == null)
             {

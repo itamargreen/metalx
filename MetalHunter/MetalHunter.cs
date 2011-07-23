@@ -137,16 +137,12 @@ namespace MetalHunter
 
         void bb1_OnButtonDown(object arg)
         {
+            game.ExecuteMetalXScript("load1.mxscript");
             //game.AppendScript(@"gui close all");
-            //game.AppendScript(@"enter mm\scenes\laduo.mxscene 0 0");
+            //game.AppendScript(@"enter scenes\mmr\test.mxscene 0 0");
             //game.AppendScript(@"me jump 12 7");
-            //game.AppendScript(@"me skin player");
+            //game.AppendScript(@"me skin mmr-chrs0001");
             //game.ExecuteScript();
-            game.AppendScript(@"gui close all");
-            game.AppendScript(@"enter scenes\mmr\test.mxscene 0 0");
-            game.AppendScript(@"me jump 12 7");
-            game.AppendScript(@"me skin mmr-chrs0001");
-            game.ExecuteScript();
         }
     }
     class MetalHunter
@@ -167,12 +163,13 @@ namespace MetalHunter
             game.InitData();
             game.InitCom();
 
-            game.LoadAllDotPNG(@".\", new Size(24, 24));
-            game.LoadAllDotMXScene(@".\");
+            game.LoadAllDotPNG( new Size(16, 16));
+            game.LoadAllDotMXScene();
+            game.LoadAllDotMP3();
 
             InitFormBoxes();
             
-            game.ExecuteMetalXScript("script");
+            game.ExecuteMetalXScript("logo.mxscript");
 
             game.Start();
         }

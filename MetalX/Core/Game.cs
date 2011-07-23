@@ -307,11 +307,13 @@ namespace MetalX
         }
         public void ToggleToFullScreen()
         {
+            isRunning = false;
             Devices.D3DDev.PresentationParameters.Windowed = false;
             Devices.D3DDev.PresentationParameters.BackBufferWidth = Options.WindowSizePixel.Width;
             Devices.D3DDev.PresentationParameters.BackBufferHeight = Options.WindowSizePixel.Height;
             //Devices.D3DDev.Dispose();
             Devices.D3DDev.Reset(Devices.D3DDev.PresentationParameters);
+            isRunning = true;
         }
         /// <summary>
         /// 每帧
@@ -350,6 +352,7 @@ namespace MetalX
             {
                 return;
             }
+            
             Devices.D3DDev.EndScene();
             Devices.D3DDev.Present();
             totalFrames++;
@@ -524,8 +527,10 @@ namespace MetalX
 
             return scene;
         }
-        public void LoadAllDotMXScene(string pathName)
+        public void LoadAllDotMXScene()
         {
+            string pathName = Options.RootPath;
+
             List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
@@ -664,8 +669,10 @@ namespace MetalX
 
             return model;
         }
-        public void LoadAllDotMXA(string pathName)
+        public void LoadAllDotMXA()
         {
+            string pathName = Options.RootPath;
+
             List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
@@ -678,8 +685,9 @@ namespace MetalX
                 }
             }
         }
-        public void LoadAllDotMP3(string pathName)
+        public void LoadAllDotMP3()
         {
+            string pathName = Options.RootPath;
             List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
@@ -692,8 +700,10 @@ namespace MetalX
                 }
             }
         }
-        public void LoadAllDotMXT(string pathName)
+        public void LoadAllDotMXT()
         {
+            string pathName = Options.RootPath;
+
             List<string> dirName = new List<string>();
             {
                 Util.EnumDir(pathName, dirName);
@@ -708,8 +718,10 @@ namespace MetalX
                 }
             }
         }
-        public void LoadAllDotPNG(string pathName, Size defTileSize)
+        public void LoadAllDotPNG( Size defTileSize)
         {
+            string pathName = Options.RootPath;
+
             List<string> dirName = new List<string>();
             Util.EnumDir(pathName, dirName);
             foreach (string pName in dirName)
@@ -822,17 +834,12 @@ namespace MetalX
                 return;
             }
 
-            //if (t.Name == "player")
-            //{
-            //    int b = t.SizePixel.Width;
-            //}
             Devices.D3DDev.SetTexture(0, t.MEMTexture);
 
             int w, h;
             w = Devices.D3DDev.PresentationParameters.BackBufferWidth;
             h = Devices.D3DDev.PresentationParameters.BackBufferHeight;
-            //w = Options.WindowSizePixel.Width;
-            //h = Options.WindowSizePixel.Height;
+
 
             loc.X -= w / 2;
             loc.Y -= h / 2;
@@ -843,39 +850,15 @@ namespace MetalX
 
             float fx, fy, tx, ty;
 
-            //if (Util.Is2Pow(s.Width))
-            //{
-            //    s.Width -= 1;
-            //    fx = ((float)dz.X) / (float)s.Width;
-            //    tx = ((float)dz.X + (float)dz.Width) / (float)s.Width;
-            //}
-            //else
-            //{
-            //    s.Width -= 1;
-            //    fx = ((float)dz.X + Options.UVOffsetX) / (float)s.Width;
-            //    tx = ((float)dz.X + (float)dz.Width + Options.UVOffsetX) / (float)s.Width;
-            //}
 
-            //if (Util.Is2Pow(s.Height))
+            //if (Util.Is2PowSize(t.SizePixel))
             //{
-            //    s.Height -= 1;
-            //    fy = ((float)dz.Y) / (float)s.Height;
-            //    ty = ((float)dz.Y + (float)dz.Height) / (float)s.Height;
+            //    fx = (float)dz.Left / (float)s.Width;
+            //    tx = (float)dz.Right / (float)s.Width;
+            //    fy = (float)dz.Top / (float)s.Height;
+            //    ty = (float)dz.Bottom / (float)s.Height;
             //}
             //else
-            //{
-            //    s.Height -= 1;
-            //    fy = ((float)dz.Y + Options.UVOffsetY) / (float)s.Height;
-            //    ty = ((float)dz.Y + (float)dz.Height + Options.UVOffsetX) / (float)s.Height;
-            //}
-            if (Util.Is2PowSize(t.SizePixel))
-            {
-                fx = (float)dz.Left / (float)s.Width;
-                tx = (float)dz.Right / (float)s.Width;
-                fy = (float)dz.Top / (float)s.Height;
-                ty = (float)dz.Bottom / (float)s.Height;
-            }
-            else
             {
                 fx = ((float)dz.Left + Options.UVOffsetX) / (float)s.Width;
                 tx = ((float)dz.Right + Options.UVOffsetX) / (float)s.Width;
@@ -1029,10 +1012,20 @@ namespace MetalX
         #region PlayAudio
         public void PlayMetalXAudio(string name)
         {
+            PlayMetalXAudio(name, false);
+        }
+        public void PlayMetalXAudio(string name,bool loop)
+        {
+            SoundManager.Loop = loop;
             SoundManager.PlayMetalXAudio(name);
         }
         public void PlayMP3(string fileName)
         {
+            PlayMP3(fileName, false);
+        }
+        public void PlayMP3(string fileName,bool loop)
+        {
+            SoundManager.Loop = loop;
             SoundManager.PlayMP3(fileName);
         }
         public void StopAudio()

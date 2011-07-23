@@ -94,7 +94,7 @@ namespace MetalX.SceneMaker2D
 
         public override void Draw()
         {
-            base.Draw();
+            //base.Draw();
             foreach (TileLayer tl in scene.TileLayers)
             {
                 if (tl.Visible)
@@ -107,7 +107,7 @@ namespace MetalX.SceneMaker2D
                             t[frameIndex].DrawZone,
                             Util.PointMulInt(t.LocationPoint, scene.TilePixel),
                             scene.TileSizePixel,
-                            Util.MixColor(t[frameIndex].ColorFilter, ColorFilter)
+                            ColorFilter
                             );
                     }
                 }
