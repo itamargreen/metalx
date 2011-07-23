@@ -94,7 +94,7 @@ namespace MetalX.Component
                     }
                 }
             }
-            else
+            if (me.NeedMovePixel < 1)
             {
                 try
                 {
@@ -142,6 +142,7 @@ namespace MetalX.Component
             {
                 return;
             }
+            DrawBorder(scene);
             DrawScene(scene);
             //game.DrawText("RealLoc:\n" + me.RealLocation + "\nLastLoc:\n" + me.LastLocation + "\nFrontLoc:\n" + me.FrontLocation, new Point(0, 120), Color.White);
         }
@@ -152,6 +153,12 @@ namespace MetalX.Component
         }
         public void Enter(string fileName, Vector3 realLoc)
         {
+            game.AppendScript(@"scene fallout 1");
+            game.ExecuteScript();
+
+            Delay(500);
+
+            game.PlayMP3(2, game.Audios["door"].FileName);
             string mus = "";
             try
             {
@@ -168,13 +175,18 @@ namespace MetalX.Component
             {
                 if (mus != scene.BGMusics[0])
                 {
-                    game.PlayMP3(game.Audios[scene.BGMusics[0]].FileName, true);
+                    game.PlayMP3(1,game.Audios[scene.BGMusics[0]].FileName, true);
                 }
             }
             else
             {
                 game.StopAudio();
             }
+
+            game.AppendScript(@"delay 500");
+            game.AppendScript(@"scene fallin 300");
+            game.AppendScript(@"delay 300");
+            game.ExecuteScript();
         }
         public void SceneJump(Vector3 realLoc)
         {
@@ -204,7 +216,171 @@ namespace MetalX.Component
             }
             return true;
         }
+        void DrawBorder(Scene s)
+        {
+            if (s.BottomTile == null)
+            {
+                return;
+            }
+            int wr = game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width;
+            int hr = game.Options.WindowSizePixel.Height / game.Options.TileSizePixelX.Height;
 
+            int x = 0;
+            int y = 0;
+            int w = 0;
+            int h = 0;
+            Vector3 loc;
+            Vector3 loco;
+
+            Point sp = Util.PointDivInt(s.RealLocationPixelPoint, game.Options.TilePixel);
+            w = sp.X + 1;
+            h = sp.Y + 1;
+            if (sp.X >= 0)
+            {
+                loc = new Vector3();
+                loco = new Vector3();
+
+                int ti = s.BottomTile.Frames[0].TextureIndex;
+                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
+                Color cf = s.BottomTile.Frames[0].ColorFilter;
+
+                loc.X = s.RealLocationPixel.X;
+                loc.Y = s.RealLocationPixel.Y;
+                for (int yy = y; yy < hr + 1; yy++)
+                {
+                    for (int xx = x; xx < w; xx++)
+                    {
+                        loco.X = xx - w;
+                        loco.Y = yy - h + 1;
+                        game.DrawMetalXTexture(
+                            game.Textures[ti],
+                            dz,
+                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            game.Options.TileSizePixelX,
+                            Util.MixColor(cf, ColorFilter)
+                        );
+                    }
+                }
+            }
+            if (sp.X + s.Size.Width <= wr)
+            {
+                loc = new Vector3();
+                loco = new Vector3();
+
+                int ti = s.BottomTile.Frames[0].TextureIndex;
+                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
+                Color cf = s.BottomTile.Frames[0].ColorFilter;
+
+                loc.X = s.RealLocationPixel.X;
+                loc.Y = s.RealLocationPixel.Y;
+                for (int yy = y; yy < hr + 1; yy++)
+                {
+                    for (int xx = x; xx < Math.Abs(w)+2; xx++)
+                    {
+                        loco.X = xx + s.Size.Width;
+                        loco.Y = yy - h + 1;
+                        game.DrawMetalXTexture(
+                            game.Textures[ti],
+                            dz,
+                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            game.Options.TileSizePixelX,
+                            Util.MixColor(cf, ColorFilter)
+                        );
+                    }
+                }
+            }
+            if (sp.Y >= 0)
+            {
+                loc = new Vector3();
+                loco = new Vector3();
+
+                int ti = s.BottomTile.Frames[0].TextureIndex;
+                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
+                Color cf = s.BottomTile.Frames[0].ColorFilter;
+
+                loc.X = s.RealLocationPixel.X;
+                loc.Y = s.RealLocationPixel.Y;
+                for (int yy = y; yy < h; yy++)
+                {
+                    for (int xx = x; xx < wr + 1; xx++)
+                    {
+                        loco.X = xx - w + 1;
+                        loco.Y = yy - h;
+                        game.DrawMetalXTexture(
+                            game.Textures[ti],
+                            dz,
+                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            game.Options.TileSizePixelX,
+                            Util.MixColor(cf, ColorFilter)
+                        );
+                    }
+                }
+            }
+            if (sp.Y + s.Size.Height <= hr)
+            {
+                loc = new Vector3();
+                loco = new Vector3();
+
+                int ti = s.BottomTile.Frames[0].TextureIndex;
+                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
+                Color cf = s.BottomTile.Frames[0].ColorFilter;
+
+                loc.X = s.RealLocationPixel.X;
+                loc.Y = s.RealLocationPixel.Y;
+                for (int yy = y; yy < Math.Abs(h) + 2; yy++)
+                {
+                    for (int xx = x; xx < wr + 1; xx++)
+                    {
+                        loco.X = xx - w + 1;
+                        loco.Y = yy + s.Size.Height;
+                        game.DrawMetalXTexture(
+                            game.Textures[ti],
+                            dz,
+                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            game.Options.TileSizePixelX,
+                            Util.MixColor(cf, ColorFilter)
+                        );
+                    }
+                }
+            }
+
+            //int x = 0, y = 0;
+            //int w = s.Size.Width;
+            //int h = s.Size.Height;
+            //int wr = game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width;
+            //int hr = game.Options.WindowSizePixel.Height / game.Options.TileSizePixelX.Height;
+            //w += wr;
+            //h += hr;
+
+            //x -= wr / 2;
+            //y -= hr / 2;
+
+            //int ti = 0;
+            //Rectangle dz;
+            //Color cf;
+
+            //ti = s.BottomTile.Frames[0].TextureIndex;
+            //dz = s.BottomTile.Frames[0].DrawZone;
+            //cf = s.BottomTile.Frames[0].ColorFilter;
+
+            //Vector3 loc = new Vector3(x, y, 0);
+            //Vector3 loco = new Vector3();
+            //for (int yy = y; yy < h; yy++)
+            //{
+            //    for (int xx = x; xx < w; xx++)
+            //    {
+            //        loco.X = xx;
+            //        loco.Y = yy;
+            //        game.DrawMetalXTexture(
+            //            game.Textures[ti],
+            //            dz,
+            //            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+            //            game.Options.TileSizePixelX,
+            //            Util.MixColor(cf, ColorFilter)
+            //        );
+            //    }
+            //}
+        }
         void DrawScene(Scene s)
         {
             if (s == null)
@@ -428,7 +604,14 @@ namespace MetalX.Component
                     {
                         return;
                     }
-                    if (scene.CodeLayer[loc].CHRCanRch == false)
+                    try
+                    {
+                        if (scene.CodeLayer[loc].CHRCanRch == false)
+                        {
+                            return;
+                        }
+                    }
+                    catch
                     {
                         return;
                     }

@@ -73,6 +73,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.ui_changescene = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.ui_framedelay = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -176,7 +177,7 @@
             this.取消动画图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.ui_changescene = new System.Windows.Forms.Button();
+            this.设为打底层图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -586,6 +587,16 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(290, 290);
             this.panel4.TabIndex = 12;
+            // 
+            // ui_changescene
+            // 
+            this.ui_changescene.Location = new System.Drawing.Point(205, 88);
+            this.ui_changescene.Name = "ui_changescene";
+            this.ui_changescene.Size = new System.Drawing.Size(75, 23);
+            this.ui_changescene.TabIndex = 221;
+            this.ui_changescene.Text = "修改";
+            this.ui_changescene.UseVisualStyleBackColor = true;
+            this.ui_changescene.Click += new System.EventHandler(this.ui_changescene_Click);
             // 
             // label8
             // 
@@ -1576,21 +1587,22 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.取消动画图元ToolStripMenuItem});
+            this.取消动画图元ToolStripMenuItem,
+            this.设为打底层图元ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(143, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(155, 92);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(154, 22);
             this.toolStripMenuItem1.Text = "设为动画图元";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // 取消动画图元ToolStripMenuItem
             // 
             this.取消动画图元ToolStripMenuItem.Name = "取消动画图元ToolStripMenuItem";
-            this.取消动画图元ToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.取消动画图元ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.取消动画图元ToolStripMenuItem.Text = "取消动画图元";
             this.取消动画图元ToolStripMenuItem.Click += new System.EventHandler(this.取消动画图元ToolStripMenuItem_Click);
             // 
@@ -1598,15 +1610,12 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // ui_changescene
+            // 设为打底层图元ToolStripMenuItem
             // 
-            this.ui_changescene.Location = new System.Drawing.Point(205, 88);
-            this.ui_changescene.Name = "ui_changescene";
-            this.ui_changescene.Size = new System.Drawing.Size(75, 23);
-            this.ui_changescene.TabIndex = 221;
-            this.ui_changescene.Text = "修改";
-            this.ui_changescene.UseVisualStyleBackColor = true;
-            this.ui_changescene.Click += new System.EventHandler(this.ui_changescene_Click);
+            this.设为打底层图元ToolStripMenuItem.Name = "设为打底层图元ToolStripMenuItem";
+            this.设为打底层图元ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.设为打底层图元ToolStripMenuItem.Text = "设为打底层图元";
+            this.设为打底层图元ToolStripMenuItem.Click += new System.EventHandler(this.设为打底层图元ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1810,6 +1819,7 @@
         private System.Windows.Forms.Button ui_npcmodify;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Button ui_changescene;
+        private System.Windows.Forms.ToolStripMenuItem 设为打底层图元ToolStripMenuItem;
     }
 }
 

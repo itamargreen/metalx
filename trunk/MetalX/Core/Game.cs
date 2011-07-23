@@ -7,6 +7,7 @@ using System.Threading;
 
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
+using Microsoft.DirectX.DirectSound;
 
 using MetalX.Data;
 using MetalX.Component;
@@ -53,7 +54,8 @@ namespace MetalX
         /// 帧开始时间
         /// </summary>
         public TimeSpan frameTimeSpan;
-        SoundManager SoundManager;
+        SoundManager SoundManager1;
+        SoundManager SoundManager2;
         KeyboardManager KeyboardManager;
         public FormBoxManager FormBoxManager;
         public SceneManager SceneManager;
@@ -251,8 +253,11 @@ namespace MetalX
             KeyboardManager = new KeyboardManager(this);
             MountGameCom(KeyboardManager);
 
-            SoundManager = new SoundManager(this);
-            MountGameCom(SoundManager);
+            SoundManager1 = new SoundManager(this);
+            MountGameCom(SoundManager1);
+
+            SoundManager2 = new SoundManager(this);
+            MountGameCom(SoundManager2);
             
             SceneManager = new SceneManager(this);
             MountGameCom(SceneManager);
@@ -328,6 +333,7 @@ namespace MetalX
             Devices.D3DDev.BeginScene();
             for (int i = 0; i < GameComs.Count; i++)
             {
+                GameComs[i].BaseCode();
                 if (GameComs[i].Enable)
                 {
                     GameComs[i].Code();
@@ -1010,44 +1016,61 @@ namespace MetalX
         }
         #endregion
         #region PlayAudio
-        public void PlayMetalXAudio(string name)
+        public void PlayMetalXAudio(int layer, string name)
         {
-            PlayMetalXAudio(name, false);
+            PlayMetalXAudio(layer,name, false);
         }
-        public void PlayMetalXAudio(string name,bool loop)
+        public void PlayMetalXAudio(int layer, string name, bool loop)
         {
-            SoundManager.Loop = loop;
-            SoundManager.PlayMetalXAudio(name);
+            if (layer == 1)
+            {
+                SoundManager1.Loop = loop;
+                SoundManager1.PlayMetalXAudio(name);
+            }
+            else if (layer == 2)
+            {
+                SoundManager2.Loop = loop;
+                SoundManager2.PlayMetalXAudio(name);
+            }
         }
-        public void PlayMP3(string fileName)
+        public void PlayMP3(int layer, string fileName)
         {
-            PlayMP3(fileName, false);
+            PlayMP3(layer,fileName, false);
         }
-        public void PlayMP3(string fileName,bool loop)
+        public void PlayMP3(int layer, string fileName, bool loop)
         {
-            SoundManager.Loop = loop;
-            SoundManager.PlayMP3(fileName);
+            if (layer == 1)
+            {
+                SoundManager1.Loop = loop;
+                SoundManager1.PlayMP3(fileName);
+            }
+            else if (layer == 2)
+            {
+                
+                //SoundManager2.Stop();
+                SoundManager2.PlayMP3(fileName);
+            }
         }
         public void StopAudio()
         {
-            SoundManager.Stop();
+            SoundManager1.Stop();
         }
         public double AudioPlayingProgress
         {
             get
             {
-                return SoundManager.Progress;
+                return SoundManager1.Progress;
             }
             set
             {
-                SoundManager.Progress = value;
+                SoundManager1.Progress = value;
             }
         }
         public bool AudioIsPlaying
         {
             get
             {
-                return SoundManager.Playing;
+                return SoundManager1.Playing;
             }
         }
         #endregion

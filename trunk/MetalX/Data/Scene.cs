@@ -9,6 +9,7 @@ namespace MetalX.Data
     [Serializable]
     public class Scene
     {
+        public Tile BottomTile;
         /// <summary>
         /// 场景索引
         /// </summary>

@@ -22,7 +22,7 @@ namespace MetalX.Component
                 return wholeSize / 2;
             }
         }
-        byte[] buff = new byte[40000];
+        byte[] buff = new byte[20000];
 
         public bool Loop = false;
         public bool Playing = false;
@@ -143,7 +143,7 @@ namespace MetalX.Component
             waveFormat.BlockAlign = (short)(waveFormat.Channels * (waveFormat.BitsPerSample / 8));
             waveFormat.AverageBytesPerSecond = waveFormat.SamplesPerSecond * waveFormat.BlockAlign;
 
-            wholeSize = (int)(waveFormat.AverageBytesPerSecond * TimeSpan.FromSeconds(0.4).TotalSeconds);
+            wholeSize = (int)(waveFormat.AverageBytesPerSecond * TimeSpan.FromSeconds(0.2).TotalSeconds);
 
             bufferDescription = new BufferDescription(waveFormat);
             bufferDescription.BufferBytes = wholeSize;
@@ -226,14 +226,19 @@ namespace MetalX.Component
                         }
                         else
                         {
+                            secondaryBuffer.Stop();
                             mp3Stream.Position = 0;
                             if (Loop)
                             {
+                                replay();
                             }
                             else
-                            {
-                                secondaryBuffer.Stop();
+                            {                                
                                 Playing = false;
+                                //for (int i = 0; i < buff.Length; i++)
+                                //{
+                                //    buff[i] = 0;
+                                //}
                             }
                         }
                     }
@@ -285,6 +290,13 @@ namespace MetalX.Component
             secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
             secondaryBuffer.Play(0, BufferPlayFlags.Looping);
             Playing = true;
+        }
+        void replay()
+        {
+            mp3Stream.Read(buff, 0, halfSize);
+            secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
+            secondaryBuffer.Play(0, BufferPlayFlags.Looping);
+            //Playing = true;
         }
         public void Stop()
         {

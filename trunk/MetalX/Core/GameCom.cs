@@ -18,11 +18,13 @@ namespace MetalX
 
         public void EnableAll()
         {
-            Controllable = Enable = Visible = true;
+            Controllable = Visible = true;
+            Enable = true;
         }
         public void DisableAll()
         {
-            Controllable = Enable = Visible = true;
+            Controllable = Visible = false;
+            Enable = false;
         }
 
         public Color ColorFilter = Color.FromArgb(255, Color.White);
@@ -45,10 +47,14 @@ namespace MetalX
         {
         }
 
+        public virtual void BaseCode()
+        { 
+            shock();
+            fallOut();
+            delay();
+        }
         public virtual void Code()
         {
-            Shock();
-            FallOut();
         }
         public virtual void Draw()
         {
@@ -73,6 +79,28 @@ namespace MetalX
                 OnKeyboardDownHold(key);
             }
         }
+        DateTime DelayBeginTime;
+        bool IsDelaying;
+        double DelayTime;
+        public void Delay(int ms)
+        {
+            DelayBeginTime = DateTime.Now;
+            DisableAll();
+            IsDelaying = true;
+            DelayTime = ms;
+        }
+        void delay()
+        {
+            if (IsDelaying)
+            {
+                TimeSpan ts = DateTime.Now - DelayBeginTime;
+                if (ts.TotalMilliseconds > DelayTime)
+                {
+                    EnableAll();
+                    IsDelaying = false;
+                }
+            }
+        } 
         #region for shock
         protected Vector3 ScreenOffsetPixel;
         protected Point ScreenOffsetPixelPoint
@@ -82,6 +110,7 @@ namespace MetalX
                 return new Point((int)ScreenOffsetPixel.X, (int)ScreenOffsetPixel.Y);
             }
         }
+
         DateTime ShockBeginTime;
         double ShockTime = 500;
         int ShockRange = 4;
@@ -104,7 +133,7 @@ namespace MetalX
                 IsShocking = true;
             }
         }
-        protected void Shock()
+        void shock()
         {
             if (IsShocking)
             {
@@ -149,7 +178,7 @@ namespace MetalX
             FallOutSceen(ms);
             IsFallin = true;
         }
-        protected void FallOut()
+        void fallOut()
         {
             TimeSpan ts = DateTime.Now - FalloutBegineTime;
             if (IsFallOuting)
