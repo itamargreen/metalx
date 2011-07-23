@@ -105,7 +105,7 @@ namespace MetalX.Component
                 }
                 else if (kw[0] == "mp3")
                 {
-                    game.PlayMP3(kw[1]);
+                    game.PlayMP3(2, kw[1]);
                 }
                 else if (kw[0] == "msg")
                 {

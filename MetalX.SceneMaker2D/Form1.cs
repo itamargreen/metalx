@@ -1062,7 +1062,7 @@ namespace MetalX.SceneMaker2D
             {
                 return;
             }
-            game.PlayMetalXAudio(ui_mus_slt.Text);
+            game.PlayMetalXAudio(1,ui_mus_slt.Text);
             timer1.Enabled = true;
         }
 
@@ -1095,7 +1095,7 @@ namespace MetalX.SceneMaker2D
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    game.PlayMP3(ofd.FileName);
+                    game.PlayMP3(1,ofd.FileName);
                     timer1.Enabled = true;
                 }
             }
@@ -1363,6 +1363,13 @@ namespace MetalX.SceneMaker2D
         {
             sceneMaker2D.scene.TileLayers.Add(new TileLayer());
             update_layer_selecter();
+
+        }
+
+        private void 设为打底层图元ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Point p = Util.PointDivInt(sceneMaker2D.penLoc, game.Options.TilePixel);
+            sceneMaker2D.scene.BottomTile = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][p];
 
         }
 
