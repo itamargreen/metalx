@@ -22,6 +22,7 @@ namespace MetalX.Data
         public Vector3 LastLocation;
         public Vector3 RealLocation;
         public Vector3 RealLocationPixel;
+        public Color ColorFilter = Color.White;
         public void SetRealLocation(int x, int y, int z, int unit)
         {
             SetRealLocation(new Vector3(x, y, z), unit);
@@ -160,7 +161,7 @@ namespace MetalX.Data
                 {
                     if (nextl > lastl)
                     {
-                        if (movedPixel > unit / 3*1)
+                        if (movedPixel > unit)//unit / 3*1)
                         {
                             v3.Y--;
                         }
@@ -178,7 +179,7 @@ namespace MetalX.Data
                     }
                     else
                     {
-                        if (movedPixel > unit / 3 *2)
+                        if (movedPixel > 0)//unit / 3 *2)
                         {
                             v3.Y++;
                         }
@@ -426,12 +427,37 @@ namespace MetalX.Data
     }
     [Serializable]
     public class PC : CHR
-    { }
+    {
+        public bool IsTalking = false;
+    }
     [Serializable]
     public class NPC : CHR
     {
-        //public Direction DefaultDirection;
+        public Direction DefaultDirection;
         //public Vector3 DefaultLocation;
         public string DialogText;
+        public void RecoverDirection()
+        {
+            Direction = DefaultDirection;
+        }
+        public void TurnToMe(PC me)
+        {
+            if (me.Direction == Direction.U)
+            {
+                Direction = Direction.D;
+            }
+            else if (me.Direction == Direction.L)
+            {
+                Direction = Direction.R;
+            }
+            else if (me.Direction == Direction.D)
+            {
+                Direction = Direction.U;
+            }
+            else if (me.Direction == Direction.R)
+            {
+                Direction = Direction.L;
+            }                        
+        }
     }
 }

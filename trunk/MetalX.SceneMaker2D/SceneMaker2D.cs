@@ -181,23 +181,23 @@ namespace MetalX.SceneMaker2D
                 game.Options.TileSizePixelX,
                 Color.White);
         }
-        public override void OnKeyboardDownCode(int key)
+        public override void OnKeyboardDownCode(object sender, int key)
         {
-            base.OnKeyboardDownCode(key);
+            //base.OnKeyboardDownCode(key);
             game.DrawText(key + " down", new Point(), Color.White);
             //if (key == 200)
             //{
             //    ((System.Windows.Forms.Panel)game.Devices.D3DDev..DeviceWindow.Parent).VerticalScroll.Value += 16;
             //}
         }
-        public override void OnKeyboardDownHoldCode(int key)
+        public override void OnKeyboardDownHoldCode(object sender, int key)
         {
-            base.OnKeyboardDownHoldCode(key);
+            //base.OnKeyboardDownHoldCode(this,key);
             game.DrawText(key + " downhold", new Point(0,20), Color.White);
         }
-        public override void OnKeyboardUpCode(int key)
+        public override void OnKeyboardUpCode(object sender, int key)
         {
-            base.OnKeyboardUpCode(key);
+            //base.OnKeyboardUpCode(key);
             game.DrawText(key + " up", new Point(0,40), Color.White);
         }
         void draw_grid()

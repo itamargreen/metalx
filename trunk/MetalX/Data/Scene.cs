@@ -91,7 +91,7 @@ namespace MetalX.Data
         /// <summary>
         /// 代码层
         /// </summary>
-        List<CodeLayer> CodeLayers = new List<CodeLayer>();
+        public List<CodeLayer> CodeLayers = new List<CodeLayer>();
         public CodeLayer CodeLayer
         {
             get
@@ -390,7 +390,7 @@ namespace MetalX.Data
         /// <summary>
         /// 精灵绘制所在层
         /// </summary>
-        public int DrawLayer = 5;
+        public int DrawLayer = 3;
         public int RchDisappear = -1;
         /// <summary>
         /// 可上移
@@ -425,26 +425,7 @@ namespace MetalX.Data
         /// </summary>
         public Point Location;
     }    
-    [Serializable]
-    public enum Direction
-    {
-        /// <summary>
-        /// 上
-        /// </summary>
-        U = 0,
-        /// <summary>
-        /// 下
-        /// </summary>
-        L = 1,
-        /// <summary>
-        /// 左
-        /// </summary>
-        D = 2,
-        /// <summary>
-        /// 右
-        /// </summary>
-        R = 3,
-    }
+
     //[Serializable]
     //public class Linker
     //{

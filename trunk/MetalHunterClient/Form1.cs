@@ -21,7 +21,7 @@ namespace MetalHunterClient
         private void Form1_Load(object sender, EventArgs e)
         {
             game = new Game();
-            ui_ip.Text = game.Options.ServerIP;
+            //ui_ip.Text = game.Options.ServerIP;
             ui_port.Text = game.Options.ServerPort.ToString();
             game.NetManager.OnDataReceived += new NetEvent(NetManager_OnDataReceived);
         }

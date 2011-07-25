@@ -37,13 +37,13 @@ namespace MetalX
             OnKeyboardDownHold = new KeyboardEvent(OnKeyboardDownHoldCode);
             EnableAll();
         }
-        public virtual void OnKeyboardDownCode(int key)
+        public virtual void OnKeyboardDownCode(object sender, int key)
         {
         }
-        public virtual void OnKeyboardUpCode(int key)
+        public virtual void OnKeyboardUpCode(object sender, int key)
         {
         }
-        public virtual void OnKeyboardDownHoldCode(int key)
+        public virtual void OnKeyboardDownHoldCode(object sender, int key)
         {
         }
 
@@ -66,17 +66,18 @@ namespace MetalX
             {
                 return;
             }
+
             if (keyState == KeyState.Down)
             {
-                OnKeyboardDown(key);
-            } 
+                OnKeyboardDown(this, key);
+            }
             else if (keyState == KeyState.Up)
             {
-                OnKeyboardUp(key);
-            } 
+                OnKeyboardUp(this, key);
+            }
             else if (keyState == KeyState.DownHold)
             {
-                OnKeyboardDownHold(key);
+                OnKeyboardDownHold(this, key);
             }
         }
         DateTime DelayBeginTime;

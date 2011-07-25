@@ -1,0 +1,3 @@
+gui close all
+scene jump 000 8 12
+me skin player

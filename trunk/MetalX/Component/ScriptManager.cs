@@ -156,6 +156,10 @@ namespace MetalX.Component
                         {
                             game.FormBoxManager.DisappearAll();
                         }
+                        else
+                        {
+                            game.FormBoxManager.Disappear(kw[2]);
+                        }
                     }
                     else if (kw[1] == "appear")
                     {
@@ -171,6 +175,15 @@ namespace MetalX.Component
                     if (kw[1] == "skin")
                     {
                         game.SceneManager.MeSkin(kw[2]);
+                    }
+                }
+                else if (kw[0] == "npc")
+                {
+                    if (kw[1] == "say")
+                    {
+                        TextBox tb = new TextBox(game);
+                        tb.Text = kw[2];
+                        game.FormBoxManager.Appear("NPCTalk", tb);
                     }
                 }
             }
@@ -240,12 +253,12 @@ namespace MetalX.Component
         }
         public void ExecuteDotMXScript(string fileName)
         {
-            string cmds = System.IO.File.ReadAllText(fileName);
+            string cmds = System.IO.File.ReadAllText(game.Options.RootPath + fileName);
             text += cmds + "\n";
             Execute(cmds);
         }
 
-        public override void OnKeyboardUpCode(int key)
+        public override void OnKeyboardUpCode(object sender, int key)
         {
             Key k = (Key)key;
             if (k == Key.LeftShift || k == Key.RightControl)
@@ -253,7 +266,7 @@ namespace MetalX.Component
                 isBig = false;
             }
         }
-        public override void OnKeyboardDownCode(int key)
+        public override void OnKeyboardDownCode(object sender, int key)
         {
             Key k = (Key)key;
             if (k == Key.LeftShift || k == Key.RightShift || k == Key.LeftControl || k == Key.RightControl)

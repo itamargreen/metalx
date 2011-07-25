@@ -34,12 +34,25 @@ namespace MetalX.Component
         //        return game.Scenes[sceneIndex];
         //    }
         //}
-        Scene scene;
-        PC me
+        public Scene scene;
+        public PC me
         {
             get
             {
                 return game.Characters.ME;
+            }
+        }
+        public NPC npc
+        {
+            get
+            {
+                int i = -1;
+                IsNobody(scene, me.FrontLocation, out i);
+                if (i < 0)
+                {
+                    return null;
+                }
+                return scene.NPCs[i];
             }
         }
         int frameIndex = 0;
@@ -225,16 +238,24 @@ namespace MetalX.Component
             int wr = game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width;
             int hr = game.Options.WindowSizePixel.Height / game.Options.TileSizePixelX.Height;
 
-            int x = 0;
-            int y = 0;
+            //int x = 0;
+            //int y = 0;
             int w = 0;
             int h = 0;
             Vector3 loc;
             Vector3 loco;
 
             Point sp = Util.PointDivInt(s.RealLocationPixelPoint, game.Options.TilePixel);
-            w = sp.X + 1;
-            h = sp.Y + 1;
+            w = sp.X;
+            h = sp.Y;
+            //if (w > 0)
+            //{
+            //    w++;
+            //}
+            //if (h > 0)
+            //{
+            //    h++;
+            //}
             if (sp.X >= 0)
             {
                 loc = new Vector3();
@@ -246,39 +267,12 @@ namespace MetalX.Component
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
-                for (int yy = y; yy < hr + 1; yy++)
+                for (int yy = 0; yy < hr+1 ; yy++)
                 {
-                    for (int xx = x; xx < w; xx++)
+                    for (int xx = 0; xx < w+1; xx++)
                     {
-                        loco.X = xx - w;
-                        loco.Y = yy - h + 1;
-                        game.DrawMetalXTexture(
-                            game.Textures[ti],
-                            dz,
-                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
-                            game.Options.TileSizePixelX,
-                            Util.MixColor(cf, ColorFilter)
-                        );
-                    }
-                }
-            }
-            if (sp.X + s.Size.Width <= wr)
-            {
-                loc = new Vector3();
-                loco = new Vector3();
-
-                int ti = s.BottomTile.Frames[0].TextureIndex;
-                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
-                Color cf = s.BottomTile.Frames[0].ColorFilter;
-
-                loc.X = s.RealLocationPixel.X;
-                loc.Y = s.RealLocationPixel.Y;
-                for (int yy = y; yy < hr + 1; yy++)
-                {
-                    for (int xx = x; xx < Math.Abs(w)+2; xx++)
-                    {
-                        loco.X = xx + s.Size.Width;
-                        loco.Y = yy - h + 1;
+                        loco.X = xx - w-1;
+                        loco.Y = yy - h;
                         game.DrawMetalXTexture(
                             game.Textures[ti],
                             dz,
@@ -300,11 +294,40 @@ namespace MetalX.Component
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
-                for (int yy = y; yy < h; yy++)
+                for (int yy = 0; yy < h+1; yy++)
                 {
-                    for (int xx = x; xx < wr + 1; xx++)
+                    for (int xx = 0; xx < wr +1; xx++)
                     {
-                        loco.X = xx - w + 1;
+                        loco.X = xx - w;
+                        loco.Y = yy - h - 1;
+                        game.DrawMetalXTexture(
+                            game.Textures[ti],
+                            dz,
+                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            game.Options.TileSizePixelX,
+                            Util.MixColor(cf, ColorFilter)
+                        );
+                    }
+                }
+            }
+            if (sp.X <= 0)
+            {
+                loc = new Vector3();
+                loco = new Vector3();
+
+                int ti = s.BottomTile.Frames[0].TextureIndex;
+                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
+                Color cf = s.BottomTile.Frames[0].ColorFilter;
+
+                loc.X = s.RealLocationPixel.X;
+                loc.Y = s.RealLocationPixel.Y;
+                int ww = -w;
+                ww += wr - s.Size.Width;
+                for (int yy = 0; yy < hr + 1; yy++)
+                {
+                    for (int xx = 0; xx < ww + 1; xx++)
+                    {
+                        loco.X = xx + s.Size.Width;
                         loco.Y = yy - h;
                         game.DrawMetalXTexture(
                             game.Textures[ti],
@@ -316,7 +339,7 @@ namespace MetalX.Component
                     }
                 }
             }
-            if (sp.Y + s.Size.Height <= hr)
+            if (sp.Y <= 0)
             {
                 loc = new Vector3();
                 loco = new Vector3();
@@ -327,11 +350,13 @@ namespace MetalX.Component
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
-                for (int yy = y; yy < Math.Abs(h) + 2; yy++)
+                int hh = -h;
+                hh += hr - s.Size.Height;
+                for (int yy = 0; yy < hh + 1; yy++)
                 {
-                    for (int xx = x; xx < wr + 1; xx++)
+                    for (int xx = 0; xx < wr + 1; xx++)
                     {
-                        loco.X = xx - w + 1;
+                        loco.X = xx - w;
                         loco.Y = yy + s.Size.Height;
                         game.DrawMetalXTexture(
                             game.Textures[ti],
@@ -343,6 +368,33 @@ namespace MetalX.Component
                     }
                 }
             }
+            //if (sp.Y + s.Size.Height <= hr)
+            //{
+            //    loc = new Vector3();
+            //    loco = new Vector3();
+
+            //    int ti = s.BottomTile.Frames[0].TextureIndex;
+            //    Rectangle dz = s.BottomTile.Frames[0].DrawZone;
+            //    Color cf = s.BottomTile.Frames[0].ColorFilter;
+
+            //    loc.X = s.RealLocationPixel.X;
+            //    loc.Y = s.RealLocationPixel.Y;
+            //    for (int yy = y; yy < Math.Abs(h) + 1; yy++)
+            //    {
+            //        for (int xx = x; xx < wr + 1; xx++)
+            //        {
+            //            loco.X = xx - w ;
+            //            loco.Y = yy + s.Size.Height;
+            //            game.DrawMetalXTexture(
+            //                game.Textures[ti],
+            //                dz,
+            //                Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+            //                game.Options.TileSizePixelX,
+            //                Util.MixColor(cf, ColorFilter)
+            //            );
+            //        }
+            //    }
+            //}
 
             //int x = 0, y = 0;
             //int w = s.Size.Width;
@@ -473,7 +525,7 @@ namespace MetalX.Component
                 dz,
                 v31,
                 game.Options.TileSizePixelX,
-                Color.White);
+                Util.MixColor( chr.ColorFilter,ColorFilter));
         }
         void DrawNPC(NPC npc)
         {
@@ -533,8 +585,16 @@ namespace MetalX.Component
             }
             return true;
         }
+        public bool IsNobody()
+        {
+            return IsNobody(scene, me.FrontLocation);
+        }
         bool IsNobody(Scene s, Vector3 v3)
         {
+            if (s == null)
+            {
+                return true;
+            }
             if (s.NPCs == null)
             {
                 return true;
@@ -550,6 +610,11 @@ namespace MetalX.Component
         }
         bool IsNobody(Scene s, Vector3 v3, out int index)
         {
+            if (s == null)
+            {
+                index = -1;
+                return true;
+            }
             if (s.NPCs == null)
             {
                 index = -1;
@@ -567,7 +632,7 @@ namespace MetalX.Component
             index = -1;
             return true;
         }
-        public override void OnKeyboardDownHoldCode(int key)
+        public override void OnKeyboardDownHoldCode(object sender, int key)
         {
             Key k = (Key)key;
 
@@ -577,7 +642,7 @@ namespace MetalX.Component
             }
             if (me.NeedMovePixel == 0)
             {
-                if (k == Key.W || k == Key.A || k == Key.S || k == Key.D)
+                if ((k == Key.W || k == Key.A || k == Key.S || k == Key.D) && !me.IsTalking)
                 {
                     if (k == Key.W)
                     {
@@ -619,12 +684,32 @@ namespace MetalX.Component
                     me.RealLocation = me.NextLocation = loc;
                     me.NeedMovePixel += game.Options.TilePixel;
                 }
-                else if (k == Key.J)
+            }
+        }
+        public override void OnKeyboardDownCode(object sender, int key)
+        {
+            Key k = (Key)key;
+            if (k == Key.J)
+            {
+                if (npc != null)
                 {
-                    int i = -1;
-                    if (IsNobody(scene, me.FrontLocation,out i) == false)
+                    if (me.IsTalking)
                     {
-                        game.AppendAndExecuteScript("msg " + scene.NPCs[i].DialogText);
+                        me.IsTalking = false;
+                    }
+                    else
+                    {
+                        me.IsTalking = true;
+                    }
+                }
+            }
+            else if (k == Key.K)
+            {
+                if (npc != null)
+                {
+                    if (me.IsTalking)
+                    {
+                        me.IsTalking = false;
                     }
                 }
             }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MetalX
 {
-    public delegate void KeyboardEvent(int key);
+    public delegate void KeyboardEvent(object sender, int key);
     public delegate void FormBoxEvent(object arg);
     public delegate void ButtonBoxEvent(object arg);
     public delegate void TextBoxEvent(object arg);
@@ -32,6 +32,26 @@ namespace MetalX
         FallIn,
         None,
         NotDisappear,
+    }
+    [Serializable]
+    public enum Direction
+    {
+        /// <summary>
+        /// 上
+        /// </summary>
+        U = 0,
+        /// <summary>
+        /// 下
+        /// </summary>
+        L = 1,
+        /// <summary>
+        /// 左
+        /// </summary>
+        D = 2,
+        /// <summary>
+        /// 右
+        /// </summary>
+        R = 3,
     }
     //public class TextureEffect
     //{

@@ -187,7 +187,7 @@ namespace MetalX.Data
             }
         }
         public bool OneByOne = false;
-        public int Interval = 100;
+        public int Interval = 33;
         DateTime lastCharacterTime;
         public int SubTextIndex = 0;
         public event TextBoxEvent OnSubTextShowDone;
