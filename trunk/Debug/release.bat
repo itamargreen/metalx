@@ -4,4 +4,4 @@ copy *.dll release
 copy *.mxscript release
 copy *.txt release
 copy *.xml release
-xcopy /s /i yurejian release\yurejian
+xcopy /s /i ning release\ning

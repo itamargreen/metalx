@@ -313,11 +313,18 @@ namespace MetalX
         public void ToggleToFullScreen()
         {
             isRunning = false;
+
             Devices.D3DDev.PresentationParameters.Windowed = false;
             Devices.D3DDev.PresentationParameters.BackBufferWidth = Options.WindowSizePixel.Width;
             Devices.D3DDev.PresentationParameters.BackBufferHeight = Options.WindowSizePixel.Height;
             //Devices.D3DDev.Dispose();
             Devices.D3DDev.Reset(Devices.D3DDev.PresentationParameters);
+
+            Devices.D3DDev.RenderState.AlphaBlendEnable = true;
+            //Devices.D3DDev.RenderState.AlphaTestEnable = true;
+            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
+            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
+
             isRunning = true;
         }
         /// <summary>
@@ -445,9 +452,6 @@ namespace MetalX
             Devices.D3DDev.Lights[0].Enabled = value;
 
 
-            Devices.D3DDev.RenderState.AlphaBlendEnable = true;
-            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
-            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
 
             Devices.D3DDev.RenderState.Lighting = value;
 

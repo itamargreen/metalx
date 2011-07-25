@@ -170,8 +170,8 @@ namespace MetalX.Component
             DrawBorder(scene);
             DrawScene(scene);
             NPC n=scene.GetNPC("father");
-            if(n!=null)
-            game.DrawText(n.RealLocation.ToString(), new Point(0, 120), Color.White);
+            //if(n!=null)
+            //game.DrawText(n.RealLocation.ToString(), new Point(0, 120), Color.White);
         }
 
         public void Enter(string fileName, Point p)
