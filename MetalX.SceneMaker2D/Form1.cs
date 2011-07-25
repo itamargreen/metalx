@@ -812,9 +812,9 @@ namespace MetalX.SceneMaker2D
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     openFileName = sfd.FileName;
-                    if (sceneMaker2D.scene.CodeLayer.Codes.Count > 1)
+                    if (sceneMaker2D.scene.CodeLayers.Count > 1)
                     {
-                        sceneMaker2D.scene.CodeLayer.Codes.RemoveAt(1);
+                        sceneMaker2D.scene.CodeLayers.RemoveAt(1);
                     }
                     //for (int l = 0; l < sceneMaker2D.scene.TileLayers.Count; l++)
                     //{
@@ -1219,7 +1219,7 @@ namespace MetalX.SceneMaker2D
             {
                 dir = Direction.R;
             }
-            npc.Direction = dir;
+            npc.DefaultDirection = npc.Direction = dir;
             npc.DialogText = ui_npctxt.Text;
 
             if (sceneMaker2D.scene.NPCs == null)
@@ -1303,7 +1303,7 @@ namespace MetalX.SceneMaker2D
             {
                 dir = Direction.R;
             }
-            npc.Direction = dir;
+            npc.DefaultDirection = npc.Direction = dir;
             npc.DialogText = ui_npctxt.Text;
 
             if (sceneMaker2D.scene.NPCs == null)

@@ -9,7 +9,14 @@ namespace MetalX
         public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct3D;
         public bool FullScreen = false;
         public float X = 1f;
-        public string RootPath = @".\";
+        public string RootName = "data";
+        public string RootPath
+        {
+            get
+            {
+                return @".\" + RootName + @"\";
+            }
+        }
         public Size WindowSizePixel = new Size(640, 480);
         public Size TileSizePixel = new Size(48, 48);
         public float UVOffsetX = 0.5f;

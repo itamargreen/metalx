@@ -168,7 +168,7 @@ namespace MetalX.Component
             }
         }
 
-        public override void OnKeyboardDownCode(int key)
+        public override void OnKeyboardDownCode(object sender, int key)
         {
             if (AppearingFormBoxIndex.Count < 1)
             {
@@ -189,7 +189,7 @@ namespace MetalX.Component
                 AppearingFormBox.DownNowButtonBox();
             }
         }
-        public override void OnKeyboardUpCode(int key)
+        public override void OnKeyboardUpCode(object sender, int key)
         {
             if (AppearingFormBoxIndex.Count < 1)
             {
@@ -202,10 +202,10 @@ namespace MetalX.Component
                 AppearingFormBox.UpNowButtonBox();
                 AppearingFormBox.FocusNowButtonBox();
             }
-            else if (k == Key.K)
-            {
-                Disappear();
-            }
+            //else if (k == Key.K)
+            //{
+            //    Disappear();
+            //}
         }
     }
 }

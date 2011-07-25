@@ -174,15 +174,23 @@ namespace MetalX.Net
             {
                 return isRunning;
             }
-        }
-
+        }        
+       
         public Server(string ip, int port)
         {
-            IPAddress[] ipa = Dns.GetHostAddresses(Dns.GetHostName());
+            //IPAddress[] ipa = Dns.GetHostAddresses(Dns.GetHostName()); 
+            IPAddress[] ipa = Dns.GetHostAddresses(ip);
             rbuffer = new byte[1024 * 1024];
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
-            
+            IPEndPoint ipEndPoint;
+            if (ipa.Length == 1)
+            {
+                ipEndPoint = new IPEndPoint(IPAddress.Parse(ipa[0].ToString()), port);
+            }
+            else
+            {
+                ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            }
             socket.Bind(ipEndPoint);
         }
         public void Start()
@@ -306,7 +314,16 @@ namespace MetalX.Net
                 return;
             }
             Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint iep = new IPEndPoint(IPAddress.Parse(ip), port);
+            IPEndPoint iep;
+            IPAddress[] ipa = Dns.GetHostAddresses(ip);
+            if (ipa.Length == 1)
+            {
+                iep = new IPEndPoint(IPAddress.Parse(ipa[0].ToString()), port);
+            }
+            else
+            {
+                iep = new IPEndPoint(IPAddress.Parse(ip), port);
+            }
             session.Socket = newsock;
             session.Socket.BeginConnect(iep, new AsyncCallback(ConnectFunc), session);
         }

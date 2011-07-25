@@ -56,6 +56,7 @@
             this.ui_ip.Name = "ui_ip";
             this.ui_ip.Size = new System.Drawing.Size(134, 21);
             this.ui_ip.TabIndex = 1;
+            this.ui_ip.Text = "metalhunter.gicp.net";
             // 
             // ui_port
             // 

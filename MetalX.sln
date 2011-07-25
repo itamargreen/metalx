@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetalHunterServer", "MetalH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetalHunterClient", "MetalHunterClient\MetalHunterClient.csproj", "{3076B805-29F4-4E48-9CE5-F68D405A52F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetalHunter.GUI", "MetalHunter.GUI\MetalHunter.GUI.csproj", "{A398EF46-5DF4-48C7-82BE-F951E72D97BF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,16 +71,6 @@ Global
 		{3076B805-29F4-4E48-9CE5-F68D405A52F1}.Release|Mixed Platforms.Build.0 = Release|x86
 		{3076B805-29F4-4E48-9CE5-F68D405A52F1}.Release|x86.ActiveCfg = Release|x86
 		{3076B805-29F4-4E48-9CE5-F68D405A52F1}.Release|x86.Build.0 = Release|x86
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A398EF46-5DF4-48C7-82BE-F951E72D97BF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
