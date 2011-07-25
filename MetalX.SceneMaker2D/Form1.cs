@@ -656,6 +656,14 @@ namespace MetalX.SceneMaker2D
                     right_rect.Location = p;
                     right_rect.Size = sceneMaker2D.scene.TileSizePixel;
                     sceneMaker2D.dragRect = right_rect;
+
+                    try
+                    {
+                        Point pp = pointround2(e.Location, sceneMaker2D.scene.TileSizePixel);
+                        ui_is_ani.Checked = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][pp].IsAnimation;
+                    }
+                    catch
+                    { }
                 }
             }
             else if (tabControl2.SelectedIndex == 1)
@@ -959,7 +967,7 @@ namespace MetalX.SceneMaker2D
                 {
                     splitContainer1.Panel2.HorizontalScroll.Value += 10;
                 }
-                else if (e.KeyCode == Keys.C)
+                else if (e.KeyCode == Keys.P)
                 {
                     if (sceneMaker2D.drawPen)
                         sceneMaker2D.drawPen = false;
@@ -991,7 +999,7 @@ namespace MetalX.SceneMaker2D
         {
             if (e.KeyCode == Keys.I)
             {
-                int i = contains_tile(Util.Point2Vector3(sceneMaker2D.penLoc, 0));
+                int i = contains_tile(Util.Vector3DivInt(Util.Point2Vector3(sceneMaker2D.penLoc, 0), game.Options.TilePixel));
                 if (i > -1)
                 {
                     ui_aniframec.Text = "" + sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][i].FrameCount;
@@ -1199,8 +1207,14 @@ namespace MetalX.SceneMaker2D
         private void ui_npcadd_Click(object sender, EventArgs e)
         {
             NPC npc = new NPC();
+
+            npc.CanMove = ui_canmove.Checked;
+            npc.CanTurn = ui_canturn.Checked; 
             npc.TextureName = ui_npctexturename.Text;
             npc.Name = ui_npcname.Text;
+            npc.Code = ui_npccode.Text;
+            npc.IsBox = ui_npcisbox.Checked;
+
             npc.SetRealLocation(int.Parse(ui_npcx.Text), int.Parse(ui_npcy.Text), 0, game.Options.TilePixel);
             Direction dir = Direction.U;
             if (ui_npcdir.Text == "U")
@@ -1251,11 +1265,16 @@ namespace MetalX.SceneMaker2D
             }
             NPC npc = sceneMaker2D.scene.NPCs[i];
 
+            ui_canmove.Checked = npc.CanMove;
+            ui_canturn.Checked = npc.CanTurn;
+
+            ui_npccode.Text = npc.Code;
             ui_npcname.Text = npc.Name;
-            ui_npcx.Text = npc.RealLocation.X+"";
-            ui_npcy.Text = npc.RealLocation.Y+"";
+            ui_npcx.Text = npc.RealLocation.X + "";
+            ui_npcy.Text = npc.RealLocation.Y + "";
             ui_npctxt.Text = npc.DialogText;
             ui_npctexturename.Text = npc.TextureName;
+            ui_npcisbox.Checked = npc.IsBox;
             if (npc.Direction == Direction.U)
             {
                 ui_npcdir.Text = "U";
@@ -1283,8 +1302,13 @@ namespace MetalX.SceneMaker2D
                 return;
             }
             NPC npc = new NPC();
+            npc.CanMove = ui_canmove.Checked;
+            npc.CanTurn = ui_canturn.Checked;
+            npc.IsBox = ui_npcisbox.Checked;
+            npc.Code = ui_npccode.Text;
             npc.TextureName = ui_npctexturename.Text;
             npc.Name = ui_npcname.Text;
+            npc.IsBox = ui_npcisbox.Checked;
             npc.SetRealLocation(int.Parse(ui_npcx.Text), int.Parse(ui_npcy.Text), 0, game.Options.TilePixel);
             Direction dir = Direction.U;
             if (ui_npcdir.Text == "U")
@@ -1371,6 +1395,25 @@ namespace MetalX.SceneMaker2D
             Point p = Util.PointDivInt(sceneMaker2D.penLoc, game.Options.TilePixel);
             sceneMaker2D.scene.BottomTile = sceneMaker2D.scene.TileLayers[sceneMaker2D.drawingLayer][p];
 
+        }
+
+        private void ui_init_code_layer_Click(object sender, EventArgs e)
+        {
+            //if (sceneMaker2D.scene.CodeLayers.Count > 0)
+            {
+                sceneMaker2D.scene.CodeLayers.Clear();
+                sceneMaker2D.scene.CodeLayers.Add(new CodeLayer());
+                //Size = s;
+                int i = 0;
+                for (int y = 0; y < sceneMaker2D.scene.Size.Height; y++)
+                {
+                    for (int x = 0; x < sceneMaker2D.scene.Size.Width; x++)
+                    {
+                        sceneMaker2D.scene.CodeLayer.Codes.Add(new Code());
+                        sceneMaker2D.scene.CodeLayer.Codes[i++].Location = new Point(x, y);
+                    }
+                }
+            }
         }
 
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)

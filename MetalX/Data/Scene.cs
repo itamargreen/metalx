@@ -87,6 +87,39 @@ namespace MetalX.Data
         /// </summary>
         public List<TileLayer> TileLayers = new List<TileLayer>();
         public List<NPC> NPCs = new List<NPC>();
+        public NPC GetNPC(string name)
+        {
+            for (int i = 0; i < NPCs.Count; i++)
+            {
+                if (NPCs[i].Name == name)
+                {
+                    return NPCs[i];
+                }
+            }
+            return null;
+        }
+        public NPC GetNPC(Vector3 v3)
+        {
+            for (int i = 0; i < NPCs.Count; i++)
+            {
+                if (NPCs[i].RealLocation == v3)
+                {
+                    return NPCs[i];
+                }
+            }
+            return null;
+        }
+        public NPC GetNPC(Point p)
+        {
+            for (int i = 0; i < NPCs.Count; i++)
+            {
+                if (NPCs[i].RealLocation == Util.Point2Vector3(p,0))
+                {
+                    return NPCs[i];
+                }
+            }
+            return null;
+        }
         public List<string> BGMusics = new List<string>();
         /// <summary>
         /// 代码层
@@ -221,7 +254,7 @@ namespace MetalX.Data
         /// <summary>
         /// 帧索引
         /// </summary>
-        public bool IsAnimation = true;
+        public bool IsAnimation = false;
         public int FrameIndex = 0;
         /// <summary>
         /// 帧间隔

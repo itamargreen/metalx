@@ -146,7 +146,7 @@ namespace MetalHunter.GUI
         public NPCTalk(Game g)
             : base(g)
         {
-            Name = "NPCTalk";
+            Name = "NPCsay";
             Location = new Point(64, 480 - 128 - 8);
             //Size = new Size(640, 120);
             BGTextureBox.TextureName = "ning-dialogbg";

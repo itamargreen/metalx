@@ -10,7 +10,7 @@ namespace MetalX.Component
     public class KeyboardManager : GameCom
     {
         //Thread keyboardthd;
-        bool[] keyboardStateBackup = new bool[256];
+        bool[] keyboardStateBackup = new bool[128];
         public KeyboardManager(Game g)
             : base(g)
         {
@@ -23,7 +23,7 @@ namespace MetalX.Component
         public override void Code()
         {
             KeyboardState keyboardState = game.Devices.DKeyboardDev.GetCurrentKeyboardState();
-            for (int i = 0; i < 256; i++)
+            for (int i = 0; i < keyboardStateBackup.Length; i++)
             {
                 if (keyboardState[(Key)i])
                 {
@@ -56,7 +56,7 @@ namespace MetalX.Component
                     }
                     keyboardStateBackup[i] = false;
                 }
-            }            
+            }
         }
     }
 }

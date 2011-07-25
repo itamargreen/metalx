@@ -24,7 +24,9 @@ namespace MetalX.Component
         }
         public FormBoxManager(Game g)
             : base(g)
-        { }
+        {
+            FallOutAlpha = true;
+        }
         public override void Code()
         {
             base.Code();
@@ -138,6 +140,11 @@ namespace MetalX.Component
             {
                 if (AppearingFormBoxIndex[j] == i)
                 {
+                    AppearingFormBoxIndex.Add(i);
+                    game.FormBoxes[i].Appear(arg);
+
+                    Disappear(AppearingFormBoxIndex[j]);
+
                     return;
                 }
             }

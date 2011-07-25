@@ -50,7 +50,14 @@ namespace MetalX
         public virtual void BaseCode()
         { 
             shock();
-            fallOut();
+            if (FallOutAlpha)
+            {
+                fallOutAlpha();
+            }
+            else
+            {
+                fallOut();
+            }
             delay();
         }
         public virtual void Code()
@@ -179,6 +186,7 @@ namespace MetalX
             FallOutSceen(ms);
             IsFallin = true;
         }
+        public bool FallOutAlpha = false;
         void fallOut()
         {
             TimeSpan ts = DateTime.Now - FalloutBegineTime;
@@ -213,6 +221,42 @@ namespace MetalX
                     }
                 }
             }
+        }
+        void fallOutAlpha()
+        {
+            TimeSpan ts = DateTime.Now - FalloutBegineTime;
+            if (IsFallOuting)
+            {
+                if (ts.TotalMilliseconds > FalloutTime)
+                {
+                    if (IsFallin)
+                    {
+                        ColorFilter = Color.FromArgb(255, 255, 255, 255);
+                    }
+                    else
+                    {
+                        ColorFilter = Color.FromArgb(0, 0, 0, 0);
+                    }
+                    IsFallOuting = false;
+                }
+                else
+                {
+                    int frame = (int)((ts.TotalMilliseconds / (double)(FalloutTime)) * 255);
+                    if (frame < 0)
+                    {
+                        frame = 255;
+                    }
+                    if (IsFallin)
+                    {
+                        ColorFilter = Color.FromArgb(frame, frame, frame, frame);
+                    }
+                    else
+                    {
+                        ColorFilter = Color.FromArgb(255-frame, 255 - frame, 255 - frame, 255 - frame);
+                    }
+                }
+            }
+
         }
         #endregion
     }

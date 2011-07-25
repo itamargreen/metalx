@@ -7,6 +7,7 @@ namespace MetalX
     public delegate void FormBoxEvent(object arg);
     public delegate void ButtonBoxEvent(object arg);
     public delegate void TextBoxEvent(object arg);
+    //public delegate void NPCEvent(object sender);
     public enum ButtonBoxState
     {
         Wait,
@@ -53,6 +54,13 @@ namespace MetalX
         /// </summary>
         R = 3,
     }
+
+    //[Serializable]
+    //public class Direction
+    //{
+    //    public const int U = 0, L = 1, D = 2, R = 3;
+    //}
+
     //public class TextureEffect
     //{
     //    public TextureEffectType Type;
