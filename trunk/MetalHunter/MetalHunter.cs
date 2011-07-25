@@ -38,40 +38,85 @@ namespace MetalHunter
             
             game.ExecuteMetalXScript("logo.mxscript");
 
-            game.SceneManager.OnKeyboardDown += new KeyboardEvent(SceneManager_OnKeyboardDown);
+            game.SceneManager.OnKeyboardUp += new KeyboardEvent(SceneManager_OnKeyboardUp);
             
             game.Start();
         }
 
-        void SceneManager_OnKeyboardDown(object sender, int key)
+        void SceneManager_OnKeyboardUp(object sender, int key)
         {
             MetalX.Component.SceneManager sm = (MetalX.Component.SceneManager)sender;
             Key k = (Key)key;
             if (k == Key.J)
             {
-                if (sm.IsNobody() == false)
+                if (sm.npc != null)
                 {
-                    if (sm.me.IsTalking)
+                    if (sm.me.CanControl == false)
                     {
-                        sm.npc.TurnToMe(sm.me);
-                        game.AppendAndExecuteScript("npc say " + sm.npc.DialogText);
+                        return;
+                    }
+                    game.AppendScript("freezeme");
+                    sm.npc.FocusOnMe(sm.me);
+                    if (sm.npc.IsBox)
+                    {
+                        if (sm.npc.Bag.Count > 0)
+                        {
+                            game.AppendScript(sm.npc.Code);
+                            game.AppendScript("unfreezeme");
+                            game.ExecuteScript();
+                        }
+                        else
+                        {
+                            game.AppendScript("npc say 什么都没有");
+                            game.AppendScript("untilpress j");
+                            game.AppendScript("gui fallout 500\ndelay 500");
+                            game.AppendScript("gui close NPCsay");
+                            game.AppendScript("gui fallin 0");
+                            game.AppendScript("unfreezeme");
+                            game.ExecuteScript();
+                        }
                     }
                     else
                     {
-                        sm.npc.RecoverDirection();
-                        game.AppendAndExecuteScript("gui close NPCTalk");
+                        if (sm.npc.Code == null)
+                        {
+                            game.AppendScript("npc say " + sm.npc.DialogText);
+                            game.AppendScript("untilpress j");
+                            game.AppendScript("unfreezeme");
+                            game.ExecuteScript();
+
+                        }
+                        else
+                        {
+                            game.AppendScript(sm.npc.Code);
+                            game.AppendScript("unfreezeme");
+                            game.ExecuteScript();
+                        }
                     }
                 }
+                //if (sm.IsNobody() == false)
+                //{
+                //    if (sm.me.IsTalking)
+                //    {
+                //        sm.npc.FocusOnMe(sm.me);
+                //        game.AppendAndExecuteScript("npc say " + sm.npc.DialogText);
+                //    }
+                //    else
+                //    {
+                //        sm.npc.RecoverDirection();
+                //        game.AppendAndExecuteScript("gui close NPCTalk");
+                //    }
+                //}
             }
-            else if (k == Key.K)
-            {
-                if (sm.IsNobody() == false)
-                {
-                    sm.npc.RecoverDirection();
-                    game.AppendAndExecuteScript("gui close NPCTalk");
-                }
-            }
-
+            //else if (k == Key.K)
+            //{
+            //    if (sm.npc != null)
+            //    {
+            //        game.AppendAndExecuteScript("unfreezeme");
+            //        sm.npc.RecoverDirection();
+            //        game.AppendAndExecuteScript("gui close NPCTalk");
+            //    }
+            //}
         }
 
         [STAThread]

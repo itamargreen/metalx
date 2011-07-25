@@ -102,9 +102,14 @@ namespace MetalX.SceneMaker2D
                     foreach (Tile t in tl.Tiles)
                     {
                         //Point p = t.GetLocationPixelPoint(scene.TilePixel);
+                        int fi = 0;
+                        if (t.IsAnimation)
+                        {
+                            fi = frameIndex;
+                        }
                         game.DrawMetalXTexture(
-                            game.Textures[t[frameIndex].TextureIndex],
-                            t[frameIndex].DrawZone,
+                            game.Textures[t[fi].TextureIndex],
+                            t[fi].DrawZone,
                             Util.PointMulInt(t.LocationPoint, scene.TilePixel),
                             scene.TileSizePixel,
                             ColorFilter
@@ -184,7 +189,7 @@ namespace MetalX.SceneMaker2D
         public override void OnKeyboardDownCode(object sender, int key)
         {
             //base.OnKeyboardDownCode(key);
-            game.DrawText(key + " down", new Point(), Color.White);
+            //game.DrawText(key + " down", new Point(), Color.White);
             //if (key == 200)
             //{
             //    ((System.Windows.Forms.Panel)game.Devices.D3DDev..DeviceWindow.Parent).VerticalScroll.Value += 16;
@@ -193,12 +198,12 @@ namespace MetalX.SceneMaker2D
         public override void OnKeyboardDownHoldCode(object sender, int key)
         {
             //base.OnKeyboardDownHoldCode(this,key);
-            game.DrawText(key + " downhold", new Point(0,20), Color.White);
+            //game.DrawText(key + " downhold", new Point(0,20), Color.White);
         }
         public override void OnKeyboardUpCode(object sender, int key)
         {
             //base.OnKeyboardUpCode(key);
-            game.DrawText(key + " up", new Point(0,40), Color.White);
+            //game.DrawText(key + " up", new Point(0,40), Color.White);
         }
         void draw_grid()
         {

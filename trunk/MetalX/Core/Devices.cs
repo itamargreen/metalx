@@ -34,6 +34,7 @@ namespace MetalX
             pps.Windowed = true;
             pps.BackBufferCount = 2;
             pps.PresentationInterval = PresentInterval.One;
+            pps.PresentFlag = PresentFlag.LockableBackBuffer;
 
             if (GameWindow == null)
             {

@@ -29,7 +29,7 @@ namespace MetalX.Data
         }
         public void SetRealLocation(Vector3 v3, int unit)
         {
-            RealLocation = v3;
+            NextLocation = LastLocation = RealLocation = v3;
             RealLocationPixel = Util.Vector3MulInt(RealLocation, unit);
         }
         public Vector3 NextLocation;
@@ -211,8 +211,17 @@ namespace MetalX.Data
         public string InSceneName;
         public int InSceneIndex = -1;
 
-        public bool CanMove;
-        public bool CanTurn;
+        public bool CanMove = true;
+        public bool CanTurn = true;
+        public bool CanControl = true;
+        public void Freeze()
+        {
+            CanControl = false;
+        }
+        public void Unfreeze()
+        {
+            CanControl = true;
+        }
 
         public int Gold;
 
@@ -428,36 +437,59 @@ namespace MetalX.Data
     [Serializable]
     public class PC : CHR
     {
-        public bool IsTalking = false;
+        //public bool IsTalking = false;
     }
     [Serializable]
     public class NPC : CHR
     {
+        public List<Item> Bag = new List<Item>();
+        //public event NPCEvent OnFocusOnMe;
+        public bool IsBox = false;
         public Direction DefaultDirection;
         //public Vector3 DefaultLocation;
         public string DialogText;
+        public string Code;
         public void RecoverDirection()
         {
+            if (IsBox)
+            {
+                if (Bag.Count == 0)
+                {
+                    return;
+                }
+            }
             Direction = DefaultDirection;
         }
-        public void TurnToMe(PC me)
+        public void FocusOnMe(PC me)
         {
-            if (me.Direction == Direction.U)
+            //if (OnFocusOnMe != null)
+            //{
+            //    OnFocusOnMe(this);
+            //}
+            if (!IsBox)
+            {
+                if (me.Direction == Direction.U)
+                {
+                    Direction = Direction.D;
+                }
+                else if (me.Direction == Direction.L)
+                {
+                    Direction = Direction.R;
+                }
+                else if (me.Direction == Direction.D)
+                {
+                    Direction = Direction.U;
+                }
+                else if (me.Direction == Direction.R)
+                {
+                    Direction = Direction.L;
+                }
+            }
+            else
             {
                 Direction = Direction.D;
             }
-            else if (me.Direction == Direction.L)
-            {
-                Direction = Direction.R;
-            }
-            else if (me.Direction == Direction.D)
-            {
-                Direction = Direction.U;
-            }
-            else if (me.Direction == Direction.R)
-            {
-                Direction = Direction.L;
-            }                        
         }
+
     }
 }
