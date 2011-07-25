@@ -49,6 +49,11 @@ namespace MetalX
                 D3DDev = new Microsoft.DirectX.Direct3D.Device(0, Microsoft.DirectX.Direct3D.DeviceType.Hardware, GameWindow, Microsoft.DirectX.Direct3D.CreateFlags.SoftwareVertexProcessing, pps);
             }
             D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
+
+            D3DDev.RenderState.AlphaBlendEnable = true;
+            D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
+            D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
+
             //D3DDev.ShowCursor(false);
 
             DSoundDev = new Microsoft.DirectX.DirectSound.Device();
