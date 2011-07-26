@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Drawing;
 
 using Microsoft.DirectX.DirectInput;
 
@@ -88,7 +88,7 @@ namespace MetalX.Component
                 }
                 game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
             }
-            game.DrawText("FPS: " + game.AverageFPS.ToString("f1"), new System.Drawing.Point(550, 0), ColorFilter);
+            game.DrawText("DrawMode: " + game.Options.TextureDrawMode + " FPS: " + game.AverageFPS.ToString("f1"), new System.Drawing.Point(450, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -126,11 +126,11 @@ namespace MetalX.Component
                 }
                 else if (kw[0] == "freezeme")
                 {
-                    game.SceneManager.me.Freeze();
+                    game.SceneManager.ME.Freeze();
                 }
                 else if (kw[0] == "unfreezeme")
                 {
-                    game.SceneManager.me.Unfreeze();
+                    game.SceneManager.ME.Unfreeze();
                 }
             }
             else if (kw.Length == 2)
@@ -158,7 +158,7 @@ namespace MetalX.Component
                 }
                 else if (kw[0] == "untilstop")
                 {
-                    Scene s = game.SceneManager.scene;
+                    Scene s = game.SceneManager.SCENE;
                     float a = s.GetNPC(kw[1]).NeedMovePixel;
                     if (a > 0)
                     {
@@ -245,23 +245,23 @@ namespace MetalX.Component
                     }
                     else if (kw[1] == "gold")
                     {
-                        game.SceneManager.me.Gold += int.Parse(kw[2]);
+                        game.SceneManager.ME.Gold += int.Parse(kw[2]);
                     }
                     else if (kw[1] == "bagin")
                     {
                         //查找item，然后添加
-                        game.SceneManager.me.BagIn(null);
+                        game.SceneManager.ME.BagIn(null);
                     }
                 }
-                else if (kw[0] == "npc")
-                {
-                    if (kw[1] == "say")
-                    {
-                        TextBox tb = new TextBox(game);
-                        tb.Text = kw[2];
-                        game.FormBoxManager.Appear("NPCsay", tb);
-                    }
-                }
+                //else if (kw[0] == "npc")
+                //{
+                //    if (kw[1] == "say")
+                //    {
+                //        TextBox tb = new TextBox(game);
+                //        tb.Text = kw[2];
+                //        game.FormBoxManager.Appear("NPCsay", tb);
+                //    }
+                //}
                 else if (kw[0] == "move")
                 {
                     Direction dir;
@@ -281,8 +281,8 @@ namespace MetalX.Component
                     {
                         dir = Direction.R;
                     }
-                    Scene s = game.SceneManager.scene;
-                    game.SceneManager.CHRMove(s, s.GetNPC(kw[1]), dir, 1);
+                    Scene s = game.SceneManager.SCENE;
+                    game.SceneManager.Move(s, s.GetNPC(kw[1]), dir, 1);
                 }
 
             }
@@ -328,9 +328,9 @@ namespace MetalX.Component
                     {
                         dir = Direction.R;
                     }
-                    Scene s = game.SceneManager.scene;
+                    Scene s = game.SceneManager.SCENE;
                     int stp = int.Parse(kw[3]);
-                    game.SceneManager.CHRMove(s, s.GetNPC(kw[1]), dir, stp);
+                    game.SceneManager.Move(s, s.GetNPC(kw[1]), dir, stp);
                 }
             }
             else if (kw.Length == 5)

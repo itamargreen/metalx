@@ -6,7 +6,7 @@ namespace MetalX
 {
     public class Options
     {
-        public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct3D;
+        public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct2D;
         public bool FullScreen = false;
         public float X = 1f;
         public string RootName = "data";

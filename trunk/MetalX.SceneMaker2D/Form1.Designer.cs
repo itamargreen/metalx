@@ -155,11 +155,13 @@
             this.label12 = new System.Windows.Forms.Label();
             this.ui_mus_lib = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.ui_npccode = new System.Windows.Forms.TextBox();
+            this.ui_canmove = new System.Windows.Forms.CheckBox();
+            this.ui_canturn = new System.Windows.Forms.CheckBox();
             this.ui_npcisbox = new System.Windows.Forms.CheckBox();
             this.label26 = new System.Windows.Forms.Label();
             this.ui_npcmodify = new System.Windows.Forms.Button();
             this.ui_npctexturename = new System.Windows.Forms.TextBox();
-            this.ui_npcpic = new System.Windows.Forms.PictureBox();
             this.ui_npcdel = new System.Windows.Forms.Button();
             this.ui_npcadd = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
@@ -180,9 +182,11 @@
             this.设为打底层图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.ui_canturn = new System.Windows.Forms.CheckBox();
-            this.ui_canmove = new System.Windows.Forms.CheckBox();
-            this.ui_npccode = new System.Windows.Forms.TextBox();
+            this.ui_npcisdoor = new System.Windows.Forms.CheckBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.ui_npch = new System.Windows.Forms.TextBox();
+            this.ui_npcw = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -203,7 +207,6 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ui_npcpic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -1357,6 +1360,7 @@
             this.ui_mus_del.TabIndex = 221;
             this.ui_mus_del.Text = "删除";
             this.ui_mus_del.UseVisualStyleBackColor = true;
+            this.ui_mus_del.Click += new System.EventHandler(this.ui_mus_del_Click);
             // 
             // ui_mus_add
             // 
@@ -1406,6 +1410,11 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label27);
+            this.tabPage3.Controls.Add(this.label28);
+            this.tabPage3.Controls.Add(this.ui_npch);
+            this.tabPage3.Controls.Add(this.ui_npcw);
+            this.tabPage3.Controls.Add(this.ui_npcisdoor);
             this.tabPage3.Controls.Add(this.ui_npccode);
             this.tabPage3.Controls.Add(this.ui_canmove);
             this.tabPage3.Controls.Add(this.ui_canturn);
@@ -1413,7 +1422,6 @@
             this.tabPage3.Controls.Add(this.label26);
             this.tabPage3.Controls.Add(this.ui_npcmodify);
             this.tabPage3.Controls.Add(this.ui_npctexturename);
-            this.tabPage3.Controls.Add(this.ui_npcpic);
             this.tabPage3.Controls.Add(this.ui_npcdel);
             this.tabPage3.Controls.Add(this.ui_npcadd);
             this.tabPage3.Controls.Add(this.label25);
@@ -1433,6 +1441,35 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "NPC编辑";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // ui_npccode
+            // 
+            this.ui_npccode.Location = new System.Drawing.Point(62, 412);
+            this.ui_npccode.Multiline = true;
+            this.ui_npccode.Name = "ui_npccode";
+            this.ui_npccode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ui_npccode.Size = new System.Drawing.Size(225, 88);
+            this.ui_npccode.TabIndex = 21;
+            // 
+            // ui_canmove
+            // 
+            this.ui_canmove.AutoSize = true;
+            this.ui_canmove.Location = new System.Drawing.Point(3, 463);
+            this.ui_canmove.Name = "ui_canmove";
+            this.ui_canmove.Size = new System.Drawing.Size(60, 16);
+            this.ui_canmove.TabIndex = 20;
+            this.ui_canmove.Text = "可移动";
+            this.ui_canmove.UseVisualStyleBackColor = true;
+            // 
+            // ui_canturn
+            // 
+            this.ui_canturn.AutoSize = true;
+            this.ui_canturn.Location = new System.Drawing.Point(3, 441);
+            this.ui_canturn.Name = "ui_canturn";
+            this.ui_canturn.Size = new System.Drawing.Size(60, 16);
+            this.ui_canturn.TabIndex = 19;
+            this.ui_canturn.Text = "可转向";
+            this.ui_canturn.UseVisualStyleBackColor = true;
             // 
             // ui_npcisbox
             // 
@@ -1469,16 +1506,6 @@
             this.ui_npctexturename.Name = "ui_npctexturename";
             this.ui_npctexturename.Size = new System.Drawing.Size(100, 21);
             this.ui_npctexturename.TabIndex = 14;
-            // 
-            // ui_npcpic
-            // 
-            this.ui_npcpic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ui_npcpic.Location = new System.Drawing.Point(223, 238);
-            this.ui_npcpic.Name = "ui_npcpic";
-            this.ui_npcpic.Size = new System.Drawing.Size(64, 64);
-            this.ui_npcpic.TabIndex = 13;
-            this.ui_npcpic.TabStop = false;
-            this.ui_npcpic.Click += new System.EventHandler(this.ui_npcpic_Click);
             // 
             // ui_npcdel
             // 
@@ -1647,34 +1674,47 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // ui_canturn
+            // ui_npcisdoor
             // 
-            this.ui_canturn.AutoSize = true;
-            this.ui_canturn.Location = new System.Drawing.Point(3, 441);
-            this.ui_canturn.Name = "ui_canturn";
-            this.ui_canturn.Size = new System.Drawing.Size(60, 16);
-            this.ui_canturn.TabIndex = 19;
-            this.ui_canturn.Text = "可转向";
-            this.ui_canturn.UseVisualStyleBackColor = true;
+            this.ui_npcisdoor.AutoSize = true;
+            this.ui_npcisdoor.Location = new System.Drawing.Point(62, 535);
+            this.ui_npcisdoor.Name = "ui_npcisdoor";
+            this.ui_npcisdoor.Size = new System.Drawing.Size(36, 16);
+            this.ui_npcisdoor.TabIndex = 22;
+            this.ui_npcisdoor.Text = "门";
+            this.ui_npcisdoor.UseVisualStyleBackColor = true;
             // 
-            // ui_canmove
+            // label27
             // 
-            this.ui_canmove.AutoSize = true;
-            this.ui_canmove.Location = new System.Drawing.Point(3, 463);
-            this.ui_canmove.Name = "ui_canmove";
-            this.ui_canmove.Size = new System.Drawing.Size(60, 16);
-            this.ui_canmove.TabIndex = 20;
-            this.ui_canmove.Text = "可移动";
-            this.ui_canmove.UseVisualStyleBackColor = true;
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(232, 267);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(11, 12);
+            this.label27.TabIndex = 26;
+            this.label27.Text = "h";
             // 
-            // ui_npccode
+            // label28
             // 
-            this.ui_npccode.Location = new System.Drawing.Point(62, 412);
-            this.ui_npccode.Multiline = true;
-            this.ui_npccode.Name = "ui_npccode";
-            this.ui_npccode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ui_npccode.Size = new System.Drawing.Size(225, 88);
-            this.ui_npccode.TabIndex = 21;
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(168, 267);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(11, 12);
+            this.label28.TabIndex = 25;
+            this.label28.Text = "w";
+            // 
+            // ui_npch
+            // 
+            this.ui_npch.Location = new System.Drawing.Point(249, 264);
+            this.ui_npch.Name = "ui_npch";
+            this.ui_npch.Size = new System.Drawing.Size(36, 21);
+            this.ui_npch.TabIndex = 24;
+            // 
+            // ui_npcw
+            // 
+            this.ui_npcw.Location = new System.Drawing.Point(185, 264);
+            this.ui_npcw.Name = "ui_npcw";
+            this.ui_npcw.Size = new System.Drawing.Size(36, 21);
+            this.ui_npcw.TabIndex = 23;
             // 
             // Form1
             // 
@@ -1721,7 +1761,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ui_npcpic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1873,7 +1912,6 @@
         private System.Windows.Forms.TextBox ui_npcx;
         private System.Windows.Forms.Button ui_npcdel;
         private System.Windows.Forms.Button ui_npcadd;
-        private System.Windows.Forms.PictureBox ui_npcpic;
         private System.Windows.Forms.TextBox ui_npctexturename;
         private System.Windows.Forms.Button ui_npcmodify;
         private System.Windows.Forms.Label label26;
@@ -1884,6 +1922,11 @@
         private System.Windows.Forms.CheckBox ui_canmove;
         private System.Windows.Forms.CheckBox ui_canturn;
         private System.Windows.Forms.TextBox ui_npccode;
+        private System.Windows.Forms.CheckBox ui_npcisdoor;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox ui_npch;
+        private System.Windows.Forms.TextBox ui_npcw;
     }
 }
 

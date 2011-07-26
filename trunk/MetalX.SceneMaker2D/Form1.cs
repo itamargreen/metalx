@@ -851,11 +851,13 @@ namespace MetalX.SceneMaker2D
                         Util.SaveObjectXML(openFileName, sceneMaker2D.scene);
                     }
                     Text = openFileName;
+                    MessageBox.Show("保存成功");
                 }
             }
             else
             {
                 Util.SaveObject(openFileName, sceneMaker2D.scene);
+                MessageBox.Show("保存成功");
             }
         }
         //void savetoxml(string filename)
@@ -1214,6 +1216,8 @@ namespace MetalX.SceneMaker2D
             npc.Name = ui_npcname.Text;
             npc.Code = ui_npccode.Text;
             npc.IsBox = ui_npcisbox.Checked;
+            npc.IsDoor = ui_npcisdoor.Checked;
+            npc.Size = new Size(int.Parse(ui_npcw.Text), int.Parse(ui_npch.Text));
 
             npc.SetRealLocation(int.Parse(ui_npcx.Text), int.Parse(ui_npcy.Text), 0, game.Options.TilePixel);
             Direction dir = Direction.U;
@@ -1275,6 +1279,12 @@ namespace MetalX.SceneMaker2D
             ui_npctxt.Text = npc.DialogText;
             ui_npctexturename.Text = npc.TextureName;
             ui_npcisbox.Checked = npc.IsBox;
+
+            ui_npcisdoor.Checked = npc.IsDoor;
+
+            ui_npcw.Text = npc.Size.Width + "";
+            ui_npch.Text = npc.Size.Height + "";
+
             if (npc.Direction == Direction.U)
             {
                 ui_npcdir.Text = "U";
@@ -1309,7 +1319,9 @@ namespace MetalX.SceneMaker2D
             npc.TextureName = ui_npctexturename.Text;
             npc.Name = ui_npcname.Text;
             npc.IsBox = ui_npcisbox.Checked;
+            npc.IsDoor = ui_npcisdoor.Checked;
             npc.SetRealLocation(int.Parse(ui_npcx.Text), int.Parse(ui_npcy.Text), 0, game.Options.TilePixel);
+            npc.Size = new Size(int.Parse(ui_npcw.Text), int.Parse(ui_npch.Text));
             Direction dir = Direction.U;
             if (ui_npcdir.Text == "U")
             {
@@ -1414,6 +1426,11 @@ namespace MetalX.SceneMaker2D
                     }
                 }
             }
+        }
+
+        private void ui_mus_del_Click(object sender, EventArgs e)
+        {
+            sceneMaker2D.scene.BGMusics.Clear();
         }
 
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)

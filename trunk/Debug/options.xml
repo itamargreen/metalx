@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <TextureDrawMode>Direct3D</TextureDrawMode>
-  <FullScreen>true</FullScreen>
+  <TextureDrawMode>Direct2D</TextureDrawMode>
+  <FullScreen>false</FullScreen>
   <X>1</X>
   <RootName>ning</RootName>
   <WindowSizePixel>

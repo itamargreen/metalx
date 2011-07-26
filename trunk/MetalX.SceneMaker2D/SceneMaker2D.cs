@@ -162,6 +162,10 @@ namespace MetalX.SceneMaker2D
             {
                 npc.TextureIndex = game.Textures.GetIndex(npc.TextureName);
             }
+            if (npc.TextureIndex < 0)
+            {
+                return;
+            }
             Rectangle dz = new Rectangle();
             dz.Y = (int)npc.Direction * game.Textures[npc.TextureIndex].TileSizePixel.Height;
             if (npc.NeedMovePixel > 0)

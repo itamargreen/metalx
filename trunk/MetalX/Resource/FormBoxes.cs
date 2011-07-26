@@ -21,12 +21,24 @@ namespace MetalX.Resource
                 }
                 return items[i];
             }
+            set
+            {
+                if (i < 0)
+                {
+                    return;
+                }
+                items[i] = value;
+            }
         }
         public FormBox this[string name]
         {
             get
             {
                 return this[GetIndex(name)];
+            }
+            set
+            {
+                this[GetIndex(name)] = value;
             }
         }
         public int GetIndex(string tname)
@@ -67,10 +79,10 @@ namespace MetalX.Resource
             Add(fb);
         }
     }
-    class MessageBox : FormBox
+    public class MSGBox : FormBox
     {
-        TextBox tb1;
-        public MessageBox(Game g)
+        protected TextBox TextBox;
+        public MSGBox(Game g)
             : base(g)
         {
             Name = "MessageBox";
@@ -78,17 +90,17 @@ namespace MetalX.Resource
             //Size = new Size(640, 120);
             //BGTextureName = "dialog-bgtexture";
 
-            tb1 = new TextBox(g);
-            tb1.Location = new Point(16, 16);
-            tb1.OneByOne = true;
+            TextBox = new TextBox(g);
+            TextBox.Location = new Point(16, 16);
+            TextBox.OneByOne = true;
 
-            ControlBoxes.Add(tb1);
+            ControlBoxes.Add(TextBox);
         }
         public override void OnFormBoxAppearCode(object arg)
         {
             if (arg is TextBox)
             {
-                tb1.Text = ((TextBox)arg).Text;
+                TextBox.Text = ((TextBox)arg).Text;
             }
         }
         //public void Close()
