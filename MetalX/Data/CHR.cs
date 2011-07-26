@@ -13,6 +13,8 @@ namespace MetalX.Data
 
         public int TextureIndex = -1;
         public string TextureName;
+        public Size Size = new Size(1, 1);
+        public bool Invisible = false;
         //public Size TileSizePixel = new Size(16, 16);
 
         float moveSpeed = 2f;
@@ -437,13 +439,11 @@ namespace MetalX.Data
     [Serializable]
     public class PC : CHR
     {
-        //public bool IsTalking = false;
     }
     [Serializable]
     public class NPC : CHR
     {
-        public List<Item> Bag = new List<Item>();
-        //public event NPCEvent OnFocusOnMe;
+        public bool IsDoor = false;
         public bool IsBox = false;
         public Direction DefaultDirection;
         //public Vector3 DefaultLocation;
@@ -462,10 +462,6 @@ namespace MetalX.Data
         }
         public void FocusOnMe(PC me)
         {
-            //if (OnFocusOnMe != null)
-            //{
-            //    OnFocusOnMe(this);
-            //}
             if (!IsBox)
             {
                 if (me.Direction == Direction.U)
@@ -487,9 +483,8 @@ namespace MetalX.Data
             }
             else
             {
-                Direction = Direction.D;
+                Direction = Direction.L;
             }
         }
-
     }
 }

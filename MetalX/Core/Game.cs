@@ -246,7 +246,7 @@ namespace MetalX
             FormBoxes = new FormBoxes();
             Characters = new Characters();
 
-            FormBoxes.Add(new MetalX.Resource.MessageBox(this));
+            FormBoxes.Add(new MSGBox(this));
         }
         public void InitCom()
         {
@@ -320,10 +320,10 @@ namespace MetalX
             //Devices.D3DDev.Dispose();
             Devices.D3DDev.Reset(Devices.D3DDev.PresentationParameters);
 
-            Devices.D3DDev.RenderState.AlphaBlendEnable = true;
-            //Devices.D3DDev.RenderState.AlphaTestEnable = true;
-            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
-            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
+            //Devices.D3DDev.RenderState.AlphaBlendEnable = true;
+            ////Devices.D3DDev.RenderState.AlphaTestEnable = true;
+            //Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
+            //Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
 
             isRunning = true;
         }
@@ -347,7 +347,19 @@ namespace MetalX
                 } 
                 if (GameComs[i].Visible)
                 {
-                    GameComs[i].Draw();
+                    if (!Devices.D3DDev.Disposed)
+                    {
+                        if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                        {
+                            Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+                            GameComs[i].Draw();
+                            Devices.Sprite.End();
+                        }
+                        else
+                        {
+                            GameComs[i].Draw();
+                        }
+                    }
                 }
             }
             //foreach (GameCom metalXGameCom in GameComs)
@@ -361,13 +373,11 @@ namespace MetalX
             //        metalXGameCom.Draw();
             //    }
             //}
-            if (Devices.D3DDev.Disposed)
+            if (!Devices.D3DDev.Disposed)
             {
-                return;
+                Devices.D3DDev.EndScene();
+                Devices.D3DDev.Present();
             }
-            
-            Devices.D3DDev.EndScene();
-            Devices.D3DDev.Present();
             totalFrames++;
             Application.DoEvents();
         }
@@ -451,8 +461,6 @@ namespace MetalX
             Devices.D3DDev.Lights[0].Position = location;
             Devices.D3DDev.Lights[0].Enabled = value;
 
-
-
             Devices.D3DDev.RenderState.Lighting = value;
 
             //Devices.D3DDev.RenderState.CullMode = Cull.None;
@@ -474,6 +482,11 @@ namespace MetalX
             location.Z = -((float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(location.Z * Math.PI / 180.0))) / zoom;
             Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / (float)Devices.D3DDev.PresentationParameters.BackBufferHeight, -1000, 100);
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
+
+            Devices.D3DDev.RenderState.AlphaBlendEnable = true;
+            Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
+            Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
+
         }
         #region Load File Method
         //public void LoadCheckPoint(int i)
@@ -900,7 +913,7 @@ namespace MetalX
                 return;
             }
 
-            Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+            //Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
 
             if (size.Width / dz.Width == 2)
             {
@@ -916,7 +929,7 @@ namespace MetalX
                 //Devices.Sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
             }
 
-            Devices.Sprite.End();
+            //Devices.Sprite.End();
         }
 
         #endregion
@@ -951,13 +964,18 @@ namespace MetalX
                     //fd.FaceName = fontName;
                     //fd.Width = fontSize.Width;
                     //fd.Height = fontSize.Height;
+                    if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                    {
+                        Devices.Font.DrawText(Devices.Sprite, text, point, color);
+                    }
+                    else
+                    {
+                        Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
 
-                    Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+                        Devices.Font.DrawText(Devices.Sprite, text, point, color);
 
-                    Devices.Font.DrawText(Devices.Sprite, text, point, color);
-
-                    Devices.Sprite.End();
-
+                        Devices.Sprite.End();
+                    }
                 }
             }
         }

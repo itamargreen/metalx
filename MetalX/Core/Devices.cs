@@ -50,9 +50,6 @@ namespace MetalX
             }
             D3DDev.VertexFormat = CustomVertex.PositionColoredTextured.Format;
 
-            D3DDev.RenderState.AlphaBlendEnable = true;
-            D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
-            D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
 
             //D3DDev.ShowCursor(false);
 

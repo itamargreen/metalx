@@ -62,6 +62,14 @@ namespace MetalX.Data
         /// <summary>
         /// 场景位置
         /// </summary>
+        public Vector3 RealLocation;
+        public Point RealLocationPoint
+        {
+            get
+            {
+                return new Point((int)RealLocation.X, (int)RealLocation.Y);
+            }
+        }
         public Vector3 RealLocationPixel = new Vector3();
         public Point RealLocationPixelPoint
         {
@@ -77,6 +85,7 @@ namespace MetalX.Data
         }
         public void SetRealLocation(Vector3 v3, int unit)
         {
+            RealLocation = v3;
             RealLocationPixel = Util.Vector3MulInt(v3, unit);
         }
         //[NonSerialized]
@@ -102,23 +111,28 @@ namespace MetalX.Data
         {
             for (int i = 0; i < NPCs.Count; i++)
             {
-                if (NPCs[i].RealLocation == v3)
+                if (NPCs[i].IsDoor)
                 {
-                    return NPCs[i];
+                    Vector3 v33 = NPCs[i].RealLocation;
+                    v33.Y++;
+                    if (v33 == v3)
+                    {
+                        return NPCs[i];
+                    }
+                }
+                else
+                {
+                    if (NPCs[i].RealLocation == v3)
+                    {
+                        return NPCs[i];
+                    }
                 }
             }
             return null;
         }
         public NPC GetNPC(Point p)
         {
-            for (int i = 0; i < NPCs.Count; i++)
-            {
-                if (NPCs[i].RealLocation == Util.Point2Vector3(p,0))
-                {
-                    return NPCs[i];
-                }
-            }
-            return null;
+            return GetNPC(Util.Point2Vector3(p, 0));
         }
         public List<string> BGMusics = new List<string>();
         /// <summary>
@@ -130,6 +144,35 @@ namespace MetalX.Data
             get
             {
                 return CodeLayers[0];
+            }
+        }
+        [NonSerialized]
+        public Tile[][][] Tiles;
+        [NonSerialized]
+        public Code[][] Codes;
+        public void Init()
+        {
+            Tiles = new Tile[TileLayers.Count][][];
+            for (int l = 0; l < TileLayers.Count; l++)
+            {
+                Tiles[l] = new Tile[Size.Height][];
+                for (int y = 0; y < Size.Height; y++)
+                {
+                    Tiles[l][y] = new Tile[Size.Width];
+                    for (int x = 0; x < Size.Width; x++)
+                    {
+                        Tiles[l][y][x] = TileLayers[l][x, y];
+                    }
+                }
+            }
+            Codes = new Code[Size.Height][];
+            for (int y = 0; y < Size.Height; y++)
+            {
+                Codes[y] = new Code[Size.Width];
+                for (int x = 0; x < Size.Width; x++)
+                {
+                    Codes[y][x] = CodeLayers[0][x, y];
+                }
             }
         }
 
