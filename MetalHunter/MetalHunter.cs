@@ -6,7 +6,6 @@ using System.Drawing;
 using Microsoft.DirectX.DirectInput;
 
 using MetalX;
-using MetalHunter.GUI;
 
 namespace MetalHunter
 {
@@ -20,10 +19,8 @@ namespace MetalHunter
             game.FormBoxes.LoadDotMXFormBox(new LogoGame(game));
             game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
 
-            NPCTalk npctalk = new NPCTalk(game);
-            int i = game.FormBoxes.GetIndex("MessageBox");
-            game.FormBoxes[i] = npctalk;
-            game.FormBoxes[i].Name = "MessageBox";
+            game.OverLoadMessageBox(new MH_MSGBox(game));
+            game.OverLoadASKboolBox(new MH_ASKboolBox(game));
         }
 
         public MetalHunter()
@@ -40,16 +37,10 @@ namespace MetalHunter
 
             InitFormBoxes();
             
-            game.ExecuteMetalXScript("logo.mxscript");
+            game.AppendDotMetalXScript("logo.mxscript");
+            game.ExecuteScript();
 
-            game.SceneManager.OnKeyboardUp += new KeyboardEvent(SceneManager_OnKeyboardUp);
-            
             game.Start();
-        }
-
-        void SceneManager_OnKeyboardUp(object sender, int key)
-        {
-            MetalX.Component.SceneManager sm = (MetalX.Component.SceneManager)sender;
         }
 
         [STAThread]

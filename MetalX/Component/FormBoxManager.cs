@@ -163,6 +163,10 @@ namespace MetalX.Component
         }
         public void Disappear(int i)
         {
+            if (i < 0)
+            {
+                return;
+            }
             AppearingFormBoxIndex.Remove(i);
             game.FormBoxes[i].Disappear();
             //game.FormBoxes[i].OnFormBoxDisappearCode();
@@ -183,15 +187,15 @@ namespace MetalX.Component
             }
 
             Key k = (Key)key;
-            if (k == Key.W || k == Key.A)
+            if (k == game.Options.KeyUP || k == game.Options.KeyLEFT)
             {
                 AppearingFormBox.FocusLastButtonBox();
             }
-            else if (k == Key.S || k == Key.D)
+            else if (k == game.Options.KeyDOWN || k == game.Options.KeyRIGHT)
             {
                 AppearingFormBox.FocusNextButtonBox();
             }
-            else if (k == Key.J)
+            else if (k == game.Options.KeyA)
             {
                 AppearingFormBox.DownNowButtonBox();
             }
@@ -204,7 +208,7 @@ namespace MetalX.Component
             } 
             
             Key k = (Key)key;
-            if (k == Key.J)
+            if (k == game.Options.KeyA)
             {
                 AppearingFormBox.UpNowButtonBox();
                 AppearingFormBox.FocusNowButtonBox();

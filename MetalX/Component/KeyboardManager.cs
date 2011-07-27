@@ -10,7 +10,7 @@ namespace MetalX.Component
     public class KeyboardManager : GameCom
     {
         //Thread keyboardthd;
-        bool[] keyboardStateBackup = new bool[128];
+        bool[] keyboardStateBackup = new bool[256];
         public KeyboardManager(Game g)
             : base(g)
         {

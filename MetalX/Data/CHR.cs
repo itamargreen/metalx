@@ -18,8 +18,33 @@ namespace MetalX.Data
         //public Size TileSizePixel = new Size(16, 16);
 
         float moveSpeed = 2f;
+        //public int NeedMoveStep = 0;
+        [NonSerialized]
         public float NeedMovePixel = 0;
-        public Direction Direction;
+        public Direction LastDirection;
+        public Direction RealDirection;
+        public Direction OppositeDirection
+        {
+            get
+            {
+                if (RealDirection == Direction.U)
+                {
+                    return Direction.D;
+                }
+                else if (RealDirection == Direction.L)
+                {
+                    return Direction.R;
+                }
+                else if (RealDirection == Direction.D)
+                {
+                    return Direction.U;
+                }
+                else
+                {
+                    return Direction.L;
+                }
+            }
+        }
 
         public Vector3 LastLocation;
         public Vector3 RealLocation;
@@ -117,21 +142,48 @@ namespace MetalX.Data
                 Vector3 v3 = NextLocation;
                 if (NeedMovePixel == 0)
                 {
-                    if (Direction == Direction.U)
+                    if (RealDirection == Direction.U)
                     {
                         v3.Y--;
                     }
-                    else if (Direction == Direction.D)
+                    else if (RealDirection == Direction.D)
                     {
                         v3.Y++;
                     }
-                    else if (Direction == Direction.L)
+                    else if (RealDirection == Direction.L)
                     {
                         v3.X--;
                     }
-                    else if (Direction == Direction.R)
+                    else if (RealDirection == Direction.R)
                     {
                         v3.X++;
+                    }
+                }
+                return v3;
+            }
+        }
+        public Vector3 RangeLocation
+        {
+            get
+            {
+                Vector3 v3 = NextLocation;
+                if (NeedMovePixel == 0)
+                {
+                    if (RealDirection == Direction.U)
+                    {
+                        v3.Y -= 2;
+                    }
+                    else if (RealDirection == Direction.D)
+                    {
+                        v3.Y += 2;
+                    }
+                    else if (RealDirection == Direction.L)
+                    {
+                        v3.X -= 2;
+                    }
+                    else if (RealDirection == Direction.R)
+                    {
+                        v3.X += 2;
                     }
                 }
                 return v3;
@@ -142,11 +194,11 @@ namespace MetalX.Data
             Vector3 v3 = Util.Vector3DivInt(RealLocationPixel, unit);
             if (NeedMovePixel > 0)
             {
-                if (Direction == Direction.U)
+                if (RealDirection == Direction.U)
                 {
                     v3.Y++;
                 }
-                else if (Direction == Direction.L)
+                else if (RealDirection == Direction.L)
                 {
                     v3.X++;
                 }
@@ -159,7 +211,7 @@ namespace MetalX.Data
             float movedPixel = unit - NeedMovePixel;
             if (NeedMovePixel > 0)
             {
-                if (Direction == Direction.U)
+                if (RealDirection == Direction.U)
                 {
                     if (nextl > lastl)
                     {
@@ -173,7 +225,7 @@ namespace MetalX.Data
 
                     }
                 }
-                else if (Direction == Direction.D)
+                else if (RealDirection == Direction.D)
                 {
                     if (nextl > lastl)
                     {
@@ -187,7 +239,7 @@ namespace MetalX.Data
                         }
                     }
                 }
-                else if (Direction == Direction.L)
+                else if (RealDirection == Direction.L)
                 {
                     if (nextl > lastl)
                     { }
@@ -196,7 +248,7 @@ namespace MetalX.Data
                         v3.X--;
                     }
                 }
-                else if (Direction == Direction.R)
+                else if (RealDirection == Direction.R)
                 {
                     if (nextl > lastl)
                     { }
@@ -218,10 +270,14 @@ namespace MetalX.Data
         public bool CanControl = true;
         public void Freeze()
         {
+            CanTurn = false;
+            CanMove = false;
             CanControl = false;
         }
         public void Unfreeze()
         {
+            CanTurn = true;
+            CanMove = true;
             CanControl = true;
         }
 
@@ -435,6 +491,74 @@ namespace MetalX.Data
                 }
             }
         }
+        public bool Face(Direction dir)
+        {
+            if (CanTurn == false)
+            {
+                return false;
+            }
+            LastDirection = RealDirection;
+            RealDirection = dir;
+            return true;
+        }
+        public bool Move(Scene s, int stp, int stepPixel)
+        {
+            if (CanMove == false)
+            {
+                return false;
+            }
+            if (s.IsInScene(FrontLocation) == false)
+            {
+                return false;
+            }
+            NPC n = s.GetNPC(FrontLocation);
+            if (n != null)
+            {
+                if (n.IsDoor == false)
+                {
+                    return false;
+                }
+            }
+            if (s.Codes[(int)FrontLocation.Y][(int)FrontLocation.X].CHRCanRch == false)
+            {
+                return false;
+            }
+
+            LastLocation = this.RealLocation;
+            RealLocation = NextLocation = FrontLocation;
+            NeedMovePixel += stp * stepPixel;
+            return true;
+        }
+        public void MovePixel()
+        {
+            if (NeedMovePixel > 0)
+            {
+                float movePixel = MoveSpeed;
+                if (NeedMovePixel < MoveSpeed)
+                {
+                    movePixel = NeedMovePixel;
+                }
+
+                NeedMovePixel -= movePixel;
+
+                if (RealDirection == Direction.U)
+                {
+                    RealLocationPixel.Y -= movePixel;
+                }
+                else if (RealDirection == Direction.L)
+                {
+                    RealLocationPixel.X -= movePixel;
+                }
+                else if (RealDirection == Direction.D)
+                {
+                    RealLocationPixel.Y += movePixel;
+                }
+                else if (RealDirection == Direction.R)
+                {
+                    RealLocationPixel.X += movePixel;
+                }
+            }
+        }
     }
     [Serializable]
     public class PC : CHR
@@ -458,32 +582,36 @@ namespace MetalX.Data
                     return;
                 }
             }
-            Direction = DefaultDirection;
+            RealDirection = DefaultDirection;
         }
         public void FocusOnMe(PC me)
         {
-            if (!IsBox)
+            if (IsBox)
             {
-                if (me.Direction == Direction.U)
-                {
-                    Direction = Direction.D;
-                }
-                else if (me.Direction == Direction.L)
-                {
-                    Direction = Direction.R;
-                }
-                else if (me.Direction == Direction.D)
-                {
-                    Direction = Direction.U;
-                }
-                else if (me.Direction == Direction.R)
-                {
-                    Direction = Direction.L;
-                }
+                RealDirection = Direction.L;
+            }
+            else if (IsDoor)
+            {
+                //me.RealDirection = Direction.L;
             }
             else
             {
-                Direction = Direction.L;
+                if (me.RealDirection == Direction.U)
+                {
+                    RealDirection = Direction.D;
+                }
+                else if (me.RealDirection == Direction.L)
+                {
+                    RealDirection = Direction.R;
+                }
+                else if (me.RealDirection == Direction.D)
+                {
+                    RealDirection = Direction.U;
+                }
+                else if (me.RealDirection == Direction.R)
+                {
+                    RealDirection = Direction.L;
+                }
             }
         }
     }

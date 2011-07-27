@@ -51,7 +51,16 @@ namespace MetalX.Component
                 {
                     return null;
                 }
-                return SCENE.GetNPC(ME.FrontLocation);
+                NPC n = SCENE.GetNPC(ME.FrontLocation); 
+                if (n == null)
+                {
+                    if (SCENE.CodeLayer[ME.FrontLocation].IsDesk)
+                    {
+
+                        n = SCENE.GetNPC(ME.RangeLocation);
+                    }
+                }
+                return n;
             }
         }
         int frameIndex = 0;
@@ -61,84 +70,95 @@ namespace MetalX.Component
             : base(g)
         {
         }
-        void moveCode(CHR chr)
-        {
-            if (chr.NeedMovePixel > 0)
-            {
-                float movePixel = chr.MoveSpeed;
-                if (chr.NeedMovePixel < chr.MoveSpeed)
-                {
-                    movePixel = chr.NeedMovePixel;
-                }
+        //void moveCode(CHR chr)
+        //{
+        //    if (chr.NeedMovePixel > 0)
+        //    {
+        //        float movePixel = chr.MoveSpeed;
+        //        if (chr.NeedMovePixel < chr.MoveSpeed)
+        //        {
+        //            movePixel = chr.NeedMovePixel;
+        //        }
 
-                chr.NeedMovePixel -= movePixel;
+        //        chr.NeedMovePixel -= movePixel;
 
-                if (chr.Direction == Direction.U)
-                {
-                    chr.RealLocationPixel.Y -= movePixel;
-                    if (chr is PC)
-                    {
-                        SCENE.RealLocationPixel.Y += movePixel;
-                    }
-                }
-                else if (chr.Direction == Direction.L)
-                {
-                    chr.RealLocationPixel.X -= movePixel;
-                    if (chr is PC)
-                    {
-                        SCENE.RealLocationPixel.X += movePixel;
-                    }
-                }
-                else if (chr.Direction == Direction.D)
-                {
-                    chr.RealLocationPixel.Y += movePixel;
-                    if (chr is PC)
-                    {
-                        SCENE.RealLocationPixel.Y -= movePixel;
-                    }
-                }
-                else if (chr.Direction == Direction.R)
-                {
-                    chr.RealLocationPixel.X += movePixel;
-                    if (chr is PC)
-                    {
-                        SCENE.RealLocationPixel.X -= movePixel;
-                    }
-                }
+        //        if (chr.RealDirection == Direction.U)
+        //        {
+        //            chr.RealLocationPixel.Y -= movePixel;
+        //            if (chr is PC)
+        //            {
+        //                SCENE.RealLocationPixel.Y += movePixel;
+        //            }
+        //        }
+        //        else if (chr.RealDirection == Direction.L)
+        //        {
+        //            chr.RealLocationPixel.X -= movePixel;
+        //            if (chr is PC)
+        //            {
+        //                SCENE.RealLocationPixel.X += movePixel;
+        //            }
+        //        }
+        //        else if (chr.RealDirection == Direction.D)
+        //        {
+        //            chr.RealLocationPixel.Y += movePixel;
+        //            if (chr is PC)
+        //            {
+        //                SCENE.RealLocationPixel.Y -= movePixel;
+        //            }
+        //        }
+        //        else if (chr.RealDirection == Direction.R)
+        //        {
+        //            chr.RealLocationPixel.X += movePixel;
+        //            if (chr is PC)
+        //            {
+        //                SCENE.RealLocationPixel.X -= movePixel;
+        //            }
+        //        }
 
-                if (chr is PC)
-                {
-                    if (chr.NeedMovePixel ==0)
-                    {
-                        try
-                        {
-                            if (SCENE != null)
-                            {
-                                string sname = SCENE.CodeLayer[chr.RealLocation].SceneFileName;
-                                if (sname != null)
-                                {
-                                    //int dx = scene.CodeLayer[chr.RealLocation].DefaultLocation.X;
-                                    //int dy = scene.CodeLayer[chr.RealLocation].DefaultLocation.Y;
-                                    game.SceneManager.Enter(sname, SCENE.CodeLayer[chr.RealLocation].DefaultLocation);
-                                    chr.Direction = SCENE.CodeLayer[chr.RealLocation].DefaultDirection;
-                                }
-                            }
-                        }
-                        catch { }
-                    }
-                }
-            }
-        }
+        //        if (chr is PC)
+        //        {
+        //            if (chr.NeedMovePixel ==0)
+        //            {
+        //                try
+        //                {
+        //                    if (SCENE != null)
+        //                    {
+        //                        string sname = SCENE.CodeLayer[chr.RealLocation].SceneFileName;
+        //                        if (sname != null)
+        //                        {
+        //                            //int dx = scene.CodeLayer[chr.RealLocation].DefaultLocation.X;
+        //                            //int dy = scene.CodeLayer[chr.RealLocation].DefaultLocation.Y;
+        //                            game.SceneManager.Enter(sname, SCENE.CodeLayer[chr.RealLocation].DefaultLocation);
+        //                            chr.RealDirection = SCENE.CodeLayer[chr.RealLocation].DefaultDirection;
+        //                        }
+        //                    }
+        //                }
+        //                catch { }
+        //            }
+        //        }
+        //    }
+        //}
         void moveCode()
         {
-            if (SCENE == null)
+            foreach (NPC npc in SCENE.NPCs)
             {
-                return;
+                npc.MovePixel();
             }
-            moveCode(ME);
-            for (int i = 0; i < SCENE.NPCs.Count; i++)
+            if (ME.NeedMovePixel > 0)
             {
-                moveCode(SCENE.NPCs[i]);
+                SCENE.MovePixel(ME.MoveSpeed);
+
+                ME.MovePixel();
+
+                if (ME.NeedMovePixel == 0)
+                {
+                    string sname = SCENE.Codes[(int)ME.RealLocation.Y][(int)ME.RealLocation.X].SceneFileName;
+                    if (sname != null)
+                    {
+                        Enter(sname, SCENE.Codes[(int)ME.RealLocation.Y][(int)ME.RealLocation.X].DefaultLocation);
+                        ME.Face(SCENE.Codes[(int)ME.RealLocation.Y][(int)ME.RealLocation.X].DefaultDirection);
+                    }
+                }
             }
         }
         void frameCode()
@@ -154,25 +174,64 @@ namespace MetalX.Component
                 frameIndex++;
             }
         }
+        void doorCode()
+        {
+            foreach (NPC npc in SCENE.NPCs)
+            {
+                if (npc.IsDoor)
+                {
+                    Vector3 v33 = npc.RealLocation;
+                    if (v33 == ME.FrontLocation)
+                    {
+                        PCbeforeNPC = true;
+                    }
+                    else
+                    {
+                        v33.Y++;
+                        if (v33 == ME.RealLocation)
+                        {
+                            npc.Invisible = true;
+                        }
+                        else
+                        {
+                            if (ME.NeedMovePixel > 0)
+                            {
+                                if (ME.RealDirection == Direction.U)
+                                {
+                                    PCbeforeNPC = true;
+                                }
+                                else
+                                {
+                                    PCbeforeNPC = false;
+                                }
+                            }
+
+                            npc.Invisible = false;
+
+                        }
+                    }
+                }
+            }
+        }
         public override void Code()
         {
-            base.Code();
-            moveCode();
+            if (SCENE == null)
+            {
+                return;
+            }
             frameCode();
+            moveCode();
+            doorCode();
         }
 
         public override void Draw()
         {
-            base.Draw();
             if (SCENE == null)
             {
                 return;
             }
             DrawBorder(SCENE);
             DrawSceneTest(SCENE);
-            NPC n = SCENE.GetNPC("father");
-            //if(n!=null)
-            //game.DrawText(n.RealLocation.ToString(), new Point(0, 120), Color.White);
         }
 
         public void Enter(string fileName, Point p)
@@ -181,7 +240,8 @@ namespace MetalX.Component
         }
         public void Enter(string fileName, Vector3 realLoc)
         {
-            game.AppendScript(@"scene fallout 1");
+            game.AppendScript(@"scene fallout 300");
+            game.AppendScript(@"delay 300");
             game.ExecuteScript();
 
             Delay(500);
@@ -245,14 +305,14 @@ namespace MetalX.Component
         //    }
         //    return true;
         //}      
-        bool IsInWindow(Point p)
-        {
-            if (p.X < (0 - 1) || p.Y < (0 - 1)  || p.X > (game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width + 1)  || p.Y > (game.Options.WindowSizePixel.Height / game.Options.TileSizePixelX.Height + 1) )
-            {
-                return false;
-            }
-            return true;
-        }
+        //bool IsInWindow(Point p)
+        //{
+        //    if (p.X < (0 - 1) || p.Y < (0 - 1)  || p.X > (game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width + 1)  || p.Y > (game.Options.WindowSizePixel.Height / game.Options.TileSizePixelX.Height + 1) )
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
         void DrawBorder(Scene s)
         {
             if (s.BottomTile == null)
@@ -496,12 +556,27 @@ namespace MetalX.Component
                 }
                 for (int y = 0; y < s.Tiles[l].Length; y++)
                 {
+                    if (y + SCENE.RealLocation.Y < 0 + -1)
+                    {
+                        //y++;
+                        continue;
+                    }
+                    if (y + SCENE.RealLocation.Y > game.Options.WindowSize.Height + 1)
+                    {
+                        //y++;
+                        continue;
+                    }
                     for (int x = 0; x < s.Tiles[l][y].Length; x++)
                     {
+                        if (x + SCENE.RealLocation.X < 0 + -1)
+                        {
+                            //x++;
+                            continue;
+                        }
                         Tile t = s.Tiles[l][y][x];
                         if (t != null)
                         {
-                            if (IsInWindow(Util.PointAddPoint(t.LocationPoint, SCENE.RealLocationPoint)))
+                            //if (IsInWindow(Util.PointAddPoint(t.LocationPoint, SCENE.RealLocationPoint)))
                             {
                                 int fi = t.FrameIndex;
                                 if (t.IsAnimation)
@@ -601,7 +676,7 @@ namespace MetalX.Component
                     //}
                     //if (t.Location != ME.RealLocation)
                     {
-                        if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, game.Options.TilePixel), SCENE.RealLocationPixelPoint)))
+                        //if (IsInWindow(Util.PointAddPoint(Util.PointMulInt(t.LocationPoint, game.Options.TilePixel), SCENE.RealLocationPixelPoint)))
                         {
                             int fi = t.FrameIndex;
                             if (t.IsAnimation)
@@ -688,7 +763,7 @@ namespace MetalX.Component
                 chr.TextureIndex = game.Textures.GetIndex(chr.TextureName);
             }
             Rectangle dz = new Rectangle();
-            dz.Y = (int)chr.Direction * game.Textures[chr.TextureIndex].TileSizePixel.Height;
+            dz.Y = (int)chr.RealDirection * game.Textures[chr.TextureIndex].TileSizePixel.Height;
             if (chr.NeedMovePixel > 0)
             {
                 dz.X = (((int)((float)game.Options.TilePixel - chr.NeedMovePixel)) / (game.Options.TileSizePixelX.Width / 4) + 1) * game.Textures[chr.TextureIndex].TileSizePixel.Width;
@@ -719,26 +794,7 @@ namespace MetalX.Component
                 dsize,
                 Util.MixColor(chr.ColorFilter, ColorFilter));
         }
-        bool IsInScene(Scene s, Vector3 p)
-        {
-            if (p.X < 0)
-            {
-                return false;
-            }
-            if (p.Y < 0)
-            {
-                return false;
-            }
-            if (p.X >= s.Size.Width)
-            {
-                return false;
-            }
-            if (p.Y >= s.Size.Height)
-            {
-                return false;
-            }
-            return true;
-        }
+
         //public bool IsNobody()
         //{
         //    return IsNobody(scene, ME.FrontLocation);
@@ -786,133 +842,151 @@ namespace MetalX.Component
         //    index = -1;
         //    return true;
         //}
-        public void Move(Scene s, CHR chr, Direction dir, int stp)
-        {
-            if (chr.CanMove == false)
-            {
-                return;
-            }
-            if (chr.CanTurn)
-            {
-                chr.Direction = dir;
-            }
-            Vector3 loc = chr.FrontLocation;
-            if (IsInScene(s, loc) == false)
-            {
-                return;
-            }
-            NPC n = s.GetNPC(loc);
-            if (n != null)
-            {
-                if (n.IsDoor)
-                {
-                    game.PlayMP3(2, game.Audios["door"].FileName);
-                    n.Invisible = true;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            try
-            {
-                if (s.CodeLayer[loc].CHRCanRch == false)
-                {
-                    return;
-                }
-            }
-            catch
-            {
-                return;
-            }
-            if (chr is PC)
-            {
-                if (chr.CanControl == false)
-                {
-                    return;
-                }
-                if (dir == Direction.U)
-                {
-                    PCbeforeNPC = true;
-                }
-                if (dir == Direction.U)
-                {
-                    s.RealLocation.Y++;
-                }
-                else if (dir == Direction.L)
-                {
-                    s.RealLocation.X++;
-                }
-                else if (dir == Direction.D)
-                {
-                    s.RealLocation.Y--;
-                }
-                else if (dir == Direction.R)
-                {
-                    s.RealLocation.X--;
-                }
-            }
-            //ME leave door
- 
-            n = s.GetNPC(chr.RealLocation);
-            if (n != null)
-            {
-                if (n.IsDoor)
-                {
-                    game.PlayMP3(2, game.Audios["door"].FileName);
-                    n.Invisible = false;
-                }
-                if (dir == Direction.D)
-                {
-                    PCbeforeNPC = false;
-                }
-                //else if (dir == Direction.U)
-                //{
-                //    PCbeforeNPC = true;
-                //}
-            }
+        //public void Move(CHR chr, int stp)
+        //{
+        //    Move(SCENE, chr, chr.RealDirection, stp);
+        //}
+        //public void Move(Scene s, CHR chr, Direction dir, int stp)
+        //{
+        //    if (chr.CanMove == false)
+        //    {
+        //        return;
+        //    }
+        //    if (chr.CanTurn)
+        //    {
+        //        chr.LastDirection = chr.RealDirection;
+        //        chr.RealDirection = dir;
+        //    }
+        //    Vector3 loc = chr.FrontLocation;
+        //    if (s.IsInScene(loc) == false)
+        //    {
+        //        return;
+        //    }
+        //    NPC n = s.GetNPC(loc);
+        //    if (n != null)
+        //    {
+        //        if (n.IsDoor)
+        //        {
+        //            game.PlayMP3(2, game.Audios["door"].FileName);
+        //            n.Invisible = true;
+        //        }
+        //        else
+        //        {
+        //            return;
+        //        }
+        //    }
+        //    try
+        //    {
+        //        if (s.CodeLayer[loc].CHRCanRch == false)
+        //        {
+        //            return;
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return;
+        //    }
+        //    if (chr is PC)
+        //    {
+        //        if (chr.CanControl == false)
+        //        {
+        //            //chr.RealDirection = chr.LastDirection;
+        //            return;
+        //        }
+        //        if (dir == Direction.U)
+        //        {
+        //            PCbeforeNPC = true;
+        //        }
 
-            chr.LastLocation = Util.Vector3DivInt(chr.RealLocationPixel, game.Options.TilePixel);
-            chr.RealLocation = chr.NextLocation = loc;
-            chr.NeedMovePixel += game.Options.TilePixel;
-        }
+        //        if (dir == Direction.U)
+        //        {
+        //            s.RealLocation.Y++;
+        //        }
+        //        else if (dir == Direction.L)
+        //        {
+        //            s.RealLocation.X++;
+        //        }
+        //        else if (dir == Direction.D)
+        //        {
+        //            s.RealLocation.Y--;
+        //        }
+        //        else if (dir == Direction.R)
+        //        {
+        //            s.RealLocation.X--;
+        //        }
+        //    }
+        //    //ME leave door
+ 
+        //    n = s.GetNPC(chr.RealLocation);
+        //    if (n != null)
+        //    {
+        //        if (n.IsDoor)
+        //        {
+        //            game.PlayMP3(2, game.Audios["door"].FileName);
+        //            n.Invisible = false;
+
+        //            if (dir == Direction.D)
+        //            {
+        //                PCbeforeNPC = false;
+        //            }
+        //        }
+
+        //        //else if (dir == Direction.U)
+        //        //{
+        //        //    PCbeforeNPC = true;
+        //        //}
+        //    }
+
+        //    chr.LastLocation = Util.Vector3DivInt(chr.RealLocationPixel, game.Options.TilePixel);
+        //    chr.RealLocation = chr.NextLocation = loc;
+        //    chr.NeedMovePixel += game.Options.TilePixel;
+        //}
         public override void OnKeyboardDownHoldCode(object sender, int key)
         {
-            Key k = (Key)key;
-
             if (SCENE == null)
             {
                 return;
             }
+
+            Key k = (Key)key;
+
             if (ME.NeedMovePixel == 0)
             {
-                if ((k == Key.W || k == Key.A || k == Key.S || k == Key.D))
+                if ((k == game.Options.KeyUP || k == game.Options.KeyLEFT || k == game.Options.KeyDOWN || k == game.Options.KeyRIGHT))
                 {
                     Direction dir = Direction.U;
-                    if (k == Key.W)
+                    if (k == game.Options.KeyUP)
                     {
                         dir = Direction.U;
                     }
-                    else if (k == Key.A)
+                    else if (k == game.Options.KeyLEFT)
                     {
                         dir = Direction.L;
                     }
-                    else if (k == Key.S)
+                    else if (k == game.Options.KeyDOWN)
                     {
                         dir = Direction.D;
                     }
-                    else
+                    else if (k == game.Options.KeyRIGHT)
                     {
                         dir = Direction.R;
+                    } 
+                    if (ME.Face(dir))
+                    {
+                        SCENE.Face(ME.OppositeDirection);
                     }
-                    Move(SCENE, ME, dir, 1);
+                    if (ME.Move(SCENE, 1,game.Options.TilePixel))
+                    {
+                        SCENE.Move(1, game.Options.TilePixel);
+                    }
+
                 }
             }
         }        
         public override void OnKeyboardUpCode(object sender, int key)
         {
             Key k = (Key)key;
-            if (k == Key.J)
+            if (k == game.Options.KeyA)
             {
                 if (FrontNPC != null)
                 {
@@ -920,22 +994,22 @@ namespace MetalX.Component
                     {
                         return;
                     }
-                    game.AppendScript("freezeme");
+                    game.AppendScript("me freeze");
                     FrontNPC.FocusOnMe(ME);
                     if (FrontNPC.IsBox)
                     {
                         if (FrontNPC.Bag.Count > 0)
                         {
                             game.AppendScript(FrontNPC.Code);
-                            game.AppendScript("unfreezeme");
+                            game.AppendScript("me unfreeze");
                             game.ExecuteScript();
                         }
                         else
                         {
                             game.AppendScript("msg 什么都没有");
-                            game.AppendScript("untilpress j");
-                            game.AppendScript("gui close MessageBox");
-                            game.AppendScript("unfreezeme");
+                            game.AppendScript("untilpress a");
+                            game.AppendScript("msg");
+                            game.AppendScript("me unfreeze");
                             game.ExecuteScript();
                         }
                     }
@@ -944,19 +1018,21 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        if (FrontNPC.Code == null)
-                        {
-                            game.AppendScript("msg " + FrontNPC.DialogText);
-                            game.AppendScript("untilpress j");
-                            game.AppendScript("unfreezeme");
-                            game.ExecuteScript();
+                        //if (FrontNPC.Code == string.Empty)
+                        //{
+                        //    game.AppendScript("msg " + FrontNPC.DialogText);
+                        //    game.AppendScript("untilpress j");
+                        //    game.AppendScript("gui close MessageBox");
+                        //    game.AppendScript("unfreezeme");
+                        //    game.ExecuteScript();
 
-                        }
-                        else
+                        //}
+                        //else
                         {
                             game.AppendScript(FrontNPC.Code);
-                            game.AppendScript("unfreezeme");
-                            game.ExecuteScript();
+                            game.AppendScript("me unfreeze");
+                            game.AppendScript("npc " + FrontNPC.Name + " dir def");
+                            game.ExecuteScript();                            
                         }
                     }
                 }

@@ -79,50 +79,96 @@ namespace MetalX.Resource
             Add(fb);
         }
     }
-    public class MSGBox : FormBox
+    public class ASKboolBox : FormBox
     {
+        protected ButtonBox BB1, BB2;
         protected TextBox TextBox;
-        public MSGBox(Game g)
+        public ASKboolBox(Game g)
             : base(g)
         {
-            Name = "MessageBox";
+            Name = "ASKboolBox";
             Location = new Point(0, 360);
-            //Size = new Size(640, 120);
-            //BGTextureName = "dialog-bgtexture";
 
             TextBox = new TextBox(g);
             TextBox.Location = new Point(16, 16);
             TextBox.OneByOne = true;
 
-            ControlBoxes.Add(TextBox);
+            BB1 = new ButtonBox(g);
+            BB1.Location = new Point(300, 80);
+            BB1.UpTextBox.Text = BB1.DownTextBox.Text = BB1.FocusTextBox.Text = BB1.WaitTextBox.Text = "是";
+            BB1.FocusTextBox.FontColor = Color.Blue;
+            BB1.OnButtonDown += new ButtonBoxEvent(BB1_OnButtonDown);
+
+            BB2 = new ButtonBox(g);
+            BB2.Location = new Point(400, 80);
+            BB2.UpTextBox.Text = BB2.DownTextBox.Text = BB2.FocusTextBox.Text = BB2.WaitTextBox.Text = "否";
+            BB2.FocusTextBox.FontColor = Color.Blue;
+            BB2.OnButtonDown += new ButtonBoxEvent(BB2_OnButtonDown);
+
+            ControlBoxes.Add(TextBox); 
+            ControlBoxes.Add(BB1);
+            ControlBoxes.Add(BB2);
         }
-        public override void OnFormBoxAppearCode(object arg)
+        public string Text
         {
-            if (arg is TextBox)
+            get
             {
-                TextBox.Text = ((TextBox)arg).Text;
+                return TextBox.Text;
+            }
+            set
+            {
+                TextBox.Text = value;
             }
         }
-        //public void Close()
-        //{
-        //    //game.AppendAndExecuteScript("gui disappear " + Name);
-        //}
-        //public void Show(string text, string fontName, int fontSize, int interval, bool obo)
-        //{
-        //    tb1.Text = text;
-        //    tb1.FontName = fontName;
-        //    tb1.FontSize = fontSize;
-        //    tb1.Interval = interval;
-        //    tb1.OneByOne = obo;
-        //    //game.AppendAndExecuteScript("gui appear " + Name);
-        //}
-        //public void Show(string text, bool obo)
-        //{
-        //    Show(text, tb1.FontName, tb1.FontSize, tb1.Interval, obo);
-        //}
-        //public void Show(string text)
-        //{
-        //    Show(text, tb1.FontName, tb1.FontSize, tb1.Interval, tb1.OneByOne);
-        //}
+        void BB1_OnButtonDown(object arg)
+        {
+            game.ReturnScript(true);
+        }
+
+        void BB2_OnButtonDown(object arg)
+        {
+            game.ReturnScript(false);
+        }
+        public override void OnFormBoxAppearCode(object sender, object arg)
+        {
+            if (arg is string)
+            {
+                ((ASKboolBox)sender).Text = arg.ToString();
+            }
+        }
+    }
+    public class MSGBox : FormBox
+    {
+        public TextBox TextBox;
+        public MSGBox(Game g)
+            : base(g)
+        {
+            Name = "MessageBox";
+            Location = new Point(64, 480 - 128 - 8);
+
+            TextBox = new TextBox(g);
+            TextBox.Location = new Point(20, 20);
+            TextBox.OneByOne = true;
+
+            ControlBoxes.Add(TextBox);
+        }
+        public string Text
+        {
+            get
+            {
+                return TextBox.Text;
+            }
+            set
+            {
+                TextBox.Text = value;
+            }
+        }
+        public override void OnFormBoxAppearCode(object sender, object arg)
+        {
+            if (arg is string)
+            {
+                ((MSGBox)sender).Text = arg.ToString();
+            }
+        }
     }
 }

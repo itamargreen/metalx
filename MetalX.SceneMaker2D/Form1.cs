@@ -195,7 +195,7 @@ namespace MetalX.SceneMaker2D
                 }
                 else if (sceneMaker2D.drawCodeLayer == 5)
                 {
-                    sceneMaker2D.scene.CodeLayer[p].RchDisappear = l;
+                    sceneMaker2D.scene.CodeLayer[p].IsDesk = val;
                 }
             }
             catch { }
@@ -378,6 +378,7 @@ namespace MetalX.SceneMaker2D
             int th = tilesizepixel.Height;
 
             sceneMaker2D.scene = new Scene(new Size(sw, sh), new Size(tw, th));
+            sceneMaker2D.scene.Init();
             sceneMaker2D.scene.Name = ui_scenename.Text;
             sceneMaker2D.scene.FrameInterval = int.Parse(ui_framedelay.Text);
 
@@ -407,7 +408,7 @@ namespace MetalX.SceneMaker2D
             sceneMaker2D = new SceneMaker2D(game);
                         
             sceneMaker2D.scene = game.LoadDotMXScene(fileName);
-
+            sceneMaker2D.scene.Init();
             update_pic_list();
             update_mus_list();
             update_npc_list();
@@ -437,10 +438,9 @@ namespace MetalX.SceneMaker2D
             //game.LoadAllDotMP3(@".\");
 
             sceneMaker2D = new SceneMaker2D(game);
-
             
             sceneMaker2D.scene = game.LoadDotXMLScene(fileName);
-
+            sceneMaker2D.scene.Init();
 
             update_pic_list();
             update_mus_list();
@@ -1237,7 +1237,7 @@ namespace MetalX.SceneMaker2D
             {
                 dir = Direction.R;
             }
-            npc.DefaultDirection = npc.Direction = dir;
+            npc.DefaultDirection = npc.RealDirection = dir;
             npc.DialogText = ui_npctxt.Text;
 
             if (sceneMaker2D.scene.NPCs == null)
@@ -1285,19 +1285,19 @@ namespace MetalX.SceneMaker2D
             ui_npcw.Text = npc.Size.Width + "";
             ui_npch.Text = npc.Size.Height + "";
 
-            if (npc.Direction == Direction.U)
+            if (npc.RealDirection == Direction.U)
             {
                 ui_npcdir.Text = "U";
             }
-            else if (npc.Direction == Direction.L)
+            else if (npc.RealDirection == Direction.L)
             {
                 ui_npcdir.Text = "L";
             }
-            else if (npc.Direction == Direction.D)
+            else if (npc.RealDirection == Direction.D)
             {
                 ui_npcdir.Text = "D";
             }
-            else if (npc.Direction == Direction.R)
+            else if (npc.RealDirection == Direction.R)
             {
                 ui_npcdir.Text = "R";
             }
@@ -1339,7 +1339,7 @@ namespace MetalX.SceneMaker2D
             {
                 dir = Direction.R;
             }
-            npc.DefaultDirection = npc.Direction = dir;
+            npc.DefaultDirection = npc.RealDirection = dir;
             npc.DialogText = ui_npctxt.Text;
 
             if (sceneMaker2D.scene.NPCs == null)

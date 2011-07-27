@@ -142,7 +142,7 @@ namespace MetalX.Data
                 }
             }
             Visible = true;
-            OnFormBoxAppear(arg);
+            OnFormBoxAppear(this, arg);
         }
         public void Disappear()
         {
@@ -151,7 +151,7 @@ namespace MetalX.Data
         public void Disappear(object arg)
         {
             Visible = false;
-            OnFormBoxDisappear(arg);
+            OnFormBoxDisappear(this, arg);
         }
         public FormBox(Game g)
             : base(g)
@@ -162,23 +162,23 @@ namespace MetalX.Data
             OnFormBoxDisappear = new FormBoxEvent(OnFormBoxDisappearCode);
         }
 
-        public virtual void OnFormBoxAppearCode(object arg)
+        public virtual void OnFormBoxAppearCode(object sender, object arg)
         {
         }
 
-        public virtual void OnFormBoxDisappearCode(object arg)
+        public virtual void OnFormBoxDisappearCode(object sender, object arg)
         {
         }
     }
     [Serializable]
     public class TextBox : ControlBox
     {
-        public string Text;
+        public string Text = "";
         public Color FontColor = Color.White;
         public int TextIndex = -1;
         public string TextFileName;
-        public string FontName = "新宋体";
-        public int FontSize = 12;
+        public string FontName = "微软雅黑";
+        public int FontSize = 15;
         public string[] Lines
         {
             get
@@ -198,6 +198,7 @@ namespace MetalX.Data
                 TimeSpan timespan = DateTime.Now - lastCharacterTime;
                 if (timespan.Milliseconds > Interval)
                 {
+
                     if (SubTextIndex < Text.Length)
                     {
                         SubTextIndex++;
@@ -208,7 +209,8 @@ namespace MetalX.Data
                         //OneByOne = false;
                         OnSubTextShowDone(null);
                     }
-                }
+                } 
+                
                 return Text.Substring(0, SubTextIndex);
             }
         }

@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <KeyUP>Up</KeyUP>
+  <KeyDOWN>Down</KeyDOWN>
+  <KeyLEFT>Left</KeyLEFT>
+  <KeyRIGHT>Right</KeyRIGHT>
+  <KeyA>X</KeyA>
+  <KeyB>Z</KeyB>
   <TextureDrawMode>Direct2D</TextureDrawMode>
   <FullScreen>false</FullScreen>
   <X>1</X>

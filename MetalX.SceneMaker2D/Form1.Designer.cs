@@ -155,6 +155,11 @@
             this.label12 = new System.Windows.Forms.Label();
             this.ui_mus_lib = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.ui_npch = new System.Windows.Forms.TextBox();
+            this.ui_npcw = new System.Windows.Forms.TextBox();
+            this.ui_npcisdoor = new System.Windows.Forms.CheckBox();
             this.ui_npccode = new System.Windows.Forms.TextBox();
             this.ui_canmove = new System.Windows.Forms.CheckBox();
             this.ui_canturn = new System.Windows.Forms.CheckBox();
@@ -182,11 +187,6 @@
             this.设为打底层图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.ui_npcisdoor = new System.Windows.Forms.CheckBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.ui_npch = new System.Windows.Forms.TextBox();
-            this.ui_npcw = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -877,7 +877,7 @@
             "SHP可到达",
             "FLT可到达",
             "精灵绘制层",
-            "精灵到达消失层"});
+            "是桌子（可隔视NPC）"});
             this.ui_codelayer_slt.Location = new System.Drawing.Point(6, 6);
             this.ui_codelayer_slt.Name = "ui_codelayer_slt";
             this.ui_codelayer_slt.Size = new System.Drawing.Size(146, 172);
@@ -1442,6 +1442,48 @@
             this.tabPage3.Text = "NPC编辑";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(232, 267);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(11, 12);
+            this.label27.TabIndex = 26;
+            this.label27.Text = "h";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(168, 267);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(11, 12);
+            this.label28.TabIndex = 25;
+            this.label28.Text = "w";
+            // 
+            // ui_npch
+            // 
+            this.ui_npch.Location = new System.Drawing.Point(249, 264);
+            this.ui_npch.Name = "ui_npch";
+            this.ui_npch.Size = new System.Drawing.Size(36, 21);
+            this.ui_npch.TabIndex = 24;
+            // 
+            // ui_npcw
+            // 
+            this.ui_npcw.Location = new System.Drawing.Point(185, 264);
+            this.ui_npcw.Name = "ui_npcw";
+            this.ui_npcw.Size = new System.Drawing.Size(36, 21);
+            this.ui_npcw.TabIndex = 23;
+            // 
+            // ui_npcisdoor
+            // 
+            this.ui_npcisdoor.AutoSize = true;
+            this.ui_npcisdoor.Location = new System.Drawing.Point(62, 535);
+            this.ui_npcisdoor.Name = "ui_npcisdoor";
+            this.ui_npcisdoor.Size = new System.Drawing.Size(36, 16);
+            this.ui_npcisdoor.TabIndex = 22;
+            this.ui_npcisdoor.Text = "门";
+            this.ui_npcisdoor.UseVisualStyleBackColor = true;
+            // 
             // ui_npccode
             // 
             this.ui_npccode.Location = new System.Drawing.Point(62, 412);
@@ -1673,48 +1715,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // ui_npcisdoor
-            // 
-            this.ui_npcisdoor.AutoSize = true;
-            this.ui_npcisdoor.Location = new System.Drawing.Point(62, 535);
-            this.ui_npcisdoor.Name = "ui_npcisdoor";
-            this.ui_npcisdoor.Size = new System.Drawing.Size(36, 16);
-            this.ui_npcisdoor.TabIndex = 22;
-            this.ui_npcisdoor.Text = "门";
-            this.ui_npcisdoor.UseVisualStyleBackColor = true;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(232, 267);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(11, 12);
-            this.label27.TabIndex = 26;
-            this.label27.Text = "h";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(168, 267);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(11, 12);
-            this.label28.TabIndex = 25;
-            this.label28.Text = "w";
-            // 
-            // ui_npch
-            // 
-            this.ui_npch.Location = new System.Drawing.Point(249, 264);
-            this.ui_npch.Name = "ui_npch";
-            this.ui_npch.Size = new System.Drawing.Size(36, 21);
-            this.ui_npch.TabIndex = 24;
-            // 
-            // ui_npcw
-            // 
-            this.ui_npcw.Location = new System.Drawing.Point(185, 264);
-            this.ui_npcw.Name = "ui_npcw";
-            this.ui_npcw.Size = new System.Drawing.Size(36, 21);
-            this.ui_npcw.TabIndex = 23;
             // 
             // Form1
             // 

@@ -6,7 +6,7 @@ using System.Drawing;
 using MetalX;
 using MetalX.Data;
 
-namespace MetalHunter.GUI
+namespace MetalHunter
 {
     public class LogoEngine : FormBox
     {
@@ -137,37 +137,44 @@ namespace MetalHunter.GUI
 
         void bb1_OnButtonDown(object arg)
         {
-            game.ExecuteMetalXScript("load1.mxscript");
+            game.AppendDotMetalXScript("load1.mxscript");
+            game.ExecuteScript();
         }
     }
-    public class NPCTalk : FormBox
+
+    public class MH_MSGBox : MetalX.Resource.MSGBox
     {
-        TextBox tb1;
-        public NPCTalk(Game g)
+        public MH_MSGBox(Game g)
             : base(g)
         {
-            Name = "NPCsay";
             Location = new Point(64, 480 - 128 - 8);
-            //Size = new Size(640, 120);
+
             BGTextureBox.TextureName = "ning-dialogbg";
             BGTextureBox.Size = new Size(512, 128);
 
-            tb1 = new TextBox(g);
-            tb1.Location = new Point(20, 20);
-            //tb1.Text = "MetalHunter!";
-            tb1.FontName = "微软雅黑";
+            TextBox.Location = new Point(20, 20);
+            TextBox.OneByOne = true;
 
-            tb1.FontSize = 16;
-            tb1.OneByOne = true;
-
-            ControlBoxes.Add(tb1);
+            TextBox.FontName = "微软雅黑";
+            TextBox.FontSize = 15;
         }
-        public override void OnFormBoxAppearCode(object arg)
+    }
+
+    public class MH_ASKboolBox : MetalX.Resource.ASKboolBox
+    {
+        public MH_ASKboolBox(Game g)
+            : base(g)
         {
-            if (arg is TextBox)
-            {
-                tb1.Text = ((TextBox)arg).Text;
-            }
+            Location = new Point(64, 480 - 128 - 8);
+
+            BGTextureBox.TextureName = "ning-dialogbg";
+            BGTextureBox.Size = new Size(512, 128);
+
+            TextBox.Location = new Point(20, 20);
+            TextBox.OneByOne = true;
+
+            TextBox.FontName = "微软雅黑";
+            TextBox.FontSize = 15;
         }
     }
 }
