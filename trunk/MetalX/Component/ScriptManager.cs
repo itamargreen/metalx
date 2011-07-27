@@ -10,6 +10,13 @@ namespace MetalX.Component
 {
     public class ScriptManager : GameCom
     {
+        ScriptReturn RETURN = new ScriptReturn();
+
+        public void Return(bool yes)
+        {
+            RETURN.BOOL = yes;
+        }
+
         Stack<string> cmdbak = new Stack<string>();
         string text = "";
         bool drawText = false;
@@ -22,7 +29,9 @@ namespace MetalX.Component
         //double delayTime = 0;
         //double delayLeftTime = 0;
 
-        bool exe = false; Queue<string> commands = new Queue<string>();
+        bool exe = false; 
+        Queue<string> commands = new Queue<string>();
+        Queue<string> tmpcommands = new Queue<string>();
         bool loop = false;
                 
         //TimeSpan delayEclipseTimeSpan
@@ -88,7 +97,8 @@ namespace MetalX.Component
                 }
                 game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
             }
-            game.DrawText("DrawMode: " + game.Options.TextureDrawMode + " FPS: " + game.AverageFPS.ToString("f1"), new System.Drawing.Point(450, 0), Color.Blue);
+            if(game.SceneManager.SCENE!=null)
+            game.DrawText(game.SceneManager.SCENE.RealLocation+ "\n FPS: " + game.AverageFPS.ToString("f1")+" DrawMode: " + game.Options.TextureDrawMode , new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -100,251 +110,320 @@ namespace MetalX.Component
                 return;
             }
             kw[0] = kw[0].ToLower();
-            if (kw.Length == 1)
+            if (kw[0] == "y")
             {
-                if (kw[0] == "exit")
+                if (RETURN.BOOL == false)
                 {
-                    game.Exit();
+                    return;
                 }
-                else if (kw[0] == "clr")
+                for (int i = 1; i < kw.Length; i++)
                 {
-                    text = "";
-                }
-                else if (kw[0] == "fullscreen")
-                {
-                    game.ToggleToFullScreen();
-                }
-                else if (kw[0] == "comctrl")
-                {
-                    game.SceneManager.Controllable = false;
-                    game.FormBoxManager.Controllable = false;
-                }
-                else if (kw[0] == "userctrl")
-                {
-                    game.SceneManager.Controllable = true;
-                    game.FormBoxManager.Controllable = true;
-                }
-                else if (kw[0] == "freezeme")
-                {
-                    game.SceneManager.ME.Freeze();
-                }
-                else if (kw[0] == "unfreezeme")
-                {
-                    game.SceneManager.ME.Unfreeze();
+                    kw[i - 1] = kw[i];
                 }
             }
-            else if (kw.Length == 2)
+            else if (kw[0] == "n")
             {
-                if (kw[0] == "delay")
+                if (RETURN.BOOL)
                 {
-                    double ms = double.Parse(kw[1]);
-                    //delayLeftTime = delayTime = ms;
-                    //delayStartTime = DateTime.Now;
-                    Delay((int)ms);
+                    return;
                 }
-                else if (kw[0] == "mp3")
+                for (int i = 1; i < kw.Length; i++)
                 {
-                    game.PlayMP3(2, kw[1]);
-                }
-                else if (kw[0] == "script")
-                {
-                    game.ExecuteMetalXScript(kw[1] + ".mxscript");
-                }
-                else if (kw[0] == "msg")
-                {
-                    TextBox tb = new TextBox(game);
-                    tb.Text = kw[1];
-                    game.FormBoxManager.Appear("MessageBox", tb);
-                }
-                else if (kw[0] == "untilstop")
-                {
-                    Scene s = game.SceneManager.SCENE;
-                    float a = s.GetNPC(kw[1]).NeedMovePixel;
-                    if (a > 0)
-                    {
-                        loop = true;
-                    }
-                    else
-                    {
-                        loop = false;
-                    }
-                }
-                else if (kw[0] == "untilpress")
-                {
-                    if (presskey == kw[1])
-                    {
-                        loop = false;
-                    }
-                    else
-                    {
-                        loop = true;
-                    }                    
+                    kw[i - 1] = kw[i];
                 }
             }
-            else if (kw.Length == 3)
+            if (kw[0] == "exit")
             {
-                if (kw[0] == "scene")
+                game.Exit();
+            }
+            else if (kw[0] == "clr")
+            {
+                text = "";
+            }
+            else if (kw[0] == "ask")
+            {
+                if (kw.Length == 1)
+                {
+                    game.FormBoxManager.Disappear("ASKboolBox");
+                    game.FormBoxManager.Disappear("ASKintBox");
+                }
+                else
+                {
+                    if (kw[1] == "bool")
+                    {
+                        game.FormBoxManager.Appear("ASKboolBox", kw[2]);
+                    }
+                }
+            }
+            else if (kw[0] == "check")
+            {
+                if (kw[1] == "bool")
+                {
+                    game.FormBoxManager.Appear("ASKboolBox", kw[2]);
+                }
+            }
+            //else if (kw[0] == "return")
+            //{
+            //    if (kw[1] == "yes")
+            //    {
+            //        RETURN.BOOL = true;
+            //    }
+            //    else if (kw[1] == "no")
+            //    {
+            //        RETURN.BOOL = false;
+            //    }
+            //    else
+            //    {
+            //        RETURN.INT = int.Parse(kw[1]);
+            //    }
+            //}
+            else if (kw[0] == "terminal")
+            {
+                commands.Clear();
+                exe = false;
+            }
+            else if (kw[0] == "fullscreen")
+            {
+                game.ToggleToFullScreen();
+            }
+            else if (kw[0] == "comctrl")
+            {
+                game.SceneManager.Controllable = false;
+                game.FormBoxManager.Controllable = false;
+            }
+            else if (kw[0] == "userctrl")
+            {
+                game.SceneManager.Controllable = true;
+                game.FormBoxManager.Controllable = true;
+            }
+            else if (kw[0] == "delay")
+            {
+                double ms = double.Parse(kw[1]);
+                //delayLeftTime = delayTime = ms;
+                //delayStartTime = DateTime.Now;
+                Delay((int)ms);
+            }
+            else if (kw[0] == "mp3")
+            {
+                game.PlayMP3(2, kw[1]);
+            }
+            else if (kw[0] == "script")
+            {
+                int c = commands.Count;
+                    for (int i = 0; i < c; i++)
+                    {
+                        tmpcommands.Enqueue(commands.Dequeue());
+                    }
+                    AppendDotMetalXScript(kw[1] + ".mxscript");
+                    for (int i = 0; i < c; i++)
+                    {
+                        commands.Enqueue(tmpcommands.Dequeue());
+                    }
+            }
+            //else if (kw[0] == "exe")
+            //{
+            //    Execute();
+            //}
+            else if (kw[0] == "msg")
+            {
+                if (kw.Length == 1)
+                {
+                    game.FormBoxManager.Disappear("MessageBox");
+                }
+                else
+                {
+                    game.FormBoxManager.Appear("MessageBox", kw[1]);
+                }
+            }
+            else if (kw[0] == "untilstop")
+            {
+                Scene s = game.SceneManager.SCENE;
+                float a = s.GetNPC(kw[1]).NeedMovePixel;
+                if (a > 0)
+                {
+                    loop = true;
+                }
+                else
+                {
+                    loop = false;
+                }
+            }
+            else if (kw[0] == "untilpress")
+            {
+                string key = kw[1];
+                if (key == "a")
+                {
+                    key = game.Options.KeyA.ToString();
+                }
+                else if (key == "b")
+                {
+                    key = game.Options.KeyB.ToString();
+                }
+                key = key.ToLower();
+                if (presskey == key)
+                {
+                    loop = false;
+                }
+                else
+                {
+                    loop = true;
+                }
+            }
+            else if (kw[0] == "gui")
+            {
+
+                if (kw[1] == "shock")
                 {
                     double ms = double.Parse(kw[2]);
-                    if (kw[1] == "shock")
-                    {
-                        game.SceneManager.ShockScreen(ms);
-                    }
-                    else if (kw[1] == "fallout")
-                    {
-                        game.SceneManager.FallOutSceen(ms);
-                    }
-                    else if (kw[1] == "fallin")
-                    {
-                        game.SceneManager.FallInSceen(ms);
-                    }
+                    game.FormBoxManager.ShockScreen(ms);
                 }
-                else if (kw[0] == "gui")
+                else if (kw[1] == "fallout")
                 {
-
-                    if (kw[1] == "shock")
+                    double ms = double.Parse(kw[2]);
+                    game.FormBoxManager.FallOutSceen(ms);
+                }
+                else if (kw[1] == "fallin")
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.FormBoxManager.FallInSceen(ms);
+                }
+                else if (kw[1] == "close")
+                {
+                    if (kw[2] == "all")
                     {
-                        double ms = double.Parse(kw[2]);
-                        game.FormBoxManager.ShockScreen(ms);
+                        game.FormBoxManager.DisappearAll();
                     }
-                    else if (kw[1] == "fallout")
-                    {
-                        double ms = double.Parse(kw[2]);
-                        game.FormBoxManager.FallOutSceen(ms);
-                    }
-                    else if (kw[1] == "fallin")
-                    {
-                        double ms = double.Parse(kw[2]);
-                        game.FormBoxManager.FallInSceen(ms);
-                    }
-                    else if (kw[1] == "close")
-                    {
-                        if (kw[2] == "all")
-                        {
-                            game.FormBoxManager.DisappearAll();
-                        }
-                        else
-                        {
-                            game.FormBoxManager.Disappear(kw[2]);
-                        }
-                    }
-                    else if (kw[1] == "appear")
-                    {
-                        game.FormBoxManager.Appear(kw[2]);
-                    }
-                    else if (kw[1] == "disappear")
+                    else
                     {
                         game.FormBoxManager.Disappear(kw[2]);
                     }
                 }
-                else if (kw[0] == "me")
+                else if (kw[1] == "appear")
                 {
-                    if (kw[1] == "skin")
-                    {
-                        game.SceneManager.MeSkin(kw[2]);
-                    }
-                    else if (kw[1] == "gold")
-                    {
-                        game.SceneManager.ME.Gold += int.Parse(kw[2]);
-                    }
-                    else if (kw[1] == "bagin")
-                    {
-                        //查找item，然后添加
-                        game.SceneManager.ME.BagIn(null);
-                    }
+                    game.FormBoxManager.Appear(kw[2]);
                 }
-                //else if (kw[0] == "npc")
-                //{
-                //    if (kw[1] == "say")
-                //    {
-                //        TextBox tb = new TextBox(game);
-                //        tb.Text = kw[2];
-                //        game.FormBoxManager.Appear("NPCsay", tb);
-                //    }
-                //}
-                else if (kw[0] == "move")
+                else if (kw[1] == "disappear")
                 {
-                    Direction dir;
-                    if (kw[2] == "u")
+                    game.FormBoxManager.Disappear(kw[2]);
+                }
+            }
+            else if (kw[0] == "npc")
+            {
+                Scene s = game.SceneManager.SCENE;
+                NPC n = s.GetNPC(kw[1]);
+                if (kw[2] == "dir")
+                {
+                    Direction dir = Direction.U;
+                    if (kw[3] == "def")
                     {
-                        dir = Direction.U;
-                    }
-                    else if (kw[2] == "l")
-                    {
-                        dir = Direction.L;
-                    }
-                    else if (kw[2] == "d")
-                    {
-                        dir = Direction.D;
+                        n.RecoverDirection();
                     }
                     else
                     {
-                        dir = Direction.R;
+                        if (kw[3] == "u")
+                        {
+                            dir = Direction.U;
+                        }
+                        else if (kw[3] == "l")
+                        {
+                            dir = Direction.L;
+                        }
+                        else if (kw[3] == "d")
+                        {
+                            dir = Direction.D;
+                        }
+                        else
+                        {
+                            dir = Direction.R;
+                        }
+                        n.Face(dir);
                     }
-                    Scene s = game.SceneManager.SCENE;
-                    game.SceneManager.Move(s, s.GetNPC(kw[1]), dir, 1);
                 }
-
-            }
-            else if (kw.Length == 4)
-            {
-                if (kw[0] == "scene")
+                else if (kw[2] == "move")
                 {
-                    double ms = double.Parse(kw[2]);
-                    int range = int.Parse(kw[3]);
-                    if (kw[1] == "shock")
+                    int stp = 1;
+                    try
                     {
-                        game.SceneManager.ShockScreen(ms, range);
+                        stp = int.Parse(kw[3]);
                     }
-                }
-
-                else if (kw[0] == "me")
-                {
-                    if (kw[1] == "jump")
+                    catch
                     {
-                        Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
-                        v3.X = float.Parse(kw[2]);
-                        v3.Y = float.Parse(kw[3]);
-                        game.SceneManager.SceneJump(v3);
                     }
-
-                }
-                else if (kw[0] == "move")
-                {
-                    Direction dir;
-                    if (kw[2] == "u")
-                    {
-                        dir = Direction.U;
-                    }
-                    else if (kw[2] == "l")
-                    {
-                        dir = Direction.L;
-                    }
-                    else if (kw[2] == "d")
-                    {
-                        dir = Direction.D;
-                    }
-                    else
-                    {
-                        dir = Direction.R;
-                    }
-                    Scene s = game.SceneManager.SCENE;
-                    int stp = int.Parse(kw[3]);
-                    game.SceneManager.Move(s, s.GetNPC(kw[1]), dir, stp);
+                    n.Move(s, stp, game.Options.TilePixel);
+                    //game.SceneManager.Move(n, stp);
                 }
             }
-            else if (kw.Length == 5)
+            else if (kw[0] == "me")
             {
-                if (kw[0] == "scene")
+                if (kw[1] == "skin")
                 {
-                    if (kw[1] == "jump")
-                    {
-                        Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
-                        v3.X = float.Parse(kw[3]);
-                        v3.Y = float.Parse(kw[4]);
-                        game.SceneManager.Enter(kw[2], v3);
-                    }
+                    game.SceneManager.MeSkin(kw[2]);
                 }
+                else if (kw[1] == "gold")
+                {
+                    game.SceneManager.ME.Gold += int.Parse(kw[2]);
+                }
+                else if (kw[1] == "bagin")
+                {
+                    //查找item，然后添加
+                    game.SceneManager.ME.BagIn(null);
+                }
+                else if (kw[1] == "jump")
+                {
+                    Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
+                    v3.X = float.Parse(kw[2]);
+                    v3.Y = float.Parse(kw[3]);
+                    game.SceneManager.SceneJump(v3);
+                }
+                else if (kw[1] == "freeze")
+                {
+                    game.SceneManager.ME.Freeze();
+                }
+                else if (kw[1] == "unfreeze")
+                {
+                    game.SceneManager.ME.Unfreeze();
+                }
+            }
+
+            else if (kw[0] == "scene")
+            {
+                int range = -100;
+                try
+                {
+                    range = int.Parse(kw[3]);
+                }
+                catch
+                { }
+                double ms = double.Parse(kw[2]);
+                if (kw[1] == "jump")
+                {
+                    Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
+                    v3.X = float.Parse(kw[3]);
+                    v3.Y = float.Parse(kw[4]);
+                    game.SceneManager.Enter(kw[2], v3);
+                }
+                else if (kw[1] == "shock" && range != -100)
+                {
+                    game.SceneManager.ShockScreen(ms, range);
+                }
+                else if (kw[1] == "shock")
+                {
+                    game.SceneManager.ShockScreen(ms);
+                }
+                else if (kw[1] == "fallout")
+                {
+                    game.SceneManager.FallOutSceen(ms);
+                }
+                else if (kw[1] == "fallin")
+                {
+                    game.SceneManager.FallInSceen(ms);
+                }
+            }
+            else
+            {
+                TextBox tb = new TextBox(game);
+                tb.Text = kw[0];
+                game.FormBoxManager.Appear("MessageBox", tb);
             }
         }
 
@@ -368,16 +447,16 @@ namespace MetalX.Component
         {
             exe = true;
         }        
-        public void Execute(string cmd)
-        {
-            AppendCommand(cmd);
-            Execute();
-        }
-        public void ExecuteDotMXScript(string fileName)
+        //public void Execute(string cmd)
+        //{
+        //    AppendCommand(cmd);
+        //    Execute();
+        //}
+        public void AppendDotMetalXScript(string fileName)
         {
             string cmds = System.IO.File.ReadAllText(game.Options.RootPath + fileName);
             text += cmds + "\n";
-            Execute(cmds);
+            AppendCommand(cmds);
         }
 
         public override void OnKeyboardUpCode(object sender, int key)
@@ -480,14 +559,10 @@ namespace MetalX.Component
                 {
                     string cmd = cmds[cmds.Length - 1];
                     cmdbak.Push(cmd);
+                    AppendCommand(cmd);text += "\n";
                     if (isBig)
                     {
-                        Execute(cmd);
-                    }
-                    else
-                    {
-                        AppendCommand(cmd);
-                        text += "\n";
+                        Execute();
                     }
                 }
             }

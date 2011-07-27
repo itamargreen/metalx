@@ -247,6 +247,7 @@ namespace MetalX
             Characters = new Characters();
 
             FormBoxes.Add(new MSGBox(this));
+            FormBoxes.Add(new ASKboolBox(this));
         }
         public void InitCom()
         {
@@ -277,7 +278,7 @@ namespace MetalX
 
             totalFrames = 0;
 
-            SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), Options.X);
+            SetCamera(new Vector3(0, 0, 12.5f), new Vector3(), Options.X);
             SetLight(new Vector3(0, 0, 22.5f), new Vector3(), Options.X, false);
 
             isRunning = true;
@@ -914,7 +915,10 @@ namespace MetalX
             }
 
             //Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
-
+            if (dz.Width == 0)
+            {
+                return;
+            }
             if (size.Width / dz.Width == 2)
             {
                 dz.X = dz.X * 2;
@@ -942,7 +946,7 @@ namespace MetalX
         /// <param name="color">颜色</param>
         public void DrawText(string text, Point point, Color color)
         {
-            DrawText(text, point, "新宋体", 12, color);
+            DrawText(text, point, "微软雅黑", 15, color);
         }
         public void DrawText(string text, Point point, string fontName, int fontSize, Color color)
         {
@@ -966,7 +970,11 @@ namespace MetalX
                     //fd.Height = fontSize.Height;
                     if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
                     {
+                        Devices.Sprite.End();
+                        Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
                         Devices.Font.DrawText(Devices.Sprite, text, point, color);
+                        Devices.Sprite.End();
+                        Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
                     }
                     else
                     {
@@ -1096,6 +1104,10 @@ namespace MetalX
             }
         }
         #endregion
+        public void ReturnScript(bool yes)
+        {
+            ScriptManager.Return(yes);
+        }
         public void ExecuteScript()
         {
             ScriptManager.Execute();
@@ -1104,16 +1116,25 @@ namespace MetalX
         {
             ScriptManager.AppendCommand(cmd);
         }
-        public void AppendAndExecuteScript(string cmd)
+        //public void AppendAndExecuteScript(string cmd)
+        //{
+        //    AppendScript(cmd);
+        //    ExecuteScript();
+        //}
+        public void AppendDotMetalXScript(string file)
         {
-            AppendScript(cmd);
-            ExecuteScript();
-        }
-        public void ExecuteMetalXScript(string file)
-        {
-            ScriptManager.ExecuteDotMXScript(file);
+            ScriptManager.AppendDotMetalXScript(file);
         }
 
+        public void OverLoadMessageBox(MSGBox box)
+        {
+            FormBoxes["MessageBox"] = box;
+        }
+
+        public void OverLoadASKboolBox(ASKboolBox box)
+        {
+            FormBoxes["ASKboolBox"] = box;
+        }
         #endregion
     }
 }

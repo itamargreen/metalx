@@ -91,32 +91,49 @@ namespace MetalX.SceneMaker2D
                 lastFrameBeginTime = DateTime.Now;
             }
         }
+        void DrawSceneTest(Scene s)
+        {
+            if (s == null)
+            {
+                return;
+            }
+            for (int l = 0; l < s.Tiles.Length; l++)
+            {
+                for (int y = 0; y < s.Tiles[l].Length; y++)
+                {
+                    for (int x = 0; x < s.Tiles[l][y].Length; x++)
+                    {
+                        Tile t = s.Tiles[l][y][x];
+                        if (t != null)
+                        {
+                            int fi = t.FrameIndex;
+                            if (t.IsAnimation)
+                            {
+                                fi = frameIndex;
+                            }
+                            else
+                            {
+                                fi = 0;
+                            }
+                            game.DrawMetalXTexture(
+                                game.Textures[t[fi].TextureIndex],
+                                t[fi].DrawZone,
+                                //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
+                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocationPixel, ScreenOffsetPixel), Util.Vector3MulInt(t.Location, game.Options.TilePixel)),
+                                game.Options.TileSizePixelX,
+                                Util.MixColor(t[fi].ColorFilter, ColorFilter)
+                            );
+                        }
+                    }
+                }
+
+            }
+        }
 
         public override void Draw()
         {
             //base.Draw();
-            foreach (TileLayer tl in scene.TileLayers)
-            {
-                if (tl.Visible)
-                {
-                    foreach (Tile t in tl.Tiles)
-                    {
-                        //Point p = t.GetLocationPixelPoint(scene.TilePixel);
-                        int fi = 0;
-                        if (t.IsAnimation)
-                        {
-                            fi = frameIndex;
-                        }
-                        game.DrawMetalXTexture(
-                            game.Textures[t[fi].TextureIndex],
-                            t[fi].DrawZone,
-                            Util.PointMulInt(t.LocationPoint, scene.TilePixel),
-                            scene.TileSizePixel,
-                            ColorFilter
-                            );
-                    }
-                }
-            }
+            DrawSceneTest(scene);
             //foreach (CodeLayer cl in scene.CodeLayers)
             {
                 foreach (Code c in scene.CodeLayer.Codes)
@@ -167,7 +184,7 @@ namespace MetalX.SceneMaker2D
                 return;
             }
             Rectangle dz = new Rectangle();
-            dz.Y = (int)npc.Direction * game.Textures[npc.TextureIndex].TileSizePixel.Height;
+            dz.Y = (int)npc.RealDirection * game.Textures[npc.TextureIndex].TileSizePixel.Height;
             if (npc.NeedMovePixel > 0)
             {
                 dz.X = (((int)((float)game.Options.TilePixel - npc.NeedMovePixel)) / (game.Options.TileSizePixelX.Width / 4) + 1) * game.Textures[npc.TextureIndex].TileSizePixel.Width;
@@ -283,7 +300,11 @@ namespace MetalX.SceneMaker2D
             {
                 foreach (Code c in scene.CodeLayer.Codes)
                 {
-                    string str = c.RchDisappear.ToString();
+                    string str = "o";
+                    if (!c.IsDesk)
+                    {
+                        str = "x";
+                    }
                     game.DrawText(str, Util.PointAddPoint(o, Util.PointMulInt(c.Location, scene.TilePixel)), Color.White);
                 }
             }

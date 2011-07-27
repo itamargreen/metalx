@@ -120,6 +120,9 @@ namespace MetalX.Data
                         return NPCs[i];
                     }
                 }
+                //else if (NPCs[i].IsBox)
+                //{ 
+                //}
                 else
                 {
                     if (NPCs[i].RealLocation == v3)
@@ -175,16 +178,35 @@ namespace MetalX.Data
                 }
             }
         }
-
-        public Scene()
-        { 
+        public bool IsInScene(Vector3 p)
+        {
+            if (p.X < 0)
+            {
+                return false;
+            }
+            if (p.Y < 0)
+            {
+                return false;
+            }
+            if (p.X >= Size.Width)
+            {
+                return false;
+            }
+            if (p.Y >= Size.Height)
+            {
+                return false;
+            }
+            return true;
         }
-        public Scene(Size s,Size tsp)
+        public Scene()
+        {
+        }
+        public Scene(Size s, Size tsp)
         {
             TileSizePixel = tsp;
             CodeLayers.Add(new CodeLayer());
             Size = s;
-            int i=0;
+            int i = 0;
             for (int y = 0; y < Size.Height; y++)
             {
                 for (int x = 0; x < Size.Width; x++)
@@ -194,6 +216,76 @@ namespace MetalX.Data
 
                 }
             }
+        }
+        [NonSerialized]
+        public float NeedMovePixel = 0;
+        [NonSerialized]
+        public int NeedMoveStep = 0;
+        [NonSerialized]
+        public Direction RealDirection;
+        public void Face(Direction dir)
+        {
+            RealDirection = dir;
+        }
+        public void Move(int stp,int stepPixel)
+        {
+            NeedMoveStep += stp;
+            if (RealDirection == Direction.U)
+            {
+                RealLocation.Y -= stp;
+            }
+            else if (RealDirection == Direction.L)
+            {
+                RealLocation.X -= stp;
+            }
+            else if (RealDirection == Direction.D)
+            {
+                RealLocation.Y += stp;
+            }
+            else if (RealDirection == Direction.R)
+            {
+                RealLocation.X += stp;
+            }
+            NeedMovePixel = stp * stepPixel;
+        }
+        public void MovePixel( float movespeed)
+        {
+            //if (NeedMovePixel == 0)
+            //{
+            //    if (NeedMoveStep > 0)
+            //    {
+            //        NeedMovePixel = NeedMoveStep * stepPixel;
+            //        NeedMoveStep = 0;
+            //    }
+            //}
+            if (NeedMovePixel > 0)
+            {
+                float movePixel = movespeed;
+                if (NeedMovePixel < movespeed)
+                {
+                    movePixel = NeedMovePixel;
+                }
+
+                NeedMovePixel -= movespeed;
+
+                if (RealDirection == Direction.U)
+                {
+                    RealLocationPixel.Y -= movePixel;
+                }
+                else if (RealDirection == Direction.L)
+                {
+                    RealLocationPixel.X -= movePixel;
+                }
+                else if (RealDirection == Direction.D)
+                {
+                    RealLocationPixel.Y += movePixel;
+                }
+                else if (RealDirection == Direction.R)
+                {
+                    RealLocationPixel.X += movePixel;
+                }
+            }
+
         }
 
         //public Scene GetClone()
@@ -446,7 +538,7 @@ namespace MetalX.Data
     [Serializable]
     public class Code
     {
-
+        public bool IsDesk = false;
         /// <summary>
         /// 人物可到达
         /// </summary>

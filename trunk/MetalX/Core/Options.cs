@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using System.Drawing;
 
+using Microsoft.DirectX.DirectInput;
+
 namespace MetalX
 {
     public class Options
     {
+        public Key KeyUP = Key.W;
+        public Key KeyDOWN = Key.S;
+        public Key KeyLEFT = Key.A;
+        public Key KeyRIGHT = Key.D;
+        public Key KeyA = Key.J;
+        public Key KeyB = Key.K;
+
         public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct2D;
         public bool FullScreen = false;
         public float X = 1f;
@@ -16,6 +25,14 @@ namespace MetalX
             {
                 return @".\" + RootName + @"\";
             }
+        }
+        public Size WindowSize
+        {
+            get
+            {
+                return new Size(WindowSizePixel.Width / TileSizePixelX.Width, WindowSizePixel.Height / TileSizePixelX.Height);
+            }
+
         }
         public Size WindowSizePixel = new Size(640, 480);
         public Size TileSizePixel = new Size(48, 48);
