@@ -142,6 +142,8 @@ namespace MetalX.Data
                 }
             }
             Visible = true;
+            NowButtonBoxIndex = -1;
+            FocusNextButtonBox();
             OnFormBoxAppear(this, arg);
         }
         public void Disappear()

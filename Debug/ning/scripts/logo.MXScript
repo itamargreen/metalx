@@ -1,22 +1,24 @@
 //mp3 audios\logo-engine.mp3
 
 gui fallout 1
-gui appear LogoEngine
+gui LogoEngine appear
 gui shock 1500
 gui fallin 500
 delay 1000
 gui fallout 500
 delay 500
-gui disappear LogoEngine
+gui LogoEngine disappear
 
 //gui fallin 1
-//gui appear LogoGame
+//gui LogoGame appear
 //delay 1000
 //gui fallout 1500
 //delay 1500
-//gui disappear LogoGame
+//gui LogoGame disappear
 
 gui fallin 1
-gui appear MenuLoad
+gui MenuLoad appear
+untilpress a
+gui MenuLoad disappear
 
 //exit

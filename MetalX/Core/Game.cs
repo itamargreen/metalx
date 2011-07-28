@@ -280,7 +280,7 @@ namespace MetalX
 
             totalFrames = 0;
 
-            SetCamera(new Vector3(0, 0, 12.5f), new Vector3(), Options.X);
+            SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), Options.X);
             SetLight(new Vector3(0, 0, 22.5f), new Vector3(), Options.X, false);
 
             isRunning = true;

@@ -27,7 +27,7 @@ namespace MetalHunter
             Name = "LogoGame";
             Location = new Point(0, 400);
             //Size = new Size(640, 120);
-            //BGTextureName = "ning-dialogbg";
+            //BGTextureName = "smallbg";
 
             TextBox tb1 = new TextBox(g);
             tb1.Location = new Point(16, 16);
@@ -52,24 +52,24 @@ namespace MetalHunter
             bb1.Location = new Point();
             bb1.Size = new System.Drawing.Size(512, 128);
 
-            bb1.WaitTextureBox.TextureName = "ning-dialogbg";
+            bb1.WaitTextureBox.TextureName = "smallbg";
             bb1.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
             bb1.WaitTextBox.Location = new Point(32, 32);
             bb1.WaitTextBox.Text = "存档1";
 
-            bb1.FocusTextureBox.TextureName = "ning-dialogbg";
+            bb1.FocusTextureBox.TextureName = "smallbg";
             bb1.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
             bb1.FocusTextBox.Location = new Point(32, 32);
             bb1.FocusTextBox.Text = "存档1";
             bb1.FocusTextBox.FontColor = Color.Pink;
 
-            bb1.DownTextureBox.TextureName = "ning-dialogbg";
+            bb1.DownTextureBox.TextureName = "smallbg";
             bb1.DownTextureBox.Size = new System.Drawing.Size(512, 128);
             bb1.DownTextBox.Location = new Point(32, 32);
             bb1.DownTextBox.Text = "存档1";
             bb1.DownTextBox.FontColor = Color.Green;
 
-            bb1.UpTextureBox.TextureName = "ning-dialogbg";
+            bb1.UpTextureBox.TextureName = "smallbg";
             bb1.UpTextureBox.Size = new System.Drawing.Size(512, 128);
             bb1.UpTextBox.Location = new Point(32, 32);
             bb1.UpTextBox.Text = "存档1";
@@ -79,12 +79,12 @@ namespace MetalHunter
             bb2.OnButtonDown += new ButtonBoxEvent(bb2_OnButtonDown);
             bb2.Location = new Point(0, 128);
             bb2.Size = new System.Drawing.Size(512, 128);
-            bb2.WaitTextureBox.TextureName = "ning-dialogbg";
+            bb2.WaitTextureBox.TextureName = "smallbg";
             bb2.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
             bb2.WaitTextBox.Location = new Point(32, 32);
             bb2.WaitTextBox.Text = "存档2";
 
-            bb2.FocusTextureBox.TextureName = "ning-dialogbg";
+            bb2.FocusTextureBox.TextureName = "smallbg";
             bb2.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
             bb2.FocusTextBox.Location = new Point(32, 32);
             bb2.FocusTextBox.Text = "存档2";
@@ -94,12 +94,12 @@ namespace MetalHunter
             bb3.OnButtonDown += new ButtonBoxEvent(bb3_OnButtonDown);
             bb3.Location = new Point(0, 256);
             bb3.Size = new System.Drawing.Size(512, 128);
-            bb3.WaitTextureBox.TextureName = "ning-dialogbg";
+            bb3.WaitTextureBox.TextureName = "smallbg";
             bb3.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
             bb3.WaitTextBox.Location = new Point(32, 32);
             bb3.WaitTextBox.Text = "存档3";
 
-            bb3.FocusTextureBox.TextureName = "ning-dialogbg";
+            bb3.FocusTextureBox.TextureName = "smallbg";
             bb3.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
             bb3.FocusTextBox.Location = new Point(32, 32);
             bb3.FocusTextBox.Text = "存档3";
@@ -108,12 +108,12 @@ namespace MetalHunter
             ButtonBox bb4 = new ButtonBox(g);
             bb4.Location = new Point(0, 384);
             bb4.Size = new System.Drawing.Size(512, 128);
-            bb4.WaitTextureBox.TextureName = "ning-dialogbg";
+            bb4.WaitTextureBox.TextureName = "smallbg";
             bb4.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
             bb4.WaitTextBox.Location = new Point(32, 32);
             bb4.WaitTextBox.Text = "存档4";
 
-            bb4.FocusTextureBox.TextureName = "ning-dialogbg";
+            bb4.FocusTextureBox.TextureName = "smallbg";
             bb4.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
             bb4.FocusTextBox.Location = new Point(32, 32);
             bb4.FocusTextBox.Text = "存档4";
@@ -141,6 +141,19 @@ namespace MetalHunter
             game.ExecuteScript();
         }
     }
+    public class MenuCHR : FormBox
+    {
+        public MenuCHR(Game g)
+            : base(g)
+        {
+            Name = "MenuCHR";
+            Location = new Point(64, 48);
+
+            BGTextureBox.TextureName = "bigbg";
+            BGTextureBox.Size = new Size(512, 512);
+            BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
+        }
+    }
 
     public class MH_MSGBox : MetalX.Resource.MSGBox
     {
@@ -149,8 +162,9 @@ namespace MetalHunter
         {
             Location = new Point(64, 480 - 128 - 8);
 
-            BGTextureBox.TextureName = "ning-dialogbg";
+            BGTextureBox.TextureName = "smallbg";
             BGTextureBox.Size = new Size(512, 128);
+            BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
 
             TextBox.Location = new Point(20, 20);
             TextBox.OneByOne = true;
@@ -159,7 +173,6 @@ namespace MetalHunter
             TextBox.FontSize = 15;
         }
     }
-
     public class MH_ASKboolBox : MetalX.Resource.ASKboolBox
     {
         public MH_ASKboolBox(Game g)
@@ -167,8 +180,9 @@ namespace MetalHunter
         {
             Location = new Point(64, 480 - 128 - 8);
 
-            BGTextureBox.TextureName = "ning-dialogbg";
+            BGTextureBox.TextureName = "smallbg";
             BGTextureBox.Size = new Size(512, 128);
+            BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
 
             TextBox.Location = new Point(20, 20);
             TextBox.OneByOne = true;

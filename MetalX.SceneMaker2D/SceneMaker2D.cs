@@ -104,53 +104,37 @@ namespace MetalX.SceneMaker2D
                 lastFrameBeginTime = DateTime.Now;
             }
         }
-        void DrawSceneTest(Scene s)
+        void draw_scene()
         {
-            if (s == null)
+            foreach (TileLayer tl in SCENE.TileLayers)
             {
-                return;
-            }
-            for (int l = 0; l < s.TileLayers.Count; l++)
-            {
-                if (s.TileLayers[l].Visible == false)
+                if (tl.Visible)
                 {
-                    return;
-                }
-                for (int y = 0; y < s.Size.Height; y++)
-                {
-                    for (int x = 0; x < s.Size.Width; x++)
+                    foreach (Tile t in tl.Tiles)
                     {
-                        Tile t = s[l,y,x];
-                        if (t != null)
+                        //Point p = t.GetLocationPixelPoint(scene.TilePixel);
+                        int fi = 0;
+                        if (t.IsAnimation)
                         {
-                            int fi = t.FrameIndex;
-                            if (t.IsAnimation)
-                            {
-                                fi = frameIndex;
-                            }
-                            else
-                            {
-                                fi = 0;
-                            }
-                            game.DrawMetalXTexture(
-                                game.Textures[t[fi].TextureIndex],
-                                t[fi].DrawZone,
-                                //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
-                                Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocationPixel, ScreenOffsetPixel), Util.Vector3MulInt(t.Location, game.Options.TilePixel)),
-                                game.Options.TileSizePixelX,
-                                Util.MixColor(t[fi].ColorFilter, ColorFilter)
-                            );
+                            fi = frameIndex;
                         }
+                        game.DrawMetalXTexture(
+                            game.Textures[t[fi].TextureIndex],
+                            t[fi].DrawZone,
+                            Util.PointMulInt(t.LocationPoint, SCENE.TilePixel),
+                            SCENE.TileSizePixel,
+                            ColorFilter
+                            );
                     }
                 }
-
             }
         }
 
         public override void Draw()
         {
             //base.Draw();
-            DrawSceneTest(SCENE);
+            //DrawSceneTest(SCENE);
+            draw_scene();
             //foreach (CodeLayer cl in SCENE.CodeLayers)
             {
                 foreach (Code c in SCENE.CodeLayer.Codes)

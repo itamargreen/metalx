@@ -97,8 +97,8 @@ namespace MetalX.Component
                 }
                 game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
             }
-            if(game.SceneManager.SCENE!=null)
-            game.DrawText(game.SceneManager.ME.RealLocation+ "\n FPS: " + game.AverageFPS.ToString("f1")+" DrawMode: " + game.Options.TextureDrawMode , new System.Drawing.Point(0, 0), Color.Blue);
+            //if(game.SceneManager.SCENE!=null)
+            //game.DrawText("FPS: " + game.AverageFPS.ToString("f1")+" DrawMode: " + game.Options.TextureDrawMode , new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -214,7 +214,7 @@ namespace MetalX.Component
                     {
                         tmpcommands.Enqueue(commands.Dequeue());
                     }
-                    AppendDotMetalXScript(kw[1] + ".mxscript");
+                    AppendDotMetalXScript(kw[1]);
                     for (int i = 0; i < c; i++)
                     {
                         commands.Enqueue(tmpcommands.Dequeue());
@@ -286,24 +286,20 @@ namespace MetalX.Component
                     double ms = double.Parse(kw[2]);
                     game.FormBoxManager.FallInSceen(ms);
                 }
-                else if (kw[1] == "close")
+                else if (kw[2] == "appear")
                 {
-                    if (kw[2] == "all")
+                    game.FormBoxManager.Appear(kw[1]);
+                }
+                else if (kw[2] == "disappear")
+                {
+                    if (kw[1] == "all")
                     {
                         game.FormBoxManager.DisappearAll();
                     }
                     else
                     {
-                        game.FormBoxManager.Disappear(kw[2]);
+                        game.FormBoxManager.Disappear(kw[1]);
                     }
-                }
-                else if (kw[1] == "appear")
-                {
-                    game.FormBoxManager.Appear(kw[2]);
-                }
-                else if (kw[1] == "disappear")
-                {
-                    game.FormBoxManager.Disappear(kw[2]);
                 }
             }
             else if (kw[0] == "npc")
@@ -347,7 +343,7 @@ namespace MetalX.Component
                     catch
                     {
                     }
-                    n.Move(game.SceneManager.SCENE, game.SceneManager.FrontNPC, stp, game.Options.TilePixel);
+                    n.Move(game.SceneManager.SCENE, game.SceneManager.GetNPC(n), stp, game.Options.TilePixel);
                     //game.SceneManager.Move(n, stp);
                 }
             }
@@ -393,7 +389,7 @@ namespace MetalX.Component
                 }
                 catch
                 { }
-                double ms = double.Parse(kw[2]);
+
                 if (kw[1] == "jump")
                 {
                     Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
@@ -403,18 +399,22 @@ namespace MetalX.Component
                 }
                 else if (kw[1] == "shock" && range != -100)
                 {
+                    double ms = double.Parse(kw[2]);
                     game.SceneManager.ShockScreen(ms, range);
                 }
                 else if (kw[1] == "shock")
                 {
+                    double ms = double.Parse(kw[2]);
                     game.SceneManager.ShockScreen(ms);
                 }
                 else if (kw[1] == "fallout")
                 {
+                    double ms = double.Parse(kw[2]);
                     game.SceneManager.FallOutSceen(ms);
                 }
                 else if (kw[1] == "fallin")
                 {
+                    double ms = double.Parse(kw[2]);
                     game.SceneManager.FallInSceen(ms);
                 }
             }
@@ -470,14 +470,14 @@ namespace MetalX.Component
         public override void OnKeyboardDownCode(object sender, int key)
         {
             Key k = (Key)key;
-            if (k == Key.LeftShift || k == Key.RightShift || k == Key.LeftControl || k == Key.RightControl)
+            if (k == Key.LeftShift ||  k == Key.RightControl)
             {
                 isBig = true;
             }
-            if (k== Key.Escape)
-            {
-                game.Exit();
-            }
+            //if (k== Key.Escape)
+            //{
+            //    game.Exit();
+            //}
             //else if (k== Key.F1)
             //{
             //    game.LoadCheckPoint(1);
