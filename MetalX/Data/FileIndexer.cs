@@ -5,12 +5,12 @@ using System.Text;
 namespace MetalX.Data
 {
     [Serializable]
-    public class FileLink
+    public class FileIndexer
     {
-        public FileLink()
+        public FileIndexer()
         { 
         }
-        public FileLink(string fileName)
+        public FileIndexer(string fileName)
         {
             FileName = fileName;
         }

@@ -77,14 +77,11 @@
     <Compile Include="Component\FormBoxManager.cs" />
     <Compile Include="Component\ScriptManager.cs" />
     <Compile Include="Core\Defines.cs" />
-    <Compile Include="Data\FileLink.cs" />
+    <Compile Include="Data\FileIndexer.cs" />
     <Compile Include="Data\Item.cs" />
     <Compile Include="Data\CheckPoint.cs" />
     <Compile Include="Net\Socket.cs" />
-    <Compile Include="Resource\Audios.cs" />
-    <Compile Include="Resource\Characters.cs" />
-    <Compile Include="Resource\Scenes.cs" />
-    <Compile Include="Resource\Texts.cs" />
+    <Compile Include="Resource\FileLib.cs" />
     <Compile Include="Resource\Textures.cs" />
     <Compile Include="Data\CHR.cs" />
     <Compile Include="Data\FLT.cs" />

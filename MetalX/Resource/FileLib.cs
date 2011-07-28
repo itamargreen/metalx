@@ -6,17 +6,21 @@ using MetalX.Data;
 
 namespace MetalX.Resource
 {
-    public class Audios
+    public class FileLib
     {
-        List<FileLink> items = new List<FileLink>();
-        public FileLink this[int i]
+        List<FileIndexer> items = new List<FileIndexer>();
+        public FileIndexer this[int i]
         {
             get
             {
+                if (i < 0)                
+                {
+                    return null;
+                }
                 return items[i];
             }
         }
-        public FileLink this[string name]
+        public FileIndexer this[string name]
         {
             get
             {
@@ -41,9 +45,9 @@ namespace MetalX.Resource
                 return items.Count;
             }
         }
-        public void Add(FileLink fl)
+        public void Add(FileIndexer fl)
         {
-            foreach (FileLink fileLink in items)
+            foreach (FileIndexer fileLink in items)
             {
                 if (fileLink.Name == fl.Name)
                 {

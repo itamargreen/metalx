@@ -42,9 +42,10 @@ namespace MetalX
         /// <summary>
         /// 音频管理器
         /// </summary>
-        public Audios Audios;
-        public Scenes Scenes;
-        public Characters Characters;
+        public FileLib AudioFiles;
+        public FileLib SceneFiles;
+        public FileLib NPCFiles;
+        public FileLib ScriptFiles;
         public FormBoxes FormBoxes;
         /// <summary>
         /// 帧开始时间
@@ -237,14 +238,15 @@ namespace MetalX
 
         public void InitData()
         {
-            Audios = new Audios();
-            Scenes = new Scenes();
+            AudioFiles = new FileLib();
+            SceneFiles = new FileLib();
+            NPCFiles = new FileLib();
+            ScriptFiles = new FileLib();
 
             Models = new Models();
             Textures = new Textures();
 
             FormBoxes = new FormBoxes();
-            Characters = new Characters();
 
             FormBoxes.Add(new MSGBox(this));
             FormBoxes.Add(new ASKboolBox(this));
@@ -493,7 +495,7 @@ namespace MetalX
         //public void LoadCheckPoint(int i)
         //{
         //    CheckPoint checkPoint = (CheckPoint)Util.LoadObject("cp" + i.ToString("d2") + ".MXCheckPoint");
-        //    Options.TileSizePixel = Scenes[checkPoint.SceneName].TileSizePixel;
+        //    Options.TileSizePixel = SceneFiles[checkPoint.SceneName].TileSizePixel;
         //    Characters.ME = checkPoint.ME;
         //    Characters.ME.TextureIndex = -1;
         //    //Characters.ME.MoveSpeed = 1;
@@ -501,13 +503,13 @@ namespace MetalX
         //}
         //public void SaveCheckPoint(int i)
         //{
-        //    if (Scenes[SceneManager.SceneIndex] == null)
+        //    if (SceneFiles[SceneManager.SceneIndex] == null)
         //    {
         //        return;
         //    }
         //    CheckPoint checkPoint = new CheckPoint();
-        //    checkPoint.SceneName = Scenes[SceneManager.SceneIndex].Name;
-        //    checkPoint.SceneRealLocationPixel = Scenes[SceneManager.SceneIndex].RealLocationPixel;
+        //    checkPoint.SceneName = SceneFiles[SceneManager.SceneIndex].Name;
+        //    checkPoint.SceneRealLocationPixel = SceneFiles[SceneManager.SceneIndex].RealLocationPixel;
         //    checkPoint.ME = Characters.ME;
         //    Util.SaveObject("CP" + i.ToString("d2") + ".MXCheckPoint", checkPoint);
         //}
@@ -526,9 +528,12 @@ namespace MetalX
                     }
                 }
             }
-            //items.Clear();
-            //Add(scene);
             return scene;
+        }
+        public NPC LoadDotMXNPC(string pathName)
+        {
+            NPC npc = (NPC)Util.LoadObject(pathName);
+            return npc;
         }
         public Scene LoadDotXMLScene(string pathName)
         {
@@ -563,7 +568,7 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.MXScene");
                 foreach (FileInfo fi in fis)
                 {
-                    Scenes.Add(new FileLink(fi.FullName));
+                    SceneFiles.Add(new FileIndexer(fi.FullName));
                 }
             }
         }
@@ -617,6 +622,13 @@ namespace MetalX
             texture = (MetalXTexture)Util.LoadObject(fileName);
             texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.X8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
             //Add(texture);
+
+            return texture;
+        }
+        public MetalXTexture LoadDotMXT(Bitmap bm)
+        {
+            MetalXTexture texture = new MetalXTexture();
+            texture.MEMTexture = new Texture(Devices.D3DDev, bm, Usage.None, Pool.Managed);
 
             return texture;
         }
@@ -705,7 +717,7 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.mxa");
                 foreach (FileInfo fi in fis)
                 {
-                    Audios.Add(new FileLink(fi.FullName));
+                    AudioFiles.Add(new FileIndexer(fi.FullName));
                 }
             }
         }
@@ -720,7 +732,37 @@ namespace MetalX
                 FileInfo[] fis = di.GetFiles("*.mp3");
                 foreach (FileInfo fi in fis)
                 {
-                    Audios.Add(new FileLink(fi.FullName));
+                    AudioFiles.Add(new FileIndexer(fi.FullName));
+                }
+            }
+        }
+        public void LoadAllDotMXNPC()
+        {
+            string pathName = Options.RootPath;
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.mxnpc");
+                foreach (FileInfo fi in fis)
+                {
+                    NPCFiles.Add(new FileIndexer(fi.FullName));
+                }
+            }
+        }
+        public void LoadAllDotMXScript()
+        {
+            string pathName = Options.RootPath;
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.mxscript");
+                foreach (FileInfo fi in fis)
+                {
+                    ScriptFiles.Add(new FileIndexer(fi.FullName));
                 }
             }
         }
@@ -1063,11 +1105,11 @@ namespace MetalX
                 SoundManager2.PlayMetalXAudio(name);
             }
         }
-        public void PlayMP3(int layer, string fileName)
+        public void PlayMP3Audio(int layer, string fileName)
         {
-            PlayMP3(layer,fileName, false);
+            PlayMP3Audio(layer, fileName, false);
         }
-        public void PlayMP3(int layer, string fileName, bool loop)
+        public void PlayMP3Audio(int layer, string fileName, bool loop)
         {
             if (layer == 1)
             {
@@ -1076,8 +1118,6 @@ namespace MetalX
             }
             else if (layer == 2)
             {
-                
-                //SoundManager2.Stop();
                 SoundManager2.PlayMP3(fileName);
             }
         }

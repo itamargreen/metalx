@@ -6,8 +6,4 @@ using MetalX.Data;
 
 namespace MetalX.Resource
 {
-    public class Characters
-    {
-        public PC ME = new PC();
-    }
 }
