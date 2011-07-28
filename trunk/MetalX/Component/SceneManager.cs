@@ -49,22 +49,22 @@ namespace MetalX.Component
             }
             return null;
         }
-        public NPC FrontNPC
+        public NPC GetNPC(CHR chr)
         {
-            get
+            //get
             {
                 foreach (NPC npc in NPCs)
                 {
-                    if (npc.RealLocation == ME.FrontLocation)
+                    if (npc.RealLocation == chr.FrontLocation)
                     {
                         return npc;
                     }
                 }
                 foreach (NPC npc in NPCs)
                 {
-                    if (npc.RealLocation == ME.RangeLocation)
+                    if (npc.RealLocation == chr.RangeLocation)
                     {
-                        if (SCENE.CodeLayer[ME.FrontLocation].IsDesk)
+                        if (SCENE.CodeLayer[chr.FrontLocation].IsDesk)
                         {
                             return npc;
                         }
@@ -682,12 +682,12 @@ namespace MetalX.Component
         //        }                
         //        if (s.NPCs != null)
         //        {
-        //            foreach (NPC FrontNPC in s.NPCs)
+        //            foreach (NPC GetNPC(ME) in s.NPCs)
         //            {
-        //                int npcdrawl = s.CodeLayer[FrontNPC.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
+        //                int npcdrawl = s.CodeLayer[GetNPC(ME).GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
         //                if (l == npcdrawl)
         //                {
-        //                    DrawCHR(FrontNPC);
+        //                    DrawCHR(GetNPC(ME));
         //                }
         //            }
         //        }
@@ -867,9 +867,9 @@ namespace MetalX.Component
         //    {
         //        return true;
         //    }
-        //    foreach (NPC FrontNPC in s.NPCs)
+        //    foreach (NPC GetNPC(ME) in s.NPCs)
         //    {
-        //        if (FrontNPC.RealLocation == v3)
+        //        if (GetNPC(ME).RealLocation == v3)
         //        {
         //            return false;
         //        }
@@ -889,9 +889,9 @@ namespace MetalX.Component
         //        return true;
         //    } 
         //    index = 0;
-        //    foreach (NPC FrontNPC in s.NPCs)
+        //    foreach (NPC GetNPC(ME) in s.NPCs)
         //    {
-        //        if (FrontNPC.RealLocation == v3)
+        //        if (GetNPC(ME).RealLocation == v3)
         //        {
         //            return false;
         //        }
@@ -1033,7 +1033,7 @@ namespace MetalX.Component
                     {
                         SCENE.Face(ME.OppositeDirection);
                     }
-                    if (ME.Move(SCENE,game.SceneManager.FrontNPC, 1,game.Options.TilePixel))
+                    if (ME.Move(SCENE,game.SceneManager.GetNPC(ME), 1,game.Options.TilePixel))
                     {
                         SCENE.Move(1, game.Options.TilePixel);
                     }
@@ -1046,19 +1046,19 @@ namespace MetalX.Component
             Key k = (Key)key;
             if (k == game.Options.KeyA)
             {
-                if (FrontNPC != null)
+                if (GetNPC(ME) != null)
                 {
                     if (ME.CanControl == false)
                     {
                         return;
                     }
                     game.AppendScript("me freeze");
-                    FrontNPC.FocusOnMe(ME);
-                    if (FrontNPC.IsBox)
+                    GetNPC(ME).FocusOnMe(ME);
+                    if (GetNPC(ME).IsBox)
                     {
-                        if (FrontNPC.Bag.Count > 0)
+                        if (GetNPC(ME).Bag.Count > 0)
                         {
-                            game.AppendScript(FrontNPC.Code);
+                            game.AppendScript(GetNPC(ME).Code);
                             game.AppendScript("me unfreeze");
                             game.ExecuteScript();
                         }
@@ -1071,14 +1071,14 @@ namespace MetalX.Component
                             game.ExecuteScript();
                         }
                     }
-                    else if (FrontNPC.IsDoor)
+                    else if (GetNPC(ME).IsDoor)
                     { 
                     }
                     else
                     {
-                        //if (FrontNPC.Code == string.Empty)
+                        //if (GetNPC(ME).Code == string.Empty)
                         //{
-                        //    game.AppendScript("msg " + FrontNPC.DialogText);
+                        //    game.AppendScript("msg " + GetNPC(ME).DialogText);
                         //    game.AppendScript("untilpress j");
                         //    game.AppendScript("gui close MessageBox");
                         //    game.AppendScript("unfreezeme");
@@ -1087,9 +1087,9 @@ namespace MetalX.Component
                         //}
                         //else
                         {
-                            game.AppendScript(FrontNPC.Code);
+                            game.AppendScript(GetNPC(ME).Code);
                             game.AppendScript("me unfreeze");
-                            game.AppendScript("npc " + FrontNPC.Name + " dir def");
+                            game.AppendScript("npc " + GetNPC(ME).Name + " dir def");
                             game.ExecuteScript();                            
                         }
                     }
@@ -1098,22 +1098,22 @@ namespace MetalX.Component
                 //{
                 //    if (sm.ME.IsTalking)
                 //    {
-                //        sm.FrontNPC.FocusOnMe(sm.ME);
-                //        game.AppendAndExecuteScript("FrontNPC say " + sm.FrontNPC.DialogText);
+                //        sm.GetNPC(ME).FocusOnMe(sm.ME);
+                //        game.AppendAndExecuteScript("GetNPC(ME) say " + sm.GetNPC(ME).DialogText);
                 //    }
                 //    else
                 //    {
-                //        sm.FrontNPC.RecoverDirection();
+                //        sm.GetNPC(ME).RecoverDirection();
                 //        game.AppendAndExecuteScript("gui close NPCTalk");
                 //    }
                 //}
             }
             //else if (k == Key.K)
             //{
-            //    if (sm.FrontNPC != null)
+            //    if (sm.GetNPC(ME) != null)
             //    {
             //        game.AppendAndExecuteScript("unfreezeme");
-            //        sm.FrontNPC.RecoverDirection();
+            //        sm.GetNPC(ME).RecoverDirection();
             //        game.AppendAndExecuteScript("gui close NPCTalk");
             //    }
             //}

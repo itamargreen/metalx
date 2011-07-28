@@ -18,6 +18,7 @@ namespace MetalHunter
             game.FormBoxes.LoadDotMXFormBox(new LogoEngine(game));
             game.FormBoxes.LoadDotMXFormBox(new LogoGame(game));
             game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
+            game.FormBoxes.LoadDotMXFormBox(new MenuCHR(game));
 
             game.OverLoadMessageBox(new MH_MSGBox(game));
             game.OverLoadASKboolBox(new MH_ASKboolBox(game));
@@ -42,7 +43,34 @@ namespace MetalHunter
             game.AppendDotMetalXScript("logo");
             game.ExecuteScript();
 
+            game.FormBoxManager.OnKeyboardUp += new KeyboardEvent(FormBoxManager_OnKeyboardUp);
+            game.SceneManager.OnKeyboardUp += new KeyboardEvent(SceneManager_OnKeyboardUp);
+
             game.Start();
+        }
+
+        void FormBoxManager_OnKeyboardUp(object sender, int key)
+        {
+            Key k = (Key)key;
+            if (k == Key.C)
+            {
+                if (game.FormBoxes["MenuCHR"].Visible)
+                {
+                    game.FormBoxManager.Disappear("MenuCHR");
+                    game.SceneManager.ME.Unfreeze();
+                }
+                else
+                {
+                    game.FormBoxManager.Appear("MenuCHR");
+                    game.SceneManager.ME.Freeze();
+                }
+            }
+        }
+
+        void SceneManager_OnKeyboardUp(object sender, int key)
+        {
+            //throw new NotImplementedException();
+            
         }
 
         [STAThread]

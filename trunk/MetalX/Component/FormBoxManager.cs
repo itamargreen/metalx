@@ -140,16 +140,18 @@ namespace MetalX.Component
             {
                 if (AppearingFormBoxIndex[j] == i)
                 {
-                    AppearingFormBoxIndex.Add(i);
-                    game.FormBoxes[i].Appear(arg);
-
-                    Disappear(AppearingFormBoxIndex[j]);
-
+                    if (game.FormBoxes[i].Name == "MessageBox")
+                    {
+                        game.FormBoxes[i].Appear(arg);
+                        AppearingFormBoxIndex.Add(i);
+                        Disappear(AppearingFormBoxIndex[j]);
+                    }
                     return;
                 }
             }
-            AppearingFormBoxIndex.Add(i);
+            
             game.FormBoxes[i].Appear(arg);
+            AppearingFormBoxIndex.Add(i);
             //game.FormBoxes[i].OnFormBoxAppearCode();
         }
         public void Disappear()
@@ -178,7 +180,6 @@ namespace MetalX.Component
                 Disappear(AppearingFormBoxIndex[0]);
             }
         }
-
         public override void OnKeyboardDownCode(object sender, int key)
         {
             if (AppearingFormBoxIndex.Count < 1)
@@ -187,15 +188,7 @@ namespace MetalX.Component
             }
 
             Key k = (Key)key;
-            if (k == game.Options.KeyUP || k == game.Options.KeyLEFT)
-            {
-                AppearingFormBox.FocusLastButtonBox();
-            }
-            else if (k == game.Options.KeyDOWN || k == game.Options.KeyRIGHT)
-            {
-                AppearingFormBox.FocusNextButtonBox();
-            }
-            else if (k == game.Options.KeyA)
+            if (k == game.Options.KeyA)
             {
                 AppearingFormBox.DownNowButtonBox();
             }
@@ -205,18 +198,26 @@ namespace MetalX.Component
             if (AppearingFormBoxIndex.Count < 1)
             {
                 return;
-            } 
-            
+            }
+
             Key k = (Key)key;
             if (k == game.Options.KeyA)
             {
                 AppearingFormBox.UpNowButtonBox();
                 AppearingFormBox.FocusNowButtonBox();
             }
-            //else if (k == Key.K)
-            //{
-            //    Disappear();
-            //}
+            else if (k == game.Options.KeyB)
+            {
+
+            }
+            else if (k == game.Options.KeyUP || k == game.Options.KeyLEFT)
+            {
+                AppearingFormBox.FocusLastButtonBox();
+            }
+            else if (k == game.Options.KeyDOWN || k == game.Options.KeyRIGHT)
+            {
+                AppearingFormBox.FocusNextButtonBox();
+            }
         }
     }
 }

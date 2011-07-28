@@ -516,7 +516,14 @@ namespace MetalX.Data
                     return false;
                 }
             }
-            if (s[(int)FrontLocation.Y,(int)FrontLocation.X].CHRCanRch == false)
+            try
+            {
+                if (s[(int)FrontLocation.Y, (int)FrontLocation.X].CHRCanRch == false)
+                {
+                    return false;
+                }
+            }
+            catch
             {
                 return false;
             }

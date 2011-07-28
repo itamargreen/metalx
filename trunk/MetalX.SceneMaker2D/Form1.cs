@@ -1285,7 +1285,7 @@ namespace MetalX.SceneMaker2D
 
             System.IO.File.Delete(game.Options.RootPath + "npcs\\" + sceneMaker2D.SCENE.NPCNames[i] + ".MXNPC");
 
-            sceneMaker2D.SCENE.MusicNames.RemoveAt(i);
+            sceneMaker2D.SCENE.NPCNames.RemoveAt(i);
             update_npc_list();
         }
 
