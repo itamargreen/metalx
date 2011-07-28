@@ -10,7 +10,7 @@ using Microsoft.DirectX;
 
 namespace MetalX.SceneMaker2D
 {
-    public class SceneMaker2D : GameCom
+    public class SceneMaker2D : SceneManager
     {
         public bool drawGrid;
         public bool drawCod;
@@ -46,18 +46,18 @@ namespace MetalX.SceneMaker2D
             {
                 if (mxtIndex == -1)
                 {
-                    return new Rectangle(penRect.Location, scene.TileSizePixel);
+                    return new Rectangle(penRect.Location, SCENE.TileSizePixel);
                 }
                 float wx = penRect.Width / game.Textures[mxtIndex].TileSizePixel.Width;
                 float hx = penRect.Height / game.Textures[mxtIndex].TileSizePixel.Height;
-                return new Rectangle(penRect.Location, new Size((int)(wx * scene.TileSizePixel.Width), (int)(hx * scene.TileSizePixel.Height)));
+                return new Rectangle(penRect.Location, new Size((int)(wx * SCENE.TileSizePixel.Width), (int)(hx * SCENE.TileSizePixel.Height)));
             }
         }
         public Size penRectLogic
         {
             get
             {
-                return new Size(penRect.Width / scene.TileSizePixel.Width, penRect.Height / scene.TileSizePixel.Height);
+                return new Size(penRect.Width / SCENE.TileSizePixel.Width, penRect.Height / SCENE.TileSizePixel.Height);
             }
         }
         public int drawingLayer = -1;
@@ -66,7 +66,6 @@ namespace MetalX.SceneMaker2D
         int frameIndex;
         DateTime lastFrameBeginTime = DateTime.Now;
 
-        public Scene scene;
 
         public SceneMaker2D(Game metalx)
             : base(metalx)
@@ -79,13 +78,27 @@ namespace MetalX.SceneMaker2D
 
             dragRect = new Rectangle();
             penRect = new Rectangle();
+
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources.o), "smo");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources.x), "smx");
+
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._0), "sm0");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._1), "sm1");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._2), "sm2");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._3), "sm3");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._4), "sm4");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._5), "sm5");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._6), "sm6");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._7), "sm7");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._8), "sm8");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources._9), "sm9");
         }
 
         public override void Code()
         {
             base.Code();
             TimeSpan ts = DateTime.Now - lastFrameBeginTime;
-            if (ts.TotalMilliseconds > scene.FrameInterval)
+            if (ts.TotalMilliseconds > SCENE.FrameInterval)
             {
                 frameIndex++;
                 lastFrameBeginTime = DateTime.Now;
@@ -97,13 +110,17 @@ namespace MetalX.SceneMaker2D
             {
                 return;
             }
-            for (int l = 0; l < s.Tiles.Length; l++)
+            for (int l = 0; l < s.TileLayers.Count; l++)
             {
-                for (int y = 0; y < s.Tiles[l].Length; y++)
+                if (s.TileLayers[l].Visible == false)
                 {
-                    for (int x = 0; x < s.Tiles[l][y].Length; x++)
+                    return;
+                }
+                for (int y = 0; y < s.Size.Height; y++)
+                {
+                    for (int x = 0; x < s.Size.Width; x++)
                     {
-                        Tile t = s.Tiles[l][y][x];
+                        Tile t = s[l,y,x];
                         if (t != null)
                         {
                             int fi = t.FrameIndex;
@@ -133,10 +150,10 @@ namespace MetalX.SceneMaker2D
         public override void Draw()
         {
             //base.Draw();
-            DrawSceneTest(scene);
-            //foreach (CodeLayer cl in scene.CodeLayers)
+            DrawSceneTest(SCENE);
+            //foreach (CodeLayer cl in SCENE.CodeLayers)
             {
-                foreach (Code c in scene.CodeLayer.Codes)
+                foreach (Code c in SCENE.CodeLayer.Codes)
                 {
                     if (c.SceneFileName != null)
                     {
@@ -144,9 +161,9 @@ namespace MetalX.SceneMaker2D
                     }
                 }
             }
-            if (scene.NPCs != null)
+            if (NPCs != null)
             {
-                foreach (NPC npc in scene.NPCs)
+                foreach (NPC npc in NPCs)
                 {
                     draw_npc(npc);
                 }
@@ -175,6 +192,10 @@ namespace MetalX.SceneMaker2D
             {
                 return;
             }
+            if (npc.Invisible)
+            {
+                return;
+            }
             //if (npc.TextureIndex < 0)
             {
                 npc.TextureIndex = game.Textures.GetIndex(npc.TextureName);
@@ -196,9 +217,9 @@ namespace MetalX.SceneMaker2D
             dz.Size = game.Textures[npc.TextureIndex].TileSizePixel;
             Vector3 v31 = npc.RealLocationPixel;
             v31.Y += game.Options.SpriteOffsetPixel;
-            v31.X += scene.RealLocationPixel.X;
-            v31.Y += scene.RealLocationPixel.Y;
-            v31.Z += scene.RealLocationPixel.Z;
+            v31.X += SCENE.RealLocationPixel.X;
+            v31.Y += SCENE.RealLocationPixel.Y;
+            v31.Z += SCENE.RealLocationPixel.Z;
             v31 = Util.Vector3AddVector3(v31, ScreenOffsetPixel);
             game.DrawMetalXTexture(
                 game.Textures[npc.TextureIndex],
@@ -207,34 +228,16 @@ namespace MetalX.SceneMaker2D
                 game.Options.TileSizePixelX,
                 Color.White);
         }
-        public override void OnKeyboardDownCode(object sender, int key)
-        {
-            //base.OnKeyboardDownCode(key);
-            //game.DrawText(key + " down", new Point(), Color.White);
-            //if (key == 200)
-            //{
-            //    ((System.Windows.Forms.Panel)game.Devices.D3DDev..DeviceWindow.Parent).VerticalScroll.Value += 16;
-            //}
-        }
-        public override void OnKeyboardDownHoldCode(object sender, int key)
-        {
-            //base.OnKeyboardDownHoldCode(this,key);
-            //game.DrawText(key + " downhold", new Point(0,20), Color.White);
-        }
-        public override void OnKeyboardUpCode(object sender, int key)
-        {
-            //base.OnKeyboardUpCode(key);
-            //game.DrawText(key + " up", new Point(0,40), Color.White);
-        }
+
         void draw_grid()
         {
-            for (int i = 0; i <= scene.SizePixel.Width; i += scene.TileSizePixel.Width)
+            for (int i = 0; i <= SCENE.SizePixel.Width; i += SCENE.TileSizePixel.Width)
             {
-                game.DrawLine(i, 0, i, scene.SizePixel.Height, Color.Blue);
+                game.DrawLine(i, 0, i, SCENE.SizePixel.Height, Color.Blue);
             }
-            for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)
+            for (int i = 0; i <= SCENE.SizePixel.Height; i += SCENE.TileSizePixel.Height)
             {
-                game.DrawLine(0, i, scene.SizePixel.Width, i, Color.Blue);
+                game.DrawLine(0, i, SCENE.SizePixel.Width, i, Color.Blue);
             }
         }
         void draw_code()
@@ -242,79 +245,76 @@ namespace MetalX.SceneMaker2D
             Point o = new Point(8, 8);
             if (drawCodeLayer == 0)
             {
-                foreach (Code c in scene.CodeLayer.Codes)
+                foreach (Code c in SCENE.CodeLayer.Codes)
                 {
-                    string str = "o";
+                    string str = "smo";
                     if (!c.CHRCanRch)
                     {
-                        str = "x";
+                        str = "smx";
                     }
-                    game.DrawText(str, Util.PointAddPoint(o, Util.PointMulInt(c.Location, scene.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCENE.TilePixel)), Color.White);
                 }
             }
             else if (drawCodeLayer == 1)
             {
-                foreach (Code c in scene.CodeLayer.Codes)
+                foreach (Code c in SCENE.CodeLayer.Codes)
                 {
-                    string str = "o";
+                    string str = "smo";
                     if (!c.MTLCanRch)
                     {
-                        str = "x";
+                        str = "smx";
                     }
-                    game.DrawText(str, Util.PointAddPoint(o, Util.PointMulInt(c.Location, scene.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCENE.TilePixel)), Color.White);
                 }
             }
             else if (drawCodeLayer == 2)
             {
-                foreach (Code c in scene.CodeLayer.Codes)
+                foreach (Code c in SCENE.CodeLayer.Codes)
                 {
-                    string str = "o";
+                    string str = "smo";
                     if (!c.SHPCanRch)
                     {
-                        str = "x";
+                        str = "smx";
                     }
-                    game.DrawText(str, Util.PointAddPoint(o, Util.PointMulInt(c.Location, scene.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCENE.TilePixel)), Color.White);
                 }
+
             }
             else if (drawCodeLayer == 3)
             {
-                foreach (Code c in scene.CodeLayer.Codes)
+                foreach (Code c in SCENE.CodeLayer.Codes)
                 {
-                    string str = "o";
+                    string str = "smo";
                     if (!c.FLTCanRch)
                     {
-                        str = "x";
+                        str = "smx";
                     }
-                    game.DrawText(str, Util.PointAddPoint(o, Util.PointMulInt(c.Location, scene.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCENE.TilePixel)), Color.White);
                 }
+
             }
             else if (drawCodeLayer == 4)
             {
-                foreach (Code c in scene.CodeLayer.Codes)
+                foreach (Code c in SCENE.CodeLayer.Codes)
                 {
                     string str = c.DrawLayer.ToString();
-                    game.DrawText(str, Util.PointAddPoint(o, Util.PointMulInt(c.Location, scene.TilePixel)), Color.White);
+                    str = "sm" + str;
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCENE.TilePixel)), Color.White);
                 }
             }
             else if (drawCodeLayer == 5)
             {
-                foreach (Code c in scene.CodeLayer.Codes)
+                foreach (Code c in SCENE.CodeLayer.Codes)
                 {
-                    string str = "o";
+                    string str = "smo";
                     if (!c.IsDesk)
                     {
-                        str = "x";
+                        str = "smx";
                     }
-                    game.DrawText(str, Util.PointAddPoint(o, Util.PointMulInt(c.Location, scene.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCENE.TilePixel)), Color.White);
                 }
+
             }
-            //for (int i = 0; i <= scene.SizePixel.Height; i += scene.TileSizePixel.Height)
-            //{
-            //    for (int j = 0; j <= scene.SizePixel.Width; j += scene.TileSizePixel.Width)
-            //    {
-            //        game.DrawText("1", new Point(j, i), Color.Black);
-            //    }
-            //}
         }
         void draw_pen()
         {
@@ -327,8 +327,8 @@ namespace MetalX.SceneMaker2D
         }
         void draw_link(Point p)
         {
-            p = Util.PointMulInt(p, scene.TilePixel);
-            game.DrawRect(new Rectangle(p, scene.TileSizePixel), Color.Green);
+            p = Util.PointMulInt(p, SCENE.TilePixel);
+            game.DrawRect(new Rectangle(p, SCENE.TileSizePixel), Color.Green);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace MetalX.Component
         WaveFormat waveFormat = new WaveFormat();
         BufferDescription bufferDescription;
         Mp3Stream mp3Stream;
+        MetalXAudio mxa;
         Thread fillControlthd;
         int wholeSize;
         int halfSize
@@ -126,6 +127,14 @@ namespace MetalX.Component
 
         void Load(System.IO.Stream stream)
         {
+            //if (secondaryBuffer == null)
+            //{
+            //    return;
+            //}
+            //if (secondaryBuffer.Disposed)
+            //{
+            //    return;
+            //}
             if (Playing)
             {
                 secondaryBuffer.Stop();
@@ -274,18 +283,39 @@ namespace MetalX.Component
         }
         //public void PlayMetalXAudio(string musicName) { PlayMetalXAudio(game.Audios.GetIndex(musicName)); }
         //public void PlayMetalXAudio(int i) { PlayMetalXAudio(new System.IO.MemoryStream(game.Audios[i].AudioData)); }
-        public void PlayMP3(string fileName) 
+        public void PlayMP3(string fileName)
         {
-            playMP3(new System.IO.MemoryStream(System.IO.File.ReadAllBytes(fileName)));
+            if (playingFileName == fileName)
+            {
+                playMP3();
+            }
+            else
+            {
+                playingFileName = fileName;
+                playMP3(new System.IO.MemoryStream(System.IO.File.ReadAllBytes(fileName)));
+            }
         }
+        string playingFileName = "";
         public void PlayMetalXAudio(string fileName)
         {
-            MetalXAudio mxa = (MetalXAudio)Util.LoadObject(fileName);
-            playMP3(new System.IO.MemoryStream(mxa.AudioData));
+            if (playingFileName == fileName)
+            {
+                playMP3();
+            }
+            else
+            {
+                playingFileName = fileName;
+                mxa = (MetalXAudio)Util.LoadObject(fileName);
+                playMP3(new System.IO.MemoryStream(mxa.AudioData));
+            }
         }
         void playMP3(System.IO.Stream stream)
         {
             Load(stream);
+            playMP3();
+        }
+        void playMP3()
+        {
             mp3Stream.Read(buff, 0, halfSize);
             secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
             secondaryBuffer.Play(0, BufferPlayFlags.Looping);

@@ -98,7 +98,7 @@ namespace MetalX.Component
                 game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
             }
             if(game.SceneManager.SCENE!=null)
-            game.DrawText(game.SceneManager.SCENE.RealLocation+ "\n FPS: " + game.AverageFPS.ToString("f1")+" DrawMode: " + game.Options.TextureDrawMode , new System.Drawing.Point(0, 0), Color.Blue);
+            game.DrawText(game.SceneManager.ME.RealLocation+ "\n FPS: " + game.AverageFPS.ToString("f1")+" DrawMode: " + game.Options.TextureDrawMode , new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -205,7 +205,7 @@ namespace MetalX.Component
             }
             else if (kw[0] == "mp3")
             {
-                game.PlayMP3(2, kw[1]);
+                game.PlayMP3Audio(2, kw[1]);
             }
             else if (kw[0] == "script")
             {
@@ -237,8 +237,7 @@ namespace MetalX.Component
             }
             else if (kw[0] == "untilstop")
             {
-                Scene s = game.SceneManager.SCENE;
-                float a = s.GetNPC(kw[1]).NeedMovePixel;
+                float a = game.SceneManager.GetNPC(kw[1]).NeedMovePixel;
                 if (a > 0)
                 {
                     loop = true;
@@ -309,8 +308,7 @@ namespace MetalX.Component
             }
             else if (kw[0] == "npc")
             {
-                Scene s = game.SceneManager.SCENE;
-                NPC n = s.GetNPC(kw[1]);
+                NPC n = game.SceneManager.GetNPC(kw[1]);
                 if (kw[2] == "dir")
                 {
                     Direction dir = Direction.U;
@@ -349,7 +347,7 @@ namespace MetalX.Component
                     catch
                     {
                     }
-                    n.Move(s, stp, game.Options.TilePixel);
+                    n.Move(game.SceneManager.SCENE, game.SceneManager.FrontNPC, stp, game.Options.TilePixel);
                     //game.SceneManager.Move(n, stp);
                 }
             }
@@ -357,7 +355,8 @@ namespace MetalX.Component
             {
                 if (kw[1] == "skin")
                 {
-                    game.SceneManager.MeSkin(kw[2]);
+                    game.SceneManager.ME.TextureName = kw[2];
+                    game.SceneManager.ME.TextureIndex = -1;
                 }
                 else if (kw[1] == "gold")
                 {
@@ -373,7 +372,7 @@ namespace MetalX.Component
                     Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
                     v3.X = float.Parse(kw[2]);
                     v3.Y = float.Parse(kw[3]);
-                    game.SceneManager.SceneJump(v3);
+                    game.SceneManager.ME.SetRealLocation(v3, game.Options.TilePixel);
                 }
                 else if (kw[1] == "freeze")
                 {
@@ -454,7 +453,7 @@ namespace MetalX.Component
         //}
         public void AppendDotMetalXScript(string fileName)
         {
-            string cmds = System.IO.File.ReadAllText(game.Options.RootPath + fileName);
+            string cmds = System.IO.File.ReadAllText(game.ScriptFiles[fileName].FileName);
             text += cmds + "\n";
             AppendCommand(cmds);
         }

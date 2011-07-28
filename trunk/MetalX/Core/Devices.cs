@@ -5,6 +5,19 @@ using System.Drawing;
 using Microsoft.DirectX.Direct3D;
 namespace MetalX
 {
+    public class GameWindow : Form
+    {
+        public GameWindow(Game g)
+        {
+            Text = g.Name;
+            StartPosition = FormStartPosition.CenterScreen;
+            Size = g.Options.WindowSizePixel;
+            FormBorderStyle = FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.Opaque, true);
+        }
+    }
     public class Devices : IDisposable
     {
         Game game;
@@ -204,17 +217,4 @@ namespace MetalX
         //}
         #endregion
     } 
-    public class GameWindow : Form
-    {
-        public GameWindow(Game g)
-        {
-            Text = g.Name;
-            StartPosition = FormStartPosition.CenterScreen;
-            Size = g.Options.WindowSizePixel;
-            FormBorderStyle = FormBorderStyle.None;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.Opaque, true);
-        }
-    }
 }

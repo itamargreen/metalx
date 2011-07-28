@@ -95,49 +95,50 @@ namespace MetalX.Data
         /// 图元层
         /// </summary>
         public List<TileLayer> TileLayers = new List<TileLayer>();
-        public List<NPC> NPCs = new List<NPC>();
-        public NPC GetNPC(string name)
-        {
-            for (int i = 0; i < NPCs.Count; i++)
-            {
-                if (NPCs[i].Name == name)
-                {
-                    return NPCs[i];
-                }
-            }
-            return null;
-        }
-        public NPC GetNPC(Vector3 v3)
-        {
-            for (int i = 0; i < NPCs.Count; i++)
-            {
-                if (NPCs[i].IsDoor)
-                {
-                    Vector3 v33 = NPCs[i].RealLocation;
-                    v33.Y++;
-                    if (v33 == v3)
-                    {
-                        return NPCs[i];
-                    }
-                }
-                //else if (NPCs[i].IsBox)
-                //{ 
-                //}
-                else
-                {
-                    if (NPCs[i].RealLocation == v3)
-                    {
-                        return NPCs[i];
-                    }
-                }
-            }
-            return null;
-        }
-        public NPC GetNPC(Point p)
-        {
-            return GetNPC(Util.Point2Vector3(p, 0));
-        }
-        public List<string> BGMusics = new List<string>();
+        //public List<NPC> NPCs = new List<NPC>();
+        //public NPC GetNPC(string name)
+        //{
+        //    for (int i = 0; i < NPCs.Count; i++)
+        //    {
+        //        if (NPCs[i].Name == name)
+        //        {
+        //            return NPCs[i];
+        //        }
+        //    }
+        //    return null;
+        //}
+        //public NPC GetNPC(Vector3 v3)
+        //{
+        //    for (int i = 0; i < NPCs.Count; i++)
+        //    {
+        //        if (NPCs[i].IsDoor)
+        //        {
+        //            Vector3 v33 = NPCs[i].RealLocation;
+        //            v33.Y++;
+        //            if (v33 == v3)
+        //            {
+        //                return NPCs[i];
+        //            }
+        //        }
+        //        //else if (NPCs[i].IsBox)
+        //        //{ 
+        //        //}
+        //        else
+        //        {
+        //            if (NPCs[i].RealLocation == v3)
+        //            {
+        //                return NPCs[i];
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
+        //public NPC GetNPC(Point p)
+        //{
+        //    return GetNPC(Util.Point2Vector3(p, 0));
+        //}
+        public List<string> MusicNames = new List<string>();
+        public List<string> NPCNames = new List<string>();
         /// <summary>
         /// 代码层
         /// </summary>
@@ -150,9 +151,23 @@ namespace MetalX.Data
             }
         }
         [NonSerialized]
-        public Tile[][][] Tiles;
+        Tile[][][] Tiles;
         [NonSerialized]
-        public Code[][] Codes;
+        Code[][] Codes;
+        public Tile this[int layer, int y, int x]
+        {
+            get
+            {
+                return Tiles[layer][y][x];
+            }
+        }
+        public Code this[int y, int x]
+        {
+            get
+            {
+                return Codes[y][x];
+            }
+        }
         public void Init()
         {
             Tiles = new Tile[TileLayers.Count][][];
@@ -218,11 +233,11 @@ namespace MetalX.Data
             }
         }
         [NonSerialized]
-        public float NeedMovePixel = 0;
+        float NeedMovePixel = 0;
         [NonSerialized]
-        public int NeedMoveStep = 0;
+        int NeedMoveStep = 0;
         [NonSerialized]
-        public Direction RealDirection;
+        Direction RealDirection;
         public void Face(Direction dir)
         {
             RealDirection = dir;

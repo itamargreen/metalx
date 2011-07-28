@@ -65,6 +65,11 @@ namespace MetalX.Resource
             //}
             items.Add(texture);
         }
+        public void Add(MetalXTexture texture,string name)
+        {
+            texture.Name = name;
+            items.Add(texture);
+        }
         public void Del(MetalXTexture texture)
         {
             items.Remove(texture);

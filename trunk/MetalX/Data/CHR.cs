@@ -15,11 +15,9 @@ namespace MetalX.Data
         public string TextureName;
         public Size Size = new Size(1, 1);
         public bool Invisible = false;
-        //public Size TileSizePixel = new Size(16, 16);
 
         float moveSpeed = 2f;
-        //public int NeedMoveStep = 0;
-        [NonSerialized]
+        public int NeedMoveStep = 0;
         public float NeedMovePixel = 0;
         public Direction LastDirection;
         public Direction RealDirection;
@@ -294,7 +292,7 @@ namespace MetalX.Data
         public int MP;
         public int MPMax;
 
-        List<EquipmentCHR> Equipments = new List<EquipmentCHR>(8);
+        public List<EquipmentCHR> Equipments = new List<EquipmentCHR>(8);
         public EquipmentCHR PrimaryWeapon
         {
             get
@@ -501,7 +499,7 @@ namespace MetalX.Data
             RealDirection = dir;
             return true;
         }
-        public bool Move(Scene s, int stp, int stepPixel)
+        public bool Move(Scene s,NPC n, int stp, int stepPixel)
         {
             if (CanMove == false)
             {
@@ -511,7 +509,6 @@ namespace MetalX.Data
             {
                 return false;
             }
-            NPC n = s.GetNPC(FrontLocation);
             if (n != null)
             {
                 if (n.IsDoor == false)
@@ -519,13 +516,14 @@ namespace MetalX.Data
                     return false;
                 }
             }
-            if (s.Codes[(int)FrontLocation.Y][(int)FrontLocation.X].CHRCanRch == false)
+            if (s[(int)FrontLocation.Y,(int)FrontLocation.X].CHRCanRch == false)
             {
                 return false;
             }
 
             LastLocation = this.RealLocation;
             RealLocation = NextLocation = FrontLocation;
+            NeedMoveStep = stp;
             NeedMovePixel += stp * stepPixel;
             return true;
         }
@@ -571,17 +569,17 @@ namespace MetalX.Data
         public bool IsBox = false;
         public Direction DefaultDirection;
         //public Vector3 DefaultLocation;
-        public string DialogText;
+        //public string Dialog;
         public string Code;
         public void RecoverDirection()
         {
-            if (IsBox)
-            {
-                if (Bag.Count == 0)
-                {
-                    return;
-                }
-            }
+            //if (IsBox)
+            //{
+            //    if (Bag.Count == 0)
+            //    {
+            //        return;
+            //    }
+            //}
             RealDirection = DefaultDirection;
         }
         public void FocusOnMe(PC me)

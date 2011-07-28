@@ -145,15 +145,11 @@
             this.ui_loadmp3 = new System.Windows.Forms.Button();
             this.ui_loop = new System.Windows.Forms.CheckBox();
             this.ui_stop = new System.Windows.Forms.Button();
-            this.ui_play = new System.Windows.Forms.Button();
             this.ui_proc = new System.Windows.Forms.TrackBar();
-            this.ui_mus_empty = new System.Windows.Forms.Button();
             this.ui_mus_del = new System.Windows.Forms.Button();
             this.ui_mus_add = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.ui_mus_slt = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.ui_mus_lib = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -1280,15 +1276,11 @@
             this.panel1.Controls.Add(this.ui_loadmp3);
             this.panel1.Controls.Add(this.ui_loop);
             this.panel1.Controls.Add(this.ui_stop);
-            this.panel1.Controls.Add(this.ui_play);
             this.panel1.Controls.Add(this.ui_proc);
-            this.panel1.Controls.Add(this.ui_mus_empty);
             this.panel1.Controls.Add(this.ui_mus_del);
             this.panel1.Controls.Add(this.ui_mus_add);
             this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.ui_mus_slt);
-            this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.ui_mus_lib);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(290, 290);
@@ -1316,23 +1308,13 @@
             // 
             // ui_stop
             // 
-            this.ui_stop.Location = new System.Drawing.Point(87, 186);
+            this.ui_stop.Location = new System.Drawing.Point(124, 186);
             this.ui_stop.Name = "ui_stop";
             this.ui_stop.Size = new System.Drawing.Size(75, 23);
             this.ui_stop.TabIndex = 225;
             this.ui_stop.Text = "stop";
             this.ui_stop.UseVisualStyleBackColor = true;
             this.ui_stop.Click += new System.EventHandler(this.ui_stop_Click);
-            // 
-            // ui_play
-            // 
-            this.ui_play.Location = new System.Drawing.Point(6, 186);
-            this.ui_play.Name = "ui_play";
-            this.ui_play.Size = new System.Drawing.Size(75, 23);
-            this.ui_play.TabIndex = 224;
-            this.ui_play.Text = "play";
-            this.ui_play.UseVisualStyleBackColor = true;
-            this.ui_play.Click += new System.EventHandler(this.ui_play_Click);
             // 
             // ui_proc
             // 
@@ -1343,18 +1325,9 @@
             this.ui_proc.TabIndex = 223;
             this.ui_proc.Scroll += new System.EventHandler(this.ui_proc_Scroll);
             // 
-            // ui_mus_empty
-            // 
-            this.ui_mus_empty.Location = new System.Drawing.Point(205, 123);
-            this.ui_mus_empty.Name = "ui_mus_empty";
-            this.ui_mus_empty.Size = new System.Drawing.Size(75, 23);
-            this.ui_mus_empty.TabIndex = 222;
-            this.ui_mus_empty.Text = "清空";
-            this.ui_mus_empty.UseVisualStyleBackColor = true;
-            // 
             // ui_mus_del
             // 
-            this.ui_mus_del.Location = new System.Drawing.Point(205, 94);
+            this.ui_mus_del.Location = new System.Drawing.Point(205, 54);
             this.ui_mus_del.Name = "ui_mus_del";
             this.ui_mus_del.Size = new System.Drawing.Size(75, 23);
             this.ui_mus_del.TabIndex = 221;
@@ -1364,7 +1337,7 @@
             // 
             // ui_mus_add
             // 
-            this.ui_mus_add.Location = new System.Drawing.Point(205, 65);
+            this.ui_mus_add.Location = new System.Drawing.Point(205, 25);
             this.ui_mus_add.Name = "ui_mus_add";
             this.ui_mus_add.Size = new System.Drawing.Size(75, 23);
             this.ui_mus_add.TabIndex = 220;
@@ -1375,7 +1348,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 50);
+            this.label13.Location = new System.Drawing.Point(8, 12);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 217;
@@ -1388,25 +1361,6 @@
             this.ui_mus_slt.Name = "ui_mus_slt";
             this.ui_mus_slt.Size = new System.Drawing.Size(185, 20);
             this.ui_mus_slt.TabIndex = 218;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 12);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(53, 12);
-            this.label12.TabIndex = 216;
-            this.label12.Text = "音乐素材";
-            // 
-            // ui_mus_lib
-            // 
-            this.ui_mus_lib.Enabled = false;
-            this.ui_mus_lib.FormattingEnabled = true;
-            this.ui_mus_lib.ItemHeight = 12;
-            this.ui_mus_lib.Location = new System.Drawing.Point(5, 65);
-            this.ui_mus_lib.Name = "ui_mus_lib";
-            this.ui_mus_lib.Size = new System.Drawing.Size(185, 88);
-            this.ui_mus_lib.TabIndex = 219;
             // 
             // tabPage3
             // 
@@ -1860,15 +1814,11 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox ui_loop;
         private System.Windows.Forms.Button ui_stop;
-        private System.Windows.Forms.Button ui_play;
         private System.Windows.Forms.TrackBar ui_proc;
-        private System.Windows.Forms.Button ui_mus_empty;
         private System.Windows.Forms.Button ui_mus_del;
         private System.Windows.Forms.Button ui_mus_add;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox ui_mus_slt;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ListBox ui_mus_lib;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Panel panel2;

@@ -137,7 +137,7 @@ namespace MetalHunter
 
         void bb1_OnButtonDown(object arg)
         {
-            game.AppendDotMetalXScript("load1.mxscript");
+            game.AppendDotMetalXScript("load1");
             game.ExecuteScript();
         }
     }

@@ -34,10 +34,12 @@ namespace MetalHunter
             game.LoadAllDotMP3();
 
             game.LoadAllDotMXScene();
+            game.LoadAllDotMXNPC();
+            game.LoadAllDotMXScript();
 
             InitFormBoxes();
             
-            game.AppendDotMetalXScript("logo.mxscript");
+            game.AppendDotMetalXScript("logo");
             game.ExecuteScript();
 
             game.Start();
