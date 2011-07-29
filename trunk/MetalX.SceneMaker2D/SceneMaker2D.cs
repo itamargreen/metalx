@@ -12,6 +12,8 @@ namespace MetalX.SceneMaker2D
 {
     public class SceneMaker2D : SceneManager
     {
+        public bool edit_frame;
+        public int edit_frame_index;
         public bool drawGrid;
         public bool drawCod;
         public bool drawCode
@@ -108,17 +110,32 @@ namespace MetalX.SceneMaker2D
                     {
                         //Point p = t.GetLocationPixelPoint(scene.TilePixel);
                         int fi = 0;
-                        if (t.IsAnimation)
+                        if (edit_frame == false)
                         {
                             fi = frameIndex;
+                            game.DrawMetalXTexture(
+                               game.Textures[t[fi].TextureIndex],
+                               t[fi].DrawZone,
+                               Util.PointMulInt(t.LocationPoint, SCN.TilePixel),
+                               SCN.TileSizePixel,
+                               ColorFilter
+                               );
                         }
-                        game.DrawMetalXTexture(
-                            game.Textures[t[fi].TextureIndex],
-                            t[fi].DrawZone,
-                            Util.PointMulInt(t.LocationPoint, SCN.TilePixel),
-                            SCN.TileSizePixel,
-                            ColorFilter
-                            );
+                        else
+                        {
+                            fi = edit_frame_index;
+
+                            if (t.Frames.Count>fi)
+                            {
+                                game.DrawMetalXTexture(
+                                    game.Textures[t.Frames[fi].TextureIndex],
+                                    t.Frames[fi].DrawZone,
+                                    Util.PointMulInt(t.LocationPoint, SCN.TilePixel),
+                                    SCN.TileSizePixel,
+                                    ColorFilter
+                                    );
+                            }
+                        }
                     }
                 }
             }
@@ -220,41 +237,48 @@ namespace MetalX.SceneMaker2D
         }
         void draw_code()
         {
+            Color cf = Color.White;
             Point o = new Point(8, 8);
             if (drawCodeLayer == 0)
             {
                 foreach (Code c in SCN.CodeLayer.Codes)
                 {
+                    cf = Color.White;
                     string str = "smo";
                     if (!c.CHRCanRch)
                     {
                         str = "smx";
+                        cf = Color.Yellow;
                     }
-                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), cf);
                 }
             }
             else if (drawCodeLayer == 1)
             {
                 foreach (Code c in SCN.CodeLayer.Codes)
                 {
+                    cf = Color.White;
                     string str = "smo";
                     if (!c.MTLCanRch)
                     {
                         str = "smx";
+                        cf = Color.Yellow;
                     }
-                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), cf);
                 }
             }
             else if (drawCodeLayer == 2)
             {
                 foreach (Code c in SCN.CodeLayer.Codes)
                 {
+                    cf = Color.White;
                     string str = "smo";
                     if (!c.SHPCanRch)
                     {
                         str = "smx";
+                        cf = Color.Yellow;
                     }
-                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), cf);
                 }
 
             }
@@ -262,12 +286,14 @@ namespace MetalX.SceneMaker2D
             {
                 foreach (Code c in SCN.CodeLayer.Codes)
                 {
+                    cf = Color.White;
                     string str = "smo";
                     if (!c.FLTCanRch)
                     {
                         str = "smx";
+                        cf = Color.Yellow;
                     }
-                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), cf);
                 }
 
             }
@@ -277,19 +303,21 @@ namespace MetalX.SceneMaker2D
                 {
                     string str = c.DrawLayer.ToString();
                     str = "sm" + str;
-                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), cf);
                 }
             }
             else if (drawCodeLayer == 5)
             {
                 foreach (Code c in SCN.CodeLayer.Codes)
                 {
+                    cf = Color.White;
                     string str = "smo";
                     if (!c.IsDesk)
                     {
                         str = "smx";
+                        cf = Color.Yellow;
                     }
-                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), Color.White);
+                    game.DrawMetalXTexture(game.Textures[str], new Rectangle(new Point(), new Size(16, 16)), Util.PointAddPoint(o, Util.PointMulInt(c.Location, SCN.TilePixel)), cf);
                 }
 
             }
