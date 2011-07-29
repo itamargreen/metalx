@@ -20,7 +20,7 @@ namespace MetalX.SceneMaker2D
         Stack<object> stack = new Stack<object>(10);
 
         Cursor bc = Cursors.Cross;
-        bool insFrame = false;
+        //bool insFrame = false;
         Game game;
         SceneMaker2D sceneMaker2D;
         bool erasing = false;
@@ -131,14 +131,29 @@ namespace MetalX.SceneMaker2D
                     int i = contains_tile(tile.Location);
                     if (i > -1)
                     {
-                        if (insFrame)
+                        bool err = false;
+                        do
                         {
-                            sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Frames.Add(tf);
+                            try
+                            {
+                                sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Frames[sceneMaker2D.edit_frame_index] = tf;
+                                err = false;
+                            }
+                            catch
+                            {
+                                sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Frames.Add(new TileFrame());
+                                err = true;
+                            }
                         }
-                        else
-                        {
-                            sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer].Tiles[i] = tile;
-                        }
+                        while (err);
+                        //if (insFrame)
+                        //{
+                        //    sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer].Tiles[i].Frames.Add(tf);
+                        //}
+                        //else
+                        //{
+                        //    sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer].Tiles[i] = tile;
+                        //}
                     }
                     else
                     {
@@ -273,7 +288,7 @@ namespace MetalX.SceneMaker2D
                     paint_tile(new Point(x, y), slt_zone);
                 }
             }
-            insFrame = false;
+            //insFrame = false;
         }
         void del_zone(Rectangle target_zone, Rectangle slt_zone)
         {
@@ -609,6 +624,10 @@ namespace MetalX.SceneMaker2D
 
         private void ui_pic_MouseMove(object sender, MouseEventArgs e)
         {
+            if (sceneMaker2D == null)
+            {
+                return;
+            }
             if (sceneMaker2D.mxtIndex < 0)
             {
                 return;
@@ -1033,29 +1052,29 @@ namespace MetalX.SceneMaker2D
 
         private void tabControl1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.I)
-            {
-                int i = contains_tile(Util.Vector3DivInt(Util.Point2Vector3(sceneMaker2D.penLoc, 0), game.Options.TilePixel));
-                if (i > -1)
-                {
-                    ui_aniframec.Text = "" + sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer][i].FrameCount;
+            //if (e.KeyCode == Keys.I)
+            //{
+            //    int i = contains_tile(Util.Vector3DivInt(Util.Point2Vector3(sceneMaker2D.penLoc, 0), game.Options.TilePixel));
+            //    if (i > -1)
+            //    {
+            //        ui_aniframec.Text = "" + sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer][i].FrameCount;
 
-                    if (insFrame)
-                    {
-                        insFrame = false;
-                        ui_cursorsat.Text = "铅笔";
-                        pictureBox1.Cursor = bc;
-                    }
-                    else
-                    {
-                        if (pictureBox1.Cursor != System.Windows.Forms.Cursors.UpArrow)
-                            bc = pictureBox1.Cursor;
-                        insFrame = true;
-                        ui_cursorsat.Text = "插入帧";
-                        pictureBox1.Cursor = System.Windows.Forms.Cursors.UpArrow;
-                    }
-                }
-            }
+            //        if (insFrame)
+            //        {
+            //            insFrame = false;
+            //            ui_cursorsat.Text = "铅笔";
+            //            pictureBox1.Cursor = bc;
+            //        }
+            //        else
+            //        {
+            //            if (pictureBox1.Cursor != System.Windows.Forms.Cursors.UpArrow)
+            //                bc = pictureBox1.Cursor;
+            //            insFrame = true;
+            //            ui_cursorsat.Text = "插入帧";
+            //            pictureBox1.Cursor = System.Windows.Forms.Cursors.UpArrow;
+            //        }
+            //    }
+            //}
         }
 
         private void ui_link_file_DoubleClick(object sender, EventArgs e)
@@ -1529,6 +1548,16 @@ namespace MetalX.SceneMaker2D
         private void 动画ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new DotMXMovieMaker().ShowDialog();
+        }
+
+        private void ui_slt_frame_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sceneMaker2D.edit_frame_index = int.Parse(ui_slt_frame.Text);
+        }
+
+        private void ui_edit_frame_CheckedChanged(object sender, EventArgs e)
+        {
+            sceneMaker2D.edit_frame = ui_edit_frame.Checked;
         }
 
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)

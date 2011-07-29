@@ -60,6 +60,7 @@
             this.淡出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.纹理工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.动画ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.音频工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.模型工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.输出optionsxmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,6 +128,7 @@
             this.ui_tilefilter = new System.Windows.Forms.TextBox();
             this.ui_chg_tile_size = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.ui_pic = new System.Windows.Forms.PictureBox();
             this.ui_pic_slt = new System.Windows.Forms.ComboBox();
             this.ui_showgrid = new System.Windows.Forms.CheckBox();
             this.ui_aniframec = new System.Windows.Forms.TextBox();
@@ -174,6 +176,7 @@
             this.ui_loop = new System.Windows.Forms.CheckBox();
             this.ui_stop = new System.Windows.Forms.Button();
             this.ui_proc = new System.Windows.Forms.TrackBar();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.设置连接点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.编辑脚本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -183,12 +186,11 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ui_mousex = new System.Windows.Forms.ToolStripLabel();
             this.ui_mousey = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.ui_pic = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.动画ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ui_slt_frame = new System.Windows.Forms.ComboBox();
+            this.ui_edit_frame = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -204,14 +206,14 @@
             this.tabPage6.SuspendLayout();
             this.ui_pic_panel.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -461,6 +463,13 @@
             this.纹理工具ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.纹理工具ToolStripMenuItem.Text = "纹理";
             this.纹理工具ToolStripMenuItem.Click += new System.EventHandler(this.纹理工具ToolStripMenuItem_Click);
+            // 
+            // 动画ToolStripMenuItem
+            // 
+            this.动画ToolStripMenuItem.Name = "动画ToolStripMenuItem";
+            this.动画ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.动画ToolStripMenuItem.Text = "动画";
+            this.动画ToolStripMenuItem.Click += new System.EventHandler(this.动画ToolStripMenuItem_Click);
             // 
             // 音频工具ToolStripMenuItem
             // 
@@ -924,7 +933,7 @@
             this.tabControl2.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage6);
-            this.tabControl2.Location = new System.Drawing.Point(0, 373);
+            this.tabControl2.Location = new System.Drawing.Point(0, 416);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(290, 231);
@@ -1075,6 +1084,8 @@
             // 
             // ui_pic_panel
             // 
+            this.ui_pic_panel.Controls.Add(this.ui_edit_frame);
+            this.ui_pic_panel.Controls.Add(this.ui_slt_frame);
             this.ui_pic_panel.Controls.Add(this.ui_filte);
             this.ui_pic_panel.Controls.Add(this.label29);
             this.ui_pic_panel.Controls.Add(this.ui_tilefilter);
@@ -1099,7 +1110,7 @@
             this.ui_pic_panel.Location = new System.Drawing.Point(0, 0);
             this.ui_pic_panel.Margin = new System.Windows.Forms.Padding(0);
             this.ui_pic_panel.Name = "ui_pic_panel";
-            this.ui_pic_panel.Size = new System.Drawing.Size(290, 370);
+            this.ui_pic_panel.Size = new System.Drawing.Size(290, 413);
             this.ui_pic_panel.TabIndex = 1;
             // 
             // ui_filte
@@ -1150,6 +1161,20 @@
             this.panel3.Size = new System.Drawing.Size(288, 262);
             this.panel3.TabIndex = 20;
             // 
+            // ui_pic
+            // 
+            this.ui_pic.BackColor = System.Drawing.Color.Transparent;
+            this.ui_pic.Location = new System.Drawing.Point(1, 1);
+            this.ui_pic.Margin = new System.Windows.Forms.Padding(0);
+            this.ui_pic.Name = "ui_pic";
+            this.ui_pic.Size = new System.Drawing.Size(258, 258);
+            this.ui_pic.TabIndex = 0;
+            this.ui_pic.TabStop = false;
+            this.ui_pic.Paint += new System.Windows.Forms.PaintEventHandler(this.ui_pic_Paint);
+            this.ui_pic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseDown);
+            this.ui_pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseMove);
+            this.ui_pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseUp);
+            // 
             // ui_pic_slt
             // 
             this.ui_pic_slt.FormattingEnabled = true;
@@ -1183,7 +1208,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(237, 344);
+            this.label7.Location = new System.Drawing.Point(145, 380);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(11, 12);
             this.label7.TabIndex = 16;
@@ -1605,6 +1630,20 @@
             this.ui_proc.TabIndex = 223;
             this.ui_proc.Scroll += new System.EventHandler(this.ui_proc_Scroll);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1668,6 +1707,17 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(45, 22);
+            this.toolStripButton1.Text = "绘制中";
+            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // ui_mousex
             // 
             this.ui_mousex.Name = "ui_mousex";
@@ -1680,51 +1730,35 @@
             this.ui_mousey.Size = new System.Drawing.Size(11, 22);
             this.ui_mousey.Text = "y";
             // 
-            // toolStripButton1
+            // ui_slt_frame
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(45, 22);
-            this.toolStripButton1.Text = "绘制中";
-            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.ui_slt_frame.FormattingEnabled = true;
+            this.ui_slt_frame.Items.AddRange(new object[] {
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7"});
+            this.ui_slt_frame.Location = new System.Drawing.Point(163, 377);
+            this.ui_slt_frame.Name = "ui_slt_frame";
+            this.ui_slt_frame.Size = new System.Drawing.Size(121, 20);
+            this.ui_slt_frame.TabIndex = 121;
+            this.ui_slt_frame.Text = "0";
+            this.ui_slt_frame.SelectedIndexChanged += new System.EventHandler(this.ui_slt_frame_SelectedIndexChanged);
             // 
-            // ui_pic
+            // ui_edit_frame
             // 
-            this.ui_pic.BackColor = System.Drawing.Color.Transparent;
-            this.ui_pic.Location = new System.Drawing.Point(1, 1);
-            this.ui_pic.Margin = new System.Windows.Forms.Padding(0);
-            this.ui_pic.Name = "ui_pic";
-            this.ui_pic.Size = new System.Drawing.Size(258, 258);
-            this.ui_pic.TabIndex = 0;
-            this.ui_pic.TabStop = false;
-            this.ui_pic.Paint += new System.Windows.Forms.PaintEventHandler(this.ui_pic_Paint);
-            this.ui_pic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseDown);
-            this.ui_pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseMove);
-            this.ui_pic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ui_pic_MouseUp);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
-            // 动画ToolStripMenuItem
-            // 
-            this.动画ToolStripMenuItem.Name = "动画ToolStripMenuItem";
-            this.动画ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.动画ToolStripMenuItem.Text = "动画";
-            this.动画ToolStripMenuItem.Click += new System.EventHandler(this.动画ToolStripMenuItem_Click);
+            this.ui_edit_frame.AutoSize = true;
+            this.ui_edit_frame.Location = new System.Drawing.Point(50, 379);
+            this.ui_edit_frame.Name = "ui_edit_frame";
+            this.ui_edit_frame.Size = new System.Drawing.Size(72, 16);
+            this.ui_edit_frame.TabIndex = 122;
+            this.ui_edit_frame.Text = "帧编辑中";
+            this.ui_edit_frame.UseVisualStyleBackColor = true;
+            this.ui_edit_frame.CheckedChanged += new System.EventHandler(this.ui_edit_frame_CheckedChanged);
             // 
             // Form1
             // 
@@ -1765,17 +1799,17 @@
             this.ui_pic_panel.ResumeLayout(false);
             this.ui_pic_panel.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1942,6 +1976,8 @@
         private System.Windows.Forms.ToolStripMenuItem 设置连接点ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 编辑脚本ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 动画ToolStripMenuItem;
+        private System.Windows.Forms.ComboBox ui_slt_frame;
+        private System.Windows.Forms.CheckBox ui_edit_frame;
     }
 }
 
