@@ -564,6 +564,10 @@ namespace MetalX.Component
 
         public void AppendCommand(string cmd)
         {
+            if (cmd == null)
+            {
+                return;
+            }
             string[] cmds = cmd.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string c in cmds)
             {

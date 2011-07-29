@@ -175,11 +175,17 @@ namespace MetalX.Component
 
                 if (ME.NeedMovePixel == 0)
                 {
-                    string sname = SCN[(int)ME.RealLocation.Y,(int)ME.RealLocation.X].SceneFileName;
+                    string sname = null;
+                    try
+                    {
+                        sname = SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].SceneFileName;
+                    }
+                    catch
+                    { }
                     if (sname != null)
                     {
-                        Enter(sname, SCN[(int)ME.RealLocation.Y,(int)ME.RealLocation.X].DefaultLocation);
-                        ME.Face(SCN[(int)ME.RealLocation.Y,(int)ME.RealLocation.X].DefaultDirection);
+                        Enter(sname, SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultLocation);
+                        ME.Face(SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultDirection);
                     }
                 }
             }
@@ -252,7 +258,13 @@ namespace MetalX.Component
             {
                 return;
             }
-            string spt = SCN[ME.RealLocation].Script;
+            string spt = null;
+            try
+            {
+                spt = SCN[ME.RealLocation].Script;
+            }
+            catch
+            { }
             if (spt != null)
             {
                 if (spt != string.Empty)
@@ -428,11 +440,11 @@ namespace MetalX.Component
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
-                for (int yy = 0; yy < hr+1 ; yy++)
+                for (int yy = 0; yy < hr + 1; yy++)
                 {
-                    for (int xx = 0; xx < w+1; xx++)
+                    for (int xx = 0; xx < w + 1; xx++)
                     {
-                        loco.X = xx - w-1;
+                        loco.X = xx - w - 1;
                         loco.Y = yy - h;
                         game.DrawMetalXTexture(
                             game.Textures[ti],
@@ -455,9 +467,9 @@ namespace MetalX.Component
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
-                for (int yy = 0; yy < h+1; yy++)
+                for (int yy = 0; yy < h + 1; yy++)
                 {
-                    for (int xx = 0; xx < wr +1; xx++)
+                    for (int xx = 0; xx < wr + 1; xx++)
                     {
                         loco.X = xx - w;
                         loco.Y = yy - h - 1;
@@ -602,10 +614,15 @@ namespace MetalX.Component
             }
             for (int l = 0; l < s.TileLayers.Count; l++)
             {
-                int lastl = s[(int)ME.LastLocation.Y,(int)ME.LastLocation.X].DrawLayer;
-                int nextl = s[(int)ME.NextLocation.Y,(int)ME.NextLocation.X].DrawLayer;
-                Vector3 drawloc=ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl);
-                int drawl = s[(int)drawloc.Y,(int)drawloc.X].DrawLayer;
+                int lastl = 3, nextl = 3, drawl = 3;
+                try
+                {
+                    lastl = s[(int)ME.LastLocation.Y, (int)ME.LastLocation.X].DrawLayer;
+                    nextl = s[(int)ME.NextLocation.Y, (int)ME.NextLocation.X].DrawLayer;
+                    Vector3 drawloc = ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl);
+                    drawl = s[(int)drawloc.Y, (int)drawloc.X].DrawLayer;
+                }
+                catch { }
                 if (PCbeforeNPC)
                 {
                     if (l == drawl)
@@ -655,7 +672,7 @@ namespace MetalX.Component
                             //x++;
                             continue;
                         }
-                        Tile t = s[l,y,x];
+                        Tile t = s[l, y, x];
                         if (t != null)
                         {
                             //if (IsInWindow(Util.PointAddPoint(t.LocationPoint, SCN.RealLocationPoint)))
@@ -998,7 +1015,7 @@ namespace MetalX.Component
         //        }
         //    }
         //    //ME leave door
- 
+
         //    n = s.GetNPC(chr.RealLocation);
         //    if (n != null)
         //    {
@@ -1069,7 +1086,7 @@ namespace MetalX.Component
                     }
                 }
             }
-        }        
+        }
         public override void OnKeyboardUpCode(object sender, int key)
         {
             if (SCN == null)
@@ -1083,74 +1100,83 @@ namespace MetalX.Component
             Key k = (Key)key;
             if (k == game.Options.KeyYES)
             {
-                if (GetNPC(ME) != null)
+                NPC npc = GetNPC(ME);
+                if (npc == null)
                 {
-                    game.AppendScript("me clrctrl");
-                    GetNPC(ME).FocusOnMe(ME);
-                    if (GetNPC(ME).IsBox)
+                    return;
+                }
+                if (npc.Script == null)
+                {
+                    return;
+                }
+                if (npc.Script == string.Empty)
+                {
+                    return;
+                }
+                game.AppendScript("me clrctrl");
+                npc.FocusOnMe(ME);
+                if (npc.IsBox)
+                {
+                    if (npc.Bag.Count > 0)
                     {
-                        if (GetNPC(ME).Bag.Count > 0)
-                        {
-                            game.AppendScript(GetNPC(ME).Script);
-                            game.AppendScript("me setctrl");
-                            game.ExecuteScript();
-                        }
-                        else
-                        {
-                            game.AppendScript("msg 什么都没有");
-                            game.AppendScript("untilpress y");
-                            game.AppendScript("msg");
-                            game.AppendScript("me setctrl");
-                            game.ExecuteScript();
-                        }
-                    }
-                    else if (GetNPC(ME).IsDoor)
-                    { 
+                        game.AppendScript(npc.Script);
+                        game.AppendScript("me setctrl");
+                        game.ExecuteScript();
                     }
                     else
                     {
-                        //if (GetNPC(ME).Code == string.Empty)
-                        //{
-                        //    game.AppendScript("msg " + GetNPC(ME).DialogText);
-                        //    game.AppendScript("untilpress j");
-                        //    game.AppendScript("gui close MessageBox");
-                        //    game.AppendScript("unfreezeme");
-                        //    game.ExecuteScript();
-
-                        //}
-                        //else
-                        {
-                            game.AppendScript(GetNPC(ME).Script);
-                            game.AppendScript("me setctrl");
-                            game.AppendScript("npc " + GetNPC(ME).Name + " dir def");
-                            game.ExecuteScript();                            
-                        }
+                        game.AppendScript("msg 什么都没有");
+                        game.AppendScript("untilpress y");
+                        game.AppendScript("msg");
+                        game.AppendScript("me setctrl");
+                        game.ExecuteScript();
                     }
                 }
-                //if (sm.IsNobody() == false)
+                else if (npc.IsDoor)
+                {
+                }
+                else
+                {
+                    //if (GetNPC(ME).Code == string.Empty)
+                    //{
+                    //    game.AppendScript("msg " + GetNPC(ME).DialogText);
+                    //    game.AppendScript("untilpress j");
+                    //    game.AppendScript("gui close MessageBox");
+                    //    game.AppendScript("unfreezeme");
+                    //    game.ExecuteScript();
+
+                    //}
+                    //else
+                    game.AppendScript(npc.Script);
+                    game.AppendScript("me setctrl");
+                    game.AppendScript("npc " + npc.Name + " dir def");
+                    game.ExecuteScript();
+                    //if (sm.IsNobody() == false)
+                    //{
+                    //    if (sm.ME.IsTalking)
+                    //    {
+                    //        sm.GetNPC(ME).FocusOnMe(sm.ME);
+                    //        game.AppendAndExecuteScript("GetNPC(ME) say " + sm.GetNPC(ME).DialogText);
+                    //    }
+                    //    else
+                    //    {
+                    //        sm.GetNPC(ME).RecoverDirection();
+                    //        game.AppendAndExecuteScript("gui close NPCTalk");
+                    //    }
+                    //}
+                }
+                //else if (k == Key.K)
                 //{
-                //    if (sm.ME.IsTalking)
+                //    if (sm.GetNPC(ME) != null)
                 //    {
-                //        sm.GetNPC(ME).FocusOnMe(sm.ME);
-                //        game.AppendAndExecuteScript("GetNPC(ME) say " + sm.GetNPC(ME).DialogText);
-                //    }
-                //    else
-                //    {
+                //        game.AppendAndExecuteScript("unfreezeme");
                 //        sm.GetNPC(ME).RecoverDirection();
                 //        game.AppendAndExecuteScript("gui close NPCTalk");
                 //    }
                 //}
-            }
-            //else if (k == Key.K)
-            //{
-            //    if (sm.GetNPC(ME) != null)
-            //    {
-            //        game.AppendAndExecuteScript("unfreezeme");
-            //        sm.GetNPC(ME).RecoverDirection();
-            //        game.AppendAndExecuteScript("gui close NPCTalk");
-            //    }
-            //}
 
+
+            }
         }
     }
 }
