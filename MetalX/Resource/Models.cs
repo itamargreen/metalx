@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
-
+using MetalX.File;
 namespace MetalX.Resource
 {
     public class Models

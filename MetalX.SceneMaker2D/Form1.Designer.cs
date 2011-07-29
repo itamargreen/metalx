@@ -175,6 +175,8 @@
             this.ui_stop = new System.Windows.Forms.Button();
             this.ui_proc = new System.Windows.Forms.TrackBar();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.设置连接点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.编辑脚本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.取消动画图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设为打底层图元ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -183,11 +185,10 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.ui_mousex = new System.Windows.Forms.ToolStripLabel();
             this.ui_mousey = new System.Windows.Forms.ToolStripLabel();
-            this.设置连接点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ui_pic = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.编辑脚本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.动画ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -446,6 +447,7 @@
             // 
             this.工具ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.纹理工具ToolStripMenuItem,
+            this.动画ToolStripMenuItem,
             this.音频工具ToolStripMenuItem,
             this.模型工具ToolStripMenuItem,
             this.输出optionsxmlToolStripMenuItem});
@@ -1612,7 +1614,21 @@
             this.取消动画图元ToolStripMenuItem,
             this.设为打底层图元ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(155, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(155, 114);
+            // 
+            // 设置连接点ToolStripMenuItem
+            // 
+            this.设置连接点ToolStripMenuItem.Name = "设置连接点ToolStripMenuItem";
+            this.设置连接点ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.设置连接点ToolStripMenuItem.Text = "设置跳转点";
+            this.设置连接点ToolStripMenuItem.Click += new System.EventHandler(this.设置连接点ToolStripMenuItem_Click);
+            // 
+            // 编辑脚本ToolStripMenuItem
+            // 
+            this.编辑脚本ToolStripMenuItem.Name = "编辑脚本ToolStripMenuItem";
+            this.编辑脚本ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.编辑脚本ToolStripMenuItem.Text = "编辑脚本";
+            this.编辑脚本ToolStripMenuItem.Click += new System.EventHandler(this.编辑脚本ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -1664,13 +1680,6 @@
             this.ui_mousey.Size = new System.Drawing.Size(11, 22);
             this.ui_mousey.Text = "y";
             // 
-            // 设置连接点ToolStripMenuItem
-            // 
-            this.设置连接点ToolStripMenuItem.Name = "设置连接点ToolStripMenuItem";
-            this.设置连接点ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.设置连接点ToolStripMenuItem.Text = "设置跳转点";
-            this.设置连接点ToolStripMenuItem.Click += new System.EventHandler(this.设置连接点ToolStripMenuItem_Click);
-            // 
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -1710,12 +1719,12 @@
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
-            // 编辑脚本ToolStripMenuItem
+            // 动画ToolStripMenuItem
             // 
-            this.编辑脚本ToolStripMenuItem.Name = "编辑脚本ToolStripMenuItem";
-            this.编辑脚本ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.编辑脚本ToolStripMenuItem.Text = "编辑脚本";
-            this.编辑脚本ToolStripMenuItem.Click += new System.EventHandler(this.编辑脚本ToolStripMenuItem_Click);
+            this.动画ToolStripMenuItem.Name = "动画ToolStripMenuItem";
+            this.动画ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.动画ToolStripMenuItem.Text = "动画";
+            this.动画ToolStripMenuItem.Click += new System.EventHandler(this.动画ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1932,6 +1941,7 @@
         private System.Windows.Forms.ToolStripLabel ui_mousey;
         private System.Windows.Forms.ToolStripMenuItem 设置连接点ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 编辑脚本ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 动画ToolStripMenuItem;
     }
 }
 

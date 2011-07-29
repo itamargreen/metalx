@@ -72,6 +72,12 @@
     <Compile Include="DotMXMMaker.Designer.cs">
       <DependentUpon>DotMXMMaker.cs</DependentUpon>
     </Compile>
+    <Compile Include="DotMXMovieMaker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DotMXMovieMaker.Designer.cs">
+      <DependentUpon>DotMXMovieMaker.cs</DependentUpon>
+    </Compile>
     <Compile Include="DotMXTMaker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DotMXMMaker.resx">
       <DependentUpon>DotMXMMaker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DotMXMovieMaker.resx">
+      <DependentUpon>DotMXMovieMaker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DotMXTMaker.resx">
       <DependentUpon>DotMXTMaker.cs</DependentUpon>

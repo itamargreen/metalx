@@ -4,6 +4,7 @@ using System.Threading;
 
 using Microsoft.DirectX.DirectSound;
 using Mp3Sharp;
+using MetalX.File;
 
 namespace MetalX.Component
 {

@@ -7,6 +7,8 @@ using Microsoft.DirectX.Direct3D;
 
 using MetalX;
 using MetalX.Component;
+using MetalX.File;
+
 namespace MetalX.SceneMaker2D
 {
     class ModelMaker : GameCom

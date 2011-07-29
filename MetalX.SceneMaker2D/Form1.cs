@@ -1526,6 +1526,11 @@ namespace MetalX.SceneMaker2D
             es.ShowDialog();
         }
 
+        private void 动画ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new DotMXMovieMaker().ShowDialog();
+        }
+
         //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)
         //{
         //    savetoxml(null);

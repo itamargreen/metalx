@@ -13,6 +13,13 @@ namespace MetalX.File
         public string Version;
 
         public byte[] TextureData;
+        public System.IO.MemoryStream TextureDataStream
+        {
+            get
+            {
+                return new System.IO.MemoryStream(TextureData);
+            }
+        }
         public Size SizePixel;
         public Size SizePixel2X
         {
@@ -41,9 +48,20 @@ namespace MetalX.File
             //Version = Path = Name = null;
             CreateTime = DateTime.Now;
         }
+        public MetalXTexture(string fullName)
+            : base()
+        {
+            //SizePixel = sz;
+            FileIndexer = new File.FileIndexer(fullName);
+            Name = FileIndexer.FileName;
+            TextureData = System.IO.File.ReadAllBytes(FileIndexer.FullName);
+        }
 
         public void Dispose()
         {
+            MEMTexture.Dispose();
+            MEMTexture2X.Dispose();
+            TextureData = null;
         }
     }
 }

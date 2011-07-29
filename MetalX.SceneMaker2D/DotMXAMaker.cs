@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
+using MetalX.File;
 namespace MetalX.SceneMaker2D
 {
     public partial class DotMXAMaker : Form

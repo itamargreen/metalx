@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.DirectX.Direct3D;
-namespace MetalX
+namespace MetalX.File
 {
     [Serializable]
     public class MetalXModel : IDisposable
