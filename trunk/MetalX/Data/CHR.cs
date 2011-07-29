@@ -15,12 +15,14 @@ namespace MetalX.Data
         public string TextureName;
         public Size Size = new Size(1, 1);
         public bool Invisible = false;
+        bool isForceMove = false;
 
         float moveSpeed = 2f;
         public int NeedMoveStep = 0;
         public float NeedMovePixel = 0;
         public Direction LastDirection;
         public Direction RealDirection;
+        public Direction ForceDirection;
         public Direction OppositeDirection
         {
             get
@@ -160,6 +162,33 @@ namespace MetalX.Data
                 return v3;
             }
         }
+        public Vector3 ForceFrontLocation
+        {
+            get
+            {
+                Vector3 v3 = NextLocation;
+                if (NeedMovePixel == 0)
+                {
+                    if (ForceDirection == Direction.U)
+                    {
+                        v3.Y--;
+                    }
+                    else if (ForceDirection == Direction.D)
+                    {
+                        v3.Y++;
+                    }
+                    else if (ForceDirection == Direction.L)
+                    {
+                        v3.X--;
+                    }
+                    else if (ForceDirection == Direction.R)
+                    {
+                        v3.X++;
+                    }
+                }
+                return v3;
+            }
+        }
         public Vector3 RangeLocation
         {
             get
@@ -265,19 +294,21 @@ namespace MetalX.Data
 
         public bool CanMove = true;
         public bool CanTurn = true;
+        public bool IsRigor = false;
         public bool CanControl = true;
-        public void Freeze()
-        {
-            CanTurn = false;
-            CanMove = false;
-            CanControl = false;
-        }
-        public void Unfreeze()
-        {
-            CanTurn = true;
-            CanMove = true;
-            CanControl = true;
-        }
+        
+        //public void Freeze()
+        //{
+        //    CanTurn = false;
+        //    CanMove = false;
+        //    CanControl = false;
+        //}
+        //public void Unfreeze()
+        //{
+        //    CanTurn = true;
+        //    CanMove = true;
+        //    CanControl = true;
+        //}
 
         public int Gold;
 
@@ -499,7 +530,20 @@ namespace MetalX.Data
             RealDirection = dir;
             return true;
         }
-        public bool Move(Scene s,NPC n, int stp, int stepPixel)
+        //public void ForceFace(Direction dir)
+        //{
+        //    ForceMoveDirection = dir;
+        //}
+        public void ForceMove(int stepPixel)
+        {
+            LastLocation = RealLocation;
+            RealLocation = NextLocation = ForceFrontLocation;
+
+            NeedMoveStep = 1;
+            NeedMovePixel += 1 * stepPixel;
+            isForceMove = true;
+        }
+        public bool Move(Scene s, NPC n, int stepPixel)
         {
             if (CanMove == false)
             {
@@ -518,49 +562,84 @@ namespace MetalX.Data
             }
             try
             {
-                if (s[(int)FrontLocation.Y, (int)FrontLocation.X].CHRCanRch == false)
+                if (s[FrontLocation].CHRCanRch == false)
                 {
                     return false;
                 }
             }
             catch
             {
-                return false;
+                //return false;
             }
 
-            LastLocation = this.RealLocation;
+            LastLocation = RealLocation;
             RealLocation = NextLocation = FrontLocation;
-            NeedMoveStep = stp;
-            NeedMovePixel += stp * stepPixel;
+            NeedMoveStep = 1;
+            NeedMovePixel += 1 * stepPixel;
             return true;
         }
         public void MovePixel()
         {
             if (NeedMovePixel > 0)
             {
-                float movePixel = MoveSpeed;
-                if (NeedMovePixel < MoveSpeed)
+                if (isForceMove)
                 {
-                    movePixel = NeedMovePixel;
-                }
+                    float movePixel = MoveSpeed;
+                    if (NeedMovePixel < MoveSpeed)
+                    {
+                        movePixel = NeedMovePixel;
+                    }
 
-                NeedMovePixel -= movePixel;
+                    NeedMovePixel -= movePixel;
 
-                if (RealDirection == Direction.U)
-                {
-                    RealLocationPixel.Y -= movePixel;
+                    if (ForceDirection == Direction.U)
+                    {
+                        RealLocationPixel.Y -= movePixel;
+                    }
+                    else if (ForceDirection == Direction.L)
+                    {
+                        RealLocationPixel.X -= movePixel;
+                    }
+                    else if (ForceDirection == Direction.D)
+                    {
+                        RealLocationPixel.Y += movePixel;
+                    }
+                    else if (ForceDirection == Direction.R)
+                    {
+                        RealLocationPixel.X += movePixel;
+                    }
+
+                    if (NeedMovePixel <= 0)
+                    {
+                        isForceMove = false;
+                    }
                 }
-                else if (RealDirection == Direction.L)
+                else
                 {
-                    RealLocationPixel.X -= movePixel;
-                }
-                else if (RealDirection == Direction.D)
-                {
-                    RealLocationPixel.Y += movePixel;
-                }
-                else if (RealDirection == Direction.R)
-                {
-                    RealLocationPixel.X += movePixel;
+                    float movePixel = MoveSpeed;
+                    if (NeedMovePixel < MoveSpeed)
+                    {
+                        movePixel = NeedMovePixel;
+                    }
+
+                    NeedMovePixel -= movePixel;
+
+                    if (RealDirection == Direction.U)
+                    {
+                        RealLocationPixel.Y -= movePixel;
+                    }
+                    else if (RealDirection == Direction.L)
+                    {
+                        RealLocationPixel.X -= movePixel;
+                    }
+                    else if (RealDirection == Direction.D)
+                    {
+                        RealLocationPixel.Y += movePixel;
+                    }
+                    else if (RealDirection == Direction.R)
+                    {
+                        RealLocationPixel.X += movePixel;
+                    }
                 }
             }
         }
@@ -577,7 +656,7 @@ namespace MetalX.Data
         public Direction DefaultDirection;
         //public Vector3 DefaultLocation;
         //public string Dialog;
-        public string Code;
+        public string Script;
         public void RecoverDirection()
         {
             //if (IsBox)

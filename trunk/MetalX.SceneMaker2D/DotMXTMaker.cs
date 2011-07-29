@@ -9,6 +9,7 @@ using System.Windows.Forms.Design;
 using System.IO;
 
 using MetalX;
+using MetalX.File;
 using MetalX.Resource;
 
 namespace MetalX.SceneMaker2D

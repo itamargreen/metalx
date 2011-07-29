@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 
 using Microsoft.DirectX.Direct3D;
-
+using MetalX.File;
 namespace MetalX.Resource
 {
     public class Textures
