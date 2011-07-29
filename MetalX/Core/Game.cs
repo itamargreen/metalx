@@ -13,6 +13,8 @@ using MetalX.Data;
 using MetalX.Component;
 using MetalX.Resource;
 using MetalX.Net;
+using MetalX.File;
+
 namespace MetalX
 {
     public class Game : IDisposable
@@ -579,8 +581,9 @@ namespace MetalX
         public MetalXTexture LoadDotPNG(string fileName, Size defTileSize)
         {
             MetalXTexture texture = new MetalXTexture();
-            texture.Name = Path.GetFileNameWithoutExtension(fileName).ToLower();
-            texture.TextureData = File.ReadAllBytes(fileName);
+            texture.FileIndexer = new FileIndexer(fileName);
+            texture.Name = texture.FileIndexer.FileName;
+            texture.TextureData = System.IO.File.ReadAllBytes(fileName);
 
             Image img = Image.FromStream(new MemoryStream(texture.TextureData));
 
@@ -662,7 +665,7 @@ namespace MetalX
                 if (extendedMaterials[i].TextureFilename != null && extendedMaterials[i].TextureFilename != string.Empty)
                 {
                     model.MEMTextures[i] = TextureLoader.FromFile(Devices.D3DDev, extendedMaterials[i].TextureFilename);
-                    FileStream fs = File.OpenRead(extendedMaterials[i].TextureFilename);
+                    FileStream fs = System.IO.File.OpenRead(extendedMaterials[i].TextureFilename);
                     byte[] buf = new byte[(int)fs.Length];
                     fs.Read(buf, 0, buf.Length);
                     model.TexturesData[i] = buf;
@@ -811,7 +814,7 @@ namespace MetalX
         {
             MetalXAudio mxa = new MetalXAudio();
             mxa.Name = Path.GetFileNameWithoutExtension(fileName);
-            mxa.AudioData = File.ReadAllBytes(fileName);
+            mxa.AudioData = System.IO.File.ReadAllBytes(fileName);
             return mxa;
         }
         /// <summary>

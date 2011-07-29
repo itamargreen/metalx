@@ -168,6 +168,13 @@ namespace MetalX.Data
                 return Codes[y][x];
             }
         }
+        public Code this[Vector3 loc]
+        {
+            get
+            {
+                return this[(int)loc.Y, (int)loc.X];
+            }
+        }
         public void Init()
         {
             Tiles = new Tile[TileLayers.Count][][];
@@ -607,6 +614,7 @@ namespace MetalX.Data
         /// 位置
         /// </summary>
         public Point Location;
+        public string Script = "";
     }    
 
     //[Serializable]

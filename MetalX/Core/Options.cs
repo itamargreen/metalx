@@ -8,12 +8,12 @@ namespace MetalX
 {
     public class Options
     {
-        public Key KeyUP = Key.W;
-        public Key KeyDOWN = Key.S;
-        public Key KeyLEFT = Key.A;
-        public Key KeyRIGHT = Key.D;
-        public Key KeyA = Key.J;
-        public Key KeyB = Key.K;
+        public Key KeyUP = Key.Up;
+        public Key KeyDOWN = Key.Down;
+        public Key KeyLEFT = Key.Left;
+        public Key KeyRIGHT = Key.Right;
+        public Key KeyYES = Key.Space;
+        public Key KeyNO = Key.Escape;
 
         public TextureDrawMode TextureDrawMode = TextureDrawMode.Direct2D;
         public bool FullScreen = false;

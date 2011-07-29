@@ -32,6 +32,7 @@ namespace MetalX.Component
         bool exe = false; 
         Queue<string> commands = new Queue<string>();
         Queue<string> tmpcommands = new Queue<string>();
+        Queue<string> inscommands = new Queue<string>();
         bool loop = false;
                 
         //TimeSpan delayEclipseTimeSpan
@@ -69,15 +70,24 @@ namespace MetalX.Component
             {
                 if (exe)
                 {
-                    if (commands.Count > 0)
+                    if (inscommands.Count > 0)
                     {
-                        curcmd = commands.Dequeue();
+                        curcmd = inscommands.Dequeue();
                         presskey = "";
                         execute(curcmd);
                     }
                     else
                     {
-                        exe = false;
+                        if (commands.Count > 0)
+                        {
+                            curcmd = commands.Dequeue();
+                            presskey = "";
+                            execute(curcmd);
+                        }
+                        else
+                        {
+                            exe = false;
+                        }
                     }
                 }
             }
@@ -110,6 +120,7 @@ namespace MetalX.Component
                 return;
             }
             kw[0] = kw[0].ToLower();
+            #region sys
             if (kw[0] == "y")
             {
                 if (RETURN.BOOL == false)
@@ -140,44 +151,7 @@ namespace MetalX.Component
             {
                 text = "";
             }
-            else if (kw[0] == "ask")
-            {
-                if (kw.Length == 1)
-                {
-                    game.FormBoxManager.Disappear("ASKboolBox");
-                    game.FormBoxManager.Disappear("ASKintBox");
-                }
-                else
-                {
-                    if (kw[1] == "bool")
-                    {
-                        game.FormBoxManager.Appear("ASKboolBox", kw[2]);
-                    }
-                }
-            }
-            else if (kw[0] == "check")
-            {
-                if (kw[1] == "bool")
-                {
-                    game.FormBoxManager.Appear("ASKboolBox", kw[2]);
-                }
-            }
-            //else if (kw[0] == "return")
-            //{
-            //    if (kw[1] == "yes")
-            //    {
-            //        RETURN.BOOL = true;
-            //    }
-            //    else if (kw[1] == "no")
-            //    {
-            //        RETURN.BOOL = false;
-            //    }
-            //    else
-            //    {
-            //        RETURN.INT = int.Parse(kw[1]);
-            //    }
-            //}
-            else if (kw[0] == "terminal")
+                      else if (kw[0] == "terminal")
             {
                 commands.Clear();
                 exe = false;
@@ -220,24 +194,18 @@ namespace MetalX.Component
                         commands.Enqueue(tmpcommands.Dequeue());
                     }
             }
-            //else if (kw[0] == "exe")
-            //{
-            //    Execute();
-            //}
-            else if (kw[0] == "msg")
+            else if (kw[0] == "untilstop")
             {
-                if (kw.Length == 1)
+                float a;
+                if (kw[1] == "me")
                 {
-                    game.FormBoxManager.Disappear("MessageBox");
+                    a = game.SceneManager.ME.NeedMovePixel;
                 }
                 else
                 {
-                    game.FormBoxManager.Appear("MessageBox", kw[1]);
+                    a = game.SceneManager.GetNPC(kw[1]).NeedMovePixel;
+
                 }
-            }
-            else if (kw[0] == "untilstop")
-            {
-                float a = game.SceneManager.GetNPC(kw[1]).NeedMovePixel;
                 if (a > 0)
                 {
                     loop = true;
@@ -250,13 +218,13 @@ namespace MetalX.Component
             else if (kw[0] == "untilpress")
             {
                 string key = kw[1];
-                if (key == "a")
+                if (key == "yes" || key == "y")
                 {
-                    key = game.Options.KeyA.ToString();
+                    key = game.Options.KeyYES.ToString();
                 }
-                else if (key == "b")
+                else if (key == "no" || key == "n")
                 {
-                    key = game.Options.KeyB.ToString();
+                    key = game.Options.KeyNO.ToString();
                 }
                 key = key.ToLower();
                 if (presskey == key)
@@ -268,6 +236,49 @@ namespace MetalX.Component
                     loop = true;
                 }
             }
+
+            #endregion
+            #region scn
+            else if (kw[0] == "scene")
+            {
+                int range = -100;
+                try
+                {
+                    range = int.Parse(kw[3]);
+                }
+                catch
+                { }
+
+                if (kw[1] == "jump")
+                {
+                    Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
+                    v3.X = float.Parse(kw[3]);
+                    v3.Y = float.Parse(kw[4]);
+                    game.SceneManager.Enter(kw[2], v3);
+                }
+                else if (kw[1] == "shock" && range != -100)
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.SceneManager.ShockScreen(ms, range);
+                }
+                else if (kw[1] == "shock")
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.SceneManager.ShockScreen(ms);
+                }
+                else if (kw[1] == "fallout")
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.SceneManager.FallOutSceen(ms);
+                }
+                else if (kw[1] == "fallin")
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.SceneManager.FallInSceen(ms);
+                }
+            }
+            #endregion
+            #region gui
             else if (kw[0] == "gui")
             {
 
@@ -302,6 +313,41 @@ namespace MetalX.Component
                     }
                 }
             }
+            else if (kw[0] == "ask")
+            {
+                if (kw.Length == 1)
+                {
+                    game.FormBoxManager.Disappear("ASKboolBox");
+                    game.FormBoxManager.Disappear("ASKintBox");
+                }
+                else
+                {
+                    if (kw[1] == "bool")
+                    {
+                        game.FormBoxManager.Appear("ASKboolBox", kw[2]);
+                    }
+                }
+            }
+            else if (kw[0] == "check")
+            {
+                if (kw[1] == "bool")
+                {
+                    game.FormBoxManager.Appear("ASKboolBox", kw[2]);
+                }
+            }
+                   else if (kw[0] == "msg")
+            {
+                if (kw.Length == 1)
+                {
+                    game.FormBoxManager.Disappear("MessageBox");
+                }
+                else
+                {
+                    game.FormBoxManager.Appear("MessageBox", kw[1]);
+                }
+            }
+            #endregion
+            #region npc
             else if (kw[0] == "npc")
             {
                 NPC n = game.SceneManager.GetNPC(kw[1]);
@@ -343,10 +389,34 @@ namespace MetalX.Component
                     catch
                     {
                     }
-                    n.Move(game.SceneManager.SCENE, game.SceneManager.GetNPC(n), stp, game.Options.TilePixel);
+                    if (stp > 1)
+                    {
+                        for (int i = 0; i < stp; i++)
+                        {
+                            inscommands.Enqueue("npc " + kw[1] + " move");
+                            if (i + 1 < stp)
+                            {
+                                inscommands.Enqueue("untilstop " + kw[1]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        n.Move(game.SceneManager.SCN, game.SceneManager.GetNPC(n), game.Options.TilePixel);
+                    }
                     //game.SceneManager.Move(n, stp);
                 }
+                else if (kw[2] == "hide")
+                {
+                    n.Invisible = true;
+                }
+                else if (kw[2] == "show")
+                {
+                    n.Invisible = false;
+                }
             }
+            #endregion
+            #region pc
             else if (kw[0] == "me")
             {
                 if (kw[1] == "skin")
@@ -370,54 +440,120 @@ namespace MetalX.Component
                     v3.Y = float.Parse(kw[3]);
                     game.SceneManager.ME.SetRealLocation(v3, game.Options.TilePixel);
                 }
-                else if (kw[1] == "freeze")
+                else if (kw[1] == "setctrl")
                 {
-                    game.SceneManager.ME.Freeze();
+                    game.SceneManager.ME.CanControl = true;
                 }
-                else if (kw[1] == "unfreeze")
+                else if (kw[1] == "clrctrl")
                 {
-                    game.SceneManager.ME.Unfreeze();
+                    game.SceneManager.ME.CanControl = false;
+                }
+                else if (kw[1] == "dir")
+                {
+                    Direction dir = Direction.U;
+
+                    if (kw[2] == "u")
+                    {
+                        dir = Direction.U;
+                    }
+                    else if (kw[2] == "l")
+                    {
+                        dir = Direction.L;
+                    }
+                    else if (kw[2] == "d")
+                    {
+                        dir = Direction.D;
+                    }
+                    else
+                    {
+                        dir = Direction.R;
+                    }
+                    game.SceneManager.ME.Face(dir);
+                }
+                else if (kw[1] == "move")
+                {
+                    int stp = 1;
+                    try
+                    {
+                        stp = int.Parse(kw[2]);
+                    }
+                    catch
+                    {
+                    }
+                    if (stp > 1)
+                    {
+                        for (int i = 0; i < stp; i++)
+                        {
+                            inscommands.Enqueue("me move");
+                            if (i + 1 < stp)
+                            {
+                                inscommands.Enqueue("untilstop me");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        game.SceneManager.ME.Move(game.SceneManager.SCN, game.SceneManager.GetNPC(game.SceneManager.ME), game.Options.TilePixel);
+                    }
+                }
+                else if (kw[1] == "fdir")
+                {
+                    Direction dir = Direction.U;
+
+                    if (kw[2] == "u")
+                    {
+                        dir = Direction.U;
+                    }
+                    else if (kw[2] == "l")
+                    {
+                        dir = Direction.L;
+                    }
+                    else if (kw[2] == "d")
+                    {
+                        dir = Direction.D;
+                    }
+                    else
+                    {
+                        dir = Direction.R;
+                    }
+                    game.SceneManager.ME.ForceDirection = dir;
+                }
+                else if (kw[1] == "fmove")
+                {
+                    int stp = 1;
+                    try
+                    {
+                        stp = int.Parse(kw[2]);
+                    }
+                    catch
+                    {
+                    }
+                    if (stp > 1)
+                    {
+                        for (int i = 0; i < stp; i++)
+                        {
+                            inscommands.Enqueue("me fmove");
+                            if (i + 1 < stp)
+                            {
+                                inscommands.Enqueue("untilstop me");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        game.SceneManager.ME.ForceMove(game.Options.TilePixel);
+                    }
+                }
+                else if (kw[1] == "setrigor")
+                {
+                    game.SceneManager.ME.IsRigor = true;
+                }
+                else if (kw[1] == "clrrigor")
+                {
+                    game.SceneManager.ME.IsRigor = false;
                 }
             }
-
-            else if (kw[0] == "scene")
-            {
-                int range = -100;
-                try
-                {
-                    range = int.Parse(kw[3]);
-                }
-                catch
-                { }
-
-                if (kw[1] == "jump")
-                {
-                    Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
-                    v3.X = float.Parse(kw[3]);
-                    v3.Y = float.Parse(kw[4]);
-                    game.SceneManager.Enter(kw[2], v3);
-                }
-                else if (kw[1] == "shock" && range != -100)
-                {
-                    double ms = double.Parse(kw[2]);
-                    game.SceneManager.ShockScreen(ms, range);
-                }
-                else if (kw[1] == "shock")
-                {
-                    double ms = double.Parse(kw[2]);
-                    game.SceneManager.ShockScreen(ms);
-                }
-                else if (kw[1] == "fallout")
-                {
-                    double ms = double.Parse(kw[2]);
-                    game.SceneManager.FallOutSceen(ms);
-                }
-                else if (kw[1] == "fallin")
-                {
-                    double ms = double.Parse(kw[2]);
-                    game.SceneManager.FallInSceen(ms);
-                }
-            }
+            #endregion
             else
             {
                 TextBox tb = new TextBox(game);
@@ -453,7 +589,7 @@ namespace MetalX.Component
         //}
         public void AppendDotMetalXScript(string fileName)
         {
-            string cmds = System.IO.File.ReadAllText(game.ScriptFiles[fileName].FileName);
+            string cmds = System.IO.File.ReadAllText(game.ScriptFiles[fileName].FullName);
             text += cmds + "\n";
             AppendCommand(cmds);
         }

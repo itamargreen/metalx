@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-using MetalX.Data;
+using MetalX.File;
 
 namespace MetalX.Resource
 {
@@ -31,7 +31,7 @@ namespace MetalX.Resource
         {
             for (int i = 0; i < items.Count; i++)
             {
-                if (items[i].Name == tname)
+                if (items[i].FileName == tname)
                 {
                     return i;
                 }
@@ -49,7 +49,7 @@ namespace MetalX.Resource
         {
             foreach (FileIndexer fileLink in items)
             {
-                if (fileLink.Name == fl.Name)
+                if (fileLink.FileName == fl.FileName)
                 {
                     return;
                 }

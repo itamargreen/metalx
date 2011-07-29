@@ -4,8 +4,8 @@
   <KeyDOWN>Down</KeyDOWN>
   <KeyLEFT>Left</KeyLEFT>
   <KeyRIGHT>Right</KeyRIGHT>
-  <KeyA>X</KeyA>
-  <KeyB>Z</KeyB>
+  <KeyYES>Space</KeyYES>
+  <KeyNO>Escape</KeyNO>
   <TextureDrawMode>Direct2D</TextureDrawMode>
   <FullScreen>false</FullScreen>
   <X>1</X>

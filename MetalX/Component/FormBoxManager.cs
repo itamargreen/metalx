@@ -4,6 +4,7 @@ using System.Drawing;
 
 using Microsoft.DirectX.DirectInput;
 using MetalX.Data;
+using MetalX.File;
 
 namespace MetalX.Component
 {
@@ -188,7 +189,7 @@ namespace MetalX.Component
             }
 
             Key k = (Key)key;
-            if (k == game.Options.KeyA)
+            if (k == game.Options.KeyYES)
             {
                 AppearingFormBox.DownNowButtonBox();
             }
@@ -201,12 +202,12 @@ namespace MetalX.Component
             }
 
             Key k = (Key)key;
-            if (k == game.Options.KeyA)
+            if (k == game.Options.KeyYES)
             {
                 AppearingFormBox.UpNowButtonBox();
                 AppearingFormBox.FocusNowButtonBox();
             }
-            else if (k == game.Options.KeyB)
+            else if (k == game.Options.KeyNO)
             {
 
             }

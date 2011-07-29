@@ -57,12 +57,12 @@ namespace MetalHunter
                 if (game.FormBoxes["MenuCHR"].Visible)
                 {
                     game.FormBoxManager.Disappear("MenuCHR");
-                    game.SceneManager.ME.Unfreeze();
+                    game.SceneManager.ME.CanControl = false;
                 }
                 else
                 {
                     game.FormBoxManager.Appear("MenuCHR");
-                    game.SceneManager.ME.Freeze();
+                    game.SceneManager.ME.CanControl = true;
                 }
             }
         }
