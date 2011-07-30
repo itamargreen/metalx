@@ -395,6 +395,7 @@ namespace MetalX.Data
                 return new Point((int)Location.X, (int)Location.Y);
             }
         }
+        public float Rotation = 0;
         //public Vector3 GetLocationPixel(int unit)
         //{
         //    Vector3 v3 = Location;
@@ -412,7 +413,7 @@ namespace MetalX.Data
         /// 帧索引
         /// </summary>
         public bool IsAnimation = false;
-        public int FrameIndex = 0;
+        //public int FrameIndex = 0;
         /// <summary>
         /// 帧间隔
         /// </summary>
@@ -433,13 +434,13 @@ namespace MetalX.Data
         /// <summary>
         /// 帧数
         /// </summary>
-        public int FrameCount
-        {
-            get
-            {
-                return Frames.Count;
-            }
-        }
+        //public int FrameCount
+        //{
+        //    get
+        //    {
+        //        return Frames.Count;
+        //    }
+        //}
         ///// <summary>
         ///// 添加帧
         ///// </summary>
@@ -492,6 +493,7 @@ namespace MetalX.Data
         /// <summary>
         /// 颜色滤镜
         /// </summary>
+        public float Rotation = 0;
         public Color ColorFilter = Color.FromArgb(255, Color.White);
     }
     [Serializable]

@@ -176,12 +176,12 @@ namespace MetalX.Component
                 if (ME.NeedMovePixel == 0)
                 {
                     string sname = null;
-                    try
-                    {
-                        sname = SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].SceneFileName;
-                    }
-                    catch
-                    { }
+                    //try
+                    //{
+                    sname = SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].SceneFileName;
+                    //}
+                    //catch
+                    //{ }
                     if (sname != null)
                     {
                         Enter(sname, SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultLocation);
@@ -282,8 +282,7 @@ namespace MetalX.Component
             {
                 return;
             }
-
-            frameCode();
+            
             moveCode();
             doorCode();
             scriptCode();
@@ -429,14 +428,15 @@ namespace MetalX.Component
             //{
             //    h++;
             //}
+            int ti = s.BottomTile.Frames[0].TextureIndex;
+            Rectangle dz = s.BottomTile.Frames[0].DrawZone;
+            Color cf = s.BottomTile.Frames[0].ColorFilter;
+
+
             if (sp.X >= 0)
             {
                 loc = new Vector3();
                 loco = new Vector3();
-
-                int ti = s.BottomTile.Frames[0].TextureIndex;
-                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
-                Color cf = s.BottomTile.Frames[0].ColorFilter;
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
@@ -446,11 +446,15 @@ namespace MetalX.Component
                     {
                         loco.X = xx - w - 1;
                         loco.Y = yy - h;
+                        Vector3 eloc = Util.Vector3AddVector3(Util.Vector3AddVector3(loc, EffectOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel));
+                        float rot = 0;
+                        //eloc=Util.Vector3AddVector3(eloc
                         game.DrawMetalXTexture(
                             game.Textures[ti],
                             dz,
-                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            eloc,
                             game.Options.TileSizePixelX,
+                            rot,
                             Util.MixColor(cf, ColorFilter)
                         );
                     }
@@ -461,10 +465,6 @@ namespace MetalX.Component
                 loc = new Vector3();
                 loco = new Vector3();
 
-                int ti = s.BottomTile.Frames[0].TextureIndex;
-                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
-                Color cf = s.BottomTile.Frames[0].ColorFilter;
-
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
                 for (int yy = 0; yy < h + 1; yy++)
@@ -473,11 +473,14 @@ namespace MetalX.Component
                     {
                         loco.X = xx - w;
                         loco.Y = yy - h - 1;
+                        float rot = 0;
+                        Vector3 eloc = Util.Vector3AddVector3(Util.Vector3AddVector3(loc, EffectOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel));
                         game.DrawMetalXTexture(
                             game.Textures[ti],
                             dz,
-                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            eloc,
                             game.Options.TileSizePixelX,
+                            rot,
                             Util.MixColor(cf, ColorFilter)
                         );
                     }
@@ -487,10 +490,6 @@ namespace MetalX.Component
             {
                 loc = new Vector3();
                 loco = new Vector3();
-
-                int ti = s.BottomTile.Frames[0].TextureIndex;
-                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
-                Color cf = s.BottomTile.Frames[0].ColorFilter;
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
@@ -502,11 +501,14 @@ namespace MetalX.Component
                     {
                         loco.X = xx + s.Size.Width;
                         loco.Y = yy - h;
+                        float rot=0;
+                        Vector3 eloc = Util.Vector3AddVector3(Util.Vector3AddVector3(loc, EffectOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel));
                         game.DrawMetalXTexture(
                             game.Textures[ti],
                             dz,
-                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            eloc,
                             game.Options.TileSizePixelX,
+                            rot,
                             Util.MixColor(cf, ColorFilter)
                         );
                     }
@@ -516,10 +518,6 @@ namespace MetalX.Component
             {
                 loc = new Vector3();
                 loco = new Vector3();
-
-                int ti = s.BottomTile.Frames[0].TextureIndex;
-                Rectangle dz = s.BottomTile.Frames[0].DrawZone;
-                Color cf = s.BottomTile.Frames[0].ColorFilter;
 
                 loc.X = s.RealLocationPixel.X;
                 loc.Y = s.RealLocationPixel.Y;
@@ -531,80 +529,19 @@ namespace MetalX.Component
                     {
                         loco.X = xx - w;
                         loco.Y = yy + s.Size.Height;
+                        float rot = 0;
+                        Vector3 eloc = Util.Vector3AddVector3(Util.Vector3AddVector3(loc, EffectOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel));
                         game.DrawMetalXTexture(
                             game.Textures[ti],
                             dz,
-                            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
+                            eloc,
                             game.Options.TileSizePixelX,
+                            rot,
                             Util.MixColor(cf, ColorFilter)
                         );
                     }
                 }
             }
-            //if (sp.Y + s.Size.Height <= hr)
-            //{
-            //    loc = new Vector3();
-            //    loco = new Vector3();
-
-            //    int ti = s.BottomTile.Frames[0].TextureIndex;
-            //    Rectangle dz = s.BottomTile.Frames[0].DrawZone;
-            //    Color cf = s.BottomTile.Frames[0].ColorFilter;
-
-            //    loc.X = s.RealLocationPixel.X;
-            //    loc.Y = s.RealLocationPixel.Y;
-            //    for (int yy = y; yy < Math.Abs(h) + 1; yy++)
-            //    {
-            //        for (int xx = x; xx < wr + 1; xx++)
-            //        {
-            //            loco.X = xx - w ;
-            //            loco.Y = yy + s.Size.Height;
-            //            game.DrawMetalXTexture(
-            //                game.Textures[ti],
-            //                dz,
-            //                Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
-            //                game.Options.TileSizePixelX,
-            //                Util.MixColor(cf, ColorFilter)
-            //            );
-            //        }
-            //    }
-            //}
-
-            //int x = 0, y = 0;
-            //int w = s.Size.Width;
-            //int h = s.Size.Height;
-            //int wr = game.Options.WindowSizePixel.Width / game.Options.TileSizePixelX.Width;
-            //int hr = game.Options.WindowSizePixel.Height / game.Options.TileSizePixelX.Height;
-            //w += wr;
-            //h += hr;
-
-            //x -= wr / 2;
-            //y -= hr / 2;
-
-            //int ti = 0;
-            //Rectangle dz;
-            //Color cf;
-
-            //ti = s.BottomTile.Frames[0].TextureIndex;
-            //dz = s.BottomTile.Frames[0].DrawZone;
-            //cf = s.BottomTile.Frames[0].ColorFilter;
-
-            //Vector3 loc = new Vector3(x, y, 0);
-            //Vector3 loco = new Vector3();
-            //for (int yy = y; yy < h; yy++)
-            //{
-            //    for (int xx = x; xx < w; xx++)
-            //    {
-            //        loco.X = xx;
-            //        loco.Y = yy;
-            //        game.DrawMetalXTexture(
-            //            game.Textures[ti],
-            //            dz,
-            //            Util.Vector3AddVector3(Util.Vector3AddVector3(loc, ScreenOffsetPixel), Util.Vector3MulInt(loco, game.Options.TilePixel)),
-            //            game.Options.TileSizePixelX,
-            //            Util.MixColor(cf, ColorFilter)
-            //        );
-            //    }
-            //}
         }
         protected void DrawSceneTest(Scene s)
         {
@@ -612,6 +549,7 @@ namespace MetalX.Component
             {
                 return;
             }
+            int ii = 0;
             for (int l = 0; l < s.TileLayers.Count; l++)
             {
                 int lastl = 3, nextl = 3, drawl = 3;
@@ -677,23 +615,26 @@ namespace MetalX.Component
                         {
                             //if (IsInWindow(Util.PointAddPoint(t.LocationPoint, SCN.RealLocationPoint)))
                             {
-                                int fi = t.FrameIndex;
+                                int fi = 0;
                                 if (t.IsAnimation)
                                 {
                                     fi = frameIndex;
                                 }
-                                else
-                                {
-                                    fi = 0;
-                                }
+                                Vector3 loc = Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocationPixel, EffectOffsetPixel), Util.Vector3MulInt(t.Location, game.Options.TilePixel));
+                                //loc = Util.Vector3AddVector3(loc, TileRollOutOffset);
+                                Color col = Util.MixColor(t[fi].ColorFilter, ColorFilter);
+                                //col = Util.MixColor(col, TileRollOutColorFilter);
+                                float rot = 0 % 360;
                                 game.DrawMetalXTexture(
                                     game.Textures[t[fi].TextureIndex],
                                     t[fi].DrawZone,
                                     //Util.Vector3AddVector3(Util.Vector3AddVector3( s.RealLocation, ScreenOffsetPixel),Util.Point2Vector3( t.RealLocation,0f)),
-                                    Util.Vector3AddVector3(Util.Vector3AddVector3(s.RealLocationPixel, ScreenOffsetPixel), Util.Vector3MulInt(t.Location, game.Options.TilePixel)),
+                                    loc,
                                     game.Options.TileSizePixelX,
-                                    Util.MixColor(t[fi].ColorFilter, ColorFilter)
+                                    rot,
+                                    col
                                 );
+                                ii++;
                             }
                         }
                     }
@@ -886,14 +827,58 @@ namespace MetalX.Component
             dsize.Width *= chr.Size.Width;
             dsize.Height *= chr.Size.Height;
 
+            float rot = 0;
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
                 dz,
                 v31,
                 dsize,
+                rot,
                 Util.MixColor(chr.ColorFilter, ColorFilter));
         }
-
+        public override void BaseCode()
+        {
+            frameCode();
+            tileRollOut();
+            base.BaseCode();
+        }
+        #region for tile roll out effect
+        DateTime TileRollOutBeginTime;
+        double TileRollOutTime = 1000;
+        bool IsTileRollOuting;
+        Vector3 TileRollOutOffset;
+        //Color TileRollOutColorFilter = Color.White;
+        public Vector3 EffectOffsetPixel
+        {
+            get
+            {
+                return Util.Vector3AddVector3(TileRollOutOffset, ScreenOffsetPixel);
+            }
+        }
+        public void TileRollOut(int ms)
+        {
+            TileRollOutBeginTime = DateTime.Now;
+            TileRollOutTime = ms;
+            IsTileRollOuting = true;
+        }
+        void tileRollOut()
+        {
+            if (IsTileRollOuting)
+            {
+                TimeSpan ts = DateTime.Now - TileRollOutBeginTime;
+                if (ts.TotalMilliseconds > TileRollOutTime)
+                {
+                    IsTileRollOuting = false;
+                }
+                else
+                {
+                    TileRollOutOffset.X = (float)(ts.TotalMilliseconds * (double)game.Options.WindowSizePixel.Width / TileRollOutTime);
+                    //byte alpha = (byte)(ts.TotalMilliseconds * 255 / TileRollOutTime);
+                    //TileRollOutColorFilter = Color.FromArgb(alpha, Color.White);
+                }
+            }
+        }
+        #endregion
         //public bool IsNobody()
         //{
         //    return IsNobody(scene, ME.FrontLocation);
@@ -1098,6 +1083,7 @@ namespace MetalX.Component
                 return;
             }
             Key k = (Key)key;
+            #region key yes
             if (k == game.Options.KeyYES)
             {
                 NPC npc = GetNPC(ME);
@@ -1176,6 +1162,11 @@ namespace MetalX.Component
                 //}
 
 
+            }
+            #endregion
+            else if (k == Key.T)
+            {
+                TileRollOut(1000);
             }
         }
     }
