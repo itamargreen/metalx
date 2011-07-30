@@ -108,7 +108,7 @@ namespace MetalX.Component
                 game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
             }
             //if(game.SceneManager.SCENE!=null)
-            //game.DrawText("FPS: " + game.AverageFPS.ToString("f1")+" DrawMode: " + game.Options.TextureDrawMode , new System.Drawing.Point(0, 0), Color.Blue);
+            game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + " DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)

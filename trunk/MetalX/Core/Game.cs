@@ -408,19 +408,19 @@ namespace MetalX
         /// 延迟等待
         /// </summary>
         /// <param name="timespan">时长</param>
-        void WaitMilliseconds(double timespan)
-        {
-            DateTime startTime = DateTime.Now;
-            TimeSpan pastTimeSpan;
-            double pastMS = 0;
-            do
-            {
-                pastTimeSpan = DateTime.Now - startTime;
-                pastMS = pastTimeSpan.TotalMilliseconds;
-                Application.DoEvents();
-            }
-            while (timespan >= pastMS);
-        }
+        //void WaitMilliseconds(double timespan)
+        //{
+        //    DateTime startTime = DateTime.Now;
+        //    TimeSpan pastTimeSpan;
+        //    double pastMS = 0;
+        //    do
+        //    {
+        //        pastTimeSpan = DateTime.Now - startTime;
+        //        pastMS = pastTimeSpan.TotalMilliseconds;
+        //        Application.DoEvents();
+        //    }
+        //    while (timespan >= pastMS);
+        //}
         public void Stop()
         {
             isRunning = false;
@@ -485,7 +485,9 @@ namespace MetalX
         public void SetCamera(Vector3 location, Vector3 lookAt,float zoom)
         {
             location.Z = -((float)(Devices.D3DDevSizePixel.Height / 2f / Math.Tan(location.Z * Math.PI / 180.0))) / zoom;
+
             Devices.D3DDev.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)Devices.D3DDev.PresentationParameters.BackBufferWidth / (float)Devices.D3DDev.PresentationParameters.BackBufferHeight, -1000, 100);
+
             Devices.D3DDev.Transform.View = Matrix.LookAtLH(location, lookAt, new Vector3(0, 1, 0));
 
             Devices.D3DDev.RenderState.AlphaBlendEnable = true;
@@ -850,26 +852,26 @@ namespace MetalX
         }
         #endregion
         #region DrawMXT
-        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Color color)
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point,float rotation, Color color)
         {
             if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
-                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), dz.Size, color);
+                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), dz.Size,rotation, color);
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, point, dz.Size, color);
+                DrawMetalXTextureDirect2D(t, dz, point, dz.Size, rotation, color);
         }
-        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Size size, Color color)
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Point point, Size size, float rotation, Color color)
         {
             if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
-                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), size, color);
+                DrawMetalXTextureDirect3D(t, dz, new Vector3(point.X, point.Y, 0), size, rotation, color);
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, point, size, color);
+                DrawMetalXTextureDirect2D(t, dz, point, size,rotation, color);
         }
-        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 v3, Size size, Color color)
+        public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Vector3 v3, Size size, float rotation, Color color)
         {
             if (Options.TextureDrawMode == TextureDrawMode.Direct3D)
-                DrawMetalXTextureDirect3D(t, dz, v3, size, color);
+                DrawMetalXTextureDirect3D(t, dz, v3, size, rotation, color);
             else if (Options.TextureDrawMode == TextureDrawMode.Direct2D)
-                DrawMetalXTextureDirect2D(t, dz, Util.Vector32Point(v3), size, color);
+                DrawMetalXTextureDirect2D(t, dz, Util.Vector32Point(v3), size, rotation, color);
         }        
         //public void DrawMetalXTexture(MetalXTexture t, Rectangle dz, Rectangle ddz, Color color)
         //{
@@ -892,7 +894,7 @@ namespace MetalX
         /// <param name="t">MetalX格式纹理</param>
         /// <param name="loc">位置</param>
         /// <param name="c">颜色</param>
-        void DrawMetalXTextureDirect3D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, Color color)
+        void DrawMetalXTextureDirect3D(MetalXTexture t, Rectangle dz, Vector3 loc, Size size, float rotation, Color color)
         {
             if (Devices.D3DDev.Disposed)
             {
@@ -913,7 +915,7 @@ namespace MetalX
             loc.X -= w / 2;
             loc.Y -= h / 2;
 
-            loc.Y = 0 - loc.Y;
+            loc.Y = -loc.Y;
 
             Size s = t.SizePixel;
 
@@ -935,20 +937,25 @@ namespace MetalX
                 ty = ((float)dz.Bottom + Options.UVOffsetY) / (float)s.Height;
             }
 
-            vertexs[0] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
-            vertexs[1] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
-            vertexs[2] = new CustomVertex.PositionColoredTextured(loc.X, loc.Y - size.Height, loc.Z, color.ToArgb(), fx, ty);
+            Vector3 cp = new Vector3(0, 0, 0);
 
-            vertexs[3] = new CustomVertex.PositionColoredTextured(loc, color.ToArgb(), fx, fy);
-            vertexs[4] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y, loc.Z, color.ToArgb(), tx, fy);
-            vertexs[5] = new CustomVertex.PositionColoredTextured(loc.X + size.Width, loc.Y - size.Height, loc.Z, color.ToArgb(), tx, ty);
+            vertexs[0] = new CustomVertex.PositionColoredTextured(cp, color.ToArgb(), fx, fy);
+            vertexs[1] = new CustomVertex.PositionColoredTextured(cp.X + size.Width, cp.Y - size.Height, cp.Z, color.ToArgb(), tx, ty);
+            vertexs[2] = new CustomVertex.PositionColoredTextured(cp.X, cp.Y - size.Height, cp.Z, color.ToArgb(), fx, ty);
+
+            vertexs[3] = new CustomVertex.PositionColoredTextured(cp, color.ToArgb(), fx, fy);
+            vertexs[4] = new CustomVertex.PositionColoredTextured(cp.X + size.Width, cp.Y, cp.Z, color.ToArgb(), tx, fy);
+            vertexs[5] = new CustomVertex.PositionColoredTextured(cp.X + size.Width, cp.Y - size.Height, cp.Z, color.ToArgb(), tx, ty);
+
+            //loc = Util.Vector3MulInt(loc, 2);
+            Devices.D3DDev.Transform.World = Matrix.Translation(loc);// +Matrix.Transformation(new Vector3(), new Quaternion(), new Vector3(), new Vector3(), new Quaternion(0, 0, 0, 0), new Vector3());// Matrix.RotationYawPitchRoll(0, 0, 0);
 
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
 
-            //Devices.VertexBuffer.SetData(vertexs, 0, LockFlags.None);            
+            //Devices.VertexBuffer.SetData(vertexs, 0, LockFlags.None);
             //Devices.D3DDev.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
         }
-        void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Point loc, Size size, Color color)
+        void DrawMetalXTextureDirect2D(MetalXTexture t, Rectangle dz, Point loc, Size size, float rotation, Color color)
         {
             if (Devices.D3DDev.Disposed)
             {
@@ -958,8 +965,7 @@ namespace MetalX
             {
                 return;
             }
-
-            //Devices.Sprite.Begin(SpriteFlags.AlphaBlend);
+            Texture mxt = null;
             if (dz.Width == 0)
             {
                 return;
@@ -969,16 +975,15 @@ namespace MetalX
                 dz.X = dz.X * 2;
                 dz.Y = dz.Y * 2;
                 dz.Size = size;
-                Devices.Sprite.Draw(t.MEMTexture2X, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
-                //Devices.Sprite.Draw2D(t.MEMTexture2X, dz, dz, loc, color);
+                mxt = t.MEMTexture2X;
             }
             else
             {
-                Devices.Sprite.Draw(t.MEMTexture, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
-                //Devices.Sprite.Draw2D(t.MEMTexture, dz, new Rectangle(dz.Location, size), loc, color);
+                dz.Size = size;
+                mxt = t.MEMTexture;
             }
-
-            //Devices.Sprite.End();
+            Devices.Sprite.Draw(mxt, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+            //Devices.Sprite.Draw2D(mxt, dz, dz, new Point(), 0, loc, color);
         }
 
         #endregion
@@ -1159,11 +1164,6 @@ namespace MetalX
         {
             ScriptManager.AppendCommand(cmd);
         }
-        //public void AppendAndExecuteScript(string cmd)
-        //{
-        //    AppendScript(cmd);
-        //    ExecuteScript();
-        //}
         public void AppendDotMetalXScript(string file)
         {
             ScriptManager.AppendDotMetalXScript(file);
