@@ -123,6 +123,8 @@
             this.ui_init_code_layer = new System.Windows.Forms.Button();
             this.ui_codelayer_slt = new System.Windows.Forms.ListBox();
             this.ui_pic_panel = new System.Windows.Forms.Panel();
+            this.ui_edit_frame = new System.Windows.Forms.CheckBox();
+            this.ui_slt_frame = new System.Windows.Forms.ComboBox();
             this.ui_filte = new System.Windows.Forms.Button();
             this.label29 = new System.Windows.Forms.Label();
             this.ui_tilefilter = new System.Windows.Forms.TextBox();
@@ -189,8 +191,12 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ui_mousex = new System.Windows.Forms.ToolStripLabel();
             this.ui_mousey = new System.Windows.Forms.ToolStripLabel();
-            this.ui_slt_frame = new System.Windows.Forms.ComboBox();
-            this.ui_edit_frame = new System.Windows.Forms.CheckBox();
+            this.ui_movestep = new System.Windows.Forms.TextBox();
+            this.ui_movedir = new System.Windows.Forms.ComboBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.ui_move = new System.Windows.Forms.Button();
+            this.ui_moveall = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -571,6 +577,12 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.ui_moveall);
+            this.tabPage2.Controls.Add(this.ui_move);
+            this.tabPage2.Controls.Add(this.label31);
+            this.tabPage2.Controls.Add(this.label30);
+            this.tabPage2.Controls.Add(this.ui_movedir);
+            this.tabPage2.Controls.Add(this.ui_movestep);
             this.tabPage2.Controls.Add(this.panel5);
             this.tabPage2.Controls.Add(this.panel4);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
@@ -1112,6 +1124,36 @@
             this.ui_pic_panel.Name = "ui_pic_panel";
             this.ui_pic_panel.Size = new System.Drawing.Size(290, 413);
             this.ui_pic_panel.TabIndex = 1;
+            // 
+            // ui_edit_frame
+            // 
+            this.ui_edit_frame.AutoSize = true;
+            this.ui_edit_frame.Location = new System.Drawing.Point(50, 379);
+            this.ui_edit_frame.Name = "ui_edit_frame";
+            this.ui_edit_frame.Size = new System.Drawing.Size(72, 16);
+            this.ui_edit_frame.TabIndex = 122;
+            this.ui_edit_frame.Text = "帧编辑中";
+            this.ui_edit_frame.UseVisualStyleBackColor = true;
+            this.ui_edit_frame.CheckedChanged += new System.EventHandler(this.ui_edit_frame_CheckedChanged);
+            // 
+            // ui_slt_frame
+            // 
+            this.ui_slt_frame.FormattingEnabled = true;
+            this.ui_slt_frame.Items.AddRange(new object[] {
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7"});
+            this.ui_slt_frame.Location = new System.Drawing.Point(163, 377);
+            this.ui_slt_frame.Name = "ui_slt_frame";
+            this.ui_slt_frame.Size = new System.Drawing.Size(121, 20);
+            this.ui_slt_frame.TabIndex = 121;
+            this.ui_slt_frame.Text = "0";
+            this.ui_slt_frame.SelectedIndexChanged += new System.EventHandler(this.ui_slt_frame_SelectedIndexChanged);
             // 
             // ui_filte
             // 
@@ -1730,35 +1772,65 @@
             this.ui_mousey.Size = new System.Drawing.Size(11, 22);
             this.ui_mousey.Text = "y";
             // 
-            // ui_slt_frame
+            // ui_movestep
             // 
-            this.ui_slt_frame.FormattingEnabled = true;
-            this.ui_slt_frame.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7"});
-            this.ui_slt_frame.Location = new System.Drawing.Point(163, 377);
-            this.ui_slt_frame.Name = "ui_slt_frame";
-            this.ui_slt_frame.Size = new System.Drawing.Size(121, 20);
-            this.ui_slt_frame.TabIndex = 121;
-            this.ui_slt_frame.Text = "0";
-            this.ui_slt_frame.SelectedIndexChanged += new System.EventHandler(this.ui_slt_frame_SelectedIndexChanged);
+            this.ui_movestep.Location = new System.Drawing.Point(108, 455);
+            this.ui_movestep.Name = "ui_movestep";
+            this.ui_movestep.Size = new System.Drawing.Size(100, 21);
+            this.ui_movestep.TabIndex = 24;
+            this.ui_movestep.Text = "1";
             // 
-            // ui_edit_frame
+            // ui_movedir
             // 
-            this.ui_edit_frame.AutoSize = true;
-            this.ui_edit_frame.Location = new System.Drawing.Point(50, 379);
-            this.ui_edit_frame.Name = "ui_edit_frame";
-            this.ui_edit_frame.Size = new System.Drawing.Size(72, 16);
-            this.ui_edit_frame.TabIndex = 122;
-            this.ui_edit_frame.Text = "帧编辑中";
-            this.ui_edit_frame.UseVisualStyleBackColor = true;
-            this.ui_edit_frame.CheckedChanged += new System.EventHandler(this.ui_edit_frame_CheckedChanged);
+            this.ui_movedir.FormattingEnabled = true;
+            this.ui_movedir.Items.AddRange(new object[] {
+            "U",
+            "L",
+            "D",
+            "R"});
+            this.ui_movedir.Location = new System.Drawing.Point(108, 482);
+            this.ui_movedir.Name = "ui_movedir";
+            this.ui_movedir.Size = new System.Drawing.Size(100, 20);
+            this.ui_movedir.TabIndex = 25;
+            this.ui_movedir.Text = "U";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(60, 458);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(41, 12);
+            this.label30.TabIndex = 222;
+            this.label30.Text = "位移量";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(48, 485);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(53, 12);
+            this.label31.TabIndex = 223;
+            this.label31.Text = "位移方向";
+            // 
+            // ui_move
+            // 
+            this.ui_move.Location = new System.Drawing.Point(133, 508);
+            this.ui_move.Name = "ui_move";
+            this.ui_move.Size = new System.Drawing.Size(75, 23);
+            this.ui_move.TabIndex = 224;
+            this.ui_move.Text = "平移";
+            this.ui_move.UseVisualStyleBackColor = true;
+            this.ui_move.Click += new System.EventHandler(this.ui_move_Click);
+            // 
+            // ui_moveall
+            // 
+            this.ui_moveall.AutoSize = true;
+            this.ui_moveall.Location = new System.Drawing.Point(49, 512);
+            this.ui_moveall.Name = "ui_moveall";
+            this.ui_moveall.Size = new System.Drawing.Size(84, 16);
+            this.ui_moveall.TabIndex = 225;
+            this.ui_moveall.Text = "整体(单层)";
+            this.ui_moveall.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1786,6 +1858,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel4.ResumeLayout(false);
@@ -1978,6 +2051,12 @@
         private System.Windows.Forms.ToolStripMenuItem 动画ToolStripMenuItem;
         private System.Windows.Forms.ComboBox ui_slt_frame;
         private System.Windows.Forms.CheckBox ui_edit_frame;
+        private System.Windows.Forms.Button ui_move;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.ComboBox ui_movedir;
+        private System.Windows.Forms.TextBox ui_movestep;
+        private System.Windows.Forms.CheckBox ui_moveall;
     }
 }
 

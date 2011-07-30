@@ -1560,11 +1560,122 @@ namespace MetalX.SceneMaker2D
             sceneMaker2D.edit_frame = ui_edit_frame.Checked;
         }
 
-        //private void 另保存为XML格式ToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    savetoxml(null);
-        //}
+        private void ui_move_Click(object sender, EventArgs e)
+        {
+            if (sceneMaker2D == null)
+            {
+                return;
+            }
+            if (sceneMaker2D.SCN == null)
+            {
+                return;
+            }
+            int step = int.Parse(ui_movestep.Text);
+            Direction dir = Direction.U;
+            if (ui_movedir.Text == "U")
+            {
+                dir = Direction.U;
+            }
+            else if (ui_movedir.Text == "L")
+            {
+                dir = Direction.L;
+            }
+            else if (ui_movedir.Text == "D")
+            {
+                dir = Direction.D;
+            }
+            else if (ui_movedir.Text == "R")
+            {
+                dir = Direction.R;
+            }
+            if (ui_moveall.Checked)
+            {
+                for (int l = 0; l < sceneMaker2D.SCN.TileLayers.Count; l++)
+                {
+                    for (int i = 0; i < sceneMaker2D.SCN.TileLayers[l].Tiles.Count; i++)
+                    {
+                        Tile t = sceneMaker2D.SCN.TileLayers[l].Tiles[i];
+                        if (dir == Direction.U)
+                        {
+                            t.Location.Y--;
+                        }
+                        else if (dir == Direction.L)
+                        {
+                            t.Location.X--;
+                        }
+                        else if (dir == Direction.D)
+                        {
+                            t.Location.Y++;
+                        }
+                        else if (dir == Direction.R)
+                        {
+                            t.Location.X++;
+                        }
 
+                    }
+                }
+                for (int l = 0; l < sceneMaker2D.SCN.TileLayers.Count; l++)
+                {
+                    for (int i = 0; i < sceneMaker2D.SCN.TileLayers[l].Tiles.Count; i++)
+                    {
+                        Tile t = sceneMaker2D.SCN.TileLayers[l].Tiles[i];
+                        if (sceneMaker2D.SCN.IsInScene(t.Location) == false)
+                        {
+                            sceneMaker2D.SCN.TileLayers[l].Tiles.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int l = sceneMaker2D.drawingLayer;
+                //for (int l = 0; l < sceneMaker2D.SCN.TileLayers.Count; l++)
+                {
+                    for (int i = 0; i < sceneMaker2D.SCN.TileLayers[l].Tiles.Count; i++)
+                    {
+                        Tile t = sceneMaker2D.SCN.TileLayers[l].Tiles[i];
+                        if (dir == Direction.U)
+                        {
+                            t.Location.Y--;
+                        }
+                        else if (dir == Direction.L)
+                        {
+                            t.Location.X--;
+                        }
+                        else if (dir == Direction.D)
+                        {
+                            t.Location.Y++;
+                        }
+                        else if (dir == Direction.R)
+                        {
+                            t.Location.X++;
+                        }
+
+                    }
+                }
+                //for (int l = 0; l < sceneMaker2D.SCN.TileLayers.Count; l++)
+                {
+                    for (int i = 0; i < sceneMaker2D.SCN.TileLayers[l].Tiles.Count; i++)
+                    {
+                        Tile t = sceneMaker2D.SCN.TileLayers[l].Tiles[i];
+                        if (sceneMaker2D.SCN.IsInScene(t.Location) == false)
+                        {
+                            sceneMaker2D.SCN.TileLayers[l].Tiles.RemoveAt(i);
+                        }
+                    }
+                }
+
+                ui_tilecount.Text = sceneMaker2D.SCN.TileLayers[sceneMaker2D.drawingLayer].Tiles.Count.ToString();
+            }
+
+            //foreach (TileLayer tl in sceneMaker2D.SCN.TileLayers)
+            //{
+            //    foreach (Tile t in tl.Tiles)
+            //    {
+                    
+            //    }
+            //}
+        }
 
     }
 }
