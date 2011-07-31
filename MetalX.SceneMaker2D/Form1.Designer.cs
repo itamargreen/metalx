@@ -72,7 +72,14 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.ui_moveall = new System.Windows.Forms.CheckBox();
+            this.ui_move = new System.Windows.Forms.Button();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.ui_movedir = new System.Windows.Forms.ComboBox();
+            this.ui_movestep = new System.Windows.Forms.TextBox();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.ui_link_add = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
@@ -191,12 +198,6 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ui_mousex = new System.Windows.Forms.ToolStripLabel();
             this.ui_mousey = new System.Windows.Forms.ToolStripLabel();
-            this.ui_movestep = new System.Windows.Forms.TextBox();
-            this.ui_movedir = new System.Windows.Forms.ComboBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.ui_move = new System.Windows.Forms.Button();
-            this.ui_moveall = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -593,8 +594,69 @@
             this.tabPage2.Text = "场景设置";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // ui_moveall
+            // 
+            this.ui_moveall.AutoSize = true;
+            this.ui_moveall.Location = new System.Drawing.Point(49, 512);
+            this.ui_moveall.Name = "ui_moveall";
+            this.ui_moveall.Size = new System.Drawing.Size(84, 16);
+            this.ui_moveall.TabIndex = 225;
+            this.ui_moveall.Text = "整体(单层)";
+            this.ui_moveall.UseVisualStyleBackColor = true;
+            // 
+            // ui_move
+            // 
+            this.ui_move.Location = new System.Drawing.Point(133, 508);
+            this.ui_move.Name = "ui_move";
+            this.ui_move.Size = new System.Drawing.Size(75, 23);
+            this.ui_move.TabIndex = 224;
+            this.ui_move.Text = "平移";
+            this.ui_move.UseVisualStyleBackColor = true;
+            this.ui_move.Click += new System.EventHandler(this.ui_move_Click);
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(48, 485);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(53, 12);
+            this.label31.TabIndex = 223;
+            this.label31.Text = "位移方向";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(60, 458);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(41, 12);
+            this.label30.TabIndex = 222;
+            this.label30.Text = "位移量";
+            // 
+            // ui_movedir
+            // 
+            this.ui_movedir.FormattingEnabled = true;
+            this.ui_movedir.Items.AddRange(new object[] {
+            "U",
+            "L",
+            "D",
+            "R"});
+            this.ui_movedir.Location = new System.Drawing.Point(108, 482);
+            this.ui_movedir.Name = "ui_movedir";
+            this.ui_movedir.Size = new System.Drawing.Size(100, 20);
+            this.ui_movedir.TabIndex = 25;
+            this.ui_movedir.Text = "U";
+            // 
+            // ui_movestep
+            // 
+            this.ui_movestep.Location = new System.Drawing.Point(108, 455);
+            this.ui_movestep.Name = "ui_movestep";
+            this.ui_movestep.Size = new System.Drawing.Size(100, 21);
+            this.ui_movestep.TabIndex = 24;
+            this.ui_movestep.Text = "1";
+            // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.button1);
             this.panel5.Controls.Add(this.label12);
             this.panel5.Controls.Add(this.ui_link_add);
             this.panel5.Controls.Add(this.label18);
@@ -612,8 +674,18 @@
             this.panel5.Controls.Add(this.ui_linkzoney);
             this.panel5.Location = new System.Drawing.Point(0, 230);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(290, 190);
+            this.panel5.Size = new System.Drawing.Size(290, 219);
             this.panel5.TabIndex = 23;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(206, 160);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 222;
+            this.button1.Text = "删除";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.ui_link_del_Click);
             // 
             // label12
             // 
@@ -632,6 +704,7 @@
             this.ui_link_add.TabIndex = 220;
             this.ui_link_add.Text = "添加";
             this.ui_link_add.UseVisualStyleBackColor = true;
+            this.ui_link_add.Click += new System.EventHandler(this.ui_link_add_Click);
             // 
             // label18
             // 
@@ -648,6 +721,7 @@
             this.ui_link_file.Name = "ui_link_file";
             this.ui_link_file.Size = new System.Drawing.Size(126, 21);
             this.ui_link_file.TabIndex = 210;
+            this.ui_link_file.DoubleClick += new System.EventHandler(this.ui_link_file_DoubleClick);
             // 
             // label17
             // 
@@ -662,15 +736,15 @@
             // 
             this.ui_linkdefdir.FormattingEnabled = true;
             this.ui_linkdefdir.Items.AddRange(new object[] {
-            "Up",
-            "Left",
-            "Down",
-            "Right"});
+            "U",
+            "L",
+            "D",
+            "R"});
             this.ui_linkdefdir.Location = new System.Drawing.Point(75, 162);
             this.ui_linkdefdir.Name = "ui_linkdefdir";
             this.ui_linkdefdir.Size = new System.Drawing.Size(126, 20);
             this.ui_linkdefdir.TabIndex = 217;
-            this.ui_linkdefdir.Text = "Up";
+            this.ui_linkdefdir.Text = "U";
             // 
             // ui_linkdefx
             // 
@@ -780,6 +854,7 @@
             this.ui_mus_del.TabIndex = 225;
             this.ui_mus_del.Text = "删除";
             this.ui_mus_del.UseVisualStyleBackColor = true;
+            this.ui_mus_del.Click += new System.EventHandler(this.ui_mus_del_Click);
             // 
             // ui_mus_add
             // 
@@ -789,6 +864,7 @@
             this.ui_mus_add.TabIndex = 224;
             this.ui_mus_add.Text = "添加";
             this.ui_mus_add.UseVisualStyleBackColor = true;
+            this.ui_mus_add.Click += new System.EventHandler(this.ui_mus_add_Click);
             // 
             // label13
             // 
@@ -1772,66 +1848,6 @@
             this.ui_mousey.Size = new System.Drawing.Size(11, 22);
             this.ui_mousey.Text = "y";
             // 
-            // ui_movestep
-            // 
-            this.ui_movestep.Location = new System.Drawing.Point(108, 455);
-            this.ui_movestep.Name = "ui_movestep";
-            this.ui_movestep.Size = new System.Drawing.Size(100, 21);
-            this.ui_movestep.TabIndex = 24;
-            this.ui_movestep.Text = "1";
-            // 
-            // ui_movedir
-            // 
-            this.ui_movedir.FormattingEnabled = true;
-            this.ui_movedir.Items.AddRange(new object[] {
-            "U",
-            "L",
-            "D",
-            "R"});
-            this.ui_movedir.Location = new System.Drawing.Point(108, 482);
-            this.ui_movedir.Name = "ui_movedir";
-            this.ui_movedir.Size = new System.Drawing.Size(100, 20);
-            this.ui_movedir.TabIndex = 25;
-            this.ui_movedir.Text = "U";
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(60, 458);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(41, 12);
-            this.label30.TabIndex = 222;
-            this.label30.Text = "位移量";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(48, 485);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(53, 12);
-            this.label31.TabIndex = 223;
-            this.label31.Text = "位移方向";
-            // 
-            // ui_move
-            // 
-            this.ui_move.Location = new System.Drawing.Point(133, 508);
-            this.ui_move.Name = "ui_move";
-            this.ui_move.Size = new System.Drawing.Size(75, 23);
-            this.ui_move.TabIndex = 224;
-            this.ui_move.Text = "平移";
-            this.ui_move.UseVisualStyleBackColor = true;
-            this.ui_move.Click += new System.EventHandler(this.ui_move_Click);
-            // 
-            // ui_moveall
-            // 
-            this.ui_moveall.AutoSize = true;
-            this.ui_moveall.Location = new System.Drawing.Point(49, 512);
-            this.ui_moveall.Name = "ui_moveall";
-            this.ui_moveall.Size = new System.Drawing.Size(84, 16);
-            this.ui_moveall.TabIndex = 225;
-            this.ui_moveall.Text = "整体(单层)";
-            this.ui_moveall.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -2057,6 +2073,7 @@
         private System.Windows.Forms.ComboBox ui_movedir;
         private System.Windows.Forms.TextBox ui_movestep;
         private System.Windows.Forms.CheckBox ui_moveall;
+        private System.Windows.Forms.Button button1;
     }
 }
 

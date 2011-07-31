@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GUI.cs" />
+    <Compile Include="ITEMS.cs" />
     <Compile Include="MetalHunter.cs" />
   </ItemGroup>
   <ItemGroup>

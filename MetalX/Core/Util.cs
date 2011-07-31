@@ -203,6 +203,27 @@ namespace MetalX
                 return false;
             }
         }
+        public static Direction GetOppositeDirection(Direction dir)
+        {
+            {
+                if (dir == Direction.U)
+                {
+                    return Direction.D;
+                }
+                else if (dir == Direction.L)
+                {
+                    return Direction.R;
+                }
+                else if (dir == Direction.D)
+                {
+                    return Direction.U;
+                }
+                else
+                {
+                    return Direction.L;
+                }
+            }
+        }
         public static Color MixColor(Color targetColor, Color filterColor)
         {
             return Color.FromArgb(targetColor.ToArgb() & filterColor.ToArgb());

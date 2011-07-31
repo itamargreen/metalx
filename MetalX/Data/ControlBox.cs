@@ -8,7 +8,7 @@ namespace MetalX.Data
     public class ControlBox
     {
         protected Game game;
-        public bool Visible = true;
+        public bool Visible = false;
         public string Name;
         //public int Index = -1;
 
@@ -38,6 +38,7 @@ namespace MetalX.Data
             }
         }
         public int NowButtonBoxIndex = -1;
+        public int BigStep = 8;
         //public int FocusButtonBoxIndex
         //{
         //    get

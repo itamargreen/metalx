@@ -19,6 +19,7 @@ namespace MetalHunter
             game.FormBoxes.LoadDotMXFormBox(new LogoGame(game));
             game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
             game.FormBoxes.LoadDotMXFormBox(new MenuCHR(game));
+            game.FormBoxes.LoadDotMXFormBox(new MenuBAG(game));
 
             game.OverLoadMessageBox(new MH_MSGBox(game));
             game.OverLoadASKboolBox(new MH_ASKboolBox(game));
@@ -57,13 +58,32 @@ namespace MetalHunter
                 if (game.FormBoxes["MenuCHR"].Visible)
                 {
                     game.FormBoxManager.Disappear("MenuCHR");
-                    game.SceneManager.ME.CanControl = false;
+                    game.SceneManager.ME.CanControl = true;
                 }
                 else
                 {
+                    ((MenuCHR)game.FormBoxes["MenuCHR"]).LoadContext(game.SceneManager.ME);
                     game.FormBoxManager.Appear("MenuCHR");
+                    game.SceneManager.ME.CanControl = false;
+                }
+            } 
+            else if (k == Key.B)
+            {
+                if (game.FormBoxes["MenuBAG"].Visible)
+                {
+                    game.FormBoxManager.Disappear("MenuBAG");
                     game.SceneManager.ME.CanControl = true;
                 }
+                else
+                {
+                    ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadBag(game.SceneManager.ME);
+                    game.FormBoxManager.Appear("MenuBAG");
+                    game.SceneManager.ME.CanControl = false;
+                }
+            }
+            else if (k == Key.A)
+            {
+                game.SceneManager.ME.BagIn(ITEMS.弹弓);
             }
         }
 

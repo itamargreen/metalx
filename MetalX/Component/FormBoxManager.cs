@@ -211,13 +211,27 @@ namespace MetalX.Component
             {
 
             }
-            else if (k == game.Options.KeyUP || k == game.Options.KeyLEFT)
+            else if (k == game.Options.KeyUP)
             {
                 AppearingFormBox.FocusLastButtonBox();
             }
-            else if (k == game.Options.KeyDOWN || k == game.Options.KeyRIGHT)
+            else if (k == game.Options.KeyDOWN)
             {
                 AppearingFormBox.FocusNextButtonBox();
+            }
+            else if (k == game.Options.KeyLEFT)
+            {
+                for (int i = 0; i < AppearingFormBox.BigStep; i++)
+                {
+                    AppearingFormBox.FocusLastButtonBox();
+                }
+            }
+            else if (k == game.Options.KeyRIGHT)
+            {
+                for (int i = 0; i < AppearingFormBox.BigStep; i++)
+                {
+                    AppearingFormBox.FocusNextButtonBox();
+                }
             }
         }
     }

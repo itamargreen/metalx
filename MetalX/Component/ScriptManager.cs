@@ -24,6 +24,21 @@ namespace MetalX.Component
         string cur;
         string curcmd;
         string presskey = "";
+        string[] texts
+        {
+            get
+            {
+                string[] strs = (text+cur).Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] tmp = new string[10];
+                int j = 0;
+                for (int i = strs.Length - 10; i < strs.Length; i++)
+                {
+                    tmp[j] = strs[i];
+                    j++;
+                }
+                return tmp;
+            }
+        }
 
         //DateTime delayStartTime = DateTime.Now;
         //double delayTime = 0;
@@ -103,12 +118,17 @@ namespace MetalX.Component
                 }
                 else
                 {
-                    cur = "";
+                    cur = " ";
                 }
-                game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
+                //game.DrawText(text + cur, new System.Drawing.Point(), ColorFilter);
+                for (int i = 0; i < texts.Length; i++)
+                {
+                    game.DrawText(texts[i], new Point(0, i * 20), Color.White);
+                }
+                
             }
             //if(game.SceneManager.SCENE!=null)
-            game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + " DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
+            //game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + " DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -254,7 +274,7 @@ namespace MetalX.Component
                     Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
                     v3.X = float.Parse(kw[3]);
                     v3.Y = float.Parse(kw[4]);
-                    game.SceneManager.Enter(kw[2], v3);
+                    game.SceneManager.Enter(kw[2], v3, game.SceneManager.ME.RealDirection);
                 }
                 else if (kw[1] == "shock" && range != -100)
                 {
@@ -439,6 +459,7 @@ namespace MetalX.Component
                     v3.X = float.Parse(kw[2]);
                     v3.Y = float.Parse(kw[3]);
                     game.SceneManager.ME.SetRealLocation(v3, game.Options.TilePixel);
+                    game.SceneManager.SceneJump(v3);
                 }
                 else if (kw[1] == "setctrl")
                 {
@@ -468,7 +489,11 @@ namespace MetalX.Component
                     {
                         dir = Direction.R;
                     }
-                    game.SceneManager.ME.Face(dir);
+                    if (game.SceneManager.ME.Face(dir))
+                    {
+                        game.SceneManager.SCN.Face(game.SceneManager.ME.OppositeDirection);
+                    }
+                    
                 }
                 else if (kw[1] == "move")
                 {
@@ -493,7 +518,10 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        game.SceneManager.ME.Move(game.SceneManager.SCN, game.SceneManager.GetNPC(game.SceneManager.ME), game.Options.TilePixel);
+                        if (game.SceneManager.ME.Move(game.SceneManager.SCN, game.SceneManager.GetNPC(game.SceneManager.ME), game.Options.TilePixel))
+                        {
+                            game.SceneManager.SCN.Move(1, game.Options.TilePixel);
+                        }
                     }
                 }
                 else if (kw[1] == "fdir")
@@ -517,6 +545,7 @@ namespace MetalX.Component
                         dir = Direction.R;
                     }
                     game.SceneManager.ME.ForceDirection = dir;
+                    game.SceneManager.SCN.Face(Util.GetOppositeDirection(dir));
                 }
                 else if (kw[1] == "fmove")
                 {
@@ -542,6 +571,9 @@ namespace MetalX.Component
                     else
                     {
                         game.SceneManager.ME.ForceMove(game.Options.TilePixel);
+                        {
+                            game.SceneManager.SCN.Move(1, game.Options.TilePixel);
+                        }
                     }
                 }
                 else if (kw[1] == "setrigor")
@@ -556,9 +588,9 @@ namespace MetalX.Component
             #endregion
             else
             {
-                TextBox tb = new TextBox(game);
-                tb.Text = kw[0];
-                game.FormBoxManager.Appear("MessageBox", tb);
+                //TextBox tb = new TextBox(game);
+                //tb.Text = kw[0];
+                //game.FormBoxManager.Appear("MessageBox", tb);
             }
         }
 
@@ -618,79 +650,54 @@ namespace MetalX.Component
             //{
             //    game.Exit();
             //}
-            //else if (k== Key.F1)
-            //{
-            //    game.LoadCheckPoint(1);
-            //}
-            //else if (k== Key.F2)
-            //{
-            //    game.LoadCheckPoint(2);
-            //}
-            //else if (k== Key.F3)
-            //{
-            //    game.LoadCheckPoint(3);
-            //}
-            //else if (k== Key.F4)
-            //{
-            //    game.LoadCheckPoint(4);
-            //}
-            //else if (k== Key.F5)
-            //{
-            //    game.SaveCheckPoint(1);
-            //}
-            //else if (k== Key.F6)
-            //{
-            //    game.SaveCheckPoint(2);
-            //}
-            //else if (k== Key.F7)
-            //{
-            //    game.SaveCheckPoint(3);
-            //}
-            //else if (k== Key.F8)
-            //{
-            //    game.SaveCheckPoint(4);
-            //}
-            else if (k == Key.F1)
+
+            if (k == Key.NumPad6)
             {
                 game.Options.UVOffsetX += 0.1f;
             }
-            else if (k == Key.F2)
+            else if (k == Key.NumPad4)
             {
                 game.Options.UVOffsetX -= 0.1f;
             }
-            else if (k == Key.F3)
+            else if (k == Key.NumPad8)
             {
                 game.Options.UVOffsetY += 0.1f;
             }
-            else if (k == Key.F4)
+            else if (k == Key.NumPad2)
             {
                 game.Options.UVOffsetY -= 0.1f;
             }
-            else if (k == Key.F9)
-            {
-                game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
-            }
-            else if (k == Key.F10)
-            {
-                game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
-            }
-            else if (k == Key.F11)
-            {
-                //game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
-            }
-            else if (k == Key.F12)
+            else if (k == Key.F1)
             {
                 if (drawText)
                 {
                     drawText = false;
                     game.SceneManager.Controllable = true;
+                    game.SceneManager.ColorFilter = Color.White;
+                    game.FormBoxManager.Controllable = true;
+                    game.FormBoxManager.ColorFilter = Color.White;
                 }
                 else
                 {
                     drawText = true;
                     game.SceneManager.Controllable = false;
+                    game.SceneManager.ColorFilter = Color.Blue;
+                    game.FormBoxManager.Controllable = false;
+                    game.FormBoxManager.ColorFilter = Color.Blue;
+                }
+            }          
+            else if (k == Key.F12)
+            {
+                if (game.Options.TextureDrawMode == TextureDrawMode.Direct2D)
+                {
+                    game.Options.TextureDrawMode = TextureDrawMode.Direct3D;
+                }
+                else
+                {
+                    game.Options.TextureDrawMode = TextureDrawMode.Direct2D;
                 }
             }
+
             else if (k == Key.Return)
             {
                 string[] cmds = text.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -698,10 +705,11 @@ namespace MetalX.Component
                 {
                     string cmd = cmds[cmds.Length - 1];
                     cmdbak.Push(cmd);
-                    AppendCommand(cmd);text += "\n";
+                    AppendCommand(cmd);
+                    text += "\n";
                     if (isBig)
                     {
-                        Execute();
+                        exe = true;
                     }
                 }
             }
@@ -731,7 +739,7 @@ namespace MetalX.Component
                 }
                 else
                 {
-                    string ks = "";
+                    //string ks = "";
                     #region convert key
                     //if (k == Key.A)
                     //{
@@ -884,13 +892,19 @@ namespace MetalX.Component
                     #endregion
                     //else
                     //{
-                    ks = k.ToString();
-                    //}
-                    if (!isBig)
+                    string tmp = k.ToString();
+                    if (tmp.Length == 1)
                     {
-                        ks = ks.ToLower();
+                        if (!isBig)
+                        {
+                            tmp = tmp.ToLower();
+                        }
+                        text += tmp;
                     }
-                    text += ks;
+                    else if (tmp.Length == 2)
+                    {
+                        text += tmp.Substring(1);
+                    }
                 }
             }
         }

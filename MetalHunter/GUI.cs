@@ -42,107 +42,83 @@ namespace MetalHunter
     }
     public class MenuLoad : FormBox
     {
+        List<ButtonBox> bb = new List<ButtonBox>();
+
         public MenuLoad(Game g)
             : base(g)
         {
             Name = "MenuLoad";
 
-            ButtonBox bb1 = new ButtonBox(g);
-            bb1.OnButtonDown += new ButtonBoxEvent(bb1_OnButtonDown);
-            bb1.Location = new Point();
-            bb1.Size = new System.Drawing.Size(512, 128);
+            for (int i = 0; i < 3; i++)
+            {
+                bb.Add(new ButtonBox(g));
+                bb[i].Location = new Point(64, 48 + 128 * i);
+                bb[i].Size = new System.Drawing.Size(512, 128);
+                bb[i].WaitTextureBox.TextureName = "smallbg";
+                bb[i].FocusTextureBox.TextureName = "smallbg";
+                bb[i].DownTextureBox.TextureName = "smallbg";
+                bb[i].UpTextureBox.TextureName = "smallbg";
+                bb[i].WaitTextureBox.Size = new System.Drawing.Size(512, 128);
+                bb[i].FocusTextureBox.Size = new System.Drawing.Size(512, 128);
+                bb[i].DownTextureBox.Size = new System.Drawing.Size(512, 128);
+                bb[i].UpTextureBox.Size = new System.Drawing.Size(512, 128);
 
-            bb1.WaitTextureBox.TextureName = "smallbg";
-            bb1.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb1.WaitTextBox.Location = new Point(32, 32);
-            bb1.WaitTextBox.Text = "存档1";
+                bb[i].WaitTextBox.Text = "存档" + (i + 1).ToString();
+                bb[i].WaitTextBox.Location = new Point(32, 32);
+                bb[i].FocusTextBox.Text = "存档" + (i + 1).ToString();
+                bb[i].FocusTextBox.Location = new Point(32, 32);
+                bb[i].FocusTextBox.FontColor = Color.CornflowerBlue;
+                bb[i].DownTextBox.Text = "存档" + (i + 1).ToString();
+                bb[i].DownTextBox.Location = new Point(32, 32);
+                bb[i].DownTextBox.FontColor = Color.Yellow;
+                bb[i].UpTextBox.Text = "存档" + (i + 1).ToString();
+                bb[i].UpTextBox.Location = new Point(32, 32);
 
-            bb1.FocusTextureBox.TextureName = "smallbg";
-            bb1.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb1.FocusTextBox.Location = new Point(32, 32);
-            bb1.FocusTextBox.Text = "存档1";
-            bb1.FocusTextBox.FontColor = Color.Pink;
+                ControlBoxes.Add(bb[i]);
+            }
 
-            bb1.DownTextureBox.TextureName = "smallbg";
-            bb1.DownTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb1.DownTextBox.Location = new Point(32, 32);
-            bb1.DownTextBox.Text = "存档1";
-            bb1.DownTextBox.FontColor = Color.Green;
-
-            bb1.UpTextureBox.TextureName = "smallbg";
-            bb1.UpTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb1.UpTextBox.Location = new Point(32, 32);
-            bb1.UpTextBox.Text = "存档1";
-            bb1.UpTextBox.FontColor = Color.Yellow;
-
-            ButtonBox bb2 = new ButtonBox(g);
-            bb2.OnButtonDown += new ButtonBoxEvent(bb2_OnButtonDown);
-            bb2.Location = new Point(0, 128);
-            bb2.Size = new System.Drawing.Size(512, 128);
-            bb2.WaitTextureBox.TextureName = "smallbg";
-            bb2.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb2.WaitTextBox.Location = new Point(32, 32);
-            bb2.WaitTextBox.Text = "存档2";
-
-            bb2.FocusTextureBox.TextureName = "smallbg";
-            bb2.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb2.FocusTextBox.Location = new Point(32, 32);
-            bb2.FocusTextBox.Text = "存档2";
-            bb2.FocusTextBox.FontColor = Color.Pink;
-
-            ButtonBox bb3 = new ButtonBox(g);
-            bb3.OnButtonDown += new ButtonBoxEvent(bb3_OnButtonDown);
-            bb3.Location = new Point(0, 256);
-            bb3.Size = new System.Drawing.Size(512, 128);
-            bb3.WaitTextureBox.TextureName = "smallbg";
-            bb3.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb3.WaitTextBox.Location = new Point(32, 32);
-            bb3.WaitTextBox.Text = "存档3";
-
-            bb3.FocusTextureBox.TextureName = "smallbg";
-            bb3.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb3.FocusTextBox.Location = new Point(32, 32);
-            bb3.FocusTextBox.Text = "存档3";
-            bb3.FocusTextBox.FontColor = Color.Pink;
-
-            ButtonBox bb4 = new ButtonBox(g);
-            bb4.Location = new Point(0, 384);
-            bb4.Size = new System.Drawing.Size(512, 128);
-            bb4.WaitTextureBox.TextureName = "smallbg";
-            bb4.WaitTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb4.WaitTextBox.Location = new Point(32, 32);
-            bb4.WaitTextBox.Text = "存档4";
-
-            bb4.FocusTextureBox.TextureName = "smallbg";
-            bb4.FocusTextureBox.Size = new System.Drawing.Size(512, 128);
-            bb4.FocusTextBox.Location = new Point(32, 32);
-            bb4.FocusTextBox.Text = "存档4";
-            bb4.FocusTextBox.FontColor = Color.Pink;
-
-            ControlBoxes.Add(bb1);
-            ControlBoxes.Add(bb2);
-            ControlBoxes.Add(bb3);
-            //ControlBoxes.Add(bb4);
+            bb[0].OnButtonUp += new ButtonBoxEvent(MenuLoad_OnButtonUp0);
+            bb[1].OnButtonUp += new ButtonBoxEvent(MenuLoad_OnButtonUp1);
+            bb[2].OnButtonUp += new ButtonBoxEvent(MenuLoad_OnButtonUp2);
         }
 
-        void bb3_OnButtonDown(object arg)
+
+        void MenuLoad_OnButtonUp0(object arg)
         {
-            game.NetManager.Send(new byte[] { 50, 51, 52, 53 });
+            game.AppendDotMetalXScript("load0");
+            game.ExecuteScript();
         }
-
-        void bb2_OnButtonDown(object arg)
-        {
-            game.NetManager.Connect(game.Options.ServerIP, game.Options.ServerPort);
-        }
-
-        void bb1_OnButtonDown(object arg)
+        void MenuLoad_OnButtonUp1(object arg)
         {
             game.AppendDotMetalXScript("load1");
             game.ExecuteScript();
+
         }
+        void MenuLoad_OnButtonUp2(object arg)
+        {
+            game.AppendDotMetalXScript("load2");
+            game.ExecuteScript();
+
+        }
+
     }
     public class MenuCHR : FormBox
     {
+        TextureBox head;
+        TextBox nam; 
+        TextBox exp; 
+        TextBox lv; 
+        TextBox hp; 
+        TextBox def;
+        TextBox str;
+        TextBox agi;
+        TextBox itl;
+        TextBox chrlv;
+        TextBox mtllv;
+
+        TextBox dmg1;
+        TextBox dmg2;
+
         public MenuCHR(Game g)
             : base(g)
         {
@@ -151,7 +127,141 @@ namespace MetalHunter
 
             BGTextureBox.TextureName = "bigbg";
             BGTextureBox.Size = new Size(512, 512);
-            BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
+            //BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
+
+            head = new TextureBox(g);
+            head.Location = new Point(32, 32);
+
+            nam = new TextBox(g);
+            nam.Location = new Point(32, 160);
+
+
+            lv = new TextBox(g);
+            lv.Location = new Point(200, 64-16);
+            
+            chrlv = new TextBox(g);
+            chrlv.Location = new Point(200, 96-16);
+
+            mtllv = new TextBox(g);
+            mtllv.Location = new Point(200, 128-16);
+
+            exp = new TextBox(g);
+            exp.Location = new Point(32, 320);
+
+
+            hp = new TextBox(g);
+            hp.Location = new Point(200, 160);
+
+            itl = new TextBox(g);
+            itl.Location = new Point(32, 224 - 16);
+            str = new TextBox(g);
+            str.Location = new Point(32, 256 - 16);
+            agi = new TextBox(g);
+            agi.Location = new Point(32, 288 - 16);
+
+
+            def = new TextBox(g);
+            def.Location = new Point(200, 288 - 16);
+            dmg1 = new TextBox(g);
+            dmg1.Location = new Point(200, 224 - 16);
+            dmg2 = new TextBox(g);
+            dmg2.Location = new Point(200, 256 - 16);
+
+            ControlBoxes.Add(head);
+            ControlBoxes.Add(nam);
+            ControlBoxes.Add(lv);
+            ControlBoxes.Add(hp);
+
+            ControlBoxes.Add(dmg1);
+            ControlBoxes.Add(dmg2);
+            ControlBoxes.Add(def);
+
+            ControlBoxes.Add(str);
+            ControlBoxes.Add(agi);
+            ControlBoxes.Add(itl);
+
+            ControlBoxes.Add(chrlv);
+            ControlBoxes.Add(mtllv);
+
+            ControlBoxes.Add(exp);
+        }
+
+        public void LoadContext(CHR chr)
+        {
+            chr.HeadTextureName = "head-" + chr.TextureName;
+
+            this.head.TextureIndex = chr.HeadTextureIndex;
+            this.head.TextureName = chr.HeadTextureName;
+
+            this.nam.Text = "　　名字： " + chr.Name;
+
+            this.hp.Text = "　　ＨＰ： " + chr.HP + " / " + chr.HPMax;
+
+            this.lv.Text = "　　ＬＶ： " + chr.Level;
+            this.chrlv.Text = "人战ＬＶ： " + chr.CHRLevel;
+            this.mtllv.Text = "车战ＬＶ： " + chr.MTLLevel;
+
+            this.exp.Text = "　经验值： " + chr.EXP;
+            try
+            {
+                this.dmg1.Text = "攻击力１： " + chr.PrimaryWeapon.Damage;
+                this.dmg2.Text = "攻击力２： " + chr.SecondryWeapon.Damage;
+                this.def.Text = "　防御力： " + chr.Defense;
+            }
+            catch
+            {
+                this.dmg1.Text = "攻击力１： 0";
+                this.dmg2.Text = "攻击力２： 0";
+                this.def.Text = "　防御力： 0";
+            }
+            this.str.Text = "　　力量： " + chr.Strength;
+            this.agi.Text = "　　敏捷： " + chr.Agility;
+            this.itl.Text = "　　智力： " + chr.Intelligence;
+        }
+    }
+    public class MenuBAG : FormBox
+    {
+        List<ButtonBox> bb = new List<ButtonBox>();
+        public MenuBAG(Game g)
+            : base(g)
+        {
+            Name = "MenuBAG";
+            Location = new Point(64, 48);
+
+            BGTextureBox.TextureName = "bigbg";
+            BGTextureBox.Size = new Size(512, 512);
+
+            for (int i = 0; i < 16; i++)
+            {
+                bb.Add(new ButtonBox(game));
+            }
+        }
+
+        public void LoadBag(CHR chr)
+        {
+            ControlBoxes.Clear();
+            ControlBoxes.Add(BGTextureBox);
+            for (int i = 0; i < chr.Bag.Count; i++)
+            {
+                ////bb[i] = new ButtonBox(game);
+                //if (i >= chr.Bag.Count)
+                //{
+                //    continue;
+                //}
+                if (chr.Bag[i] == null)
+                {
+                    continue;
+                }
+                bb[i].WaitTextBox.Text = "　　"+chr.Bag[i].Name;
+                bb[i].FocusTextBox.Text = "＞　" + chr.Bag[i].Name;
+                bb[i].FocusTextBox.FontColor = Color.CornflowerBlue;
+                bb[i].DownTextBox.Text = "＞　" + chr.Bag[i].Name;
+                bb[i].DownTextBox.FontColor = Color.Yellow;
+                bb[i].UpTextBox.Text = "＞　" + chr.Bag[i].Name;
+                bb[i].Location = new Point(32 + 128 * (i / 8), 64 + 32 * (i % 8));
+
+                ControlBoxes.Add(bb[i]);
+            }
         }
     }
 
@@ -164,7 +274,7 @@ namespace MetalHunter
 
             BGTextureBox.TextureName = "smallbg";
             BGTextureBox.Size = new Size(512, 128);
-            BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
+            //BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
 
             TextBox.Location = new Point(20, 20);
             TextBox.OneByOne = true;
@@ -182,7 +292,7 @@ namespace MetalHunter
 
             BGTextureBox.TextureName = "smallbg";
             BGTextureBox.Size = new Size(512, 128);
-            BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
+            //BGTextureBox.TextureFliterColor = Color.FromArgb(200, Color.White);
 
             TextBox.Location = new Point(20, 20);
             TextBox.OneByOne = true;
