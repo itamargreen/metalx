@@ -337,6 +337,8 @@ namespace MetalX
         /// </summary>
         void frame()
         {
+            totalFrames++;
+            Application.DoEvents();
             if (Devices.D3DDev.Disposed)
             {
                 return;
@@ -383,8 +385,6 @@ namespace MetalX
                 Devices.D3DDev.EndScene();
                 Devices.D3DDev.Present();
             }
-            totalFrames++;
-            Application.DoEvents();
         }
         //void WaitFrameByFPS()
         //{
@@ -937,7 +937,7 @@ namespace MetalX
                 ty = ((float)dz.Bottom + Options.UVOffsetY) / (float)s.Height;
             }
 
-            Vector3 cp = new Vector3(0, 0, 0);
+            Vector3 cp = loc;//new Vector3(0, 0, 0);
 
             vertexs[0] = new CustomVertex.PositionColoredTextured(cp, color.ToArgb(), fx, fy);
             vertexs[1] = new CustomVertex.PositionColoredTextured(cp.X + size.Width, cp.Y - size.Height, cp.Z, color.ToArgb(), tx, ty);
@@ -948,7 +948,7 @@ namespace MetalX
             vertexs[5] = new CustomVertex.PositionColoredTextured(cp.X + size.Width, cp.Y - size.Height, cp.Z, color.ToArgb(), tx, ty);
 
             //loc = Util.Vector3MulInt(loc, 2);
-            Devices.D3DDev.Transform.World = Matrix.Translation(loc);// +Matrix.Transformation(new Vector3(), new Quaternion(), new Vector3(), new Vector3(), new Quaternion(0, 0, 0, 0), new Vector3());// Matrix.RotationYawPitchRoll(0, 0, 0);
+            //Devices.D3DDev.Transform.World = Matrix.Translation(loc);// +Matrix.Transformation(new Vector3(), new Quaternion(), new Vector3(), new Vector3(), new Quaternion(0, 0, 0, 0), new Vector3());// Matrix.RotationYawPitchRoll(0, 0, 0);
 
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
 

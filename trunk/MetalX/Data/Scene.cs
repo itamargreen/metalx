@@ -151,9 +151,9 @@ namespace MetalX.Data
             }
         }
         [NonSerialized]
-        Tile[][][] Tiles;
+        public Tile[][][] Tiles;
         [NonSerialized]
-        Code[][] Codes;
+        public Code[][] Codes;
         public Tile this[int layer, int y, int x]
         {
             get
@@ -175,7 +175,7 @@ namespace MetalX.Data
                 return this[(int)loc.Y, (int)loc.X];
             }
         }
-        public void Init()
+        void Init()
         {
             Tiles = new Tile[TileLayers.Count][][];
             for (int l = 0; l < TileLayers.Count; l++)
@@ -199,6 +199,60 @@ namespace MetalX.Data
                     Codes[y][x] = CodeLayers[0][x, y];
                 }
             }
+        }
+        public void Init(Size winSize)
+        {
+            int w = winSize.Width / 2;
+            int h = winSize.Height / 2;
+
+            //for left
+            for (int y = -h; y < Size.Height + h; y++)
+            {
+                for (int x = -w; x < 0; x++)
+                {
+                    Tile tile = BottomTile.GetClone();
+                    tile.Location.X = x;
+                    tile.Location.Y = y;
+                    TileLayers[0].Tiles.Add(tile);
+                }
+            }
+
+            //for right
+            for (int y = -h; y < Size.Height + h; y++)
+            {
+                for (int x = Size.Width; x < Size.Width + w; x++)
+                {
+                    Tile tile = BottomTile.GetClone();
+                    tile.Location.X = x;
+                    tile.Location.Y = y;
+                    TileLayers[0].Tiles.Add(tile);
+                }
+            }
+
+            //for top
+            for (int y = -h; y < 0; y++)
+            {
+                for (int x = 0; x < Size.Width; x++)
+                {
+                    Tile tile = BottomTile.GetClone();
+                    tile.Location.X = x;
+                    tile.Location.Y = y;
+                    TileLayers[0].Tiles.Add(tile);
+                }
+            }        
+            
+            //for bottom
+            for (int y = Size.Height; y < Size.Height + h; y++)
+            {
+                for (int x = 0; x < Size.Width; x++)
+                {
+                    Tile tile = BottomTile.GetClone();
+                    tile.Location.X = x;
+                    tile.Location.Y = y;
+                    TileLayers[0].Tiles.Add(tile);
+                }
+            }
+            Init();
         }
         public bool IsInScene(Vector3 p)
         {
@@ -430,6 +484,10 @@ namespace MetalX.Data
                 i = i % Frames.Count;
                 return Frames[i];
             }
+        }
+        public Tile GetClone()
+        {
+            return (Tile)MemberwiseClone();
         }
         /// <summary>
         /// 帧数

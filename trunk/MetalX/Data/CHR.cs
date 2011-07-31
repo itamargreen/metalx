@@ -13,6 +13,8 @@ namespace MetalX.Data
 
         public int TextureIndex = -1;
         public string TextureName;
+        public int HeadTextureIndex = -1;
+        public string HeadTextureName;
         public Size Size = new Size(1, 1);
         public bool Invisible = false;
         bool isForceMove = false;
@@ -312,11 +314,16 @@ namespace MetalX.Data
 
         public int Gold;
 
+        public int EXP;
         public int Level;
 
-        public int MLevel;
-        public int ELevel;
-        public int BLevel;
+        public int MTLLevel;//车战LV
+        //public int ELevel;
+        public int CHRLevel;//人战LV
+
+        public int Strength;
+        public int Agility;
+        public int Intelligence;
 
         public int HP;
         public int HPMax;
@@ -504,21 +511,28 @@ namespace MetalX.Data
             }
         }
 
+
         public List<Item> Bag = new List<Item>();
+        public int BagCapacity = 16;
         public void BagIn(Item item)
         {
-            Bag.Add(item);
+            if (Bag.Count < BagCapacity)
+            {
+                Bag.Add(item);
+            }
         }
-        public void BagOut(Guid guid)
+        public Item BagOut(Item itm)
         {
             for (int i = 0; i < Bag.Count; i++)
             {
-                if (Bag[i].GUID == guid)
+                if (Bag[i].GUID == itm.GUID)
                 {
+                    Item item = Bag[i].GetClone();
                     Bag.RemoveAt(i);
-                    return;
+                    return item;
                 }
             }
+            return null;
         }
         public bool Face(Direction dir)
         {

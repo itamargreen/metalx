@@ -221,19 +221,19 @@ namespace MetalX.SceneMaker2D
             sceneMaker2D.SCN.CodeLayer[p].SceneFileName = ui_link_file.Text;
             sceneMaker2D.SCN.CodeLayer[p].DefaultLocation = new Point(int.Parse(ui_linkdefx.Text), int.Parse(ui_linkdefy.Text));
             Direction dir = Direction.U;
-            if (ui_linkdefdir.Text == "Up")
+            if (ui_linkdefdir.Text == "U")
             {
                 dir = Direction.U;
             }
-            else if (ui_linkdefdir.Text == "Left")
+            else if (ui_linkdefdir.Text == "L")
             {
                 dir = Direction.L;
             }
-            else if (ui_linkdefdir.Text == "Down")
+            else if (ui_linkdefdir.Text == "D")
             {
                 dir = Direction.D;
             }
-            else if (ui_linkdefdir.Text == "Right")
+            else if (ui_linkdefdir.Text == "R")
             {
                 dir = Direction.R;
             }
@@ -402,7 +402,7 @@ namespace MetalX.SceneMaker2D
             int th = tilesizepixel.Height;
 
             sceneMaker2D.SCN = new Scene(new Size(sw, sh), new Size(tw, th));
-            sceneMaker2D.SCN.Init();
+            //sceneMaker2D.SCN.Init();
             sceneMaker2D.SCN.Name = ui_scenename.Text;
             sceneMaker2D.SCN.FrameInterval = int.Parse(ui_framedelay.Text);
 
@@ -439,7 +439,7 @@ namespace MetalX.SceneMaker2D
             {
                 sceneMaker2D.SCN = game.LoadDotMXScene(fileName);
             }
-            sceneMaker2D.SCN.Init();
+            //sceneMaker2D.SCN.Init();
 
 
 
@@ -805,6 +805,8 @@ namespace MetalX.SceneMaker2D
                         ui_linkdefy.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultLocation.Y.ToString();
 
                         ui_link_file.Text = sceneMaker2D.SCN.CodeLayer[pp].SceneFileName;
+
+                        ui_linkdefdir.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultDirection.ToString();
                     }
                     catch { }
                 }
