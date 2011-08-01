@@ -162,14 +162,18 @@ namespace MetalX.Component
                     { }
                     if (sname != null)
                     {
-                        game.SceneManager.ME.CanControl = false;
                         Enter(sname, Util.Point2Vector3(SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultLocation, 0), SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultDirection);
-                        game.AppendScript("scene fallout 300");
-                        game.AppendScript("delay 300");
-                        game.AppendScript("mp3 2 scene");
-                        game.AppendScript("delay 400");
-                        game.AppendScript("scene fallin 300");
-                        game.AppendScript("delay 300");
+                        game.SceneManager.ME.CanControl = false;
+                        //if (SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].ChangeSceneEffect)
+                        {
+                            Delay(300);
+                            game.AppendScript("mp3 2 scene");
+                            game.AppendScript("scene fallout 200");
+                            game.AppendScript("delay 300");
+                            game.AppendScript("mp3 2 scene");
+                            game.AppendScript("scene fallin 200");
+                            game.AppendScript("delay 200");
+                        }
                         game.AppendScript("me setctrl");
                         game.ExecuteScript();
                     }
@@ -270,6 +274,8 @@ namespace MetalX.Component
         {
             if (nextSCNName != null)
             {
+                //game.SceneManager.ME.CanControl = false;
+
                 string mus = "";
                 try
                 {
@@ -329,12 +335,9 @@ namespace MetalX.Component
         
         public void Enter(string fileName, Vector3 realLoc, Direction dir)
         {
-            Delay(300); 
-
             nextSCNName = fileName;
             nextSCNLoc = realLoc;
             nextSCNDir = dir;
-
         }
         public void InitNPCs()
         {
@@ -673,7 +676,7 @@ namespace MetalX.Component
                     if (IsInWindow(Util.PointAddPoint( t.LocationPoint,s.RealLocationPoint)))
                     {
                         int fi = 0;
-                        if (t.IsAnimation)
+                        //if (t.IsAnimation)
                         {
                             fi = frameIndex;
                         }

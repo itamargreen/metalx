@@ -28,6 +28,24 @@ namespace MetalX.Component
 
         public bool Loop = false;
         public bool Playing = false;
+        int volum = 0;
+
+        public int Volume
+        {
+            set
+            {                
+                int v = 0;
+                if (value > 100)
+                {
+                    v = 100;
+                }
+                else if (value < 0)
+                {
+                    v = 0;
+                }
+                volum = v * 100 - 10000;
+            }
+        }
 
         public double Progress
         {
@@ -58,9 +76,9 @@ namespace MetalX.Component
             DisableAll();
             Enable = true;
             fillControlthd = new Thread(fillControl);
-            fillControlthd.Priority = ThreadPriority.Lowest;
+            //fillControlthd.Priority = ThreadPriority.Lowest;
             fillControlthd.IsBackground = true;
-            //fillControlthd.Start();
+            fillControlthd.Start();
         }
 
         bool pos, posb;
@@ -69,61 +87,61 @@ namespace MetalX.Component
 
         public override void Code()
         {
-            if (secondaryBuffer == null || secondaryBuffer.Disposed || mp3Stream == null)
-            {
+            //if (secondaryBuffer == null || secondaryBuffer.Disposed || mp3Stream == null)
+            //{
 
-            }
-            else
-            {
-                if (Playing)
-                {
-                    if (secondaryBuffer.PlayPosition < halfSize)
-                    {
-                        pos = true;
-                    }
-                    else
-                    {
-                        pos = false;
-                    }
-                    if (pos != posb)
-                    {
-                        if (pos)
-                        {
-                            backFilled = false;
-                        }
-                        else
-                        {
-                            foreFilled = false;
-                        }
-                    }
-                    posb = pos;
-                    if (mp3Stream.Position < mp3Stream.Length)
-                    {
-                        if (pos && !backFilled)
-                        {
-                            fillBack();
-                            backFilled = true;
-                        }
-                        else if (!pos && !foreFilled)
-                        {
-                            fillFore();
-                            foreFilled = true;
-                        }
-                    }
-                    else
-                    {
-                        mp3Stream.Position = 0;
-                        if (Loop)
-                        {
-                        }
-                        else
-                        {
-                            secondaryBuffer.Stop();
-                            Playing = false;
-                        }
-                    }
-                }
-            }
+            //}
+            //else
+            //{
+            //    if (Playing)
+            //    {
+            //        if (secondaryBuffer.PlayPosition < halfSize)
+            //        {
+            //            pos = true;
+            //        }
+            //        else
+            //        {
+            //            pos = false;
+            //        }
+            //        if (pos != posb)
+            //        {
+            //            if (pos)
+            //            {
+            //                backFilled = false;
+            //            }
+            //            else
+            //            {
+            //                foreFilled = false;
+            //            }
+            //        }
+            //        posb = pos;
+            //        if (mp3Stream.Position < mp3Stream.Length)
+            //        {
+            //            if (pos && !backFilled)
+            //            {
+            //                fillBack();
+            //                backFilled = true;
+            //            }
+            //            else if (!pos && !foreFilled)
+            //            {
+            //                fillFore();
+            //                foreFilled = true;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            mp3Stream.Position = 0;
+            //            if (Loop)
+            //            {
+            //            }
+            //            else
+            //            {
+            //                secondaryBuffer.Stop();
+            //                Playing = false;
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         void Load(System.IO.Stream stream)
@@ -158,8 +176,10 @@ namespace MetalX.Component
             bufferDescription = new BufferDescription(waveFormat);
             bufferDescription.BufferBytes = wholeSize;
             bufferDescription.GlobalFocus = true;
+            bufferDescription.ControlVolume = true;
 
             secondaryBuffer = new SecondaryBuffer(bufferDescription, game.Devices.DSoundDev);
+            secondaryBuffer.Volume = volum;
 
             #region useless code area
             //autoResetEvent = new System.Threading.AutoResetEvent(false);
@@ -240,7 +260,7 @@ namespace MetalX.Component
                             mp3Stream.Position = 0;
                             if (Loop)
                             {
-                                replay();
+                                playMP3();
                             }
                             else
                             {                                
@@ -285,7 +305,7 @@ namespace MetalX.Component
         //public void PlayMetalXAudio(string musicName) { PlayMetalXAudio(game.Audios.GetIndex(musicName)); }
         //public void PlayMetalXAudio(int i) { PlayMetalXAudio(new System.IO.MemoryStream(game.Audios[i].AudioData)); }
         public void PlayMP3(string fileName)
-        {
+        {            
             if (playingFileName == fileName)
             {
                 playMP3();
@@ -318,16 +338,10 @@ namespace MetalX.Component
         void playMP3()
         {
             mp3Stream.Read(buff, 0, halfSize);
+            secondaryBuffer.Volume = volum;
             secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
             secondaryBuffer.Play(0, BufferPlayFlags.Looping);
             Playing = true;
-        }
-        void replay()
-        {
-            mp3Stream.Read(buff, 0, halfSize);
-            secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
-            secondaryBuffer.Play(0, BufferPlayFlags.Looping);
-            //Playing = true;
         }
         public void Stop()
         {

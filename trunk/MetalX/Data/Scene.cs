@@ -202,54 +202,57 @@ namespace MetalX.Data
         }
         public void Init(Size winSize)
         {
-            int w = winSize.Width / 2;
-            int h = winSize.Height / 2;
+            if (BottomTile != null)
+            {
+                int w = winSize.Width / 2;
+                int h = winSize.Height / 2;
 
-            //for left
-            for (int y = -h; y < Size.Height + h; y++)
-            {
-                for (int x = -w; x < 0; x++)
+                //for left
+                for (int y = -h; y < Size.Height + h; y++)
                 {
-                    Tile tile = BottomTile.GetClone();
-                    tile.Location.X = x;
-                    tile.Location.Y = y;
-                    TileLayers[0].Tiles.Add(tile);
+                    for (int x = -w; x < 0; x++)
+                    {
+                        Tile tile = BottomTile.GetClone();
+                        tile.Location.X = x;
+                        tile.Location.Y = y;
+                        TileLayers[0].Tiles.Add(tile);
+                    }
                 }
-            }
 
-            //for right
-            for (int y = -h; y < Size.Height + h; y++)
-            {
-                for (int x = Size.Width; x < Size.Width + w; x++)
+                //for right
+                for (int y = -h; y < Size.Height + h; y++)
                 {
-                    Tile tile = BottomTile.GetClone();
-                    tile.Location.X = x;
-                    tile.Location.Y = y;
-                    TileLayers[0].Tiles.Add(tile);
+                    for (int x = Size.Width; x < Size.Width + w; x++)
+                    {
+                        Tile tile = BottomTile.GetClone();
+                        tile.Location.X = x;
+                        tile.Location.Y = y;
+                        TileLayers[0].Tiles.Add(tile);
+                    }
                 }
-            }
 
-            //for top
-            for (int y = -h; y < 0; y++)
-            {
-                for (int x = 0; x < Size.Width; x++)
+                //for top
+                for (int y = -h; y < 0; y++)
                 {
-                    Tile tile = BottomTile.GetClone();
-                    tile.Location.X = x;
-                    tile.Location.Y = y;
-                    TileLayers[0].Tiles.Add(tile);
+                    for (int x = 0; x < Size.Width; x++)
+                    {
+                        Tile tile = BottomTile.GetClone();
+                        tile.Location.X = x;
+                        tile.Location.Y = y;
+                        TileLayers[0].Tiles.Add(tile);
+                    }
                 }
-            }        
-            
-            //for bottom
-            for (int y = Size.Height; y < Size.Height + h; y++)
-            {
-                for (int x = 0; x < Size.Width; x++)
+
+                //for bottom
+                for (int y = Size.Height; y < Size.Height + h; y++)
                 {
-                    Tile tile = BottomTile.GetClone();
-                    tile.Location.X = x;
-                    tile.Location.Y = y;
-                    TileLayers[0].Tiles.Add(tile);
+                    for (int x = 0; x < Size.Width; x++)
+                    {
+                        Tile tile = BottomTile.GetClone();
+                        tile.Location.X = x;
+                        tile.Location.Y = y;
+                        TileLayers[0].Tiles.Add(tile);
+                    }
                 }
             }
             Init();
@@ -675,6 +678,7 @@ namespace MetalX.Data
         /// </summary>
         public Point Location;
         public string Script = "";
+        public bool ChangeSceneEffect = true;
     }    
 
     //[Serializable]

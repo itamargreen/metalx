@@ -88,9 +88,9 @@ namespace MetalX
                 OnKeyboardDownHold(this, key);
             }
         }
-        DateTime DelayBeginTime;
-        bool IsDelaying;
-        double DelayTime;
+        protected DateTime DelayBeginTime;
+        protected bool IsDelaying;
+        protected double DelayTime;
         public void Delay(int ms)
         {
             if (IsDelaying)

@@ -219,6 +219,7 @@ namespace MetalX.SceneMaker2D
         {
             p = Util.PointDivInt(p, sceneMaker2D.SCN.TilePixel);
             sceneMaker2D.SCN.CodeLayer[p].SceneFileName = ui_link_file.Text;
+            sceneMaker2D.SCN.CodeLayer[p].ChangeSceneEffect = ui_chgscneff.Checked;
             sceneMaker2D.SCN.CodeLayer[p].DefaultLocation = new Point(int.Parse(ui_linkdefx.Text), int.Parse(ui_linkdefy.Text));
             Direction dir = Direction.U;
             if (ui_linkdefdir.Text == "U")
@@ -341,6 +342,17 @@ namespace MetalX.SceneMaker2D
             //{
             //    ui_mus_slt.Items.Add(game.Audios[i].Name);
             //}
+        }
+        void update_link_info(Point pp)
+        {
+            ui_linkzonew.Text = (right_rect.Size.Width / sceneMaker2D.SCN.TileSizePixel.Width).ToString();
+            ui_linkzoneh.Text = (right_rect.Size.Height / sceneMaker2D.SCN.TileSizePixel.Height).ToString();
+            ui_linkdefx.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultLocation.X.ToString();
+            ui_linkdefy.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultLocation.Y.ToString();
+            ui_link_file.Text = sceneMaker2D.SCN.CodeLayer[pp].SceneFileName;
+            ui_linkdefdir.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultDirection.ToString();
+            ui_chgscneff.Checked = sceneMaker2D.SCN.CodeLayer[pp].ChangeSceneEffect;
+
         }
         void update_info()
         {
@@ -789,24 +801,15 @@ namespace MetalX.SceneMaker2D
                     try
                     {
                         Point p = pointround(e.Location, sceneMaker2D.SCN.TileSizePixel);
-                        Point pp = pointround2(e.Location, sceneMaker2D.SCN.TileSizePixel);
-
 
                         p = pointaddpoint(p, new Point(sceneMaker2D.SCN.TileSizePixel));
                         right_rect.Size = new Size(pointdelpoint(p, right_rect.Location));
 
-
-                        ui_linkzonew.Text = (right_rect.Size.Width / sceneMaker2D.SCN.TileSizePixel.Width).ToString();
-                        ui_linkzoneh.Text = (right_rect.Size.Height / sceneMaker2D.SCN.TileSizePixel.Height).ToString();
-
                         sceneMaker2D.dragRect = right_rect;
 
-                        ui_linkdefx.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultLocation.X.ToString();
-                        ui_linkdefy.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultLocation.Y.ToString();
+                        Point pp = pointround2(e.Location, sceneMaker2D.SCN.TileSizePixel);
 
-                        ui_link_file.Text = sceneMaker2D.SCN.CodeLayer[pp].SceneFileName;
-
-                        ui_linkdefdir.Text = sceneMaker2D.SCN.CodeLayer[pp].DefaultDirection.ToString();
+                        update_link_info(pp);
                     }
                     catch { }
                 }

@@ -616,6 +616,28 @@ namespace MetalX
             //g.Textures.Add(texture);
             return texture;
         }
+        //public MetalXTexture LoadDotPNG(Bitmap bm, Size defTileSize)
+        //{
+        //    MetalXTexture texture = new MetalXTexture();
+
+        //    Bitmap bmp = bm;
+
+        //    texture.SizePixel = bmp.Size;
+        //    texture.TileSizePixel = defTileSize;
+        //    texture.MEMTexture = new Texture(Devices.D3DDev, bmp, Usage.None, Pool.Managed);
+
+        //    Bitmap bmp2x = new Bitmap(bmp.Size.Width * 2, bmp.Size.Height * 2);
+        //    texture.MEMTexture2X = new Texture(Devices.D3DDev, bmp2x, Usage.None, Pool.Managed);
+        //    //texture.MEMTexture2X.
+
+        //    bmp.Dispose();
+        //    //img.Dispose();
+        //    bmp2x.Dispose();
+        //    //graph.Dispose();
+
+        //    //g.Textures.Add(texture);
+        //    return texture;
+        //}
         /// <summary>
         /// 加载.MXT文件
         /// </summary>
@@ -626,7 +648,6 @@ namespace MetalX
             MetalXTexture texture = new MetalXTexture();
             texture = (MetalXTexture)Util.LoadObject(fileName);
             texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.X8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
-            //Add(texture);
 
             return texture;
         }
@@ -937,7 +958,7 @@ namespace MetalX
                 ty = ((float)dz.Bottom + Options.UVOffsetY) / (float)s.Height;
             }
 
-            Vector3 cp = loc;//new Vector3(0, 0, 0);
+            Vector3 cp = new Vector3(0, 0, 0);
 
             vertexs[0] = new CustomVertex.PositionColoredTextured(cp, color.ToArgb(), fx, fy);
             vertexs[1] = new CustomVertex.PositionColoredTextured(cp.X + size.Width, cp.Y - size.Height, cp.Z, color.ToArgb(), tx, ty);
@@ -948,7 +969,7 @@ namespace MetalX
             vertexs[5] = new CustomVertex.PositionColoredTextured(cp.X + size.Width, cp.Y - size.Height, cp.Z, color.ToArgb(), tx, ty);
 
             //loc = Util.Vector3MulInt(loc, 2);
-            //Devices.D3DDev.Transform.World = Matrix.Translation(loc);// +Matrix.Transformation(new Vector3(), new Quaternion(), new Vector3(), new Vector3(), new Quaternion(0, 0, 0, 0), new Vector3());// Matrix.RotationYawPitchRoll(0, 0, 0);
+            Devices.D3DDev.Transform.World = Matrix.Translation(loc);
 
             Devices.D3DDev.DrawUserPrimitives(PrimitiveType.TriangleList, 2, vertexs);
 
@@ -983,7 +1004,7 @@ namespace MetalX
                 mxt = t.MEMTexture;
             }
             Devices.Sprite.Draw(mxt, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
-            //Devices.Sprite.Draw2D(mxt, dz, dz, new Point(), 0, loc, color);
+            //Devices.Sprite.Draw2D(mxt, dz, new Rectangle(dz.Location, size), new Point(), 0, loc, color);
         }
 
         #endregion
@@ -1132,6 +1153,17 @@ namespace MetalX
         public void StopAudio()
         {
             SoundManager1.Stop();
+        }
+        public void SetVolume(int ch, int val)
+        {
+            if (ch == 1)
+            {
+                SoundManager1.Volume = val;
+            }
+            else if (ch == 2)
+            {
+                SoundManager2.Volume = val;
+            }
         }
         public double AudioPlayingProgress
         {

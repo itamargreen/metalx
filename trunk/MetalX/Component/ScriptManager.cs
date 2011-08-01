@@ -201,25 +201,29 @@ namespace MetalX.Component
             {
                 if (kw[1] == "1")
                 {
-                    game.PlayMP3Audio(1, game.AudioFiles[ kw[2]].FullName);
+                    game.PlayMP3Audio(1, game.AudioFiles[kw[2]].FullName);
                 }
                 else if (kw[1] == "2")
                 {
                     game.PlayMP3Audio(2, game.AudioFiles[kw[2]].FullName);
                 }
             }
+            else if (kw[0] == "vol")
+            {
+                game.SetVolume(int.Parse(kw[1]), int.Parse(kw[2]));
+            }
             else if (kw[0] == "script")
             {
                 int c = commands.Count;
-                    for (int i = 0; i < c; i++)
-                    {
-                        tmpcommands.Enqueue(commands.Dequeue());
-                    }
-                    AppendDotMetalXScript(kw[1]);
-                    for (int i = 0; i < c; i++)
-                    {
-                        commands.Enqueue(tmpcommands.Dequeue());
-                    }
+                for (int i = 0; i < c; i++)
+                {
+                    tmpcommands.Enqueue(commands.Dequeue());
+                }
+                AppendDotMetalXScript(kw[1]);
+                for (int i = 0; i < c; i++)
+                {
+                    commands.Enqueue(tmpcommands.Dequeue());
+                }
             }
             else if (kw[0] == "untilstop")
             {
@@ -362,7 +366,7 @@ namespace MetalX.Component
                     game.FormBoxManager.Appear("ASKboolBox", kw[2]);
                 }
             }
-                   else if (kw[0] == "msg")
+            else if (kw[0] == "msg")
             {
                 if (kw.Length == 1)
                 {
@@ -500,7 +504,7 @@ namespace MetalX.Component
                     {
                         game.SceneManager.SCN.Face(game.SceneManager.ME.OppositeDirection);
                     }
-                    
+
                 }
                 else if (kw[1] == "move")
                 {
@@ -600,7 +604,27 @@ namespace MetalX.Component
                 //game.FormBoxManager.Appear("MessageBox", tb);
             }
         }
+        void appendCommand(string cmd)
+        {
+            if (cmd == null)
+            {
+                return;
+            }
+            //text += cmd + "\n";
+            string[] cmds = cmd.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string c in cmds)
+            {
+                try
+                {
+                    if (c.Substring(0, 2) != "//")
+                    {
 
+                        commands.Enqueue(c);
+                    }
+                }
+                catch { }
+            }
+        }
         public void AppendCommand(string cmd)
         {
             if (cmd == null)
@@ -713,8 +737,8 @@ namespace MetalX.Component
                 {
                     string cmd = cmds[cmds.Length - 1];
                     cmdbak.Push(cmd);
-                    AppendCommand(cmd);
                     text += "\n";
+                    appendCommand(cmd);
                     if (isBig)
                     {
                         exe = true;

@@ -94,6 +94,7 @@ namespace MetalX.SceneMaker2D
             game.Textures.Add(game.LoadDotMXT(Properties.Resources._7), "sm7");
             game.Textures.Add(game.LoadDotMXT(Properties.Resources._8), "sm8");
             game.Textures.Add(game.LoadDotMXT(Properties.Resources._9), "sm9");
+            game.Textures.Add(game.LoadDotMXT(Properties.Resources.j), "j");
         }
 
         public override void Code()
@@ -338,7 +339,7 @@ namespace MetalX.SceneMaker2D
         void draw_link(Point p)
         {
             p = Util.PointMulInt(p, SCN.TilePixel);
-            game.DrawRect(new Rectangle(p, SCN.TileSizePixel), Color.Green);
+            game.DrawMetalXTexture(game.Textures["j"], new Rectangle(new Point(), new Size(16, 16)), p, 0, Color.White);
         }
     }
 }
