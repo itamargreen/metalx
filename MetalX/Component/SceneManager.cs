@@ -31,7 +31,7 @@ namespace MetalX.Component
         {
             foreach (NPC npc in NPCs)
             {
-                if (npc.Invisible == false)
+                //if (npc.Invisible == false)
                 {
                     if (npc.Name == name)
                     {
@@ -45,7 +45,7 @@ namespace MetalX.Component
         {
             foreach (NPC npc in NPCs)
             {
-                if (npc.Invisible == false)
+                //if (npc.Invisible == false)
                     if (npc.RealLocation == chr.FrontLocation)
                     {
                         return npc;
@@ -53,7 +53,7 @@ namespace MetalX.Component
             }
             foreach (NPC npc in NPCs)
             {
-                if (npc.Invisible == false)
+                //if (npc.Invisible == false)
                     if (npc.RealLocation == chr.RangeLocation)
                     {
                         if (SCN.CodeLayer[chr.FrontLocation].IsDesk)
@@ -162,9 +162,16 @@ namespace MetalX.Component
                     { }
                     if (sname != null)
                     {
-                        //game.AppendScript("me clrctrl");
-                        game.PlayMP3Audio(2, game.AudioFiles["scene"].FullName);
+                        game.SceneManager.ME.CanControl = false;
                         Enter(sname, Util.Point2Vector3(SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultLocation, 0), SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultDirection);
+                        game.AppendScript("scene fallout 300");
+                        game.AppendScript("delay 300");
+                        game.AppendScript("mp3 2 scene");
+                        game.AppendScript("delay 400");
+                        game.AppendScript("scene fallin 300");
+                        game.AppendScript("delay 300");
+                        game.AppendScript("me setctrl");
+                        game.ExecuteScript();
                     }
                 }
             }
@@ -248,23 +255,66 @@ namespace MetalX.Component
             {
                 if (spt != string.Empty)
                 {
-                    ME.CanControl = false;
+                    game.SceneManager.ME.CanControl = false;
                     game.AppendScript(spt);
                     game.AppendScript("me setctrl");
                     game.ExecuteScript();
                 }
             }
         }
+        string nextSCNName = null;
+        Vector3 nextSCNLoc;
+        Direction nextSCNDir;
+
+        void changeSCNCode()
+        {
+            if (nextSCNName != null)
+            {
+                string mus = "";
+                try
+                {
+                    mus = SCN.MusicNames[0];
+                }
+                catch { }
+                ME.Face(nextSCNDir);
+                SCN = null;
+                SCN = game.LoadDotMXScene(game.SceneFiles[nextSCNName].FullName);
+                SCN.Init(game.Options.WindowSize);
+                game.Options.TileSizePixel = SCN.TileSizePixel;
+
+                InitNPCs();
+
+                ME.SetRealLocation(nextSCNLoc, game.Options.TilePixel);
+                SceneJump(nextSCNLoc);
+                SCN.Face(Util.GetOppositeDirection(nextSCNDir));
+
+                if (SCN.MusicNames != null)
+                {
+                    if (SCN.MusicNames.Count > 0)
+                    {
+                        if (mus != SCN.MusicNames[0])
+                        {
+                            game.PlayMP3Audio(1, game.AudioFiles[SCN.MusicNames[0]].FullName, true);
+                        }
+                    }
+                    else
+                    {
+                        game.StopAudio();
+                    }
+                }
+                nextSCNName = null;
+            }
+        }
         public override void Code()
         {
-            if (SCN == null)
-            {
-                return;
-            }
-            
+            //if (SCN == null && nextSCNName != null)
+            //{
+            //    return;
+            //}
+            changeSCNCode();
+            scriptCode();
             moveCode();
             doorCode();
-            scriptCode();
         }
 
         public override void Draw()
@@ -279,50 +329,12 @@ namespace MetalX.Component
         
         public void Enter(string fileName, Vector3 realLoc, Direction dir)
         {
-            //Delay(500);
+            Delay(300); 
 
-            game.AppendScript("scene fallout 0");
-            //game.AppendScript("delay 300");
-            game.ExecuteScript();
+            nextSCNName = fileName;
+            nextSCNLoc = realLoc;
+            nextSCNDir = dir;
 
-            string mus = "";
-            try
-            {
-                mus = SCN.MusicNames[0];
-            }
-            catch { }
-            ME.Face(dir);
-            SCN = null;
-            SCN = game.LoadDotMXScene(game.SceneFiles[fileName].FullName);
-            SCN.Init(game.Options.WindowSize);
-            game.Options.TileSizePixel = SCN.TileSizePixel;
-
-            InitNPCs();
-
-            ME.SetRealLocation(realLoc, game.Options.TilePixel);
-            SceneJump(realLoc);
-            SCN.Face(Util.GetOppositeDirection(dir));
-
-            if (SCN.MusicNames != null)
-            {
-                if (SCN.MusicNames.Count > 0)
-                {
-                    if (mus != SCN.MusicNames[0])
-                    {
-                        game.PlayMP3Audio(1, game.AudioFiles[SCN.MusicNames[0]].FullName, true);
-                    }
-                }
-                else
-                {
-                    game.StopAudio();
-                }
-            }
-
-            //game.AppendScript("delay 500");
-            game.AppendScript("scene fallin 300");
-            game.AppendScript("delay 300");
-            //game.AppendScript("me setctrl");
-            game.ExecuteScript();
         }
         public void InitNPCs()
         {
@@ -341,24 +353,12 @@ namespace MetalX.Component
                         SCN.NPCNames.Remove(name);
                     }
                 }
-                //foreach (string name in SCN.NPCNames)
-                //{
-                //    try
-                //    {
-                //        NPCs.Add(game.LoadDotMXNPC(game.NPCFiles[name].FileName));
-                //    }
-                //    catch
-                //    {
-                //        SCN.NPCNames.Remove(name);
-                //    }
-                //}
             }
         }
         public void SceneJump(Vector3 realLoc)
         {
             Vector3 cp = new Vector3(game.Options.WindowSize.Width / 2, game.Options.WindowSize.Height / 2, 0);
 
-            //ME.SetRealLocation(realLoc, game.Options.TilePixel);
             Vector3 v3 = new Vector3(-realLoc.X, -realLoc.Y, 0);
             v3 = Util.Vector3AddVector3(v3, cp);
             SCN.SetRealLocation(v3, game.Options.TilePixel);
@@ -787,46 +787,56 @@ namespace MetalX.Component
         }
         public override void BaseCode()
         {
+            //shock();
+            //if (FallOutAlpha)
+            //{
+            //    fallOutAlpha();
+            //}
+            //else
+            //{
+            //    fallOut();
+            //}
+            
+            //tileRollOut();
             frameCode();
-            tileRollOut();
             base.BaseCode();
         }
         #region for tile roll out effect
-        DateTime TileRollOutBeginTime;
-        double TileRollOutTime = 1000;
-        bool IsTileRollOuting;
-        Vector3 TileRollOutOffset;
-        //Color TileRollOutColorFilter = Color.White;
-        public Vector3 EffectOffsetPixel
-        {
-            get
-            {
-                return Util.Vector3AddVector3(TileRollOutOffset, ScreenOffsetPixel);
-            }
-        }
-        public void TileRollOut(int ms)
-        {
-            TileRollOutBeginTime = DateTime.Now;
-            TileRollOutTime = ms;
-            IsTileRollOuting = true;
-        }
-        void tileRollOut()
-        {
-            if (IsTileRollOuting)
-            {
-                TimeSpan ts = DateTime.Now - TileRollOutBeginTime;
-                if (ts.TotalMilliseconds > TileRollOutTime)
-                {
-                    IsTileRollOuting = false;
-                }
-                else
-                {
-                    TileRollOutOffset.X = (float)(ts.TotalMilliseconds * (double)game.Options.WindowSizePixel.Width / TileRollOutTime);
-                    //byte alpha = (byte)(ts.TotalMilliseconds * 255 / TileRollOutTime);
-                    //TileRollOutColorFilter = Color.FromArgb(alpha, Color.White);
-                }
-            }
-        }
+        //DateTime TileRollOutBeginTime;
+        //double TileRollOutTime = 1000;
+        //bool IsTileRollOuting;
+        //Vector3 TileRollOutOffset;
+        ////Color TileRollOutColorFilter = Color.White;
+        //public Vector3 EffectOffsetPixel
+        //{
+        //    get
+        //    {
+        //        return Util.Vector3AddVector3(TileRollOutOffset, ScreenOffsetPixel);
+        //    }
+        //}
+        //public void TileRollOut(int ms)
+        //{
+        //    TileRollOutBeginTime = DateTime.Now;
+        //    TileRollOutTime = ms;
+        //    IsTileRollOuting = true;
+        //}
+        //void tileRollOut()
+        //{
+        //    if (IsTileRollOuting)
+        //    {
+        //        TimeSpan ts = DateTime.Now - TileRollOutBeginTime;
+        //        if (ts.TotalMilliseconds > TileRollOutTime)
+        //        {
+        //            IsTileRollOuting = false;
+        //        }
+        //        else
+        //        {
+        //            TileRollOutOffset.X = (float)(ts.TotalMilliseconds * (double)game.Options.WindowSizePixel.Width / TileRollOutTime);
+        //            //byte alpha = (byte)(ts.TotalMilliseconds * 255 / TileRollOutTime);
+        //            //TileRollOutColorFilter = Color.FromArgb(alpha, Color.White);
+        //        }
+        //    }
+        //}
         #endregion
         //public bool IsNobody()
         //{
@@ -1035,11 +1045,15 @@ namespace MetalX.Component
             #region key yes
             if (k == game.Options.KeyYES)
             {
+                if (ME.CanControl == false)
+                {
+                    return;
+                }
                 NPC npc = GetNPC(ME);
                 if (npc == null)
                 {
                     return;
-                }
+                }                
                 if (npc.Script == null)
                 {
                     return;
@@ -1048,7 +1062,7 @@ namespace MetalX.Component
                 {
                     return;
                 }
-                game.AppendScript("me clrctrl");
+                game.SceneManager.ME.CanControl = false;
                 npc.FocusOnMe(ME);
                 if (npc.IsBox)
                 {
