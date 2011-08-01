@@ -198,6 +198,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ui_mousex = new System.Windows.Forms.ToolStripLabel();
             this.ui_mousey = new System.Windows.Forms.ToolStripLabel();
+            this.ui_chgscneff = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -656,6 +657,7 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.ui_chgscneff);
             this.panel5.Controls.Add(this.button1);
             this.panel5.Controls.Add(this.label12);
             this.panel5.Controls.Add(this.ui_link_add);
@@ -1848,6 +1850,18 @@
             this.ui_mousey.Size = new System.Drawing.Size(11, 22);
             this.ui_mousey.Text = "y";
             // 
+            // ui_chgscneff
+            // 
+            this.ui_chgscneff.AutoSize = true;
+            this.ui_chgscneff.Checked = true;
+            this.ui_chgscneff.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ui_chgscneff.Location = new System.Drawing.Point(75, 188);
+            this.ui_chgscneff.Name = "ui_chgscneff";
+            this.ui_chgscneff.Size = new System.Drawing.Size(108, 16);
+            this.ui_chgscneff.TabIndex = 223;
+            this.ui_chgscneff.Text = "有切换场景特效";
+            this.ui_chgscneff.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -2074,6 +2088,7 @@
         private System.Windows.Forms.TextBox ui_movestep;
         private System.Windows.Forms.CheckBox ui_moveall;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox ui_chgscneff;
     }
 }
 

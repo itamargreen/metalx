@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MOSQUITO32.ico" />
+    <None Include="Resources\j.png" />
     <None Include="Resources\9.png" />
     <None Include="Resources\8.png" />
     <None Include="Resources\7.png" />

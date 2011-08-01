@@ -130,6 +130,13 @@ namespace MetalX.SceneMaker2D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap j {
+            get {
+                object obj = ResourceManager.GetObject("j", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap o {
             get {
                 object obj = ResourceManager.GetObject("o", resourceCulture);
