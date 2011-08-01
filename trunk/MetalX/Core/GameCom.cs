@@ -18,12 +18,13 @@ namespace MetalX
 
         public void EnableAll()
         {
-            Controllable = Visible = true;
+            Visible = true;
+            Controllable = true;
             Enable = true;
         }
         public void DisableAll()
         {
-            Controllable = Visible = false;
+            Controllable = false;
             Enable = false;
         }
 
@@ -92,10 +93,17 @@ namespace MetalX
         double DelayTime;
         public void Delay(int ms)
         {
-            DelayBeginTime = DateTime.Now;
-            DisableAll();
-            IsDelaying = true;
-            DelayTime = ms;
+            if (IsDelaying)
+            {
+                DelayTime += ms;
+            }
+            else
+            {
+                DelayBeginTime = DateTime.Now;
+                DisableAll();
+                IsDelaying = true;
+                DelayTime = ms;
+            }
         }
         void delay()
         {
@@ -189,9 +197,9 @@ namespace MetalX
         public bool FallOutAlpha = false;
         void fallOut()
         {
-            TimeSpan ts = DateTime.Now - FalloutBegineTime;
+            
             if (IsFallOuting)
-            {
+            {TimeSpan ts = DateTime.Now - FalloutBegineTime;
                 if (ts.TotalMilliseconds > FalloutTime)
                 {
                     if (IsFallin)
@@ -224,9 +232,9 @@ namespace MetalX
         }
         void fallOutAlpha()
         {
-            TimeSpan ts = DateTime.Now - FalloutBegineTime;
+            
             if (IsFallOuting)
-            {
+            {TimeSpan ts = DateTime.Now - FalloutBegineTime;
                 if (ts.TotalMilliseconds > FalloutTime)
                 {
                     if (IsFallin)

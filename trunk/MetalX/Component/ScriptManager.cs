@@ -199,7 +199,14 @@ namespace MetalX.Component
             }
             else if (kw[0] == "mp3")
             {
-                game.PlayMP3Audio(2, kw[1]);
+                if (kw[1] == "1")
+                {
+                    game.PlayMP3Audio(1, game.AudioFiles[ kw[2]].FullName);
+                }
+                else if (kw[1] == "2")
+                {
+                    game.PlayMP3Audio(2, game.AudioFiles[kw[2]].FullName);
+                }
             }
             else if (kw[0] == "script")
             {
@@ -600,6 +607,7 @@ namespace MetalX.Component
             {
                 return;
             }
+            text += cmd + "\n";
             string[] cmds = cmd.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string c in cmds)
             {
