@@ -1,0 +1,12 @@
+me skin me
+me bagin 0
+me bagin 1
+me bagin 2
+
+scn fallout 0
+scn enter event_002 1 9
+
+scn fallin 200
+delay 200
+
+script father

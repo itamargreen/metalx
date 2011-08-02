@@ -74,10 +74,6 @@ namespace MetalX.Resource
         {
             items.RemoveAt(i);
         }
-        public void LoadDotMXFormBox(FormBox fb)
-        {
-            Add(fb);
-        }
     }
     public class ASKboolBox : FormBox
     {
@@ -120,12 +116,12 @@ namespace MetalX.Resource
                 TextBox.Text = value;
             }
         }
-        void BB1_OnButtonDown(object arg)
+        void BB1_OnButtonDown(object sender, object arg)
         {
             game.ReturnScript(true);
         }
 
-        void BB2_OnButtonDown(object arg)
+        void BB2_OnButtonDown(object sender, object arg)
         {
             game.ReturnScript(false);
         }

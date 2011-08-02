@@ -11,59 +11,20 @@ namespace MetalX.Component
 {
     public class SceneManager : GameCom
     {
-        int sceneIndex = -1;
-        public int SceneIndex
-        {
-            get
-            {
-                return sceneIndex;
-            }
-            //set
-            //{
-            //    sceneIndex = value;
-            //}
-        }
+        //int sceneIndex = -1;
+        //public int SceneIndex
+        //{
+        //    get
+        //    {
+        //        return sceneIndex;
+        //    }
+        //    //set
+        //    //{
+        //    //    sceneIndex = value;
+        //    //}
+        //}
         protected bool PCbeforeNPC = true;
-        public Scene SCN;
-        public PC ME = new PC();
-        public List<NPC> NPCs = new List<NPC>();
-        public NPC GetNPC(string name)
-        {
-            foreach (NPC npc in NPCs)
-            {
-                //if (npc.Invisible == false)
-                {
-                    if (npc.Name == name)
-                    {
-                        return npc;
-                    }
-                }
-            }
-            return null;
-        }
-        public NPC GetNPC(CHR chr)
-        {
-            foreach (NPC npc in NPCs)
-            {
-                //if (npc.Invisible == false)
-                    if (npc.RealLocation == chr.FrontLocation)
-                    {
-                        return npc;
-                    }
-            }
-            foreach (NPC npc in NPCs)
-            {
-                //if (npc.Invisible == false)
-                    if (npc.RealLocation == chr.RangeLocation)
-                    {
-                        if (SCN.CodeLayer[chr.FrontLocation].IsDesk)
-                        {
-                            return npc;
-                        }
-                    }
-            }
-            return null;
-        }
+
         protected int frameIndex = 0;
         protected DateTime lastFrameBeginTime = DateTime.Now;
 
@@ -88,7 +49,7 @@ namespace MetalX.Component
         //            chr.RealLocationPixel.Y -= movePixel;
         //            if (chr is PC)
         //            {
-        //                SCN.RealLocationPixel.Y += movePixel;
+        //                game.SCN.RealLocationPixel.Y += movePixel;
         //            }
         //        }
         //        else if (chr.RealDirection == Direction.L)
@@ -96,7 +57,7 @@ namespace MetalX.Component
         //            chr.RealLocationPixel.X -= movePixel;
         //            if (chr is PC)
         //            {
-        //                SCN.RealLocationPixel.X += movePixel;
+        //                game.SCN.RealLocationPixel.X += movePixel;
         //            }
         //        }
         //        else if (chr.RealDirection == Direction.D)
@@ -104,7 +65,7 @@ namespace MetalX.Component
         //            chr.RealLocationPixel.Y += movePixel;
         //            if (chr is PC)
         //            {
-        //                SCN.RealLocationPixel.Y -= movePixel;
+        //                game.SCN.RealLocationPixel.Y -= movePixel;
         //            }
         //        }
         //        else if (chr.RealDirection == Direction.R)
@@ -112,7 +73,7 @@ namespace MetalX.Component
         //            chr.RealLocationPixel.X += movePixel;
         //            if (chr is PC)
         //            {
-        //                SCN.RealLocationPixel.X -= movePixel;
+        //                game.SCN.RealLocationPixel.X -= movePixel;
         //            }
         //        }
 
@@ -122,15 +83,15 @@ namespace MetalX.Component
         //            {
         //                try
         //                {
-        //                    if (SCN != null)
+        //                    if (game.SCN != null)
         //                    {
-        //                        string sname = SCN.CodeLayer[chr.RealLocation].SceneFileName;
+        //                        string sname = game.SCN.CodeLayer[chr.RealLocation].SceneFileName;
         //                        if (sname != null)
         //                        {
         //                            //int dx = scene.CodeLayer[chr.RealLocation].DefaultLocation.X;
         //                            //int dy = scene.CodeLayer[chr.RealLocation].DefaultLocation.Y;
-        //                            game.SceneManager.Enter(sname, SCN.CodeLayer[chr.RealLocation].DefaultLocation);
-        //                            chr.RealDirection = SCN.CodeLayer[chr.RealLocation].DefaultDirection;
+        //                            game.SceneManager.Enter(sname, game.SCN.CodeLayer[chr.RealLocation].DefaultLocation);
+        //                            chr.RealDirection = game.SCN.CodeLayer[chr.RealLocation].DefaultDirection;
         //                        }
         //                    }
         //                }
@@ -141,40 +102,40 @@ namespace MetalX.Component
         //}
         protected void moveCode()
         {
-            foreach (NPC npc in NPCs)
+            foreach (NPC npc in game.NPCs)
             {
                 npc.MovePixel();
             }
-            if (ME.NeedMovePixel > 0)
+            if (game.ME.NeedMovePixel > 0)
             {
-                SCN.MovePixel(ME.MoveSpeed);
+                game.SCN.MovePixel(game.ME.MoveSpeed);
 
-                ME.MovePixel();
+                game.ME.MovePixel();
 
-                if (ME.NeedMovePixel == 0)
+                if (game.ME.NeedMovePixel == 0)
                 {
                     string sname = null;
                     try
                     {
-                        sname = SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].SceneFileName;
+                        sname = game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].SceneFileName;
                     }
                     catch
                     { }
                     if (sname != null)
                     {
-                        Enter(sname, Util.Point2Vector3(SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultLocation, 0), SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].DefaultDirection);
-                        game.SceneManager.ME.CanControl = false;
-                        //if (SCN[(int)ME.RealLocation.Y, (int)ME.RealLocation.X].ChangeSceneEffect)
+                        Enter(sname, Util.Point2Vector3(game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultLocation, 0), game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultDirection);
+                        game.SceneManager.Controllable = false;
+                        //if (game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].ChangeSceneEffect)
                         {
                             Delay(300);
-                            game.AppendScript("mp3 2 scene");
-                            game.AppendScript("scene fallout 200");
+                            //game.AppendScript("mp3 2 scene");
+                            game.AppendScript("scn fallout 200");
                             game.AppendScript("delay 300");
-                            game.AppendScript("mp3 2 scene");
-                            game.AppendScript("scene fallin 200");
+                            //game.AppendScript("mp3 2 scene");
+                            game.AppendScript("scn fallin 200");
                             game.AppendScript("delay 200");
                         }
-                        game.AppendScript("me setctrl");
+                        game.AppendScript("scn setctrl");
                         game.ExecuteScript();
                     }
                 }
@@ -182,12 +143,12 @@ namespace MetalX.Component
         }
         protected void frameCode()
         {
-            if (SCN == null)
+            if (game.SCN == null)
             {
                 return;
             }
             TimeSpan ts = DateTime.Now - lastFrameBeginTime;
-            if (ts.TotalMilliseconds > SCN.FrameInterval)
+            if (ts.TotalMilliseconds > game.SCN.FrameInterval)
             {
                 lastFrameBeginTime = DateTime.Now;
                 frameIndex++;
@@ -195,20 +156,20 @@ namespace MetalX.Component
         }
         protected void doorCode()
         {
-            foreach (NPC npc in NPCs)
+            foreach (NPC npc in game.NPCs)
             {
                 if (npc.IsDoor)
                 {
                     Vector3 v33 = npc.RealLocation;
-                    if (v33 == ME.FrontLocation)
+                    if (v33 == game.ME.FrontLocation)
                     {
                         PCbeforeNPC = true;
                     }
                     else
                     {
-                        //if (ME.NeedMovePixel > 0)
+                        //if (game.ME.NeedMovePixel > 0)
                         v33.Y++;
-                        if (v33 == ME.RealLocation)
+                        if (v33 == game.ME.RealLocation)
                         {
                             if (npc.Invisible == false)
                             {
@@ -216,11 +177,11 @@ namespace MetalX.Component
                                 game.PlayMP3Audio(2, game.AudioFiles["door"].FullName);
                             }
                         }
-                        else if (v33 == ME.LastLocation)
+                        else if (v33 == game.ME.LastLocation)
                         {
                             //
 
-                            if (ME.RealDirection == Direction.U)
+                            if (game.ME.RealDirection == Direction.U)
                             {
                                 PCbeforeNPC = true;
                             }
@@ -240,18 +201,18 @@ namespace MetalX.Component
         }
         void scriptCode()
         {
-            if (ME.CanControl == false)
+            if (game.SceneManager.Controllable == false)
             {
                 return;
             }
-            if (ME.NeedMovePixel > 0)
+            if (game.ME.NeedMovePixel > 0)
             {
                 return;
             }
             string spt = null;
             try
             {
-                spt = SCN[ME.RealLocation].Script;
+                spt = game.SCN[game.ME.RealLocation].Script;
             }
             catch
             { }
@@ -259,9 +220,9 @@ namespace MetalX.Component
             {
                 if (spt != string.Empty)
                 {
-                    game.SceneManager.ME.CanControl = false;
+                    game.AppendScript("scn clrctrl");
                     game.AppendScript(spt);
-                    game.AppendScript("me setctrl");
+                    game.AppendScript("scn setctrl");
                     game.ExecuteScript();
                 }
             }
@@ -274,33 +235,33 @@ namespace MetalX.Component
         {
             if (nextSCNName != null)
             {
-                //game.SceneManager.ME.CanControl = false;
+                //game.SceneManager.game.ME.CanControl = false;
 
                 string mus = "";
                 try
                 {
-                    mus = SCN.MusicNames[0];
+                    mus = game.SCN.MusicNames[0];
                 }
                 catch { }
-                ME.Face(nextSCNDir);
-                SCN = null;
-                SCN = game.LoadDotMXScene(game.SceneFiles[nextSCNName].FullName);
-                SCN.Init(game.Options.WindowSize);
-                game.Options.TileSizePixel = SCN.TileSizePixel;
+                game.ME.Face(nextSCNDir);
+                game.SCN = null;
+                game.SCN = game.LoadDotMXScene(game.SceneFiles[nextSCNName].FullName);
+                game.SCN.Init(game.Options.WindowSize);
+                game.Options.TileSizePixel = game.SCN.TileSizePixel;
 
                 InitNPCs();
 
-                ME.SetRealLocation(nextSCNLoc, game.Options.TilePixel);
+                game.ME.SetRealLocation(nextSCNLoc, game.Options.TilePixel);
                 SceneJump(nextSCNLoc);
-                SCN.Face(Util.GetOppositeDirection(nextSCNDir));
+                game.SCN.Face(Util.GetOppositeDirection(nextSCNDir));
 
-                if (SCN.MusicNames != null)
+                if (game.SCN.MusicNames != null)
                 {
-                    if (SCN.MusicNames.Count > 0)
+                    if (game.SCN.MusicNames.Count > 0)
                     {
-                        if (mus != SCN.MusicNames[0])
+                        if (mus != game.SCN.MusicNames[0])
                         {
-                            game.PlayMP3Audio(1, game.AudioFiles[SCN.MusicNames[0]].FullName, true);
+                            game.PlayMP3Audio(1, game.AudioFiles[game.SCN.MusicNames[0]].FullName, true);
                         }
                     }
                     else
@@ -313,7 +274,7 @@ namespace MetalX.Component
         }
         public override void Code()
         {
-            //if (SCN == null && nextSCNName != null)
+            //if (game.SCN == null && nextSCNName != null)
             //{
             //    return;
             //}
@@ -325,12 +286,12 @@ namespace MetalX.Component
 
         public override void Draw()
         {
-            if (SCN == null)
+            if (game.SCN == null)
             {
                 return;
             }
-            //DrawBorder(SCN);
-            DrawScene(SCN);
+            //DrawBorder(game.SCN);
+            DrawScene(game.SCN);
         }
         
         public void Enter(string fileName, Vector3 realLoc, Direction dir)
@@ -341,19 +302,19 @@ namespace MetalX.Component
         }
         public void InitNPCs()
         {
-            NPCs.Clear();
-            if (SCN.NPCNames != null)
+            game.NPCs.Clear();
+            if (game.SCN.NPCNames != null)
             {
-                for (int i = 0; i < SCN.NPCNames.Count; i++)
+                for (int i = 0; i < game.SCN.NPCNames.Count; i++)
                 {
-                    string name = SCN.NPCNames[i];
+                    string name = game.SCN.NPCNames[i];
                     try
                     {
-                        NPCs.Add(game.LoadDotMXNPC(game.NPCFiles[name].FullName));
+                        game.NPCs.Add(game.LoadDotMXNPC(game.NPCFiles[name].FullName));
                     }
                     catch
                     {
-                        SCN.NPCNames.Remove(name);
+                        game.SCN.NPCNames.Remove(name);
                     }
                 }
             }
@@ -364,7 +325,7 @@ namespace MetalX.Component
 
             Vector3 v3 = new Vector3(-realLoc.X, -realLoc.Y, 0);
             v3 = Util.Vector3AddVector3(v3, cp);
-            SCN.SetRealLocation(v3, game.Options.TilePixel);
+            game.SCN.SetRealLocation(v3, game.Options.TilePixel);
         }
 
         //bool IsInWindow(Point p)
@@ -537,9 +498,9 @@ namespace MetalX.Component
         //        int lastl = 3, nextl = 3, drawl = 3;
         //        try
         //        {
-        //            lastl = s[(int)ME.LastLocation.Y, (int)ME.LastLocation.X].DrawLayer;
-        //            nextl = s[(int)ME.NextLocation.Y, (int)ME.NextLocation.X].DrawLayer;
-        //            Vector3 drawloc = ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl);
+        //            lastl = s[(int)game.ME.LastLocation.Y, (int)game.ME.LastLocation.X].DrawLayer;
+        //            nextl = s[(int)game.ME.NextLocation.Y, (int)game.ME.NextLocation.X].DrawLayer;
+        //            Vector3 drawloc = game.ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl);
         //            drawl = s[(int)drawloc.Y, (int)drawloc.X].DrawLayer;
         //        }
         //        catch { }
@@ -547,12 +508,12 @@ namespace MetalX.Component
         //        {
         //            if (l == drawl)
         //            {
-        //                DrawCHR(ME);
+        //                DrawCHR(game.ME);
         //            }
         //        }
-        //        if (NPCs != null)
+        //        if (game.NPCs != null)
         //        {
-        //            foreach (NPC npc in NPCs)
+        //            foreach (NPC npc in game.NPCs)
         //            {
         //                int npcdrawl = s.CodeLayer[npc.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
         //                if (l == npcdrawl)
@@ -565,29 +526,29 @@ namespace MetalX.Component
         //        {
         //            if (l == drawl)
         //            {
-        //                DrawCHR(ME);
+        //                DrawCHR(game.ME);
         //            }
         //        }
         //        for (int y = 0; y < s.Tiles[l].Length; y++)
         //        {
-        //            if (y + SCN.RealLocation.Y < 0 + -1)
+        //            if (y + game.SCN.RealLocation.Y < 0 + -1)
         //            {
         //                //y++;
         //                continue;
         //            }
-        //            if (y + SCN.RealLocation.Y > game.Options.WindowSize.Height + 1)
+        //            if (y + game.SCN.RealLocation.Y > game.Options.WindowSize.Height + 1)
         //            {
         //                //y++;
         //                continue;
         //            }
         //            for (int x = 0; x < s.Tiles[l][y].Length; x++)
         //            {
-        //                if (x + SCN.RealLocation.X < 0 + -1)
+        //                if (x + game.SCN.RealLocation.X < 0 + -1)
         //                {
         //                    //x++;
         //                    continue;
         //                }
-        //                if (x + SCN.RealLocation.X > game.Options.WindowSize.Width + 1)
+        //                if (x + game.SCN.RealLocation.X > game.Options.WindowSize.Width + 1)
         //                {
         //                    //x++;
         //                    continue;
@@ -595,7 +556,7 @@ namespace MetalX.Component
         //                Tile t = s[l, y, x];
         //                if (t != null)
         //                {
-        //                    //if (IsInWindow(Util.PointAddPoint(t.LocationPoint, SCN.RealLocationPoint)))
+        //                    //if (IsInWindow(Util.PointAddPoint(t.LocationPoint, game.SCN.RealLocationPoint)))
         //                    {
         //                        int fi = 0;
         //                        if (t.IsAnimation)
@@ -636,26 +597,26 @@ namespace MetalX.Component
                 int lastl = 3, nextl = 3, drawl = 3;
                 try
                 {
-                    lastl = s[(int)ME.LastLocation.Y, (int)ME.LastLocation.X].DrawLayer;
-                    nextl = s[(int)ME.NextLocation.Y, (int)ME.NextLocation.X].DrawLayer;
-                    Vector3 drawloc = ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl);
+                    lastl = s[(int)game.ME.LastLocation.Y, (int)game.ME.LastLocation.X].DrawLayer;
+                    nextl = s[(int)game.ME.NextLocation.Y, (int)game.ME.NextLocation.X].DrawLayer;
+                    Vector3 drawloc = game.ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl);
                     drawl = s[(int)drawloc.Y, (int)drawloc.X].DrawLayer;
                 }
                 catch { }
-                //int lastl = s.CodeLayer[ME.LastLocation].DrawLayer;
-                //int nextl = s.CodeLayer[ME.NextLocation].DrawLayer;
-                //int drawl = s.CodeLayer[ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
-                //int nodrawl = s.CodeLayer[ME.FrontLocation].RchDisappear;
+                //int lastl = s.CodeLayer[game.ME.LastLocation].DrawLayer;
+                //int nextl = s.CodeLayer[game.ME.NextLocation].DrawLayer;
+                //int drawl = s.CodeLayer[game.ME.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
+                //int nodrawl = s.CodeLayer[game.ME.FrontLocation].RchDisappear;
                 if (PCbeforeNPC)
                 {
                     if (l == drawl)
                     {
-                        DrawCHR(ME);
+                        DrawCHR(game.ME);
                     }
                 }
-                if (NPCs != null)
+                if (game.NPCs != null)
                 {
-                    foreach (NPC npc in NPCs)
+                    foreach (NPC npc in game.NPCs)
                     {
                         int npcdrawl = s.CodeLayer[npc.GetDrawLocation(game.Options.TilePixel, lastl, nextl)].DrawLayer;
                         if (l == npcdrawl)
@@ -668,7 +629,7 @@ namespace MetalX.Component
                 {
                     if (l == drawl)
                     {
-                        DrawCHR(ME);
+                        DrawCHR(game.ME);
                     }
                 }
                 foreach (Tile t in tl.Tiles)
@@ -764,21 +725,34 @@ namespace MetalX.Component
             {
                 dz.X = 0;
             }
-            dz.Size = game.Textures[chr.TextureIndex].TileSizePixel;
-            int w = dz.Size.Width * chr.Size.Width;
-            int h = dz.Size.Height * chr.Size.Height;
-            dz.Size = new Size(w, h);
+            Size tdz = game.Textures[chr.TextureIndex].TileSizePixel;
+            tdz.Width *= chr.Size.Width;
+            tdz.Height *= chr.Size.Height;
+            if (chr is NPC)
+            {
+                if (((NPC)chr).IsDoor)
+                {
+                    tdz.Height *= 2;
+                }
+            }
+            dz.Size = tdz;
             Vector3 v31 = chr.RealLocationPixel;
             v31.Y += game.Options.SpriteOffsetPixel;
-            v31.X += SCN.RealLocationPixel.X;
-            v31.Y += SCN.RealLocationPixel.Y;
-            v31.Z += SCN.RealLocationPixel.Z;
+            v31.X += game.SCN.RealLocationPixel.X;
+            v31.Y += game.SCN.RealLocationPixel.Y;
+            v31.Z += game.SCN.RealLocationPixel.Z;
             v31 = Util.Vector3AddVector3(v31, ScreenOffsetPixel);
 
             Size dsize = game.Options.TileSizePixelX;
             dsize.Width *= chr.Size.Width;
             dsize.Height *= chr.Size.Height;
-
+            if (chr is NPC)
+            {
+                if (((NPC)chr).IsDoor)
+                {
+                    dsize.Height *= 2;
+                }
+            }
             float rot = 0;
             game.DrawMetalXTexture(
                 game.Textures[chr.TextureIndex],
@@ -843,7 +817,7 @@ namespace MetalX.Component
         #endregion
         //public bool IsNobody()
         //{
-        //    return IsNobody(scene, ME.FrontLocation);
+        //    return IsNobody(scene, game.ME.FrontLocation);
         //}
         //bool IsNobody(Scene s, Vector3 v3)
         //{
@@ -851,13 +825,13 @@ namespace MetalX.Component
         //    {
         //        return true;
         //    }
-        //    if (s.NPCs == null)
+        //    if (s.game.NPCs == null)
         //    {
         //        return true;
         //    }
-        //    foreach (NPC GetNPC(ME) in s.NPCs)
+        //    foreach (NPC GetNPC(game.ME) in s.game.NPCs)
         //    {
-        //        if (GetNPC(ME).RealLocation == v3)
+        //        if (GetNPC(game.ME).RealLocation == v3)
         //        {
         //            return false;
         //        }
@@ -871,15 +845,15 @@ namespace MetalX.Component
         //        index = -1;
         //        return true;
         //    }
-        //    if (s.NPCs == null)
+        //    if (s.game.NPCs == null)
         //    {
         //        index = -1;
         //        return true;
         //    } 
         //    index = 0;
-        //    foreach (NPC GetNPC(ME) in s.NPCs)
+        //    foreach (NPC GetNPC(game.ME) in s.game.NPCs)
         //    {
-        //        if (GetNPC(ME).RealLocation == v3)
+        //        if (GetNPC(game.ME).RealLocation == v3)
         //        {
         //            return false;
         //        }
@@ -890,7 +864,7 @@ namespace MetalX.Component
         //}
         //public void Move(CHR chr, int stp)
         //{
-        //    Move(SCN, chr, chr.RealDirection, stp);
+        //    Move(game.SCN, chr, chr.RealDirection, stp);
         //}
         //public void Move(Scene s, CHR chr, Direction dir, int stp)
         //{
@@ -961,7 +935,7 @@ namespace MetalX.Component
         //            s.RealLocation.X--;
         //        }
         //    }
-        //    //ME leave door
+        //    //game.ME leave door
 
         //    n = s.GetNPC(chr.RealLocation);
         //    if (n != null)
@@ -989,58 +963,47 @@ namespace MetalX.Component
         //}
         public override void OnKeyboardDownHoldCode(object sender, int key)
         {
-            if (SCN == null)
-            {
-                return;
-            }
-            if (ME.CanControl == false)
+            if (game.SCN == null)
             {
                 return;
             }
             Key k = (Key)key;
-            if (ME.NeedMovePixel == 0)
+            if (game.ME.NeedMovePixel == 0)
             {
-
+                if ((k == game.Options.KeyUP || k == game.Options.KeyLEFT || k == game.Options.KeyDOWN || k == game.Options.KeyRIGHT))
                 {
-                    if ((k == game.Options.KeyUP || k == game.Options.KeyLEFT || k == game.Options.KeyDOWN || k == game.Options.KeyRIGHT))
+                    Direction dir = Direction.U;
+                    if (k == game.Options.KeyUP)
                     {
-                        Direction dir = Direction.U;
-                        if (k == game.Options.KeyUP)
-                        {
-                            dir = Direction.U;
-                        }
-                        else if (k == game.Options.KeyLEFT)
-                        {
-                            dir = Direction.L;
-                        }
-                        else if (k == game.Options.KeyDOWN)
-                        {
-                            dir = Direction.D;
-                        }
-                        else if (k == game.Options.KeyRIGHT)
-                        {
-                            dir = Direction.R;
-                        }
+                        dir = Direction.U;
+                    }
+                    else if (k == game.Options.KeyLEFT)
+                    {
+                        dir = Direction.L;
+                    }
+                    else if (k == game.Options.KeyDOWN)
+                    {
+                        dir = Direction.D;
+                    }
+                    else if (k == game.Options.KeyRIGHT)
+                    {
+                        dir = Direction.R;
+                    }
 
-                        if (ME.Face(dir))
-                        {
-                            SCN.Face(ME.OppositeDirection);
-                        }
-                        if (ME.Move(SCN, game.SceneManager.GetNPC(ME), game.Options.TilePixel))
-                        {
-                            SCN.Move(1, game.Options.TilePixel);
-                        }
+                    if (game.ME.Face(dir))
+                    {
+                        game.SCN.Face(game.ME.OppositeDirection);
+                    }
+                    if (game.ME.Move(game.SCN, game.GetNPC(game.ME), game.Options.TilePixel))
+                    {
+                        game.SCN.Move(1, game.Options.TilePixel);
                     }
                 }
             }
         }
         public override void OnKeyboardUpCode(object sender, int key)
         {
-            if (SCN == null)
-            {
-                return;
-            }
-            if (ME.CanControl == false)
+            if (game.SCN == null)
             {
                 return;
             }
@@ -1048,11 +1011,7 @@ namespace MetalX.Component
             #region key yes
             if (k == game.Options.KeyYES)
             {
-                if (ME.CanControl == false)
-                {
-                    return;
-                }
-                NPC npc = GetNPC(ME);
+                NPC npc = game.GetNPC(game.ME);
                 if (npc == null)
                 {
                     return;
@@ -1065,33 +1024,22 @@ namespace MetalX.Component
                 {
                     return;
                 }
-                game.SceneManager.ME.CanControl = false;
-                npc.FocusOnMe(ME);
+                game.SceneManager.Controllable = false;
+                npc.FocusOnMe(game.ME);
                 if (npc.IsBox)
                 {
-                    if (npc.Bag.Count > 0)
-                    {
-                        game.AppendScript(npc.Script);
-                        game.AppendScript("me setctrl");
-                        game.ExecuteScript();
-                    }
-                    else
-                    {
-                        game.AppendScript("msg 什么都没有");
-                        game.AppendScript("untilpress y");
-                        game.AppendScript("msg");
-                        game.AppendScript("me setctrl");
-                        game.ExecuteScript();
-                    }
+                    game.AppendScript(npc.Script);
+                    game.AppendScript("scn setctrl");
+                    game.ExecuteScript();
                 }
                 else if (npc.IsDoor)
                 {
                 }
                 else
                 {
-                    //if (GetNPC(ME).Code == string.Empty)
+                    //if (GetNPC(game.ME).Code == string.Empty)
                     //{
-                    //    game.AppendScript("msg " + GetNPC(ME).DialogText);
+                    //    game.AppendScript("msg " + GetNPC(game.ME).DialogText);
                     //    game.AppendScript("untilpress j");
                     //    game.AppendScript("gui close MessageBox");
                     //    game.AppendScript("unfreezeme");
@@ -1100,29 +1048,30 @@ namespace MetalX.Component
                     //}
                     //else
                     game.AppendScript(npc.Script);
-                    game.AppendScript("me setctrl");
+
+                    game.AppendScript("scn setctrl");
                     game.AppendScript("npc " + npc.Name + " dir def");
                     game.ExecuteScript();
                     //if (sm.IsNobody() == false)
                     //{
-                    //    if (sm.ME.IsTalking)
+                    //    if (sm.game.ME.IsTalking)
                     //    {
-                    //        sm.GetNPC(ME).FocusOnMe(sm.ME);
-                    //        game.AppendAndExecuteScript("GetNPC(ME) say " + sm.GetNPC(ME).DialogText);
+                    //        sm.GetNPC(game.ME).FocusOnMe(sm.game.ME);
+                    //        game.AppendAndExecuteScript("GetNPC(game.ME) say " + sm.GetNPC(game.ME).DialogText);
                     //    }
                     //    else
                     //    {
-                    //        sm.GetNPC(ME).RecoverDirection();
+                    //        sm.GetNPC(game.ME).RecoverDirection();
                     //        game.AppendAndExecuteScript("gui close NPCTalk");
                     //    }
                     //}
                 }
                 //else if (k == Key.K)
                 //{
-                //    if (sm.GetNPC(ME) != null)
+                //    if (sm.GetNPC(game.ME) != null)
                 //    {
                 //        game.AppendAndExecuteScript("unfreezeme");
-                //        sm.GetNPC(ME).RecoverDirection();
+                //        sm.GetNPC(game.ME).RecoverDirection();
                 //        game.AppendAndExecuteScript("gui close NPCTalk");
                 //    }
                 //}

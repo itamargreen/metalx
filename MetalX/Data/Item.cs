@@ -5,20 +5,31 @@ using System.Text;
 namespace MetalX.Data
 {
     [Serializable]
+    public enum ItemType
+    {
+        Tool = 0,
+        Supply = 1,
+        Battle = 2,
+        Equipment = 3,
+    }
+    [Serializable]
     public class Item
     {
         public Guid GUID = Guid.NewGuid();
         public string Name;
         public string Description;
-        public string Icon;
+        public string IconName;
         public int IconIndex;
         public int ReqLevel;
-        public int ReqMLevel, ReqELevel, ReqBLevel;
+        public int ReqMBLevel;
+        public int ReqCBLevel;
         public float Weight;
-        public float Money;
+        public float Worth;
         public float Endure = 1;
         public float Upgrade = 0;
         public int UpgradeTime = 0;
+        public string Script;
+        public ItemType ItemType;
         public Item GetClone()
         {
             return (Item)MemberwiseClone();
@@ -27,14 +38,14 @@ namespace MetalX.Data
     [Serializable]
     public enum EquipmentCHRType
     {
-        PrimaryWeapon = 0,
-        SecondryWeapon = 1,
-        Body = 2,
-        Leg = 3,
-        Foot = 4,
-        Head = 5,
-        Hand = 6,
-        Other = 7,
+        Weapon = 0,
+        Body = 1,
+        Leg = 2,
+        Foot = 3,
+        Head = 4,
+        Hand = 5,
+        Ring = 6,
+        Necklace = 7,
     }
     [Serializable]
     public enum EquipmentMTLType
@@ -51,8 +62,12 @@ namespace MetalX.Data
     [Serializable]
     public class EquipmentCHR : Item
     {
-        public EquipmentCHRType EquipmentTyp;
-        public int ExtMLevel, ExtELevel, ExtBLevel;
+        public EquipmentCHR()
+        {
+            ItemType = ItemType.Equipment;
+        }
+        public EquipmentCHRType Type;
+        //public int ExtMLevel, ExtELevel, ExtBLevel;
 
         int damage;
         int defense;
@@ -135,6 +150,10 @@ namespace MetalX.Data
     [Serializable]
     public class EquipmentMTL : Item
     {
+        public EquipmentMTL()
+        {
+            ItemType = ItemType.Equipment;
+        }
         public EquipmentMTLType Type;
 
         int damage;
@@ -252,13 +271,13 @@ namespace MetalX.Data
         }
 
     }
-    [Serializable]
-    public class Supply : Item
-    {
-        public int RecoverHP, RecoverMP;
-        new public Supply GetClone()
-        {
-            return (Supply)MemberwiseClone();
-        }
-    }
+    //[Serializable]
+    //public class ScriptItem : Item
+    //{
+    //    public string Script;
+    //    new public ScriptItem GetClone()
+    //    {
+    //        return (ScriptItem)MemberwiseClone();
+    //    }
+    //}
 }

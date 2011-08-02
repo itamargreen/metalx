@@ -209,7 +209,11 @@ namespace MetalX.Component
             }
             else if (k == game.Options.KeyNO)
             {
-
+                Disappear();
+                if (AppearingFormBoxIndex.Count == 0)
+                {
+                    game.SceneManager.Controllable = true;
+                }
             }
             else if (k == game.Options.KeyUP)
             {

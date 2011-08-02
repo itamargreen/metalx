@@ -83,6 +83,7 @@
     <Compile Include="File\MetalXMovie.cs" />
     <Compile Include="Net\Socket.cs" />
     <Compile Include="Resource\FileLib.cs" />
+    <Compile Include="Resource\Items.cs" />
     <Compile Include="Resource\Textures.cs" />
     <Compile Include="Data\CHR.cs" />
     <Compile Include="Data\FLT.cs" />

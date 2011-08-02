@@ -62,7 +62,8 @@ namespace MetalX.Data
         /// <summary>
         /// 场景位置
         /// </summary>
-        public Vector3 RealLocation;
+        [NonSerialized]
+        public Vector3 RealLocation=new Vector3();
         public Point RealLocationPoint
         {
             get
@@ -70,6 +71,7 @@ namespace MetalX.Data
                 return new Point((int)RealLocation.X, (int)RealLocation.Y);
             }
         }
+        [NonSerialized]
         public Vector3 RealLocationPixel = new Vector3();
         public Point RealLocationPixelPoint
         {

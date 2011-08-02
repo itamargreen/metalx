@@ -10,11 +10,19 @@ namespace MetalX.Component
 {
     public class ScriptManager : GameCom
     {
-        ScriptReturn RETURN = new ScriptReturn();
+        public ScriptReturn RETURN = new ScriptReturn();
 
         public void Return(bool yes)
         {
             RETURN.BOOL = yes;
+        }
+        public void Return(int i)
+        {
+            RETURN.INT = i;
+        }
+        public void Return(string str)
+        {
+            RETURN.STRING = str;
         }
 
         Stack<string> cmdbak = new Stack<string>();
@@ -48,7 +56,7 @@ namespace MetalX.Component
         Queue<string> commands = new Queue<string>();
         Queue<string> tmpcommands = new Queue<string>();
         Queue<string> inscommands = new Queue<string>();
-        bool loop = false;
+        bool block = false;
                 
         //TimeSpan delayEclipseTimeSpan
         //{
@@ -70,7 +78,7 @@ namespace MetalX.Component
             //    delayLeftTime = delayTime - delayEclipseTimeSpan.TotalMilliseconds;
             //}
             //else
-            if (loop)
+            if (block)
             {
                 if (curcmd != null)
                 {
@@ -78,7 +86,7 @@ namespace MetalX.Component
                 }
                 else
                 {
-                    loop = false;
+                    block = false;
                 }
             }
             else
@@ -230,24 +238,25 @@ namespace MetalX.Component
                 float a;
                 if (kw[1] == "me")
                 {
-                    a = game.SceneManager.ME.NeedMovePixel;
+                    a = game.ME.NeedMovePixel;
                 }
                 else
                 {
-                    a = game.SceneManager.GetNPC(kw[1]).NeedMovePixel;
+                    a = game.GetNPC(kw[1]).NeedMovePixel;
 
                 }
                 if (a > 0)
                 {
-                    loop = true;
+                    block = true;
                 }
                 else
                 {
-                    loop = false;
+                    block = false;
                 }
             }
             else if (kw[0] == "untilpress")
             {
+                block = true;
                 string key = kw[1];
                 if (key == "yes" || key == "y")
                 {
@@ -257,20 +266,37 @@ namespace MetalX.Component
                 {
                     key = game.Options.KeyNO.ToString();
                 }
+
                 key = key.ToLower();
                 if (presskey == key)
                 {
-                    loop = false;
+                    block = false;
                 }
-                else
+
+                try
                 {
-                    loop = true;
+                    string key2 = kw[2];
+                    if (key2 == "yes" || key2 == "y")
+                    {
+                        key2 = game.Options.KeyYES.ToString();
+                    }
+                    else if (key2 == "no" || key2 == "n")
+                    {
+                        key2 = game.Options.KeyNO.ToString();
+                    }
+                    key2 = key2.ToLower();
+                    if (presskey == key2)
+                    {
+                        block = false;
+                    }
                 }
+                catch { }
+
             }
 
             #endregion
             #region scn
-            else if (kw[0] == "scene")
+            else if (kw[0] == "scn")
             {
                 int range = -100;
                 try
@@ -280,18 +306,22 @@ namespace MetalX.Component
                 catch
                 { }
 
-                if (kw[1] == "jump")
+                if (kw[1] == "enter")
                 {
                     Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
                     v3.X = float.Parse(kw[3]);
                     v3.Y = float.Parse(kw[4]);
-                    game.SceneManager.Enter(kw[2], v3, game.SceneManager.ME.RealDirection);
+                    game.SceneManager.Enter(kw[2], v3, game.ME.RealDirection);
                 }
                 else if (kw[1] == "shock" && range != -100)
                 {
                     double ms = double.Parse(kw[2]);
                     game.SceneManager.ShockScreen(ms, range);
                 }
+                //else if (kw[1] == "delay")
+                //{
+                //    game.SceneManager.Delay(int.Parse(kw[2]));
+                //}
                 else if (kw[1] == "shock")
                 {
                     double ms = double.Parse(kw[2]);
@@ -306,6 +336,14 @@ namespace MetalX.Component
                 {
                     double ms = double.Parse(kw[2]);
                     game.SceneManager.FallInSceen(ms);
+                }
+                else if (kw[1] == "setctrl")
+                {
+                    game.SceneManager.Controllable = true;
+                }
+                else if (kw[1] == "clrctrl")
+                {
+                    game.SceneManager.Controllable = false;
                 }
             }
             #endregion
@@ -381,7 +419,7 @@ namespace MetalX.Component
             #region npc
             else if (kw[0] == "npc")
             {
-                NPC n = game.SceneManager.GetNPC(kw[1]);
+                NPC n = game.GetNPC(kw[1]);
                 if (kw[2] == "dir")
                 {
                     Direction dir = Direction.U;
@@ -433,7 +471,7 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        n.Move(game.SceneManager.SCN, game.SceneManager.GetNPC(n), game.Options.TilePixel);
+                        n.Move(game.SCN, game.GetNPC(n), game.Options.TilePixel);
                     }
                     //game.SceneManager.Move(n, stp);
                 }
@@ -452,34 +490,62 @@ namespace MetalX.Component
             {
                 if (kw[1] == "skin")
                 {
-                    game.SceneManager.ME.TextureName = kw[2];
-                    game.SceneManager.ME.TextureIndex = -1;
+                    game.ME.TextureName = kw[2];
+                    game.ME.TextureIndex = -1;
+                }
+                else if (kw[1] == "use")
+                {
+                    int i = int.Parse(kw[2]);
+                    //game.ME.Gold += int.Parse(kw[2]);
+                }
+                else if (kw[1] == "hp")
+                {
+                    int i = int.Parse(kw[2]);
+                    game.ME.HP += i;
+                    if (game.ME.HP > game.ME.HPMax)
+                    {
+                        game.ME.HP = game.ME.HPMax;
+                    }
+                }
+                else if (kw[1] == "equip")
+                {
+                    int i = int.Parse(kw[2]);
+                    game.ME.Equip(i);
+                }
+                else if (kw[1] == "drop")
+                {
+                    int i = int.Parse(kw[2]);
+                    game.ME.BagOut(i);
                 }
                 else if (kw[1] == "gold")
                 {
-                    game.SceneManager.ME.Gold += int.Parse(kw[2]);
+                    game.ME.Gold += int.Parse(kw[2]);
                 }
                 else if (kw[1] == "bagin")
                 {
-                    //查找item，然后添加
-                    game.SceneManager.ME.BagIn(null);
+                    Item item;
+                    int i = -1;
+                    try
+                    {
+                        i = int.Parse(kw[2]);
+                        item = game.Items[i].GetClone();
+                    }
+                    catch
+                    {
+                        item = game.Items[kw[2]].GetClone();
+                    }
+                    item.GUID = Guid.NewGuid();
+                    game.ME.BagIn(item);
                 }
                 else if (kw[1] == "jump")
                 {
                     Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
                     v3.X = float.Parse(kw[2]);
                     v3.Y = float.Parse(kw[3]);
-                    game.SceneManager.ME.SetRealLocation(v3, game.Options.TilePixel);
+                    game.ME.SetRealLocation(v3, game.Options.TilePixel);
                     game.SceneManager.SceneJump(v3);
                 }
-                else if (kw[1] == "setctrl")
-                {
-                    game.SceneManager.ME.CanControl = true;
-                }
-                else if (kw[1] == "clrctrl")
-                {
-                    game.SceneManager.ME.CanControl = false;
-                }
+
                 else if (kw[1] == "dir")
                 {
                     Direction dir = Direction.U;
@@ -500,9 +566,9 @@ namespace MetalX.Component
                     {
                         dir = Direction.R;
                     }
-                    if (game.SceneManager.ME.Face(dir))
+                    if (game.ME.Face(dir))
                     {
-                        game.SceneManager.SCN.Face(game.SceneManager.ME.OppositeDirection);
+                        game.SCN.Face(game.ME.OppositeDirection);
                     }
 
                 }
@@ -529,9 +595,9 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        if (game.SceneManager.ME.Move(game.SceneManager.SCN, game.SceneManager.GetNPC(game.SceneManager.ME), game.Options.TilePixel))
+                        if (game.ME.Move(game.SCN, game.GetNPC(game.ME), game.Options.TilePixel))
                         {
-                            game.SceneManager.SCN.Move(1, game.Options.TilePixel);
+                            game.SCN.Move(1, game.Options.TilePixel);
                         }
                     }
                 }
@@ -555,8 +621,8 @@ namespace MetalX.Component
                     {
                         dir = Direction.R;
                     }
-                    game.SceneManager.ME.ForceDirection = dir;
-                    game.SceneManager.SCN.Face(Util.GetOppositeDirection(dir));
+                    game.ME.ForceDirection = dir;
+                    game.SCN.Face(Util.GetOppositeDirection(dir));
                 }
                 else if (kw[1] == "fmove")
                 {
@@ -581,19 +647,19 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        game.SceneManager.ME.ForceMove(game.Options.TilePixel);
+                        game.ME.ForceMove(game.Options.TilePixel);
                         {
-                            game.SceneManager.SCN.Move(1, game.Options.TilePixel);
+                            game.SCN.Move(1, game.Options.TilePixel);
                         }
                     }
                 }
                 else if (kw[1] == "setrigor")
                 {
-                    game.SceneManager.ME.IsRigor = true;
+                    game.ME.IsRigor = true;
                 }
                 else if (kw[1] == "clrrigor")
                 {
-                    game.SceneManager.ME.IsRigor = false;
+                    game.ME.IsRigor = false;
                 }
             }
             #endregion
@@ -771,159 +837,6 @@ namespace MetalX.Component
                 }
                 else
                 {
-                    //string ks = "";
-                    #region convert key
-                    //if (k == Key.A)
-                    //{
-                    //    ks = "a";
-                    //}
-                    //else if (k == Key.B)
-                    //{
-                    //    ks = "b";
-                    //}
-                    //else if (k == Key.C)
-                    //{
-                    //    ks = "c";
-                    //}
-                    //else if (k == Key.D)
-                    //{
-                    //    ks = "d";
-                    //}
-                    //else if (k == Key.E)
-                    //{
-                    //    ks = "e";
-                    //}
-                    //else if (k == Key.F)
-                    //{
-                    //    ks = "f";
-                    //}
-                    //else if (k == Key.G)
-                    //{
-                    //    ks = "g";
-                    //}
-                    //else if (k == Key.H)
-                    //{
-                    //    ks = "h";
-                    //}
-                    //else if (k == Key.I)
-                    //{
-                    //    ks = "i";
-                    //}
-                    //else if (k == Key.J)
-                    //{
-                    //    ks = "j";
-                    //}
-                    //else if (k == Key.K)
-                    //{
-                    //    ks = "k";
-                    //}
-                    //else if (k == Key.L)
-                    //{
-                    //    ks = "l";
-                    //}
-                    //else if (k == Key.M)
-                    //{
-                    //    ks = "m";
-                    //}
-                    //else if (k == Key.N)
-                    //{
-                    //    ks = "n";
-                    //}
-                    //else if (k == Key.O)
-                    //{
-                    //    ks = "o";
-                    //}
-                    //else if (k == Key.P)
-                    //{
-                    //    ks = "p";
-                    //}
-                    //else if (k == Key.Q)
-                    //{
-                    //    ks = "q";
-                    //}
-                    //else if (k == Key.R)
-                    //{
-                    //    ks = "r";
-                    //}
-                    //else if (k == Key.S)
-                    //{
-                    //    ks = "s";
-                    //}
-                    //else if (k == Key.T)
-                    //{
-                    //    ks = "t";
-                    //}
-                    //else if (k == Key.U)
-                    //{
-                    //    ks = "u";
-                    //}
-                    //else if (k == Key.V)
-                    //{
-                    //    ks = "v";
-                    //}
-                    //else if (k == Key.W)
-                    //{
-                    //    ks = "w";
-                    //}
-                    //else if (k == Key.X)
-                    //{
-                    //    ks = "x";
-                    //}
-                    //else if (k == Key.Y)
-                    //{
-                    //    ks = "y";
-                    //}
-                    //else if (k == Key.Z)
-                    //{
-                    //    ks = "z";
-                    //}
-                    //else if (k == Key.D0 || k == Key.NumPad0)
-                    //{
-                    //    ks = "0";
-                    //}
-                    //else if (k == Key.D1 || k == Key.NumPad1)
-                    //{
-                    //    ks = "1";
-                    //}
-                    //else if (k == Key.D2 || k == Key.NumPad2)
-                    //{
-                    //    ks = "2";
-                    //}
-                    //else if (k == Key.D3 || k == Key.NumPad3)
-                    //{
-                    //    ks = "3";
-                    //}
-                    //else if (k == Key.D4 || k == Key.NumPad4)
-                    //{
-                    //    ks = "4";
-                    //}
-                    //else if (k == Key.D5 || k == Key.NumPad5)
-                    //{
-                    //    ks = "5";
-                    //}
-                    //else if (k == Key.D6 || k == Key.NumPad6)
-                    //{
-                    //    ks = "6";
-                    //}
-                    //else if (k == Key.D7 || k == Key.NumPad7)
-                    //{
-                    //    ks = "7";
-                    //}
-                    //else if (k == Key.D8 || k == Key.NumPad8)
-                    //{
-                    //    ks = "8";
-                    //}
-                    //else if (k == Key.D9 || k == Key.NumPad9)
-                    //{
-                    //    ks = "9";
-                    //}
-                    //else if (k == Key.Minus)
-                    //{
-                    //    ks = "-";
-                    //}
-                    #endregion
-                    //else
-                    //{
                     string tmp = k.ToString();
                     if (tmp.Length == 1)
                     {

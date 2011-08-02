@@ -15,14 +15,31 @@ namespace MetalHunter
 
         void InitFormBoxes()
         {
-            game.FormBoxes.LoadDotMXFormBox(new LogoEngine(game));
-            game.FormBoxes.LoadDotMXFormBox(new LogoGame(game));
-            game.FormBoxes.LoadDotMXFormBox(new MenuLoad(game));
-            game.FormBoxes.LoadDotMXFormBox(new MenuCHR(game));
-            game.FormBoxes.LoadDotMXFormBox(new MenuBAG(game));
+            game.FormBoxes.Add(new LogoEngine(game));
+            game.FormBoxes.Add(new LogoGame(game));
+            game.FormBoxes.Add(new MenuLoad(game));
+            game.FormBoxes.Add(new MenuCHR(game));
+            game.FormBoxes.Add(new MenuBAG(game));
+            game.FormBoxes.Add(new MenuBAGASK(game));
 
             game.OverLoadMessageBox(new MH_MSGBox(game));
             game.OverLoadASKboolBox(new MH_ASKboolBox(game));
+        }
+
+        void InitItems()
+        {
+            game.Items.Add(new 弹弓());
+            game.Items.Add(new 狩猎弩());
+            game.Items.Add(new 双管猎枪());
+
+            game.Items.Add(new 运动服());
+            game.Items.Add(new 运动裤());
+            game.Items.Add(new 登山鞋());
+            game.Items.Add(new 粗线手套());
+            game.Items.Add(new 棒球帽());
+
+            game.Items.Add(new 恢复胶囊小());
+            game.Items.Add(new 爆竹());
         }
 
         public MetalHunter()
@@ -40,6 +57,7 @@ namespace MetalHunter
             game.LoadAllDotMXScript();
 
             InitFormBoxes();
+            InitItems();
             
             game.AppendDotMetalXScript("logo");
             game.ExecuteScript();
@@ -55,42 +73,21 @@ namespace MetalHunter
             Key k = (Key)key;
             if (k == Key.C)
             {
-                if (game.FormBoxes["MenuCHR"].Visible)
-                {
-                    game.FormBoxManager.Disappear("MenuCHR");
-                    game.SceneManager.ME.CanControl = true;
-                }
-                else
-                {
-                    ((MenuCHR)game.FormBoxes["MenuCHR"]).LoadContext(game.SceneManager.ME);
-                    game.FormBoxManager.Appear("MenuCHR");
-                    game.SceneManager.ME.CanControl = false;
-                }
-            } 
+                ((MenuCHR)game.FormBoxes["MenuCHR"]).LoadContext(game.ME);
+                game.FormBoxManager.Appear("MenuCHR");
+                game.SceneManager.Controllable = false;
+            }
             else if (k == Key.B)
             {
-                if (game.FormBoxes["MenuBAG"].Visible)
-                {
-                    game.FormBoxManager.Disappear("MenuBAG");
-                    game.SceneManager.ME.CanControl = true;
-                }
-                else
-                {
-                    ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadBag(game.SceneManager.ME);
-                    game.FormBoxManager.Appear("MenuBAG");
-                    game.SceneManager.ME.CanControl = false;
-                }
-            }
-            else if (k == Key.A)
-            {
-                game.SceneManager.ME.BagIn(ITEMS.弹弓);
+                game.FormBoxManager.Disappear("MenuCHR");
+                ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
+                game.FormBoxManager.Appear("MenuBAG");
+                game.SceneManager.Controllable = false;
             }
         }
 
         void SceneManager_OnKeyboardUp(object sender, int key)
         {
-            //throw new NotImplementedException();
-            
         }
 
         [STAThread]
