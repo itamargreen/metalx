@@ -9,7 +9,14 @@ namespace MetalX.Data
     [Serializable]
     public class CHR
     {
-        public string Name;
+        public CHR()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Equipments.Add(new EquipmentCHR());
+            }
+        }
+        public string Name = "noname";
 
         public int TextureIndex = -1;
         public string TextureName;
@@ -297,7 +304,7 @@ namespace MetalX.Data
         public bool CanMove = true;
         public bool CanTurn = true;
         public bool IsRigor = false;
-        public bool CanControl = true;
+        //public bool CanControl = true;
         
         //public void Freeze()
         //{
@@ -317,9 +324,9 @@ namespace MetalX.Data
         public int EXP;
         public int Level;
 
-        public int MTLLevel;//车战LV
+        public int MBLevel;//车战LV
         //public int ELevel;
-        public int CHRLevel;//人战LV
+        public int CBLevel;//人战LV
 
         public int Strength;
         public int Agility;
@@ -327,32 +334,19 @@ namespace MetalX.Data
 
         public int HP;
         public int HPMax;
-        public int MP;
-        public int MPMax;
 
         public List<EquipmentCHR> Equipments = new List<EquipmentCHR>(8);
-        public EquipmentCHR PrimaryWeapon
+        public EquipmentCHR Weapon
         {
             get
             {
-                return Equipments[(int)EquipmentCHRType.PrimaryWeapon];
+                return Equipments[(int)EquipmentCHRType.Weapon];
             }
             set
             {
-                Equipments[(int)EquipmentCHRType.PrimaryWeapon] = value;
+                Equipments[(int)EquipmentCHRType.Weapon] = value;
             }
-        }
-        public EquipmentCHR SecondryWeapon
-        {
-            get
-            {
-                return Equipments[(int)EquipmentCHRType.SecondryWeapon];
-            }
-            set
-            {
-                Equipments[(int)EquipmentCHRType.SecondryWeapon] = value;
-            }
-        }
+        }      
         public EquipmentCHR Body
         {
             get
@@ -375,6 +369,7 @@ namespace MetalX.Data
                 Equipments[(int)EquipmentCHRType.Leg] = value;
             }
         }
+
         public EquipmentCHR Foot
         {
             get
@@ -408,15 +403,27 @@ namespace MetalX.Data
                 Equipments[(int)EquipmentCHRType.Hand] = value;
             }
         }
-        public EquipmentCHR Other
+
+        public EquipmentCHR Ring
         {
             get
             {
-                return Equipments[(int)EquipmentCHRType.Other];
+                return Equipments[(int)EquipmentCHRType.Ring];
             }
             set
             {
-                Equipments[(int)EquipmentCHRType.Other] = value;
+                Equipments[(int)EquipmentCHRType.Ring] = value;
+            }
+        }
+        public EquipmentCHR Necklace
+        {
+            get
+            {
+                return Equipments[(int)EquipmentCHRType.Necklace];
+            }
+            set
+            {
+                Equipments[(int)EquipmentCHRType.Necklace] = value;
             }
         }
         /// <summary>
@@ -512,27 +519,50 @@ namespace MetalX.Data
         }
 
 
-        public List<Item> Bag = new List<Item>();
-        public int BagCapacity = 16;
-        public void BagIn(Item item)
+        List<Item> bag = new List<Item>();
+
+        public List<Item> Bag
         {
-            if (Bag.Count < BagCapacity)
+            get
             {
-                Bag.Add(item);
+                return bag;
             }
         }
-        public Item BagOut(Item itm)
+        public int BagCapacity = 16;
+
+        public void BagIn(Item item)
         {
-            for (int i = 0; i < Bag.Count; i++)
+            if (bag.Count < BagCapacity)
             {
-                if (Bag[i].GUID == itm.GUID)
-                {
-                    Item item = Bag[i].GetClone();
-                    Bag.RemoveAt(i);
-                    return item;
-                }
+                bag.Add(item);
             }
-            return null;
+        }
+        public Item BagOut(int i)
+        {
+            Item item = bag[i].GetClone();
+            //bag.RemoveAt(i);
+            return item;
+        }
+        public void Equip(int i)
+        {
+            EquipmentCHR item = null;
+            try
+            {
+                item = (EquipmentCHR)BagOut(i);
+                bag.RemoveAt(i);
+            }
+            catch
+            {
+                //BagIn(item);
+                return;
+            }
+            EquipmentCHR item_tmp;
+            item_tmp = Equipments[(int)item.Type].GetClone();
+            if (item_tmp.Name != null)
+            {
+                BagIn(item_tmp);
+            }
+            Equipments[(int)item.Type] = item;
         }
         public bool Face(Direction dir)
         {
@@ -675,7 +705,7 @@ namespace MetalX.Data
         {
             //if (IsBox)
             //{
-            //    if (Bag.Count == 0)
+            //    if (bag.Count == 0)
             //    {
             //        return;
             //    }

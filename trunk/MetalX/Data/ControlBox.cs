@@ -10,7 +10,7 @@ namespace MetalX.Data
         protected Game game;
         public bool Visible = false;
         public string Name;
-        //public int Index = -1;
+        public int Index = -1;
 
         public Size Size;
         public Point Location;
@@ -38,7 +38,7 @@ namespace MetalX.Data
             }
         }
         public int NowButtonBoxIndex = -1;
-        public int BigStep = 8;
+        public int BigStep = 1;
         //public int FocusButtonBoxIndex
         //{
         //    get
@@ -78,6 +78,25 @@ namespace MetalX.Data
             {
                 i = 0;
             }
+            int t = getButtonActuallyIndex(i);
+            if (t > -1)
+            {
+                int j = 0;
+                while ((
+                    ((ButtonBox)ControlBoxes[t]).WaitTextBox.Text == null
+                    ||
+                    ((ButtonBox)ControlBoxes[t]).WaitTextBox.Text == ""
+                    ) && j++<ButtonBoxCount)
+                {                    
+                    i++;
+                    if (i >= ButtonBoxCount)
+                    {
+                        i = 0;
+                    }
+                    t = getButtonActuallyIndex(i);
+                }
+            }
+
             WaitAllButtonBox();
             setButtonBoxState(i, ButtonBoxState.Focus);
             NowButtonBoxIndex = i;
@@ -90,11 +109,30 @@ namespace MetalX.Data
             {
                 i = ButtonBoxCount - 1;
             }
+            int t = getButtonActuallyIndex(i);
+            if (t > -1)
+            {
+                int j = 0;
+                while ((
+                    ((ButtonBox)ControlBoxes[t]).WaitTextBox.Text == null
+                    ||
+                    ((ButtonBox)ControlBoxes[t]).WaitTextBox.Text == ""
+                    ) && j++<ButtonBoxCount)
+                {
+                    i--;
+                    if (i < 0)
+                    {
+                        i = ButtonBoxCount - 1;
+                    }
+                    t = getButtonActuallyIndex(i);
+                }
+            }
+
             WaitAllButtonBox();
             setButtonBoxState(i, ButtonBoxState.Focus);
             NowButtonBoxIndex = i;
-        }     
-        void setButtonBoxState(int i, ButtonBoxState bbs)
+        }
+        int getButtonActuallyIndex(int i)
         {
             int j = 0;
             for (int k = 0; k < ControlBoxes.Count; k++)
@@ -103,11 +141,19 @@ namespace MetalX.Data
                 {
                     if (j == i)
                     {
-                        ((ButtonBox)ControlBoxes[k]).ButtonBoxState = bbs;                        
-                        return;
+                        return k;
                     }
                     j++;
                 }
+            }
+            return -1;
+        }
+        void setButtonBoxState(int i, ButtonBoxState bbs)
+        {
+            int j = getButtonActuallyIndex(i);
+            if (j > -1)
+            {
+                ((ButtonBox)ControlBoxes[j]).ButtonBoxState = bbs;
             }
         }
         public void WaitAllButtonBox()
@@ -210,7 +256,7 @@ namespace MetalX.Data
                     else
                     {
                         //OneByOne = false;
-                        OnSubTextShowDone(null);
+                        OnSubTextShowDone(this, null);
                     }
                 } 
                 
@@ -222,16 +268,20 @@ namespace MetalX.Data
         {
             OnSubTextShowDone = new TextBoxEvent(OnSubTextShowDoneCode);
         }
-        public virtual void OnSubTextShowDoneCode(object arg)
+        public virtual void OnSubTextShowDoneCode(object sender,object arg)
         { 
         }
-        public void LoadText(string pathName, bool onebyone, int interval)
+        public void FromFile(string pathName, bool onebyone, int interval)
         {
             SubTextIndex = 0;
             TextFileName = pathName;
             Text = System.IO.File.ReadAllText(TextFileName);
             OneByOne = onebyone;
             Interval = interval;
+        }
+        public TextBox GetClone()
+        {
+            return (TextBox)MemberwiseClone();
         }
     }
     [Serializable]
@@ -243,7 +293,12 @@ namespace MetalX.Data
         public TextureBox(Game g)
             : base(g)
         { }
+        public TextureBox GetClone()
+        {
+            return (TextureBox)MemberwiseClone();
+        }
     }
+    
     [Serializable]
     public class ButtonBox : ControlBox
     {
@@ -259,19 +314,19 @@ namespace MetalX.Data
                 buttonBoxState = value;
                 if (value == ButtonBoxState.Up)
                 {
-                    OnButtonUp(null);
+                    OnButtonUp(this,null);
                 }
                 else if (value == ButtonBoxState.Down)
                 {
-                    OnButtonDown(null);
+                    OnButtonDown(this,null);
                 }
                 else if (value == ButtonBoxState.Focus)
                 {
-                    OnButtonFocus(null);
+                    OnButtonFocus(this,null);
                 }
                 else if (value == ButtonBoxState.Wait)
                 {
-                    OnButtonWait(null);
+                    OnButtonWait(this,null);
                 }
             }
         }
@@ -345,19 +400,32 @@ namespace MetalX.Data
             OnButtonUp = new ButtonBoxEvent(OnButtonUpCode);
         }
 
-        public virtual void OnButtonUpCode(object arg)
+        public void SameAsWait()
+        {
+            FocusTextBox = WaitTextBox.GetClone();
+            FocusTextBox.FontColor = Color.CornflowerBlue;
+            DownTextBox = WaitTextBox.GetClone();
+            DownTextBox.FontColor = Color.Yellow;
+            UpTextBox = WaitTextBox.GetClone();
+
+            FocusTextureBox = WaitTextureBox.GetClone();
+            DownTextureBox = WaitTextureBox.GetClone();
+            UpTextureBox = WaitTextureBox.GetClone();
+        }
+
+        public virtual void OnButtonUpCode(object sender, object arg)
         {
         }
 
-        public virtual void OnButtonDownCode(object arg)
+        public virtual void OnButtonDownCode(object sender, object arg)
         {
         }
 
-        public virtual void OnButtonFocusCode(object arg)
+        public virtual void OnButtonFocusCode(object sender, object arg)
         {
         }
 
-        public virtual void OnButtonWaitCode(object arg)
+        public virtual void OnButtonWaitCode(object sender, object arg)
         {
         }
     }

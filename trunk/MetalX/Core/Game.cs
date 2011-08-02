@@ -49,6 +49,47 @@ namespace MetalX
         public FileLib NPCFiles;
         public FileLib ScriptFiles;
         public FormBoxes FormBoxes;
+        public Items Items;
+        public Scene SCN;
+        public PC ME = new PC();
+        public List<NPC> NPCs = new List<NPC>();
+        public NPC GetNPC(string name)
+        {
+            foreach (NPC npc in NPCs)
+            {
+                //if (npc.Invisible == false)
+                {
+                    if (npc.Name == name)
+                    {
+                        return npc;
+                    }
+                }
+            }
+            return null;
+        }
+        public NPC GetNPC(CHR chr)
+        {
+            foreach (NPC npc in NPCs)
+            {
+                //if (npc.Invisible == false)
+                if (npc.RealLocation == chr.FrontLocation)
+                {
+                    return npc;
+                }
+            }
+            foreach (NPC npc in NPCs)
+            {
+                //if (npc.Invisible == false)
+                if (npc.RealLocation == chr.RangeLocation)
+                {
+                    if (SCN.CodeLayer[chr.FrontLocation].IsDesk)
+                    {
+                        return npc;
+                    }
+                }
+            }
+            return null;
+        }
         /// <summary>
         /// 帧开始时间
         /// </summary>
@@ -62,7 +103,7 @@ namespace MetalX
         KeyboardManager KeyboardManager;
         public FormBoxManager FormBoxManager;
         public SceneManager SceneManager;
-        ScriptManager ScriptManager;
+        public ScriptManager ScriptManager;
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -249,6 +290,7 @@ namespace MetalX
             Textures = new Textures();
 
             FormBoxes = new FormBoxes();
+            Items = new Items();
 
             FormBoxes.Add(new MSGBox(this));
             FormBoxes.Add(new ASKboolBox(this));
@@ -259,6 +301,7 @@ namespace MetalX
             MountGameCom(KeyboardManager);
 
             SoundManager1 = new SoundManager(this);
+            SoundManager1.Volume = 60;
             MountGameCom(SoundManager1);
 
             SoundManager2 = new SoundManager(this);
@@ -1187,6 +1230,14 @@ namespace MetalX
         public void ReturnScript(bool yes)
         {
             ScriptManager.Return(yes);
+        }
+        public void ReturnScript(int i)
+        {
+            ScriptManager.Return(i);
+        }
+        public void ReturnScript(string str)
+        {
+            ScriptManager.Return(str);
         }
         public void ExecuteScript()
         {

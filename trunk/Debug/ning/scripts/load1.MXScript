@@ -1,2 +1,5 @@
-scene jump 000 8 12
 me skin me
+me bagin 0
+me bagin 1
+me bagin 2
+scn enter 000 8 12

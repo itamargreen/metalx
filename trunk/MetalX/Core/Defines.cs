@@ -5,8 +5,8 @@ namespace MetalX
 {
     public delegate void KeyboardEvent(object sender, int key);
     public delegate void FormBoxEvent(object sender, object arg);
-    public delegate void ButtonBoxEvent(object arg);
-    public delegate void TextBoxEvent(object arg);
+    public delegate void ButtonBoxEvent(object sender,object arg);
+    public delegate void TextBoxEvent(object sender, object arg);
     //public delegate void NPCEvent(object sender);
     public struct ScriptReturn
     {
