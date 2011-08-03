@@ -425,7 +425,7 @@ namespace MetalX.SceneMaker2D
             create_layer_selecter();
 
             tabControl1.SelectedIndex = 1;
-
+            game.GameComs.Clear();
             game.MountGameCom(sceneMaker2D);
             game.Start();
         }
@@ -463,7 +463,7 @@ namespace MetalX.SceneMaker2D
             pictureBox1.Size = game.SCN.SizePixel;
 
             tabControl1.SelectedIndex = 1;
-
+            game.GameComs.Clear();
             game.MountGameCom(sceneMaker2D);
             game.Start();
         }

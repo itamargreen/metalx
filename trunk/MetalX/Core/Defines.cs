@@ -60,6 +60,12 @@ namespace MetalX
         /// </summary>
         R = 3,
     }
+    [Serializable]
+    public class FrameInfo
+    {
+        public Microsoft.DirectX.Vector3 Location;
+        public int TimePoint;
+    }
 
     //[Serializable]
     //public class Direction
