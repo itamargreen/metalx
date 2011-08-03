@@ -4,6 +4,8 @@ using System.Drawing;
 
 using Microsoft.DirectX.DirectInput;
 
+using MetalX.Define;
+
 namespace MetalX
 {
     public class Options

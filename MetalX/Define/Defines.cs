@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MetalX
+namespace MetalX.Define
 {
     public delegate void KeyboardEvent(object sender, int key);
     public delegate void FormBoxEvent(object sender, object arg);

@@ -6,6 +6,7 @@ using System.Drawing;
 using Microsoft.DirectX.DirectInput;
 
 using MetalX;
+using MetalX.Define;
 
 namespace MetalHunter
 {

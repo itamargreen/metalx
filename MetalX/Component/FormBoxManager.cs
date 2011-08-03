@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Microsoft.DirectX.DirectInput;
-using MetalX.Data;
+using MetalX.Define;
 using MetalX.File;
 
 namespace MetalX.Component

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MetalX.Data;
+using MetalX.Define;
 namespace MetalX.Resource
 {
     public class Items
