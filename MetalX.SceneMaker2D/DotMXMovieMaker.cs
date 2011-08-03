@@ -47,7 +47,8 @@ namespace MetalX.SceneMaker2D
         }
 
         void setup()
-        {             mxmovie.FrameCount = int.Parse(textBox3.Text);
+        {             
+            mxmovie.FrameCount = int.Parse(textBox3.Text);
             if (mxmovie.Vertical)
             {
                 int n = mxmovie.MXT.SizePixel.Height;
@@ -64,7 +65,7 @@ namespace MetalX.SceneMaker2D
             timer1.Interval = (int)mxmovie.FrameInterval;
             mxmovie.TileSizePixel = new Size(int.Parse(textBox1.Text), int.Parse(textBox2.Text));
             bm = new Bitmap(mxmovie.TileSizePixel.Width, mxmovie.TileSizePixel.Height);
-
+            mxmovie.Loop = ui_loop.Checked;
         }
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
@@ -96,6 +97,7 @@ namespace MetalX.SceneMaker2D
 
         private void button2_Click(object sender, EventArgs e)
         {
+            mxmovie.Reset();
             timer1.Enabled = true;
 
         }
@@ -118,7 +120,10 @@ namespace MetalX.SceneMaker2D
                 textBox3.Text = mxmovie.FrameCount.ToString();
                 textBox4.Text = mxmovie.FrameInterval.ToString();
 
+                ui_loop.Checked = mxmovie.Loop;
+
                 setup();
+                update_loc_list();
             } 
         }
 
@@ -130,6 +135,35 @@ namespace MetalX.SceneMaker2D
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 Util.SaveObject(sfd.FileName, mxmovie);
+            }
+        }
+
+        private void ui_padd_Click(object sender, EventArgs e)
+        {
+            int x = int.Parse(ui_x.Text);
+            int y = int.Parse(ui_y.Text);
+            int z = int.Parse(ui_z.Text);
+
+            mxmovie.Locations.Add(new Microsoft.DirectX.Vector3(x, y, z));
+            update_loc_list();
+        }
+
+        private void ui_pdel_Click(object sender, EventArgs e)
+        {
+            int i = listBox1.SelectedIndex;
+            if (i > -1)
+            {
+                mxmovie.Locations.RemoveAt(i);
+                update_loc_list();
+            }
+        }
+
+        void update_loc_list()
+        {
+            listBox1.Items.Clear();
+            foreach (Microsoft.DirectX.Vector3 v3 in mxmovie.Locations)
+            {
+                listBox1.Items.Add(v3);
             }
         }
     }
