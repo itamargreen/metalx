@@ -5,6 +5,8 @@ using System.Threading;
 
 using Microsoft.DirectX.DirectInput;
 
+using MetalX.Define;
+
 namespace MetalX.Component
 {
     public class KeyboardManager : GameCom

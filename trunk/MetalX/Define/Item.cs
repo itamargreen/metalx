@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetalX.Data
+namespace MetalX.Define
 {
     [Serializable]
     public enum ItemType

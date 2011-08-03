@@ -4,7 +4,7 @@ using System.Drawing;
 
 using Microsoft.DirectX;
 
-namespace MetalX.Data
+namespace MetalX.Define
 {
     [Serializable]
     public class Scene

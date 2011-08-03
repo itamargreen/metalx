@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using MetalX.Data;
+using MetalX.Define;
 
 namespace MetalX.Resource
 {

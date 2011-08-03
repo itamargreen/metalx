@@ -5,7 +5,7 @@ using System.Drawing;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 
-using MetalX.Data;
+using MetalX.Define;
 
 namespace MetalX.Component
 {

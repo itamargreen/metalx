@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 using Microsoft.DirectX;
+
+using MetalX.Define;
 namespace MetalX
 {
     public class FileLoader

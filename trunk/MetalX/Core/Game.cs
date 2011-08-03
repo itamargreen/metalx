@@ -9,7 +9,7 @@ using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectSound;
 
-using MetalX.Data;
+using MetalX.Define;
 using MetalX.Component;
 using MetalX.Resource;
 using MetalX.Net;

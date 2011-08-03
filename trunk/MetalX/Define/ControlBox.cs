@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace MetalX.Data
+namespace MetalX.Define
 {
     [Serializable]
     public class ControlBox

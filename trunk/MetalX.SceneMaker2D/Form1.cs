@@ -10,7 +10,7 @@ using Microsoft.DirectX;
 
 using MetalX;
 using MetalX.Component;
-using MetalX.Data;
+using MetalX.Define;
 using MetalX.Resource;
 
 namespace MetalX.SceneMaker2D
@@ -872,7 +872,7 @@ namespace MetalX.SceneMaker2D
             if (filename == null)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "MetalX Scene File|*.MXScene|XML Scene File|*.XMLScene";
+                sfd.Filter = "MetalX Scene File|*.MXScene|XML Scene File|*.XML";
                 sfd.RestoreDirectory = true;
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
@@ -914,6 +914,7 @@ namespace MetalX.SceneMaker2D
             else
             {
                 Util.SaveObject(openFileName, game.SCN);
+                Util.SaveObjectXML(openFileName + ".XML", game.SCN);
                 MessageBox.Show("保存成功");
             }
         }
@@ -945,7 +946,7 @@ namespace MetalX.SceneMaker2D
         private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "MetalX Scene File|*.MXScene|XML Scene File|*.XMLScene";
+            ofd.Filter = "MetalX Scene File|*.MXScene|XML Scene File|*.XML";
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
