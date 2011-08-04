@@ -61,7 +61,7 @@ namespace MetalX.Define
         R = 3,
     }
     [Serializable]
-    public class FrameInfo
+    public class MovieFrameInfo
     {
         public Microsoft.DirectX.Vector3 Location;
         public int TimePoint;

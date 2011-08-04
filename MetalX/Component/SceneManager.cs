@@ -123,7 +123,8 @@ namespace MetalX.Component
                     { }
                     if (sname != null)
                     {
-                        Enter(sname, Util.Point2Vector3(game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultLocation, 0), game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultDirection);
+                        Enter(sname, Util.Point2Vector3(game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultLocation, 0), game.ME.RealDirection);
+                        //Enter(sname, Util.Point2Vector3(game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultLocation, 0), game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultDirection);
                         game.SceneManager.Controllable = false;
                         //if (game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].ChangeSceneEffect)
                         {

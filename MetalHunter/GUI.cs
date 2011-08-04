@@ -111,6 +111,7 @@ namespace MetalHunter
         TextBox str;
         TextBox agi;
         TextBox itl;
+        TextBox phy;
         TextBox chrlv;
         TextBox mtllv;
 
@@ -134,34 +135,37 @@ namespace MetalHunter
             head.Location = new Point(16, 16);
             
             nam = new TextBox(g);
-            nam.Location = new Point(24, line++ * 24 + 0);
+            nam.Location = new Point(24, line++ * 24 - 4);
 
             exp = new TextBox(g);
-            exp.Location = new Point(24, line++ * 24 + 0);
+            exp.Location = new Point(24, line++ * 24 - 4);
 
 
             lv = new TextBox(g);
-            lv.Location = new Point(24, line++ * 24 + 8);
+            lv.Location = new Point(24, line++ * 24);
 
             hp = new TextBox(g);
-            hp.Location = new Point(24, line++ * 24 + 8);
+            hp.Location = new Point(24, line++ * 24);
 
             
             itl = new TextBox(g);
-            itl.Location = new Point(24, line++ * 24 + 16);
+            itl.Location = new Point(24, line++ * 24);
 
             str = new TextBox(g);
-            str.Location = new Point(24, line++ * 24 + 16);
+            str.Location = new Point(24, line++ * 24);
 
             agi = new TextBox(g);
-            agi.Location = new Point(24, line++ * 24 + 16);
+            agi.Location = new Point(24, line++ * 24);
+
+            phy = new TextBox(g);
+            phy.Location = new Point(24, line++ * 24);
 
 
             mtllv = new TextBox(g);
-            mtllv.Location = new Point(24, line++ * 24 + 24);
+            mtllv.Location = new Point(24, line++ * 24 + 4);
 
             chrlv = new TextBox(g);
-            chrlv.Location = new Point(24, line++ * 24 + 24);
+            chrlv.Location = new Point(24, line++ * 24 + 4);
 
             line = 7;
 
@@ -185,6 +189,7 @@ namespace MetalHunter
             ControlBoxes.Add(str);
             ControlBoxes.Add(agi);
             ControlBoxes.Add(itl);
+            ControlBoxes.Add(phy);
 
             ControlBoxes.Add(chrlv);
             ControlBoxes.Add(mtllv);
@@ -220,17 +225,18 @@ namespace MetalHunter
             this.exp.Text = "经验：　" + chr.EXP;
             try
             {
-                this.dmg.Text = "攻击力：　" + chr.Weapon.Damage;
-                this.def.Text = "防御力：　" + chr.Defense;
+                this.dmg.Text = "攻击：　" + chr.Weapon.Damage + "　　命中：　" + chr.Accurate + "%";
+                this.def.Text = "防御：　" + chr.Defense + "　　闪避：　" + chr.Missrate + "%";
             }
             catch
             {
-                this.dmg.Text = "攻击力：　0";
-                this.def.Text = "防御力：　0";
+                this.dmg.Text = "攻击：　0";
+                this.def.Text = "防御：　0";
             }
             this.str.Text = "力量：　" + chr.Strength;
             this.agi.Text = "敏捷：　" + chr.Agility;
             this.itl.Text = "智力：　" + chr.Intelligence;
+            this.phy.Text = "体质：　" + chr.Physique;
 
             if (chr.Equipments[(int)EquipmentCHRType.Weapon].Name != null && chr.Equipments[(int)EquipmentCHRType.Weapon].Name != "")
             {
@@ -254,6 +260,7 @@ namespace MetalHunter
     public class MenuBAG : FormBox
     {
         List<ButtonBox> bb = new List<ButtonBox>();
+        TextBox tb;
         public MenuBAG(Game g)
             : base(g)
         {
@@ -270,6 +277,12 @@ namespace MetalHunter
                 bb.Add(new ButtonBox(game));
             }
 
+            tb = new TextBox(g);
+            tb.OneByOne = true;
+            tb.FontSize = 13;
+            tb.Interval = 10;
+            tb.Location = new Point(24, 192);
+
             this.OnFormBoxDisappear += new FormBoxEvent(MenuBAG_OnFormBoxDisappear);
         }
 
@@ -283,12 +296,13 @@ namespace MetalHunter
         {
             ControlBoxes.Clear();
             ControlBoxes.Add(BGTextureBox);
+            ControlBoxes.Add(tb);
             for (int i = 0; i < chr.Bag.Count; i++)
             {
                 if (chr.Bag[i] != null)
                 {
                     bb[i].Index = i;
-                    bb[i].Location = new Point(32 + 192 * (i / 8), 64 + 32 * (i % 8));
+                    bb[i].Location = new Point(160 + 160 * (i / 8), 64 + 32 * (i % 8));
 
                     bb[i].WaitTextBox.Location = new Point(0, 4);
                     bb[i].WaitTextBox.Text = "　　　" + chr.Bag[i].Name;
@@ -299,6 +313,7 @@ namespace MetalHunter
                     bb[i].SameAsWait();
 
                     bb[i].OnButtonUp += new ButtonBoxEvent(MenuBAG_OnButtonUp);
+                    bb[i].OnButtonFocus += new ButtonBoxEvent(MenuBAG_OnButtonFocus);
 
                     ControlBoxes.Add(bb[i]);
                 }
@@ -309,12 +324,17 @@ namespace MetalHunter
             }
         }
 
+        void MenuBAG_OnButtonFocus(object sender, object arg)
+        {
+            int i = ((ButtonBox)sender).Index;
+            tb.Text = game.ME.Bag[i].Description;
+        }
+
         void MenuBAG_OnButtonUp(object sender, object arg)
         {
             game.ReturnScript(((ButtonBox)sender).Index);
             game.AppendScript("gui MenuBAGASK appear");
             game.ExecuteScript();
-            //throw new NotImplementedException();
         }
     }
     public class MenuBAGASK : FormBox
@@ -324,22 +344,24 @@ namespace MetalHunter
             : base(g)
         {
             Name = "MenuBAGASK";
-            Location = new Point(64, 48);
+            Location = new Point(64 + 24, 48 + 24);
+            BGTextureBox.TextureName = "bg_64x64";
+            BGTextureBox.Size = new System.Drawing.Size(128, 128);
 
             BB1 = new ButtonBox(g);
-            BB1.Location = new Point(256, 64);
+            BB1.Location = new Point(48, 24);
             BB1.UpTextBox.Text = BB1.DownTextBox.Text = BB1.FocusTextBox.Text = BB1.WaitTextBox.Text = "使用";
             BB1.FocusTextBox.FontColor = Color.CornflowerBlue;
             BB1.OnButtonUp += new ButtonBoxEvent(BB1_OnButtonUp);
 
             BB2 = new ButtonBox(g);
-            BB2.Location = new Point(256, 96);
+            BB2.Location = new Point(48, 48);
             BB2.UpTextBox.Text = BB2.DownTextBox.Text = BB2.FocusTextBox.Text = BB2.WaitTextBox.Text = "装备";
             BB2.FocusTextBox.FontColor = Color.CornflowerBlue;
             BB2.OnButtonUp += new ButtonBoxEvent(BB2_OnButtonUp);
 
             BB3 = new ButtonBox(g);
-            BB3.Location = new Point(256, 128);
+            BB3.Location = new Point(48, 72);
             BB3.UpTextBox.Text = BB3.DownTextBox.Text = BB3.FocusTextBox.Text = BB3.WaitTextBox.Text = "丢弃";
             BB3.FocusTextBox.FontColor = Color.CornflowerBlue;
             BB3.OnButtonUp += new ButtonBoxEvent(BB3_OnButtonUp);
@@ -349,17 +371,18 @@ namespace MetalHunter
             ControlBoxes.Add(BB3);
         }
 
-
+        //使用
         void BB1_OnButtonUp(object sender, object arg)
         {
             int i = game.ScriptManager.RETURN.INT;
             game.AppendScript(game.ME.Bag[i].Script);
             game.ExecuteScript();
-            game.ME.BagOut(i);
+            game.ME.Drop(i);
 
             ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
             game.FormBoxManager.Disappear(Name);
         }
+        //装备
         void BB2_OnButtonUp(object sender, object arg)
         {
             int i = game.ScriptManager.RETURN.INT;
@@ -368,6 +391,7 @@ namespace MetalHunter
             ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
             game.FormBoxManager.Disappear(Name);
         }
+        //丢弃
         void BB3_OnButtonUp(object sender, object arg)
         {
             int i = game.ScriptManager.RETURN.INT;

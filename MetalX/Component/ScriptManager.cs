@@ -179,7 +179,7 @@ namespace MetalX.Component
             {
                 text = "";
             }
-                      else if (kw[0] == "terminal")
+            else if (kw[0] == "terminal")
             {
                 commands.Clear();
                 exe = false;
@@ -515,7 +515,7 @@ namespace MetalX.Component
                 else if (kw[1] == "drop")
                 {
                     int i = int.Parse(kw[2]);
-                    game.ME.BagOut(i);
+                    game.ME.Drop(i);
                 }
                 else if (kw[1] == "gold")
                 {

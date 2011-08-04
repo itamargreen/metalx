@@ -16,8 +16,19 @@ namespace MetalHunter
 
             Name = "弹弓";
             Damage = 10;
-            Accurate = 0.5f;
-            Description = "通常是给小孩玩的。";
+            Accurate = 50f;
+            Worth = 8;
+
+            string str = "";
+            str += "攻击：" + Damage;
+            str += "\n";
+            str += "命中：" + Accurate + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "通常是给小孩玩的。";
+            Description = str;
         }
     }
 
@@ -30,8 +41,18 @@ namespace MetalHunter
 
             Name = "狩猎弩";
             Damage = 30;
-            Accurate = 0.75f;
-            Description = "很强劲的努，拿在手里就有勇气了。";
+            Accurate = 75f;
+            Worth = 100;
+            string str = "";
+            str += "攻击：" + Damage;
+            str += "\n";
+            str += "命中：" + Accurate + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "很强劲的努，\n拿在手里就有勇气\n了。";
+            Description = str;
         }
     }
 
@@ -44,8 +65,18 @@ namespace MetalHunter
 
             Name = "双管猎枪";
             Damage = 50;
-            Accurate = 0.85f;
-            Description = "威力强大！";
+            Accurate = 85f;
+            Worth = 2200;
+            string str = "";
+            str += "攻击：" + Damage;
+            str += "\n";
+            str += "命中：" + Accurate + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "威力强大！";
+            Description = str;
         }
     }
     #endregion
@@ -59,8 +90,18 @@ namespace MetalHunter
 
             Name = "运动服";
             Defense = 5;
-            Missrate = 0.025f;
-            Description = "姐姐给买的。";
+            Missrate = 2.5f;
+            Worth = 190;
+            string str = "";
+            str += "防御：" + Defense;
+            str += "\n";
+            str += "闪避：" + Missrate  + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "姐姐给买的。";
+            Description = str;
         }
     }
     #endregion
@@ -74,8 +115,18 @@ namespace MetalHunter
 
             Name = "运动裤";
             Defense = 5;
-            Missrate = 0.025f;
-            Description = "姐姐给买的。";
+            Missrate = 2.5f;
+            Worth = 180;
+            string str = "";
+            str += "防御：" + Defense;
+            str += "\n";
+            str += "闪避：" + Missrate  + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "姐姐给买的。";
+            Description = str;
         }
     }
     #endregion
@@ -89,8 +140,18 @@ namespace MetalHunter
 
             Name = "登山鞋";
             Defense = 5;
-            Missrate = 0.025f;
-            Description = "只记得挺贵的。";
+            Missrate = 1.5f;
+            Worth = 220;
+            string str = "";
+            str += "防御：" + Defense;
+            str += "\n";
+            str += "闪避：" + Missrate + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "只记得挺贵的。";
+            Description = str;
         }
     }
     #endregion
@@ -104,8 +165,18 @@ namespace MetalHunter
 
             Name = "粗线手套";
             Defense = 1;
-            Accurate = 0.01f;
-            Description = "学校发的，几乎没什么用处，或许只有修车的时候才用得上。";
+            Accurate = 1f;
+            Worth = 8;
+            string str = "";
+            str += "防御：" + Defense;
+            str += "\n";
+            str += "命中：" + Accurate + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "学校发的，\n几乎没什么用处，\n或许只有修车的\n时候才用得上。";
+            Description = str;
         }
     }
     #endregion
@@ -119,8 +190,18 @@ namespace MetalHunter
 
             Name = "棒球帽";
             Defense = 1;
-            Accurate = 0.01f;
-            Description = "这帽子挺漂亮的。";
+            Missrate = 1f;
+            Worth = 38;
+            string str = "";
+            str += "防御：" + Defense;
+            str += "\n";
+            str += "闪避：" + Missrate + "%";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "很漂亮的帽子。";
+            Description = str;
         }
     }
     #endregion
@@ -134,9 +215,17 @@ namespace MetalHunter
             IconName = "icon_supplychr";
 
             Name = "恢复胶囊小";
-            Description = "能恢复ＨＰ的胶囊。";
+            Worth = 30;
 
-            Script = "me hp 100";
+            string str = "";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "能恢复ＨＰ的胶囊。";
+            Description = str;
+
+            Script = "me hp 100\nmsg ＨＰ恢复了１００\nuntilpress y n\nmsg";
         }
     }
     public class 爆竹 : Item
@@ -148,9 +237,17 @@ namespace MetalHunter
             IconName = "icon_battle";
 
             Name = "爆竹";
-            Description = "没准能有攻击力。";
+            Worth = 20;
 
-            Script = "me hp 100\nmsg 恢复了100ＨＰ\nuntilpress y n\nmsg";
+            string str = "";
+            str += "\n";
+            str += "价值：" + Worth + "Ｇ";
+            str += "\n";
+            str += "\n";
+            str += "没准能有攻击力。";
+            Description = str;
+
+            Script = "";
 
 
         }

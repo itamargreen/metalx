@@ -358,6 +358,14 @@ namespace MetalX.SceneMaker2D
             ui_chgscneff.Checked = game.SCN.CodeLayer[pp].ChangeSceneEffect;
 
         }
+        void update_monster_rect_info(Point pp)
+        {
+            ui_monster_zone_w.Text = (right_rect.Size.Width / game.SCN.TileSizePixel.Width).ToString();
+            ui_monster_zone_h.Text = (right_rect.Size.Height / game.SCN.TileSizePixel.Height).ToString();
+            ui_monster_zone_x.Text = pp.X.ToString();
+            ui_monster_zone_y.Text = pp.Y.ToString();
+
+        }
         void update_info()
         {
             ui_scenename.Text = game.SCN.Name;
@@ -459,6 +467,7 @@ namespace MetalX.SceneMaker2D
             update_npc_list();
             update_info();
             update_layer_selecter();
+            update_monster_zone_list();
 
             pictureBox1.Size = game.SCN.SizePixel;
 
@@ -808,6 +817,7 @@ namespace MetalX.SceneMaker2D
                         Point pp = pointround2(e.Location, game.SCN.TileSizePixel);
 
                         update_link_info(pp);
+                        update_monster_rect_info(pp);
                     }
                     catch { }
                 }
@@ -1477,7 +1487,7 @@ namespace MetalX.SceneMaker2D
         private void 设为打底层图元ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Point p = Util.PointDivInt(sceneMaker2D.penLoc, game.Options.TilePixel);
-            game.SCN.BottomTile = game.SCN.TileLayers[sceneMaker2D.drawingLayer][p];
+            game.SCN.BottomTile = game.SCN.TileLayers[sceneMaker2D.drawingLayer][p].GetClone();
 
         }
 
@@ -1683,6 +1693,74 @@ namespace MetalX.SceneMaker2D
             //    }
             //}
         }
+        void update_monster_name_list()
+        {
+            ui_monster_name_list.Items.Clear();
+            foreach (string str in monsterNames)
+            {
+                ui_monster_name_list.Items.Add(str);
+            }
+        }
+        List<string> monsterNames = new List<string>();
+        private void ui_addmonster_Click(object sender, EventArgs e)
+        {
+            monsterNames.Add(ui_monster_name.Text);
+            update_monster_name_list();
+        }
+
+        private void ui_delmonster_Click(object sender, EventArgs e)
+        {
+            int i = ui_monster_name_list.SelectedIndex;
+            monsterNames.RemoveAt(i);
+            update_monster_name_list();
+        }
+        MonsterZone monsterZone = new MonsterZone();
+        private void ui_monster_zone_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int i = ui_monster_zone_list.SelectedIndex;
+            ui_monster_zone_x.Text = game.SCN.MonsterZones[i].ZoneInfo.X.ToString();
+            ui_monster_zone_y.Text = game.SCN.MonsterZones[i].ZoneInfo.Y.ToString();
+            ui_monster_zone_w.Text = game.SCN.MonsterZones[i].ZoneInfo.Width.ToString();
+            ui_monster_zone_h.Text = game.SCN.MonsterZones[i].ZoneInfo.Height.ToString();
+            ui_battle_rate.Text = game.SCN.MonsterZones[i].FightChance.ToString();
+            monsterNames = game.SCN.MonsterZones[i].MonsterNames;
+            update_monster_name_list();
+        }
+        void update_monster_zone_list()
+        {
+            ui_monster_zone_list.Items.Clear();
+            if (game.SCN.MonsterZones == null)
+            {
+                game.SCN.MonsterZones = new List<MonsterZone>();
+            }
+            foreach (MonsterZone mz in game.SCN.MonsterZones)
+            {
+                ui_monster_zone_list.Items.Add(mz.ZoneInfo.ToString());
+            }
+        }
+        private void ui_monster_zone_add_Click(object sender, EventArgs e)
+        {
+            monsterZone = new MonsterZone();
+
+            monsterZone.MonsterNames = monsterNames;
+            monsterZone.FightChance = int.Parse(ui_battle_rate.Text);
+            int x = int.Parse(ui_monster_zone_x.Text);
+            int y = int.Parse(ui_monster_zone_y.Text);
+            int w = int.Parse(ui_monster_zone_w.Text);
+            int h = int.Parse(ui_monster_zone_h.Text);
+            monsterZone.ZoneInfo = new Rectangle(x, y, w, h);
+
+            game.SCN.MonsterZones.Add(monsterZone);
+            update_monster_zone_list();
+        }
+
+        private void ui_monster_zone_del_Click(object sender, EventArgs e)
+        {
+            int i = ui_monster_zone_list.SelectedIndex;
+            game.SCN.MonsterZones.RemoveAt(i);
+            update_monster_zone_list();
+        }
+
 
     }
 }

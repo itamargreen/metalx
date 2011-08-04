@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 
+using MetalX.Define;
+
 namespace MetalX.SceneMaker2D
 {
     public partial class DotMXMovieMaker : Form
@@ -47,7 +49,8 @@ namespace MetalX.SceneMaker2D
         }
 
         void setup()
-        {             
+        {
+            timer1.Enabled = false;
             mxmovie.FrameCount = int.Parse(textBox3.Text);
             if (mxmovie.Vertical)
             {
@@ -61,7 +64,7 @@ namespace MetalX.SceneMaker2D
                 n = n / mxmovie.FrameCount;
                 textBox2.Text = n.ToString();
             }
-            mxmovie.FrameInterval = double.Parse(textBox4.Text);
+            mxmovie.FrameInterval = int.Parse(textBox4.Text);
             timer1.Interval = (int)mxmovie.FrameInterval;
             mxmovie.TileSizePixel = new Size(int.Parse(textBox1.Text), int.Parse(textBox2.Text));
             bm = new Bitmap(mxmovie.TileSizePixel.Width, mxmovie.TileSizePixel.Height);
@@ -75,31 +78,33 @@ namespace MetalX.SceneMaker2D
                 return;
             }
             Graphics g = e.Graphics;
-            //g.Clear(Color.White);
-            g.DrawImage(bm, new Point());
-            g.DrawString(mxmovie.DrawZone.Location.ToString(), new System.Drawing.Font("微软雅黑", 12), Brushes.Red, new PointF(10, 100));
-            //pictureBox2.Refresh();
-            
+            g.DrawImage(bm2, new Point());
+            g.DrawString("frame " + mxmovie.FrameIndex + " " + mxmovie.DrawZone.Location.ToString(), new System.Drawing.Font("微软雅黑", 10), Brushes.Red, new PointF(500, 0));
         }
         Bitmap bm;
+        Bitmap bm2;
         private void timer1_Tick(object sender, EventArgs e)
+        {
+            draw();
+        }
+        void draw()
         {
             if (bm == null)
             {
                 return;
             }
-            mxmovie.NextFrame();
-            Graphics g = Graphics.FromImage(bm);
+            Graphics g = Graphics.FromImage(bm2);
             g.Clear(Color.Transparent);
-            g.DrawImage(pictureBox1.Image, new Rectangle(new Point(), mxmovie.TileSizePixel), mxmovie.DrawZone, GraphicsUnit.Pixel);
+            g.DrawImage(pictureBox1.Image, new Rectangle(mxmovie.DrawLocationPoint, mxmovie.TileSizePixel), mxmovie.DrawZone, GraphicsUnit.Pixel);
+            mxmovie.NextFrame();
             pictureBox2.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             mxmovie.Reset();
+            draw();
             timer1.Enabled = true;
-
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -143,8 +148,17 @@ namespace MetalX.SceneMaker2D
             int x = int.Parse(ui_x.Text);
             int y = int.Parse(ui_y.Text);
             int z = int.Parse(ui_z.Text);
+            int tp = int.Parse(ui_tp.Text);
 
-            mxmovie.Locations.Add(new Microsoft.DirectX.Vector3(x, y, z));
+            if (tp > mxmovie.MovieTime)
+            {
+                tp = mxmovie.MovieTime;
+            }
+
+            MetalX.Define.MovieFrameInfo mfi = new MovieFrameInfo();
+            mfi.Location = new Microsoft.DirectX.Vector3(x, y, z);
+            mfi.TimePoint = tp;
+            //mxmovie.MovieFrameInfos.Add(mfi);
             update_loc_list();
         }
 
@@ -153,18 +167,28 @@ namespace MetalX.SceneMaker2D
             int i = listBox1.SelectedIndex;
             if (i > -1)
             {
-                mxmovie.Locations.RemoveAt(i);
+                //mxmovie.MovieFrameInfos.RemoveAt(i);
                 update_loc_list();
             }
         }
 
         void update_loc_list()
         {
+
             listBox1.Items.Clear();
-            foreach (Microsoft.DirectX.Vector3 v3 in mxmovie.Locations)
-            {
-                listBox1.Items.Add(v3);
-            }
+            //if (mxmovie.MovieFrameInfos == null)
+            //{
+            //    mxmovie.MovieFrameInfos = new List<MovieFrameInfo>();
+            //}
+            //foreach (MetalX.Define.MovieFrameInfo mfi in mxmovie.MovieFrameInfos)
+            //{
+            //    listBox1.Items.Add(mfi.Location + " " + mfi.TimePoint);
+            //}
+        }
+
+        private void DotMXMovieMaker_Load(object sender, EventArgs e)
+        {
+            bm2=new Bitmap(640,480);
         }
     }
 }
