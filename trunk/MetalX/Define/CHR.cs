@@ -331,9 +331,10 @@ namespace MetalX.Define
         public int Strength;
         public int Agility;
         public int Intelligence;
+        public int Physique;
 
         public int HP;
-        public int HPMax;
+        public int HPMax = 100;
 
         public List<EquipmentCHR> Equipments = new List<EquipmentCHR>(8);
         public EquipmentCHR Weapon
@@ -542,6 +543,10 @@ namespace MetalX.Define
             Item item = bag[i].GetClone();
             //bag.RemoveAt(i);
             return item;
+        }
+        public void Drop(int i)
+        {
+            bag.RemoveAt(i);
         }
         public void Equip(int i)
         {

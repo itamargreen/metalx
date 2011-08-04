@@ -222,7 +222,19 @@ namespace MetalX.Define
     [Serializable]
     public class TextBox : ControlBox
     {
-        public string Text = "";
+        public string text;
+        public string Text
+        {
+            get
+            {
+                return text;
+            }
+            set
+            {
+                SubTextIndex = 0;
+                text = value;
+            }
+        }
         public Color FontColor = Color.White;
         public int TextIndex = -1;
         public string TextFileName;
@@ -255,12 +267,17 @@ namespace MetalX.Define
                     }
                     else
                     {
-                        //OneByOne = false;
                         OnSubTextShowDone(this, null);
                     }
-                } 
-                
-                return Text.Substring(0, SubTextIndex);
+                }
+                string str = Text;
+                try
+                {
+                    str = Text.Substring(0, SubTextIndex);
+                }
+                catch
+                { }
+                return str;
             }
         }
         public TextBox(Game g)

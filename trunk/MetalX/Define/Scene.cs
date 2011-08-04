@@ -141,6 +141,7 @@ namespace MetalX.Define
         //}
         public List<string> MusicNames = new List<string>();
         public List<string> NPCNames = new List<string>();
+        public List<MonsterZone> MonsterZones = new List<MonsterZone>();
         /// <summary>
         /// 代码层
         /// </summary>
@@ -681,7 +682,49 @@ namespace MetalX.Define
         public Point Location;
         public string Script = "";
         public bool ChangeSceneEffect = true;
-    }    
+    }
+    [Serializable]
+    public class MonsterZone
+    {
+        public Rectangle ZoneInfo = new Rectangle();
+        public List<string> MonsterNames = new List<string>();
+        public int FightChance = 0;
+        bool IsIn(Vector3 loc)
+        {
+            if (loc.X >= ZoneInfo.X && loc.Y >= ZoneInfo.Y && loc.X < ZoneInfo.Width && loc.Y < ZoneInfo.Height)
+            {
+                return true;
+            }
+            return false;
+        }
+        bool IsIn(Point loc)
+        {
+            return IsIn(new Vector3(loc.X, loc.Y, 0));
+        }
+        public List<string> Fight(Vector3 loc)
+        {
+            bool inzone = IsIn(loc);
+            if (inzone)
+            {
+                int seed = Util.Roll(0, 65535);
+                if (seed < FightChance)
+                {
+                    List<string> monsterNames = new List<string>();
+                    int monsterCount = Util.Roll(1, 12);
+                    for (int i = 0; i < monsterCount; i++)
+                    {
+                        int mc = MonsterNames.Count;
+                        mc--;
+                        int j = Util.Roll(0, mc);
+                        monsterNames.Add(MonsterNames[j]);
+                    }
+                    return monsterNames;
+                }
+                return null;
+            }
+            return null;
+        }
+    }
 
     //[Serializable]
     //public class Linker

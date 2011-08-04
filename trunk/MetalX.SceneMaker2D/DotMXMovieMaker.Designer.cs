@@ -57,6 +57,8 @@
             this.ui_pdel = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.ui_z = new System.Windows.Forms.TextBox();
+            this.ui_tp = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -236,6 +238,7 @@
             // 
             // listBox1
             // 
+            this.listBox1.Enabled = false;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(530, 146);
@@ -245,6 +248,7 @@
             // 
             // ui_x
             // 
+            this.ui_x.Enabled = false;
             this.ui_x.Location = new System.Drawing.Point(720, 121);
             this.ui_x.Name = "ui_x";
             this.ui_x.Size = new System.Drawing.Size(100, 21);
@@ -253,6 +257,7 @@
             // 
             // ui_y
             // 
+            this.ui_y.Enabled = false;
             this.ui_y.Location = new System.Drawing.Point(720, 148);
             this.ui_y.Name = "ui_y";
             this.ui_y.Size = new System.Drawing.Size(100, 21);
@@ -262,6 +267,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.Enabled = false;
             this.label6.Location = new System.Drawing.Point(703, 124);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(11, 12);
@@ -271,6 +277,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.Enabled = false;
             this.label7.Location = new System.Drawing.Point(703, 151);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(11, 12);
@@ -279,6 +286,7 @@
             // 
             // ui_padd
             // 
+            this.ui_padd.Enabled = false;
             this.ui_padd.Location = new System.Drawing.Point(656, 146);
             this.ui_padd.Name = "ui_padd";
             this.ui_padd.Size = new System.Drawing.Size(38, 23);
@@ -289,6 +297,7 @@
             // 
             // ui_pdel
             // 
+            this.ui_pdel.Enabled = false;
             this.ui_pdel.Location = new System.Drawing.Point(656, 223);
             this.ui_pdel.Name = "ui_pdel";
             this.ui_pdel.Size = new System.Drawing.Size(38, 23);
@@ -300,6 +309,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.Enabled = false;
             this.label8.Location = new System.Drawing.Point(703, 178);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(11, 12);
@@ -308,17 +318,39 @@
             // 
             // ui_z
             // 
+            this.ui_z.Enabled = false;
             this.ui_z.Location = new System.Drawing.Point(720, 175);
             this.ui_z.Name = "ui_z";
             this.ui_z.Size = new System.Drawing.Size(100, 21);
             this.ui_z.TabIndex = 25;
             this.ui_z.Text = "0";
             // 
+            // ui_tp
+            // 
+            this.ui_tp.Enabled = false;
+            this.ui_tp.Location = new System.Drawing.Point(897, 121);
+            this.ui_tp.Name = "ui_tp";
+            this.ui_tp.Size = new System.Drawing.Size(100, 21);
+            this.ui_tp.TabIndex = 27;
+            this.ui_tp.Text = "0";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Enabled = false;
+            this.label9.Location = new System.Drawing.Point(826, 124);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 12);
+            this.label9.TabIndex = 28;
+            this.label9.Text = "time_point";
+            // 
             // DotMXMovieMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 744);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.ui_tp);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.ui_z);
             this.Controls.Add(this.ui_pdel);
@@ -350,6 +382,7 @@
             this.Name = "DotMXMovieMaker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DotMXMovieMaker";
+            this.Load += new System.EventHandler(this.DotMXMovieMaker_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
@@ -387,5 +420,7 @@
         private System.Windows.Forms.Button ui_pdel;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox ui_z;
+        private System.Windows.Forms.TextBox ui_tp;
+        private System.Windows.Forms.Label label9;
     }
 }

@@ -180,6 +180,24 @@
             this.ui_npcdir = new System.Windows.Forms.ComboBox();
             this.ui_npcname = new System.Windows.Forms.TextBox();
             this.ui_npclist = new System.Windows.Forms.CheckedListBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.ui_monster_name = new System.Windows.Forms.TextBox();
+            this.ui_battle_rate = new System.Windows.Forms.TextBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.ui_monster_zone_h = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.ui_monster_zone_w = new System.Windows.Forms.TextBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.ui_monster_zone_y = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.ui_monster_zone_x = new System.Windows.Forms.TextBox();
+            this.ui_monster_zone_del = new System.Windows.Forms.Button();
+            this.ui_monster_zone_add = new System.Windows.Forms.Button();
+            this.ui_monster_name_list = new System.Windows.Forms.ListBox();
+            this.ui_delmonster = new System.Windows.Forms.Button();
+            this.ui_addmonster = new System.Windows.Forms.Button();
+            this.ui_monster_zone_list = new System.Windows.Forms.ListBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ui_loadmp3 = new System.Windows.Forms.Button();
@@ -216,6 +234,7 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_proc)).BeginInit();
@@ -567,6 +586,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -748,6 +768,7 @@
             // 
             // ui_linkdefdir
             // 
+            this.ui_linkdefdir.Enabled = false;
             this.ui_linkdefdir.FormattingEnabled = true;
             this.ui_linkdefdir.Items.AddRange(new object[] {
             "U",
@@ -1701,6 +1722,179 @@
             this.ui_npclist.TabIndex = 0;
             this.ui_npclist.SelectedIndexChanged += new System.EventHandler(this.ui_npclist_SelectedIndexChanged);
             // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.ui_monster_name);
+            this.tabPage7.Controls.Add(this.ui_battle_rate);
+            this.tabPage7.Controls.Add(this.label36);
+            this.tabPage7.Controls.Add(this.label34);
+            this.tabPage7.Controls.Add(this.ui_monster_zone_h);
+            this.tabPage7.Controls.Add(this.label35);
+            this.tabPage7.Controls.Add(this.ui_monster_zone_w);
+            this.tabPage7.Controls.Add(this.label33);
+            this.tabPage7.Controls.Add(this.ui_monster_zone_y);
+            this.tabPage7.Controls.Add(this.label32);
+            this.tabPage7.Controls.Add(this.ui_monster_zone_x);
+            this.tabPage7.Controls.Add(this.ui_monster_zone_del);
+            this.tabPage7.Controls.Add(this.ui_monster_zone_add);
+            this.tabPage7.Controls.Add(this.ui_monster_name_list);
+            this.tabPage7.Controls.Add(this.ui_delmonster);
+            this.tabPage7.Controls.Add(this.ui_addmonster);
+            this.tabPage7.Controls.Add(this.ui_monster_zone_list);
+            this.tabPage7.Location = new System.Drawing.Point(4, 24);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(290, 772);
+            this.tabPage7.TabIndex = 4;
+            this.tabPage7.Text = "怪物编辑";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // ui_monster_name
+            // 
+            this.ui_monster_name.Location = new System.Drawing.Point(209, 245);
+            this.ui_monster_name.Name = "ui_monster_name";
+            this.ui_monster_name.Size = new System.Drawing.Size(75, 21);
+            this.ui_monster_name.TabIndex = 17;
+            // 
+            // ui_battle_rate
+            // 
+            this.ui_battle_rate.Location = new System.Drawing.Point(209, 191);
+            this.ui_battle_rate.Name = "ui_battle_rate";
+            this.ui_battle_rate.Size = new System.Drawing.Size(46, 21);
+            this.ui_battle_rate.TabIndex = 16;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(162, 194);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(41, 12);
+            this.label36.TabIndex = 15;
+            this.label36.Text = "遇敌率";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(79, 221);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(11, 12);
+            this.label34.TabIndex = 14;
+            this.label34.Text = "h";
+            // 
+            // ui_monster_zone_h
+            // 
+            this.ui_monster_zone_h.Location = new System.Drawing.Point(96, 218);
+            this.ui_monster_zone_h.Name = "ui_monster_zone_h";
+            this.ui_monster_zone_h.Size = new System.Drawing.Size(46, 21);
+            this.ui_monster_zone_h.TabIndex = 13;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(6, 221);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(11, 12);
+            this.label35.TabIndex = 12;
+            this.label35.Text = "w";
+            // 
+            // ui_monster_zone_w
+            // 
+            this.ui_monster_zone_w.Location = new System.Drawing.Point(23, 218);
+            this.ui_monster_zone_w.Name = "ui_monster_zone_w";
+            this.ui_monster_zone_w.Size = new System.Drawing.Size(46, 21);
+            this.ui_monster_zone_w.TabIndex = 11;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(79, 194);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(11, 12);
+            this.label33.TabIndex = 10;
+            this.label33.Text = "y";
+            // 
+            // ui_monster_zone_y
+            // 
+            this.ui_monster_zone_y.Location = new System.Drawing.Point(96, 191);
+            this.ui_monster_zone_y.Name = "ui_monster_zone_y";
+            this.ui_monster_zone_y.Size = new System.Drawing.Size(46, 21);
+            this.ui_monster_zone_y.TabIndex = 9;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(6, 194);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(11, 12);
+            this.label32.TabIndex = 8;
+            this.label32.Text = "x";
+            // 
+            // ui_monster_zone_x
+            // 
+            this.ui_monster_zone_x.Location = new System.Drawing.Point(23, 191);
+            this.ui_monster_zone_x.Name = "ui_monster_zone_x";
+            this.ui_monster_zone_x.Size = new System.Drawing.Size(46, 21);
+            this.ui_monster_zone_x.TabIndex = 6;
+            // 
+            // ui_monster_zone_del
+            // 
+            this.ui_monster_zone_del.Location = new System.Drawing.Point(209, 35);
+            this.ui_monster_zone_del.Name = "ui_monster_zone_del";
+            this.ui_monster_zone_del.Size = new System.Drawing.Size(75, 23);
+            this.ui_monster_zone_del.TabIndex = 5;
+            this.ui_monster_zone_del.Text = "删除";
+            this.ui_monster_zone_del.UseVisualStyleBackColor = true;
+            this.ui_monster_zone_del.Click += new System.EventHandler(this.ui_monster_zone_del_Click);
+            // 
+            // ui_monster_zone_add
+            // 
+            this.ui_monster_zone_add.Location = new System.Drawing.Point(209, 6);
+            this.ui_monster_zone_add.Name = "ui_monster_zone_add";
+            this.ui_monster_zone_add.Size = new System.Drawing.Size(75, 23);
+            this.ui_monster_zone_add.TabIndex = 4;
+            this.ui_monster_zone_add.Text = "添加";
+            this.ui_monster_zone_add.UseVisualStyleBackColor = true;
+            this.ui_monster_zone_add.Click += new System.EventHandler(this.ui_monster_zone_add_Click);
+            // 
+            // ui_monster_name_list
+            // 
+            this.ui_monster_name_list.FormattingEnabled = true;
+            this.ui_monster_name_list.ItemHeight = 12;
+            this.ui_monster_name_list.Location = new System.Drawing.Point(6, 245);
+            this.ui_monster_name_list.Name = "ui_monster_name_list";
+            this.ui_monster_name_list.Size = new System.Drawing.Size(197, 148);
+            this.ui_monster_name_list.TabIndex = 3;
+            // 
+            // ui_delmonster
+            // 
+            this.ui_delmonster.Location = new System.Drawing.Point(209, 301);
+            this.ui_delmonster.Name = "ui_delmonster";
+            this.ui_delmonster.Size = new System.Drawing.Size(75, 23);
+            this.ui_delmonster.TabIndex = 2;
+            this.ui_delmonster.Text = "删除";
+            this.ui_delmonster.UseVisualStyleBackColor = true;
+            this.ui_delmonster.Click += new System.EventHandler(this.ui_delmonster_Click);
+            // 
+            // ui_addmonster
+            // 
+            this.ui_addmonster.Location = new System.Drawing.Point(209, 272);
+            this.ui_addmonster.Name = "ui_addmonster";
+            this.ui_addmonster.Size = new System.Drawing.Size(75, 23);
+            this.ui_addmonster.TabIndex = 1;
+            this.ui_addmonster.Text = "添加";
+            this.ui_addmonster.UseVisualStyleBackColor = true;
+            this.ui_addmonster.Click += new System.EventHandler(this.ui_addmonster_Click);
+            // 
+            // ui_monster_zone_list
+            // 
+            this.ui_monster_zone_list.FormattingEnabled = true;
+            this.ui_monster_zone_list.ItemHeight = 12;
+            this.ui_monster_zone_list.Location = new System.Drawing.Point(6, 6);
+            this.ui_monster_zone_list.Name = "ui_monster_zone_list";
+            this.ui_monster_zone_list.Size = new System.Drawing.Size(197, 148);
+            this.ui_monster_zone_list.TabIndex = 0;
+            this.ui_monster_zone_list.SelectedIndexChanged += new System.EventHandler(this.ui_monster_zone_list_SelectedIndexChanged);
+            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.panel1);
@@ -1835,7 +2029,7 @@
             this.ui_mousey});
             this.toolStrip1.Location = new System.Drawing.Point(337, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(110, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(79, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -1905,6 +2099,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.ui_pic)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1945,7 +2141,6 @@
         private System.Windows.Forms.ToolStripMenuItem 说明ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label20;
@@ -2089,6 +2284,25 @@
         private System.Windows.Forms.CheckBox ui_moveall;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox ui_chgscneff;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.TextBox ui_monster_name;
+        private System.Windows.Forms.TextBox ui_battle_rate;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox ui_monster_zone_h;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.TextBox ui_monster_zone_w;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.TextBox ui_monster_zone_y;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.TextBox ui_monster_zone_x;
+        private System.Windows.Forms.Button ui_monster_zone_del;
+        private System.Windows.Forms.Button ui_monster_zone_add;
+        private System.Windows.Forms.ListBox ui_monster_name_list;
+        private System.Windows.Forms.Button ui_delmonster;
+        private System.Windows.Forms.Button ui_addmonster;
+        private System.Windows.Forms.ListBox ui_monster_zone_list;
     }
 }
 
