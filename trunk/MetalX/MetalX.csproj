@@ -74,12 +74,14 @@
     <Compile Include="Component\JoystickManager.cs" />
     <Compile Include="Component\KeyboardManager.cs" />
     <Compile Include="Component\MouseManager.cs" />
+    <Compile Include="Component\MovieManager.cs" />
     <Compile Include="Component\SceneManager.cs" />
     <Compile Include="Component\FormBoxManager.cs" />
     <Compile Include="Component\ScriptManager.cs" />
     <Compile Include="Define\Defines.cs" />
+    <Compile Include="Define\MemoryIndexer.cs" />
     <Compile Include="Define\Monster.cs" />
-    <Compile Include="File\FileIndexer.cs" />
+    <Compile Include="Define\FileIndexer.cs" />
     <Compile Include="Define\Item.cs" />
     <Compile Include="Define\CheckPoint.cs" />
     <Compile Include="File\MetalXMovie.cs" />

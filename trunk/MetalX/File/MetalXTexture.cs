@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+using MetalX.Define;
 namespace MetalX.File
 {
     [Serializable]
@@ -20,20 +20,20 @@ namespace MetalX.File
                 return new System.IO.MemoryStream(TextureData);
             }
         }
-        public Size SizePixel;
-        public Size SizePixel2X
+        public Size Size;
+        public Size Size2X
         {
             get
             {
-                return new Size(SizePixel.Width * 2, SizePixel.Height * 2);
+                return new Size(Size.Width * 2, Size.Height * 2);
             }
         }
-        public Size TileSizePixel;
-        public Size TileSizePixel2X
+        public Size TileSize;
+        public Size TileSize2X
         {
             get
             {
-                return new Size(TileSizePixel.Width * 2, TileSizePixel.Height * 2);
+                return new Size(TileSize.Width * 2, TileSize.Height * 2);
             }
         }
 
@@ -52,9 +52,22 @@ namespace MetalX.File
             : base()
         {
             //SizePixel = sz;
-            FileIndexer = new File.FileIndexer(fullName);
+            FileIndexer = new FileIndexer(fullName);
             Name = FileIndexer.FileName;
             TextureData = System.IO.File.ReadAllBytes(FileIndexer.FullName);
+        }
+        public void Init(Microsoft.DirectX.Direct3D.Device dev)
+        {
+            MEMTexture = Microsoft.DirectX.Direct3D.TextureLoader.FromStream(dev, new System.IO.MemoryStream(TextureData), Size.Width, Size.Height, 0, Microsoft.DirectX.Direct3D.Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Microsoft.DirectX.Direct3D.Pool.Managed, Microsoft.DirectX.Direct3D.Filter.Point, Microsoft.DirectX.Direct3D.Filter.Point, Color.Pink.ToArgb());
+            Image img = Image.FromStream(new System.IO.MemoryStream(TextureData));
+
+            Bitmap bmp = new Bitmap(img);
+            Bitmap bmp2x = new Bitmap(bmp.Size.Width * 2, bmp.Size.Height * 2);
+            MEMTexture2X = Microsoft.DirectX.Direct3D.TextureLoader.FromStream(dev, new System.IO.MemoryStream(TextureData), bmp2x.Width, bmp2x.Height, 0, Microsoft.DirectX.Direct3D.Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Microsoft.DirectX.Direct3D.Pool.Managed, Microsoft.DirectX.Direct3D.Filter.Point, Microsoft.DirectX.Direct3D.Filter.Point, Color.Pink.ToArgb());
+
+            img.Dispose();
+            bmp.Dispose();
+            bmp2x.Dispose();
         }
 
         public void Dispose()

@@ -30,11 +30,11 @@ namespace MetalX.SceneMaker2D
             {
                 mxmovie.MXT = new File.MetalXTexture(ofd.FileName);
                 pictureBox1.Image = Image.FromStream(mxmovie.MXT.TextureDataStream);
-                mxmovie.MXT.SizePixel = pictureBox1.Image.Size;
-                label1.Text = mxmovie.MXT.SizePixel.ToString();
+                mxmovie.MXT.Size = pictureBox1.Image.Size;
+                label1.Text = mxmovie.MXT.Size.ToString();
 
-                textBox1.Text = mxmovie.MXT.SizePixel.Width.ToString();
-                textBox2.Text = mxmovie.MXT.SizePixel.Height.ToString();
+                textBox1.Text = mxmovie.MXT.Size.Width.ToString();
+                textBox2.Text = mxmovie.MXT.Size.Height.ToString();
             }            
         }
 
@@ -54,20 +54,20 @@ namespace MetalX.SceneMaker2D
             mxmovie.FrameCount = int.Parse(textBox3.Text);
             if (mxmovie.Vertical)
             {
-                int n = mxmovie.MXT.SizePixel.Height;
+                int n = mxmovie.MXT.Size.Height;
                 n = n / mxmovie.FrameCount;
                 textBox2.Text = n.ToString();
             }
             else
             {
-                int n = mxmovie.MXT.SizePixel.Width;
+                int n = mxmovie.MXT.Size.Width;
                 n = n / mxmovie.FrameCount;
                 textBox2.Text = n.ToString();
             }
             mxmovie.FrameInterval = int.Parse(textBox4.Text);
             timer1.Interval = (int)mxmovie.FrameInterval;
-            mxmovie.TileSizePixel = new Size(int.Parse(textBox1.Text), int.Parse(textBox2.Text));
-            bm = new Bitmap(mxmovie.TileSizePixel.Width, mxmovie.TileSizePixel.Height);
+            mxmovie.TileSize = new Size(int.Parse(textBox1.Text), int.Parse(textBox2.Text));
+            bm = new Bitmap(mxmovie.TileSize.Width, mxmovie.TileSize.Height);
             mxmovie.Loop = ui_loop.Checked;
         }
 
@@ -79,7 +79,7 @@ namespace MetalX.SceneMaker2D
             }
             Graphics g = e.Graphics;
             g.DrawImage(bm2, new Point());
-            g.DrawString("frame " + mxmovie.FrameIndex + " " + mxmovie.DrawZone.Location.ToString(), new System.Drawing.Font("微软雅黑", 10), Brushes.Red, new PointF(500, 0));
+            g.DrawString(" " + mxmovie.DrawZone.Location.ToString(), new System.Drawing.Font("微软雅黑", 10), Brushes.Red, new PointF(500, 0));
         }
         Bitmap bm;
         Bitmap bm2;
@@ -95,13 +95,14 @@ namespace MetalX.SceneMaker2D
             }
             Graphics g = Graphics.FromImage(bm2);
             g.Clear(Color.Transparent);
-            g.DrawImage(pictureBox1.Image, new Rectangle(mxmovie.DrawLocationPoint, mxmovie.TileSizePixel), mxmovie.DrawZone, GraphicsUnit.Pixel);
+            g.DrawImage(pictureBox1.Image, new Rectangle(mxmovie.DrawLocationPoint, mxmovie.TileSize), mxmovie.DrawZone, GraphicsUnit.Pixel);
             mxmovie.NextFrame();
             pictureBox2.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            mxmovie.PlayTime = mxmovie.MovieTime;
             mxmovie.Reset();
             draw();
             timer1.Enabled = true;
@@ -117,10 +118,10 @@ namespace MetalX.SceneMaker2D
                 mxmovie = (MetalX.File.MetalXMovie)Util.LoadObject(ofd.FileName);
                 pictureBox1.Image = Image.FromStream(mxmovie.MXT.TextureDataStream);
                 //mxmovie.MXT.SizePixel = pictureBox1.Image.Size;
-                label1.Text = mxmovie.MXT.SizePixel.ToString();
+                label1.Text = mxmovie.MXT.Size.ToString();
 
-                textBox1.Text = mxmovie.TileSizePixel.Width.ToString();
-                textBox2.Text = mxmovie.TileSizePixel.Height.ToString();
+                textBox1.Text = mxmovie.TileSize.Width.ToString();
+                textBox2.Text = mxmovie.TileSize.Height.ToString();
 
                 textBox3.Text = mxmovie.FrameCount.ToString();
                 textBox4.Text = mxmovie.FrameInterval.ToString();
@@ -148,7 +149,7 @@ namespace MetalX.SceneMaker2D
             int x = int.Parse(ui_x.Text);
             int y = int.Parse(ui_y.Text);
             int z = int.Parse(ui_z.Text);
-            int tp = int.Parse(ui_tp.Text);
+            double tp = double.Parse(ui_tp.Text);
 
             if (tp > mxmovie.MovieTime)
             {

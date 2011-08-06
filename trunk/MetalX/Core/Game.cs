@@ -48,11 +48,14 @@ namespace MetalX
         public FileLib SceneFiles;
         public FileLib NPCFiles;
         public FileLib ScriptFiles;
+        public FileLib MovieFiles;
+        public FileLib MonsterFiles;
         public FormBoxes FormBoxes;
         public Items Items;
         public Scene SCN;
         public PC ME = new PC();
         public List<NPC> NPCs = new List<NPC>();
+        public List<Monster> Monsters = new List<Monster>();
         public NPC GetNPC(string name)
         {
             foreach (NPC npc in NPCs)
@@ -104,6 +107,8 @@ namespace MetalX
         public FormBoxManager FormBoxManager;
         public SceneManager SceneManager;
         public ScriptManager ScriptManager;
+        public MovieManager MovieManager;
+        public BattleManager BattleManager;
         //DateTime frameBeginTime, frameEndTime;
         //DateTime frameBeginTimeBak, frameEndTimeBak;
         //bool frameTotalTimeCanRead;
@@ -111,12 +116,12 @@ namespace MetalX
         bool isRunning = true;
         public List<GameCom> GameComs = new List<GameCom>();
         DateTime gameBeginTime;
-        float targetFPS = 60;
+        double targetFPS = 60;
         ulong totalFrames = 0;
 
         #endregion
         #region 属性
-        //public int TilePixel
+        //public int TilePixelX
         //{
         //    get
         //    {
@@ -129,8 +134,8 @@ namespace MetalX
         //    get
         //    {
         //        return new Vector3(
-        //            (Options.WindowSize.Width / Options.TileSizeX.Width / 2 + 1) * TilePixel,
-        //            (Options.WindowSize.Height / Options.TileSizeX.Height / 2 + 1) * TilePixel, 0);
+        //            (Options.WindowSize.Width / Options.TileSizeX.Width / 2 + 1) * TilePixelX,
+        //            (Options.WindowSize.Height / Options.TileSizeX.Height / 2 + 1) * TilePixelX, 0);
         //    }
         //}
         //public bool FPSCanRead
@@ -188,7 +193,7 @@ namespace MetalX
         /// <summary>
         /// 平均帧速
         /// </summary>
-        public float AverageFPS
+        public double AverageFPS
         {
             get
             {
@@ -199,7 +204,7 @@ namespace MetalX
                 targetFPS = value <= 0 ? 60 : (value >= 60 ? 60 : value);
             }
         }
-        public float FPS
+        public double FPS
         {
             get
             {
@@ -285,6 +290,8 @@ namespace MetalX
             SceneFiles = new FileLib();
             NPCFiles = new FileLib();
             ScriptFiles = new FileLib();
+            MovieFiles = new FileLib();
+            MonsterFiles = new FileLib();
 
             Models = new Models();
             Textures = new Textures();
@@ -301,10 +308,11 @@ namespace MetalX
             MountGameCom(KeyboardManager);
 
             SoundManager1 = new SoundManager(this);
-            SoundManager1.Volume = 60;
+            SoundManager1.Volume = 77;
             MountGameCom(SoundManager1);
 
             SoundManager2 = new SoundManager(this);
+            SoundManager2.Volume = 88;
             MountGameCom(SoundManager2);
             
             SceneManager = new SceneManager(this);
@@ -312,6 +320,12 @@ namespace MetalX
 
             FormBoxManager = new FormBoxManager(this);
             MountGameCom(FormBoxManager);
+
+            MovieManager = new MovieManager(this);
+            MountGameCom(MovieManager);
+
+            BattleManager = new BattleManager(this);
+            MountGameCom(BattleManager);
 
             ScriptManager = new ScriptManager(this);
             MountGameCom(ScriptManager);          
@@ -325,8 +339,8 @@ namespace MetalX
 
             totalFrames = 0;
 
-            SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), Options.X);
-            SetLight(new Vector3(0, 0, 22.5f), new Vector3(), Options.X, false);
+            SetCamera(new Vector3(0, 0, 22.5f), new Vector3(), (float)Options.X);
+            SetLight(new Vector3(0, 0, 22.5f), new Vector3(), (float)Options.X, false);
 
             isRunning = true;
             if (Devices.GameWindow == null)
@@ -582,7 +596,18 @@ namespace MetalX
             NPC npc = (NPC)Util.LoadObject(pathName);
             return npc;
         }
-        public Scene LoadDotXMLScene(string pathName)
+        public Monster LoadDotMXMonster(string pathName)
+        {
+            Monster npc = (Monster)Util.LoadObject(pathName);
+            return npc;
+        }
+        public MetalXMovie LoadDotMXMovie(string pathName)
+        {
+            MetalXMovie npc = (MetalXMovie)Util.LoadObject(pathName);
+            npc.MXT.Init(Devices.D3DDev);
+            return npc;
+        }
+        public Scene LoadDotMXSceneDotXML(string pathName)
         {
             Scene scene = (Scene)Util.LoadObjectXML(pathName, typeof(Scene));
 
@@ -634,11 +659,11 @@ namespace MetalX
 
             Bitmap bmp = new Bitmap(img);
 
-            texture.SizePixel = bmp.Size;
+            texture.Size = bmp.Size;
             //bmp.MakeTransparent(Color.Pink);
-            texture.TileSizePixel = defTileSize;
+            texture.TileSize = defTileSize;
             //texture.MEMTexture = new Texture(g.Devices.D3DDev, bmp, Usage.None, Pool.Managed);
-            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.Size.Width, texture.Size.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.A8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
 
             Bitmap bmp2x = new Bitmap(bmp.Size.Width * 2, bmp.Size.Height * 2);
             ////bmp2x.MakeTransparent(Color.Pink);
@@ -686,15 +711,15 @@ namespace MetalX
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX纹理</returns>
-        public MetalXTexture LoadDotMXT(string fileName)
+        public MetalXTexture LoadDotMXTexture(string fileName)
         {
             MetalXTexture texture = new MetalXTexture();
             texture = (MetalXTexture)Util.LoadObject(fileName);
-            texture.MEMTexture = TextureLoader.FromStream(Devices.D3DDev, new MemoryStream(texture.TextureData), texture.SizePixel.Width, texture.SizePixel.Height, 0, Usage.None, Microsoft.DirectX.Direct3D.Format.X8R8G8B8, Pool.Managed, Filter.Point, Filter.Point, Color.Pink.ToArgb());
+            texture.Init(Devices.D3DDev);
 
             return texture;
         }
-        public MetalXTexture LoadDotMXT(Bitmap bm)
+        public MetalXTexture LoadDotMXTexture(Bitmap bm)
         {
             MetalXTexture texture = new MetalXTexture();
             texture.MEMTexture = new Texture(Devices.D3DDev, bm, Usage.None, Pool.Managed);
@@ -747,7 +772,7 @@ namespace MetalX
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX模型</returns>
-        public MetalXModel LoadDotMXM(string fileName)
+        public MetalXModel LoadDotMXModel(string fileName)
         {
             MetalXModel model = (MetalXModel)Util.LoadObject(fileName);
 
@@ -774,7 +799,7 @@ namespace MetalX
 
             return model;
         }
-        public void LoadAllDotMXA()
+        public void LoadAllDotMXAudio()
         {
             string pathName = Options.RootPath;
 
@@ -783,10 +808,26 @@ namespace MetalX
             foreach (string pName in dirName)
             {
                 DirectoryInfo di = new DirectoryInfo(pName);
-                FileInfo[] fis = di.GetFiles("*.mxa");
+                FileInfo[] fis = di.GetFiles("*.mxaudio");
                 foreach (FileInfo fi in fis)
                 {
                     AudioFiles.Add(new FileIndexer(fi.FullName));
+                }
+            }
+        }
+        public void LoadAllDotMXMovie()
+        {
+            string pathName = Options.RootPath;
+
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.mxmovie");
+                foreach (FileInfo fi in fis)
+                {
+                    MovieFiles.Add(new FileIndexer(fi.FullName));
                 }
             }
         }
@@ -820,6 +861,21 @@ namespace MetalX
                 }
             }
         }
+        public void LoadAllDotMXMonster()
+        {
+            string pathName = Options.RootPath;
+            List<string> dirName = new List<string>();
+            Util.EnumDir(pathName, dirName);
+            foreach (string pName in dirName)
+            {
+                DirectoryInfo di = new DirectoryInfo(pName);
+                FileInfo[] fis = di.GetFiles("*.mxmonster");
+                foreach (FileInfo fi in fis)
+                {
+                    MonsterFiles.Add(new FileIndexer(fi.FullName));
+                }
+            }
+        }
         public void LoadAllDotMXScript()
         {
             string pathName = Options.RootPath;
@@ -835,7 +891,7 @@ namespace MetalX
                 }
             }
         }
-        public void LoadAllDotMXT()
+        public void LoadAllDotMXTexture()
         {
             string pathName = Options.RootPath;
 
@@ -845,10 +901,10 @@ namespace MetalX
                 foreach (string pName in dirName)
                 {
                     DirectoryInfo di = new DirectoryInfo(pName);
-                    FileInfo[] fis = di.GetFiles("*.mxt");
+                    FileInfo[] fis = di.GetFiles("*.mxtexture");
                     foreach (FileInfo fi in fis)
                     {
-                        Textures.Add(LoadDotMXT(fi.FullName));
+                        Textures.Add(LoadDotMXTexture(fi.FullName));
                     }
                 }
             }
@@ -888,7 +944,7 @@ namespace MetalX
         /// </summary>
         /// <param name="fileName">文件路径+文件名</param>
         /// <returns>MetalX音频</returns>
-        public MetalXAudio LoadDotMXA(string fileName)
+        public MetalXAudio LoadDotMXAudio(string fileName)
         {
             MetalXAudio mxa = (MetalXAudio)Util.LoadObject(fileName);
             //Add(mxa);
@@ -981,7 +1037,7 @@ namespace MetalX
 
             loc.Y = -loc.Y;
 
-            Size s = t.SizePixel;
+            Size s = t.Size;
 
             float fx, fy, tx, ty;
 
@@ -995,10 +1051,10 @@ namespace MetalX
             //}
             //else
             {
-                fx = ((float)dz.Left + Options.UVOffsetX) / (float)s.Width;
-                tx = ((float)dz.Right + Options.UVOffsetX) / (float)s.Width;
-                fy = ((float)dz.Top + Options.UVOffsetY) / (float)s.Height;
-                ty = ((float)dz.Bottom + Options.UVOffsetY) / (float)s.Height;
+                fx = ((float)dz.Left + (float)Options.UVOffsetX) / (float)s.Width;
+                tx = ((float)dz.Right + (float)Options.UVOffsetX) / (float)s.Width;
+                fy = ((float)dz.Top + (float)Options.UVOffsetY) / (float)s.Height;
+                ty = ((float)dz.Bottom + (float)Options.UVOffsetY) / (float)s.Height;
             }
 
             Vector3 cp = new Vector3(0, 0, 0);
@@ -1046,7 +1102,7 @@ namespace MetalX
                 dz.Size = size;
                 mxt = t.MEMTexture;
             }
-            Devices.Sprite.Draw(mxt, dz, new Vector3(), Util.Point2Vector3(loc, 0), color);
+            Devices.Sprite.Draw(mxt, dz, new Vector3(), Util.Point2Vector3(loc), color);
             //Devices.Sprite.Draw2D(mxt, dz, new Rectangle(dz.Location, size), new Point(), 0, loc, color);
         }
 
@@ -1197,6 +1253,14 @@ namespace MetalX
         {
             SoundManager1.Stop();
         }
+        //public void PauseAudio()
+        //{
+        //    SoundManager1.Pause();
+        //}
+        //public void GoOnAudio()
+        //{
+        //    SoundManager1.GoOn();
+        //}
         public void SetVolume(int ch, int val)
         {
             if (ch == 1)

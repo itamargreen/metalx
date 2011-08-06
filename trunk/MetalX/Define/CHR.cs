@@ -4,6 +4,8 @@ using System.Drawing;
 
 using Microsoft.DirectX;
 
+using MetalX.File;
+
 namespace MetalX.Define
 {
     [Serializable]
@@ -14,6 +16,8 @@ namespace MetalX.Define
             for (int i = 0; i < 8; i++)
             {
                 Equipments.Add(new EquipmentCHR());
+                BattleMovieIndexers.Add(new MemoryIndexer());
+                BattleMovies.Add(new MetalXMovie());
             }
         }
         public string Name = "noname";
@@ -24,13 +28,19 @@ namespace MetalX.Define
         public string HeadTextureName;
         public Size Size = new Size(1, 1);
         public bool Invisible = false;
+        [NonSerialized]
         bool isForceMove = false;
 
-        float moveSpeed = 2f;
+        double moveSpeed = 2;
+        [NonSerialized]
         public int NeedMoveStep = 0;
-        public float NeedMovePixel = 0;
+        [NonSerialized]
+        public double NeedMovePixel = 0;
+        [NonSerialized]
         public Direction LastDirection;
+        [NonSerialized]
         public Direction RealDirection;
+        [NonSerialized]
         public Direction ForceDirection;
         public Direction OppositeDirection
         {
@@ -55,8 +65,11 @@ namespace MetalX.Define
             }
         }
 
+        [NonSerialized]
         public Vector3 LastLocation;
+        //[NonSerialized]
         public Vector3 RealLocation;
+        //[NonSerialized]
         public Vector3 RealLocationPixel;
         public Color ColorFilter = Color.White;
         public void SetRealLocation(int x, int y, int z, int unit)
@@ -68,6 +81,7 @@ namespace MetalX.Define
             NextLocation = LastLocation = RealLocation = v3;
             RealLocationPixel = Util.Vector3MulInt(RealLocation, unit);
         }
+        [NonSerialized]
         public Vector3 NextLocation;
         #region old
         //public Vector3 GetLogicLastLocation(int unit)
@@ -244,7 +258,7 @@ namespace MetalX.Define
         public Vector3 GetDrawLocation(int unit, int lastl, int nextl)
         {
             Vector3 v3 = GetStayLocation(unit);
-            float movedPixel = unit - NeedMovePixel;
+            double movedPixel = unit - NeedMovePixel;
             if (NeedMovePixel > 0)
             {
                 if (RealDirection == Direction.U)
@@ -298,7 +312,9 @@ namespace MetalX.Define
             return v3;
         }
 
+        [NonSerialized]
         public string InSceneName;
+        [NonSerialized]
         public int InSceneIndex = -1;
 
         public bool CanMove = true;
@@ -460,11 +476,11 @@ namespace MetalX.Define
         /// <summary>
         /// 反应延迟
         /// </summary>
-        public int Delay
+        public double Delay
         {
             get
             {
-                int delay = 0;
+                double delay = 0;
                 foreach (EquipmentCHR e in Equipments)
                 {
                     delay += e.Delay;
@@ -475,11 +491,11 @@ namespace MetalX.Define
         /// <summary>
         /// 命中率
         /// </summary>
-        public float Accurate
+        public double Accurate
         {
             get
             {
-                float accurate = 0;
+                double accurate = 0;
                 foreach (EquipmentCHR e in Equipments)
                 {
                     accurate += e.Accurate;
@@ -490,11 +506,11 @@ namespace MetalX.Define
         /// <summary>
         /// 躲闪率
         /// </summary>
-        public float Missrate
+        public double Missrate
         {
             get
             {
-                float missrate = 0;
+                double missrate = 0;
                 foreach (EquipmentCHR e in Equipments)
                 {
                     missrate += e.Missrate;
@@ -505,11 +521,11 @@ namespace MetalX.Define
         /// <summary>
         /// 移动速度
         /// </summary>
-        public float MoveSpeed
+        public double MoveSpeed
         {
             get
             {
-                float speed = 0;
+                double speed = 0;
                 foreach (EquipmentCHR e in Equipments)
                 {
                     speed += e.MoveSpeed;
@@ -633,7 +649,7 @@ namespace MetalX.Define
             {
                 if (isForceMove)
                 {
-                    float movePixel = MoveSpeed;
+                    double movePixel = MoveSpeed;
                     if (NeedMovePixel < MoveSpeed)
                     {
                         movePixel = NeedMovePixel;
@@ -643,19 +659,19 @@ namespace MetalX.Define
 
                     if (ForceDirection == Direction.U)
                     {
-                        RealLocationPixel.Y -= movePixel;
+                        RealLocationPixel.Y -= (float)movePixel;
                     }
                     else if (ForceDirection == Direction.L)
                     {
-                        RealLocationPixel.X -= movePixel;
+                        RealLocationPixel.X -= (float)movePixel;
                     }
                     else if (ForceDirection == Direction.D)
                     {
-                        RealLocationPixel.Y += movePixel;
+                        RealLocationPixel.Y += (float)movePixel;
                     }
                     else if (ForceDirection == Direction.R)
                     {
-                        RealLocationPixel.X += movePixel;
+                        RealLocationPixel.X += (float)movePixel;
                     }
 
                     if (NeedMovePixel <= 0)
@@ -665,7 +681,7 @@ namespace MetalX.Define
                 }
                 else
                 {
-                    float movePixel = MoveSpeed;
+                    double movePixel = MoveSpeed;
                     if (NeedMovePixel < MoveSpeed)
                     {
                         movePixel = NeedMovePixel;
@@ -675,21 +691,103 @@ namespace MetalX.Define
 
                     if (RealDirection == Direction.U)
                     {
-                        RealLocationPixel.Y -= movePixel;
+                        RealLocationPixel.Y -= (float)movePixel;
                     }
                     else if (RealDirection == Direction.L)
                     {
-                        RealLocationPixel.X -= movePixel;
+                        RealLocationPixel.X -= (float)movePixel;
                     }
                     else if (RealDirection == Direction.D)
                     {
-                        RealLocationPixel.Y += movePixel;
+                        RealLocationPixel.Y += (float)movePixel;
                     }
                     else if (RealDirection == Direction.R)
                     {
-                        RealLocationPixel.X += movePixel;
+                        RealLocationPixel.X += (float)movePixel;
                     }
                 }
+            }
+        }
+
+        public Size BattleSize;
+        [NonSerialized]
+        public Vector3 BattleLocation;
+        [NonSerialized]
+        public BattleState BattleState;
+        [NonSerialized]
+        public List<MetalXMovie> BattleMovies = new List<MetalXMovie>();
+        public List<MemoryIndexer> BattleMovieIndexers = new List<MemoryIndexer>();
+        public MetalXMovie BattleMovie
+        {
+            get
+            {
+                //if (BattleMovies == null)
+                //{
+                //    return null;
+                //}
+                try
+                {
+                    return BattleMovies[(int)BattleState];
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to, double timespan)
+        {
+            BattleState = bs;
+            int i = (int)bs;
+            BattleLocation = BattleMovies[i].BeginLocation = from;
+            BattleMovies[i].EndLocation = to;
+            BattleMovies[i].PlayTime = timespan;
+            BattleMovies[i].Reset();
+        }
+        public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to)
+        {
+            BattleState = bs;
+            int i = (int)bs;
+            BattleLocation = BattleMovies[i].BeginLocation = from;
+            BattleMovies[i].EndLocation = to;
+            BattleMovies[i].PlayTime = BattleMovies[i].MovieTime;
+            BattleMovies[i].Reset();
+        }
+        public void SetBattleMovie(BattleState bs, Vector3 loc, double timespan)
+        {
+            SetBattleMovie(bs, BattleLocation, loc, timespan);
+        }
+        public void SetBattleMovie(BattleState bs, double timespan)
+        {
+            SetBattleMovie(bs, BattleLocation, timespan);
+        }
+        public void SetBattleMovie(BattleState bs, Vector3 loc)
+        {
+            SetBattleMovie(bs, BattleLocation, loc);
+        }
+        public void SetBattleMovie(BattleState bs)
+        {
+            SetBattleMovie(bs, BattleLocation);
+        }
+
+        public void LoadBattleMovies(Game game)
+        {
+            BattleMovies = new List<MetalXMovie>();
+            for (int i = 0; i < BattleMovieIndexers.Count; i++)
+            {
+                if (BattleMovieIndexers[i].Name == null)
+                {
+                    continue;
+                }
+
+                File.MetalXMovie movie = game.LoadDotMXMovie(game.MovieFiles[BattleMovieIndexers[i].Name].FullName);
+
+                movie.BeginLocation = BattleLocation;
+                movie.EndLocation = BattleLocation;
+                movie.PlayTime = movie.MovieTime;
+                movie.Reset();
+
+                BattleMovies.Add(movie);
             }
         }
     }

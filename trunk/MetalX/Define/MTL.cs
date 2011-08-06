@@ -128,11 +128,11 @@ namespace MetalX.Define
         /// <summary>
         /// 反应延迟
         /// </summary>
-        public int Delay
+        public double Delay
         {
             get
             {
-                int delay = 0;
+                double delay = 0;
                 foreach (EquipmentMTL e in Equipments)
                 {
                     delay += e.Delay;
@@ -143,11 +143,11 @@ namespace MetalX.Define
         /// <summary>
         /// 命中率
         /// </summary>
-        public float Accurate
+        public double Accurate
         {
             get
             {
-                float accurate = 0;
+                double accurate = 0;
                 foreach (EquipmentMTL e in Equipments)
                 {
                     accurate += e.Accurate;
@@ -158,11 +158,11 @@ namespace MetalX.Define
         /// <summary>
         /// 躲闪率
         /// </summary>
-        public float Missrate
+        public double Missrate
         {
             get
             {
-                float missrate = 0;
+                double missrate = 0;
                 foreach (EquipmentMTL e in Equipments)
                 {
                     missrate += e.Missrate;
@@ -173,11 +173,11 @@ namespace MetalX.Define
         /// <summary>
         /// 移动速度
         /// </summary>
-        public float MoveSpeed
+        public double MoveSpeed
         {
             get
             {
-                float speed = 0;
+                double speed = 0;
                 foreach (EquipmentMTL e in Equipments)
                 {
                     speed += e.MoveSpeed;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Drawing;
 
+using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 
 using MetalX;
@@ -56,6 +57,8 @@ namespace MetalHunter
             game.LoadAllDotMXScene();
             game.LoadAllDotMXNPC();
             game.LoadAllDotMXScript();
+            game.LoadAllDotMXMovie();
+            game.LoadAllDotMXMonster();
 
             InitFormBoxes();
             InitItems();
@@ -84,6 +87,12 @@ namespace MetalHunter
                 ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
                 game.FormBoxManager.Appear("MenuBAG");
                 game.SceneManager.Controllable = false;
+            }
+            else if (k == Key.P)
+            {
+                MetalX.File.MetalXMovie movie = (MetalX.File.MetalXMovie)Util.LoadObject(game.MovieFiles["firegun"].FullName);
+                movie.MXT.Init(game.Devices.D3DDev);
+                game.MovieManager.PlayMovie(movie, new Vector3(300,120,0), new Vector3(100,120,0), 300);
             }
         }
 

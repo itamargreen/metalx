@@ -23,10 +23,10 @@ namespace MetalX.Define
         public int ReqLevel;
         public int ReqMBLevel;
         public int ReqCBLevel;
-        public float Weight;
-        public float Worth;
-        public float Endure = 1;
-        public float Upgrade = 0;
+        public double Weight;
+        public double Worth;
+        public double Endure = 1;
+        public double Upgrade = 0;
         public int UpgradeTime = 0;
         public string Script;
         public ItemType ItemType;
@@ -71,11 +71,11 @@ namespace MetalX.Define
 
         int damage;
         int defense;
-        float accurate;
-        float missrate;
-        int delay;//for ecu
-        float moveSpeed;
-        public float MoveSpeed
+        double accurate;
+        double missrate;
+        double delay;//for ecu
+        double moveSpeed;
+        public double MoveSpeed
         {
             get
             {
@@ -108,18 +108,18 @@ namespace MetalX.Define
                 defense = value;
             }
         }
-        public int Delay
+        public double Delay
         {
             get
             {
-                return (int)(delay - delay * Upgrade);
+                return (delay - delay * Upgrade);
             }
             set
             {
                 delay = value;
             }
         }
-        public float Accurate
+        public double Accurate
         {
             get
             {
@@ -130,7 +130,7 @@ namespace MetalX.Define
                 accurate = value;
             }
         }
-        public float Missrate
+        public double Missrate
         {
             get
             {
@@ -158,13 +158,13 @@ namespace MetalX.Define
 
         int damage;
         int defense;
-        float accurate;
-        float missrate;
-        float load;//for motor
-        float ammoBoxCap, fuelBoxCap;
-        int delay;//for ecu
-        float moveSpeed;
-        public float MoveSpeed
+        double accurate;
+        double missrate;
+        double load;//for motor
+        double ammoBoxCap, fuelBoxCap;
+        double delay;//for ecu
+        double moveSpeed;
+        public double MoveSpeed
         {
             get
             {
@@ -176,18 +176,18 @@ namespace MetalX.Define
             }
         }
 
-        public int Delay
+        public double Delay
         {
             get
             {
-                return (int)(delay - delay * Upgrade);
+                return (delay - delay * Upgrade);
             }
             set
             {
                 delay = value;
             }
         }
-        public float Accurate
+        public double Accurate
         {
             get
             {
@@ -198,7 +198,7 @@ namespace MetalX.Define
                 accurate = value;
             }
         }
-        public float Missrate
+        public double Missrate
         {
             get
             {
@@ -209,7 +209,7 @@ namespace MetalX.Define
                 missrate = value;
             }
         }
-        public float Load
+        public double Load
         {
             get
             {
@@ -242,7 +242,7 @@ namespace MetalX.Define
                 defense = value;
             }
         }
-        public float AmmoBoxCap
+        public double AmmoBoxCap
         {
             get
             {
@@ -253,7 +253,7 @@ namespace MetalX.Define
                 ammoBoxCap = value;
             }
         }
-        public float FuelBoxCap
+        public double FuelBoxCap
         {
             get
             {
