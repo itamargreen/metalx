@@ -135,8 +135,7 @@ namespace MetalX.Component
                 }
                 
             }
-            //if(game.SceneManager.SCENE!=null)
-            //game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + " DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
+            game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + "    DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -235,7 +234,7 @@ namespace MetalX.Component
             }
             else if (kw[0] == "untilstop")
             {
-                float a;
+                double a;
                 if (kw[1] == "me")
                 {
                     a = game.ME.NeedMovePixel;
@@ -471,7 +470,7 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        n.Move(game.SCN, game.GetNPC(n), game.Options.TilePixel);
+                        n.Move(game.SCN, game.GetNPC(n), game.Options.TilePixelX);
                     }
                     //game.SceneManager.Move(n, stp);
                 }
@@ -542,7 +541,7 @@ namespace MetalX.Component
                     Microsoft.DirectX.Vector3 v3 = new Microsoft.DirectX.Vector3();
                     v3.X = float.Parse(kw[2]);
                     v3.Y = float.Parse(kw[3]);
-                    game.ME.SetRealLocation(v3, game.Options.TilePixel);
+                    game.ME.SetRealLocation(v3, game.Options.TilePixelX);
                     game.SceneManager.SceneJump(v3);
                 }
 
@@ -595,9 +594,9 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        if (game.ME.Move(game.SCN, game.GetNPC(game.ME), game.Options.TilePixel))
+                        if (game.ME.Move(game.SCN, game.GetNPC(game.ME), game.Options.TilePixelX))
                         {
-                            game.SCN.Move(1, game.Options.TilePixel);
+                            game.SCN.Move(1, game.Options.TilePixelX);
                         }
                     }
                 }
@@ -647,9 +646,9 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        game.ME.ForceMove(game.Options.TilePixel);
+                        game.ME.ForceMove(game.Options.TilePixelX);
                         {
-                            game.SCN.Move(1, game.Options.TilePixel);
+                            game.SCN.Move(1, game.Options.TilePixelX);
                         }
                     }
                 }
@@ -661,6 +660,109 @@ namespace MetalX.Component
                 {
                     game.ME.IsRigor = false;
                 }
+                else if (kw[1] == "battlesize")
+                {
+                    int w = int.Parse(kw[2]);
+                    int h = int.Parse(kw[3]);
+                    game.ME.BattleSize = new Size(w, h);
+                }
+
+                else if (kw[1] == "standmovie")
+                {
+                    int i = (int)BattleState.Stand;
+                    game.ME.BattleMovieIndexers[i].Name = kw[2];
+                }
+                else if (kw[1] == "defensemovie")
+                {
+                    int i = (int)BattleState.Defense;
+                    game.ME.BattleMovieIndexers[i].Name = kw[2];
+                }
+                else if (kw[1] == "hitmovie")
+                {
+                    int i = (int)BattleState.Hit;
+                    game.ME.BattleMovieIndexers[i].Name = kw[2];
+                }
+                else if (kw[1] == "fightmovie")
+                {
+                    int i = (int)BattleState.Fight;
+                    game.ME.BattleMovieIndexers[i].Name = kw[2];
+                }
+                else if (kw[1] == "firemovie")
+                {
+                    int i = (int)BattleState.Fire;
+                    game.ME.BattleMovieIndexers[i].Name = kw[2];
+                }
+                else if (kw[1] == "throwmovie")
+                {
+                    int i = (int)BattleState.Throw;
+                    game.ME.BattleMovieIndexers[i].Name = kw[2];
+                }
+                if (kw[1] == "stand")
+                {
+                    //int i = int.Parse(kw[1]);
+                    game.ME.SetBattleMovie(BattleState.Stand);
+                }
+                else if (kw[1] == "defense")
+                {
+                    //int i = int.Parse(kw[1]);
+                    game.ME.SetBattleMovie(BattleState.Defense);
+                }
+                else if (kw[1] == "hit")
+                {
+                    //int i = int.Parse(kw[1]);
+                    game.ME.SetBattleMovie(BattleState.Hit);
+                }
+                else if (kw[1] == "fight")
+                {
+                    //int i = int.Parse(kw[1]);
+                    game.ME.SetBattleMovie(BattleState.Fight);
+                }
+                else if (kw[1] == "fire")
+                {
+                    //int i = int.Parse(kw[1]);
+                    game.ME.SetBattleMovie(BattleState.Fire);
+                }
+                else if (kw[1] == "throw")
+                {
+                    //int i = int.Parse(kw[1]);
+                    game.ME.SetBattleMovie(BattleState.Throw);
+                }
+            }
+            #endregion
+            #region monster
+            else if (kw[0] == "monster")
+            {
+                if (kw[2] == "stand")
+                {
+                    int i = int.Parse(kw[1]);
+                    game.Monsters[i].SetBattleMovie(BattleState.Stand);
+                }
+                else if (kw[2] == "defense")
+                {
+                    int i = int.Parse(kw[1]);
+                    game.Monsters[i].SetBattleMovie(BattleState.Defense);
+                }
+                else if (kw[2] == "hit")
+                {
+                    int i = int.Parse(kw[1]);
+                    game.Monsters[i].SetBattleMovie(BattleState.Hit);
+                }
+                else if (kw[2] == "fight")
+                {
+                    int i = int.Parse(kw[1]);
+                    game.Monsters[i].SetBattleMovie(BattleState.Fight);
+                }
+                else if (kw[2] == "fire")
+                {
+                    int i = int.Parse(kw[1]);
+                    game.Monsters[i].SetBattleMovie(BattleState.Fire);
+                }
+                else if (kw[2] == "throw")
+                {
+                    int i = int.Parse(kw[1]);
+                    game.Monsters[i].SetBattleMovie(BattleState.Throw);
+                }
+
             }
             #endregion
             else
@@ -813,7 +915,8 @@ namespace MetalX.Component
             }
             else if (k == Key.Space)
             {
-                text += " ";
+                if (drawText) 
+                    text += " ";
             }
             else if (k == Key.Up)
             {
@@ -831,11 +934,7 @@ namespace MetalX.Component
             }
             else
             {
-                if (!drawText)
-                {
-                    
-                }
-                else
+                if (drawText)
                 {
                     string tmp = k.ToString();
                     if (tmp.Length == 1)

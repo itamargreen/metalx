@@ -42,7 +42,7 @@ namespace MetalX.Define
         /// 图元物理尺寸
         /// </summary>
         public Size TileSizePixel;
-        public int TilePixel
+        public int TilePixelX
         {
             get
             {
@@ -139,9 +139,26 @@ namespace MetalX.Define
         //{
         //    return GetNPC(Util.Point2Vector3(p, 0));
         //}
-        public List<string> MusicNames = new List<string>();
+        public List<string> BGMusicNames = new List<string>();
         public List<string> NPCNames = new List<string>();
         public List<MonsterZone> MonsterZones = new List<MonsterZone>();
+        public List<string> Fight(Vector3 loc)
+        {
+            if (MonsterZones == null)
+            {
+                return null;
+            }
+            List<string> monsterNames;
+            foreach (MonsterZone mz in MonsterZones)
+            {
+                monsterNames = mz.Fight(loc);
+                if (monsterNames != null)
+                {
+                    return monsterNames;
+                }
+            }
+            return null;
+        }
         /// <summary>
         /// 代码层
         /// </summary>
@@ -300,7 +317,7 @@ namespace MetalX.Define
             }
         }
         [NonSerialized]
-        float NeedMovePixel = 0;
+        double NeedMovePixel = 0;
         [NonSerialized]
         int NeedMoveStep = 0;
         [NonSerialized]
@@ -330,7 +347,7 @@ namespace MetalX.Define
             }
             NeedMovePixel = stp * stepPixel;
         }
-        public void MovePixel( float movespeed)
+        public void MovePixel( double movespeed)
         {
             //if (NeedMovePixel == 0)
             //{
@@ -342,7 +359,7 @@ namespace MetalX.Define
             //}
             if (NeedMovePixel > 0)
             {
-                float movePixel = movespeed;
+                double movePixel = movespeed;
                 if (NeedMovePixel < movespeed)
                 {
                     movePixel = NeedMovePixel;
@@ -352,19 +369,19 @@ namespace MetalX.Define
 
                 if (RealDirection == Direction.U)
                 {
-                    RealLocationPixel.Y -= movePixel;
+                    RealLocationPixel.Y -= (float)movePixel;
                 }
                 else if (RealDirection == Direction.L)
                 {
-                    RealLocationPixel.X -= movePixel;
+                    RealLocationPixel.X -= (float)movePixel;
                 }
                 else if (RealDirection == Direction.D)
                 {
-                    RealLocationPixel.Y += movePixel;
+                    RealLocationPixel.Y += (float)movePixel;
                 }
                 else if (RealDirection == Direction.R)
                 {
-                    RealLocationPixel.X += movePixel;
+                    RealLocationPixel.X += (float)movePixel;
                 }
             }
 
@@ -455,7 +472,7 @@ namespace MetalX.Define
                 return new Point((int)Location.X, (int)Location.Y);
             }
         }
-        public float Rotation = 0;
+        public double Rotation = 0;
         //public Vector3 GetLocationPixel(int unit)
         //{
         //    Vector3 v3 = Location;
@@ -557,7 +574,7 @@ namespace MetalX.Define
         /// <summary>
         /// 颜色滤镜
         /// </summary>
-        public float Rotation = 0;
+        public double Rotation = 0;
         public Color ColorFilter = Color.FromArgb(255, Color.White);
     }
     [Serializable]
@@ -686,12 +703,14 @@ namespace MetalX.Define
     [Serializable]
     public class MonsterZone
     {
+        public string BGTextureName;
+        public string BGMusicName;
         public Rectangle ZoneInfo = new Rectangle();
         public List<string> MonsterNames = new List<string>();
         public int FightChance = 0;
         bool IsIn(Vector3 loc)
         {
-            if (loc.X >= ZoneInfo.X && loc.Y >= ZoneInfo.Y && loc.X < ZoneInfo.Width && loc.Y < ZoneInfo.Height)
+            if (loc.X >= ZoneInfo.X && loc.Y >= ZoneInfo.Y && loc.X < ZoneInfo.Right && loc.Y < ZoneInfo.Bottom)
             {
                 return true;
             }

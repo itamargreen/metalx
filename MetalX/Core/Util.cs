@@ -63,9 +63,17 @@ namespace MetalX
         {
             return new Vector3(v3.X / unit, v3.Y / unit, v3.Z / unit);
         }
-        public static Vector3 Point2Vector3(Point p, float z)
+        public static Vector3 Vector3MulDouble(Vector3 v3, double unit)
         {
-            return new Vector3(p.X, p.Y, z);
+            return new Vector3(v3.X * (float)unit, v3.Y * (float)unit, v3.Z * (float)unit);
+        }
+        public static Vector3 Vector3DivDouble(Vector3 v3, double unit)
+        {
+            return new Vector3(v3.X / (float)unit, v3.Y / (float)unit, v3.Z / (float)unit);
+        }
+        public static Vector3 Point2Vector3(Point p)
+        {
+            return new Vector3(p.X, p.Y, 0);
         }
         public static Point Vector32Point(Vector3 v3)
         {
@@ -186,17 +194,17 @@ namespace MetalX
             System.IO.File.WriteAllBytes(FileName, filebuff);
         }
         static System.Random Random = new System.Random(DateTime.Now.Millisecond);
-        public static float Roll()
+        public static double Roll()
         {
-            return (float)Random.NextDouble();
+            return Random.NextDouble();
         }
         public static int Roll(int from, int to)
         {
             return Random.Next(from, to + 1);
         }
-        public static bool Roll(float border)
+        public static bool RollBool()
         {
-            if (Roll() < border)
+            if (Roll(1,100) <= 50)
             {
                 return true;
             }
@@ -272,14 +280,14 @@ namespace MetalX
         {
             return new Point(p1.X - p2.X, p1.Y - p2.Y);
         }
-        public static System.Drawing.PointF GetPointOnCircle(float r, float deg)
+        public static System.Drawing.PointF GetPointOnCircle(double r, double deg)
         {
             deg %= 360;
-            float degb = deg;
+            double degb = deg;
             deg = Radian2Degree(deg);
-            float x = 0, y = 0;
-            y = (float)System.Math.Sin(deg) * r;
-            x = (float)System.Math.Sqrt(r * r - y * y);
+            double x = 0, y = 0;
+            y = System.Math.Sin(deg) * r;
+            x = System.Math.Sqrt(r * r - y * y);
             if (degb < 90)
             {
             }
@@ -298,9 +306,9 @@ namespace MetalX
             }
             return new System.Drawing.PointF((float)(x), (float)(y));
         }
-        public static float Radian2Degree(float rad)
+        public static double Radian2Degree(double rad)
         {
-            return (float)(rad * System.Math.PI / 180);
+            return rad * System.Math.PI / 180;
         }
     }
 

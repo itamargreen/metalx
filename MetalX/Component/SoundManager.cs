@@ -15,7 +15,7 @@ namespace MetalX.Component
         BufferDescription bufferDescription;
         Mp3Stream mp3Stream;
         MetalXAudio mxa;
-        Thread fillControlthd;
+        //Thread fillControlthd;
         int wholeSize;
         int halfSize
         {
@@ -78,9 +78,9 @@ namespace MetalX.Component
         {
             DisableAll();
             Enable = true;
-            fillControlthd = new Thread(fillControl);
+            //fillControlthd = new Thread(fillControl);
             //fillControlthd.Priority = ThreadPriority.Lowest;
-            fillControlthd.IsBackground = true;
+            //fillControlthd.IsBackground = true;
             //fillControlthd.Start();
         }
 
@@ -341,6 +341,9 @@ namespace MetalX.Component
         void playMP3()
         {
             mp3Stream.Read(buff, 0, halfSize);
+            pos = posb = true;
+            foreFilled = true;
+            backFilled = false;
             secondaryBuffer.Volume = volum;
             secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
             secondaryBuffer.Play(0, BufferPlayFlags.Looping);
@@ -361,6 +364,15 @@ namespace MetalX.Component
             secondaryBuffer.Dispose();
             mp3Stream.Dispose();
             mp3Stream = null;
+        }
+        public void Pause()
+        {
+            //secondaryBuffer.
+            Enable = false;
+        }
+        public void GoOn()
+        {
+            Enable = true;
         }
     }
 }

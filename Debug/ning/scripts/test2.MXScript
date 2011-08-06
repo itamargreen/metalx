@@ -1,0 +1,7 @@
+monster 1 fight
+delay 1000
+monster 1 stand
+
+me fight
+delay 1000
+me stand

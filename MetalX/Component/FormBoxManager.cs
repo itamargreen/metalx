@@ -59,7 +59,7 @@ namespace MetalX.Component
             fColor = Util.MixColor(fColor, tb.TextureFliterColor);
             if (tb.TextureIndex > -1)
             {
-                game.DrawMetalXTexture(game.Textures[tb.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].SizePixel), basepos, tb.Size,0, fColor);
+                game.DrawMetalXTexture(game.Textures[tb.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].Size), basepos, tb.Size,0, fColor);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace MetalX.Component
                     return;
                 }
                 tb.TextureIndex = j;
-                game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].SizePixel), basepos, tb.Size,0, fColor);
+                game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].Size), basepos, tb.Size,0, fColor);
             }
         }
         void drawTextBox(TextBox tb, Point basepos)

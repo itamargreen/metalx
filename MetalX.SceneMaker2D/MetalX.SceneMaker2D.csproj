@@ -105,6 +105,12 @@
     <Compile Include="ModelMaker.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MonsterMaker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonsterMaker.Designer.cs">
+      <DependentUpon>MonsterMaker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SceneMaker2D.cs" />
@@ -131,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HelpBox1.resx">
       <DependentUpon>HelpBox1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterMaker.resx">
+      <DependentUpon>MonsterMaker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

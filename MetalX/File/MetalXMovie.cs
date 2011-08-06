@@ -9,16 +9,24 @@ namespace MetalX.File
     public class MetalXMovie : IDisposable
     {
         public MetalXTexture MXT = new MetalXTexture();
+        public Color ColorFilter = Color.White;
         public int FrameCount;
-        public Size TileSizePixel;
-        public double FrameInterval;
-        public bool Loop = false;
-        //public List<MovieFrameInfo> MovieFrameInfos = new List<MovieFrameInfo>();
-        public int MovieTime
+        public Size TileSize;
+        public Size TileSize2X
         {
             get
             {
-                return (int)FrameInterval* FrameCount;
+                return new Size(TileSize.Width * 2, TileSize.Height * 2);
+            }
+        }
+        public double FrameInterval;
+        public bool Loop = false;
+
+        public double MovieTime
+        {
+            get
+            {
+                return FrameInterval* FrameCount;
             }
         }
         /// <summary>
@@ -26,81 +34,90 @@ namespace MetalX.File
         /// </summary>
         public bool Vertical = true;
 
-        int frameIndex;
-        public int FrameIndex
+        int frameIndex = 0;
+        //public int FrameIndex
+        //{
+        //    get
+        //    {
+        //        return frameIndex;
+        //    }
+        //}
+        public bool NextFrame()
+        {
+            if (FrameTimeSpan > FrameInterval)
+            {
+                LastFrameTime = DateTime.Now;
+                frameIndex++;
+
+                if (frameIndex >= FrameCount)
+                {
+                    if (Loop == false)
+                    {
+                        frameIndex--;
+                        return true;
+                    }
+                    else
+                    {
+                        frameIndex = 0;
+                    }
+                }
+            }
+            return false;
+        }
+        [NonSerialized]
+        public DateTime BeginTime;
+        public double WholeTimeSpan
         {
             get
             {
-                return frameIndex;
+                return (DateTime.Now - BeginTime).TotalMilliseconds;
             }
         }
-        public void NextFrame()
+        [NonSerialized]
+        public DateTime LastFrameTime;
+        public double FrameTimeSpan
         {
-            if (Loop == false)
+            get
             {
-                if (frameIndex + 1 < FrameCount)
-                {
-                    frameIndex++;
-                }
-            }
-            else
-            {
-                frameIndex++;
-                if (frameIndex >= FrameCount)
-                {
-                    frameIndex = 0;
-                }
+                return (DateTime.Now - LastFrameTime).TotalMilliseconds;
             }
         }
-        DateTime beginTime;
+        [NonSerialized]
+        public Vector3 BeginLocation;
+        [NonSerialized]
+        public Vector3 EndLocation;
+        public Vector3 Path
+        {
+            get
+            {
+                return Util.Vector3SubVector3(EndLocation, BeginLocation);
+            }
+        }
+        [NonSerialized]
+        public List<MovieFrameInfo> MovieFrameInfos = new List<MovieFrameInfo>();
+        [NonSerialized]
+        public double PlayTime;
+
         public void Reset()
         {
-            beginTime = DateTime.Now;
+            LastFrameTime = BeginTime = DateTime.Now;
             frameIndex = 0;
         }
-
         public Vector3 DrawLocation
         {
             get
             {
-                //TimeSpan ts = DateTime.Now - beginTime;
-                Vector3 loc = new Vector3();
-                //Vector3 sloc = new Vector3();
-                //Vector3 eloc = new Vector3();
-                //int st = 0, et = 0;
-                //int tr = 1;
-                //for (int i = 0; i < MovieFrameInfos.Count; i++)
-                //{
-                //    if (MovieFrameInfos[i].TimePoint > ts.TotalMilliseconds)
-                //    {
-                //        i++;
-                //        if (i < MovieFrameInfos.Count)
-                //        {
-                //            if (MovieFrameInfos[i].TimePoint < ts.TotalMilliseconds)
-                //            {
-                //                sloc = MovieFrameInfos[i].Location;
-                //                st = MovieFrameInfos[i].TimePoint;
-                //                eloc = MovieFrameInfos[i].Location;
-                //                et = MovieFrameInfos[i].TimePoint;
-                //                tr = et - st;
-                //                float xr = eloc.X - sloc.X;
-                //                float yr = eloc.Y - sloc.Y;
-                //                float zr = eloc.Z - sloc.Z;
+                TimeSpan ts = DateTime.Now - BeginTime;
 
-                //                int ct = (int)ts.TotalMilliseconds - st;
+                double tl = ts.TotalMilliseconds;
+                if (tl > PlayTime)
+                {
+                    tl = PlayTime;
+                }
 
-                //                float cx = ct * xr / tr;
-                //                float cy = ct * yr / tr;
-                //                float cz = ct * zr / tr;
-
-                //                loc = Util.Vector3AddVector3(sloc, new Vector3(cx, cy, cz));
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
-
-                
+                Vector3 loc = Util.Vector3MulDouble(Path, tl);
+                loc = Util.Vector3DivDouble(loc, PlayTime);
+                loc = Util.Vector3AddVector3(loc, BeginLocation);
                 return loc; 
             }
         }
@@ -117,19 +134,17 @@ namespace MetalX.File
             {
                 Rectangle rect = new Rectangle();
 
-                #region for size
-                rect.Size = TileSizePixel;
-
                 if (Vertical)
                 {
-                    rect.Y = frameIndex * TileSizePixel.Height;
+                    rect.Y = frameIndex * TileSize.Height;
                 }
                 else
                 {
-                    rect.Y = frameIndex * TileSizePixel.Height;
-
+                    rect.X = frameIndex * TileSize.Width;
                 }
-                #endregion
+
+                rect.Size = TileSize;
+
                 return rect;
             }
         }

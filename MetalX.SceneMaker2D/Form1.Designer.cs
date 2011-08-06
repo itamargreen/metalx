@@ -181,6 +181,11 @@
             this.ui_npcname = new System.Windows.Forms.TextBox();
             this.ui_npclist = new System.Windows.Forms.CheckedListBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.label39 = new System.Windows.Forms.Label();
+            this.ui_bgmusic = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.ui_battle_bg = new System.Windows.Forms.TextBox();
             this.ui_monster_name = new System.Windows.Forms.TextBox();
             this.ui_battle_rate = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
@@ -217,6 +222,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ui_mousex = new System.Windows.Forms.ToolStripLabel();
             this.ui_mousey = new System.Windows.Forms.ToolStripLabel();
+            this.怪物编辑器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -479,6 +485,7 @@
             this.动画ToolStripMenuItem,
             this.音频工具ToolStripMenuItem,
             this.模型工具ToolStripMenuItem,
+            this.怪物编辑器ToolStripMenuItem,
             this.输出optionsxmlToolStripMenuItem});
             this.工具ToolStripMenuItem.Name = "工具ToolStripMenuItem";
             this.工具ToolStripMenuItem.Size = new System.Drawing.Size(41, 21);
@@ -532,7 +539,7 @@
             // 
             this.说明ToolStripMenuItem.Name = "说明ToolStripMenuItem";
             this.说明ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.说明ToolStripMenuItem.Text = "使用说明";
             this.说明ToolStripMenuItem.Click += new System.EventHandler(this.说明ToolStripMenuItem_Click);
             // 
@@ -540,7 +547,7 @@
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
             this.关于ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
@@ -1724,6 +1731,11 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.label39);
+            this.tabPage7.Controls.Add(this.ui_bgmusic);
+            this.tabPage7.Controls.Add(this.label38);
+            this.tabPage7.Controls.Add(this.label37);
+            this.tabPage7.Controls.Add(this.ui_battle_bg);
             this.tabPage7.Controls.Add(this.ui_monster_name);
             this.tabPage7.Controls.Add(this.ui_battle_rate);
             this.tabPage7.Controls.Add(this.label36);
@@ -1749,9 +1761,50 @@
             this.tabPage7.Text = "怪物编辑";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(214, 323);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(53, 12);
+            this.label39.TabIndex = 22;
+            this.label39.Text = "背景音乐";
+            // 
+            // ui_bgmusic
+            // 
+            this.ui_bgmusic.Location = new System.Drawing.Point(209, 338);
+            this.ui_bgmusic.Name = "ui_bgmusic";
+            this.ui_bgmusic.Size = new System.Drawing.Size(75, 21);
+            this.ui_bgmusic.TabIndex = 21;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(214, 284);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(53, 12);
+            this.label38.TabIndex = 20;
+            this.label38.Text = "战斗背景";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(214, 245);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(41, 12);
+            this.label37.TabIndex = 19;
+            this.label37.Text = "怪物名";
+            // 
+            // ui_battle_bg
+            // 
+            this.ui_battle_bg.Location = new System.Drawing.Point(209, 299);
+            this.ui_battle_bg.Name = "ui_battle_bg";
+            this.ui_battle_bg.Size = new System.Drawing.Size(75, 21);
+            this.ui_battle_bg.TabIndex = 18;
+            // 
             // ui_monster_name
             // 
-            this.ui_monster_name.Location = new System.Drawing.Point(209, 245);
+            this.ui_monster_name.Location = new System.Drawing.Point(209, 260);
             this.ui_monster_name.Name = "ui_monster_name";
             this.ui_monster_name.Size = new System.Drawing.Size(75, 21);
             this.ui_monster_name.TabIndex = 17;
@@ -1867,7 +1920,7 @@
             // 
             // ui_delmonster
             // 
-            this.ui_delmonster.Location = new System.Drawing.Point(209, 301);
+            this.ui_delmonster.Location = new System.Drawing.Point(6, 399);
             this.ui_delmonster.Name = "ui_delmonster";
             this.ui_delmonster.Size = new System.Drawing.Size(75, 23);
             this.ui_delmonster.TabIndex = 2;
@@ -1877,7 +1930,7 @@
             // 
             // ui_addmonster
             // 
-            this.ui_addmonster.Location = new System.Drawing.Point(209, 272);
+            this.ui_addmonster.Location = new System.Drawing.Point(209, 370);
             this.ui_addmonster.Name = "ui_addmonster";
             this.ui_addmonster.Size = new System.Drawing.Size(75, 23);
             this.ui_addmonster.TabIndex = 1;
@@ -2055,6 +2108,13 @@
             this.ui_mousey.Name = "ui_mousey";
             this.ui_mousey.Size = new System.Drawing.Size(11, 22);
             this.ui_mousey.Text = "y";
+            // 
+            // 怪物编辑器ToolStripMenuItem
+            // 
+            this.怪物编辑器ToolStripMenuItem.Name = "怪物编辑器ToolStripMenuItem";
+            this.怪物编辑器ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.怪物编辑器ToolStripMenuItem.Text = "怪物";
+            this.怪物编辑器ToolStripMenuItem.Click += new System.EventHandler(this.怪物编辑器ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -2303,6 +2363,12 @@
         private System.Windows.Forms.Button ui_delmonster;
         private System.Windows.Forms.Button ui_addmonster;
         private System.Windows.Forms.ListBox ui_monster_zone_list;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox ui_battle_bg;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox ui_bgmusic;
+        private System.Windows.Forms.ToolStripMenuItem 怪物编辑器ToolStripMenuItem;
     }
 }
 

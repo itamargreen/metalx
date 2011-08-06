@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetalX.File
+namespace MetalX.Define
 {
     [Serializable]
     public class FileIndexer
