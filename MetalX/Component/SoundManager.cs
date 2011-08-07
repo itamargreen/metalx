@@ -15,7 +15,7 @@ namespace MetalX.Component
         BufferDescription bufferDescription;
         Mp3Stream mp3Stream;
         MetalXAudio mxa;
-        //Thread fillControlthd;
+        Thread fillControlthd;
         int wholeSize;
         int halfSize
         {
@@ -308,8 +308,16 @@ namespace MetalX.Component
         //public void PlayMetalXAudio(string musicName) { PlayMetalXAudio(game.Audios.GetIndex(musicName)); }
         //public void PlayMetalXAudio(int i) { PlayMetalXAudio(new System.IO.MemoryStream(game.Audios[i].AudioData)); }
         public void PlayMP3(string fileName)
-        {            
-            if (playingFileName == fileName)
+        {
+            if (fileName == null)
+            {
+                return;
+            }
+            if (fileName == string.Empty)
+            {
+                return;
+            }
+            if (playingFileName == fileName && mp3Stream != null)
             {
                 playMP3();
             }
@@ -340,6 +348,11 @@ namespace MetalX.Component
         }
         void playMP3()
         {
+            if (mp3Stream == null)
+            {
+                return;
+            }
+            mp3Stream.Position = 0;
             mp3Stream.Read(buff, 0, halfSize);
             pos = posb = true;
             foreFilled = true;

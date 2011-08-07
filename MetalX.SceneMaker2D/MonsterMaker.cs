@@ -97,6 +97,8 @@ namespace MetalX.SceneMaker2D
 
         void update_ui()
         {
+            ui_name.Text = mon.Name;
+
             ui_w.Text = mon.BattleSize.Width.ToString();
             ui_h.Text = mon.BattleSize.Height.ToString();
 
@@ -134,6 +136,8 @@ namespace MetalX.SceneMaker2D
         private void ui_yes_Click(object sender, EventArgs e)
         {
             mon = new Define.Monster();
+
+            mon.Name = ui_name.Text;
             mon.BattleSize = new Size(int.Parse(ui_w.Text), int.Parse(ui_h.Text));
 
             int i = 0;

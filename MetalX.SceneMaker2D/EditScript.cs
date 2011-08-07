@@ -11,6 +11,7 @@ namespace MetalX.SceneMaker2D
     public partial class EditScript : Form
     {
         public Code code;
+        public NPC npc;
 
         public EditScript()
         {
@@ -23,14 +24,28 @@ namespace MetalX.SceneMaker2D
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {            
-            code.Script = ui_script.Text;
+        {
+            if (code != null)
+            {
+                code.Script = ui_script.Text;
+            }
+            else
+            {
+                npc.Script = ui_script.Text;
+            }
             Close();
         }
 
         private void EditScript_Shown(object sender, EventArgs e)
         {
-            ui_script.Text = code.Script;
+            if (code != null)
+            {
+                ui_script.Text = code.Script;
+            }
+            else
+            {
+                ui_script.Text = npc.Script;
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ namespace MetalX.File
         }
         public double FrameInterval;
         public bool Loop = false;
+        public MemoryIndexer BGSound = new MemoryIndexer();
 
         public double MovieTime
         {

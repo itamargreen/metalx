@@ -1146,7 +1146,7 @@ namespace MetalX.SceneMaker2D
 
         private void ui_stop_Click(object sender, EventArgs e)
         {
-            game.StopAudio();
+            game.StopAudio(1);
             timer1.Enabled = false;
             ui_proc.Value = 0;
         }
@@ -1279,12 +1279,28 @@ namespace MetalX.SceneMaker2D
         }
         private void ui_npcadd_Click(object sender, EventArgs e)
         {
+            string fn = System.IO.Path.GetFileNameWithoutExtension(openFileName);
             NPC npc = new NPC();
 
             npc.CanMove = ui_canmove.Checked;
             npc.CanTurn = ui_canturn.Checked;
             npc.TextureName = ui_npctexturename.Text;
-            npc.Name = ui_npcname.Text;
+
+            string npcname = ui_npcname.Text;
+
+            try
+            {
+                if (ui_npcname.Text.Substring(0, fn.Length) != fn)
+                {
+                    npcname = fn + "_" + ui_npcname.Text;
+                }
+            }
+            catch
+            {
+                npcname = fn + "_" + ui_npcname.Text;
+            }
+
+            npc.Name = npcname;
             npc.Script = ui_npccode.Text;
             npc.IsBox = ui_npcisbox.Checked;
             npc.IsDoor = ui_npcisdoor.Checked;
@@ -1325,6 +1341,9 @@ namespace MetalX.SceneMaker2D
 
             //game.LoadAllDotMXNPC();            
             //string fn = Guid.NewGuid().ToString();
+
+            System.IO.File.WriteAllText(game.Options.RootPath + "npcs\\" + npc.Name + ".MXScript", npc.Script);
+
 
             Util.SaveObject(game.Options.RootPath + "npcs\\" + npc.Name + ".MXNPC", npc);
 
@@ -1438,6 +1457,7 @@ namespace MetalX.SceneMaker2D
 
             game.SCN.NPCNames[i] = npc.Name;
 
+            System.IO.File.WriteAllText(game.Options.RootPath + "npcs\\" + npc.Name + ".MXScript", npc.Script);
             Util.SaveObject(game.Options.RootPath + "npcs\\" + npc.Name + ".MXNPC", npc);
 
             update_npc_list();
@@ -1717,14 +1737,19 @@ namespace MetalX.SceneMaker2D
         private void ui_monster_zone_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             int i = ui_monster_zone_list.SelectedIndex;
-            ui_monster_zone_x.Text = game.SCN.MonsterZones[i].ZoneInfo.X.ToString();
-            ui_monster_zone_y.Text = game.SCN.MonsterZones[i].ZoneInfo.Y.ToString();
-            ui_monster_zone_w.Text = game.SCN.MonsterZones[i].ZoneInfo.Width.ToString();
-            ui_monster_zone_h.Text = game.SCN.MonsterZones[i].ZoneInfo.Height.ToString();
-            ui_battle_rate.Text = game.SCN.MonsterZones[i].FightChance.ToString();
-            monsterNames = game.SCN.MonsterZones[i].MonsterNames;
-            ui_battle_bg.Text = monsterZone.BGTextureName;
-            update_monster_name_list();
+            if (i > -1)
+            {
+                ui_monster_zone_x.Text = game.SCN.MonsterZones[i].ZoneInfo.X.ToString();
+                ui_monster_zone_y.Text = game.SCN.MonsterZones[i].ZoneInfo.Y.ToString();
+                ui_monster_zone_w.Text = game.SCN.MonsterZones[i].ZoneInfo.Width.ToString();
+                ui_monster_zone_h.Text = game.SCN.MonsterZones[i].ZoneInfo.Height.ToString();
+                ui_battle_rate.Text = game.SCN.MonsterZones[i].FightChance.ToString();
+                monsterNames = game.SCN.MonsterZones[i].MonsterNames;
+                ui_battle_bg.Text = game.SCN.MonsterZones[i].BGTextureName;
+                ui_bgmusic.Text = game.SCN.MonsterZones[i].BGMusicName;
+                ui_entersound.Text = game.SCN.MonsterZones[i].EnterSoundName;
+                update_monster_name_list();
+            }
         }
         void update_monster_zone_list()
         {
@@ -1750,6 +1775,8 @@ namespace MetalX.SceneMaker2D
             int h = int.Parse(ui_monster_zone_h.Text);
             monsterZone.ZoneInfo = new Rectangle(x, y, w, h);
             monsterZone.BGTextureName = ui_battle_bg.Text;
+            monsterZone.BGMusicName = ui_bgmusic.Text;
+            monsterZone.EnterSoundName = ui_entersound.Text;
             game.SCN.MonsterZones.Add(monsterZone);
             update_monster_zone_list();
         }
@@ -1766,6 +1793,11 @@ namespace MetalX.SceneMaker2D
             new MonsterMaker().ShowDialog();
         }
 
-
+        private void ui_npccode_DoubleClick(object sender, EventArgs e)
+        {
+            //EditScript es = new EditScript();
+            //es.npc = 
+            //es.ShowDialog();
+        }
     }
 }

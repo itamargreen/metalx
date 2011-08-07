@@ -63,6 +63,7 @@
             this.动画ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.音频工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.模型工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.怪物编辑器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.输出optionsxmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -181,6 +182,8 @@
             this.ui_npcname = new System.Windows.Forms.TextBox();
             this.ui_npclist = new System.Windows.Forms.CheckedListBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.label40 = new System.Windows.Forms.Label();
+            this.ui_entersound = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
             this.ui_bgmusic = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
@@ -222,7 +225,6 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ui_mousex = new System.Windows.Forms.ToolStripLabel();
             this.ui_mousey = new System.Windows.Forms.ToolStripLabel();
-            this.怪物编辑器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -349,7 +351,7 @@
             // 
             this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
             this.撤销ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.撤销ToolStripMenuItem.Text = "撤销";
             this.撤销ToolStripMenuItem.Click += new System.EventHandler(this.撤销ToolStripMenuItem_Click);
             // 
@@ -357,45 +359,45 @@
             // 
             this.重复ToolStripMenuItem.Name = "重复ToolStripMenuItem";
             this.重复ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.重复ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.重复ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.重复ToolStripMenuItem.Text = "重复";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // 剪切ToolStripMenuItem
             // 
             this.剪切ToolStripMenuItem.Name = "剪切ToolStripMenuItem";
             this.剪切ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.剪切ToolStripMenuItem.Text = "剪切";
             // 
             // 复制ToolStripMenuItem
             // 
             this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
             this.复制ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.复制ToolStripMenuItem.Text = "复制";
             // 
             // 粘贴ToolStripMenuItem
             // 
             this.粘贴ToolStripMenuItem.Name = "粘贴ToolStripMenuItem";
             this.粘贴ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.粘贴ToolStripMenuItem.Text = "粘贴";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
             this.删除ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.删除ToolStripMenuItem.Text = "删除";
             // 
             // 查看ToolStripMenuItem
@@ -519,6 +521,13 @@
             this.模型工具ToolStripMenuItem.Text = "模型";
             this.模型工具ToolStripMenuItem.Click += new System.EventHandler(this.模型工具ToolStripMenuItem_Click);
             // 
+            // 怪物编辑器ToolStripMenuItem
+            // 
+            this.怪物编辑器ToolStripMenuItem.Name = "怪物编辑器ToolStripMenuItem";
+            this.怪物编辑器ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.怪物编辑器ToolStripMenuItem.Text = "怪物";
+            this.怪物编辑器ToolStripMenuItem.Click += new System.EventHandler(this.怪物编辑器ToolStripMenuItem_Click);
+            // 
             // 输出optionsxmlToolStripMenuItem
             // 
             this.输出optionsxmlToolStripMenuItem.Name = "输出optionsxmlToolStripMenuItem";
@@ -539,7 +548,7 @@
             // 
             this.说明ToolStripMenuItem.Name = "说明ToolStripMenuItem";
             this.说明ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.说明ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.说明ToolStripMenuItem.Text = "使用说明";
             this.说明ToolStripMenuItem.Click += new System.EventHandler(this.说明ToolStripMenuItem_Click);
             // 
@@ -547,7 +556,7 @@
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
             this.关于ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
@@ -1561,6 +1570,7 @@
             this.ui_npccode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.ui_npccode.Size = new System.Drawing.Size(280, 179);
             this.ui_npccode.TabIndex = 21;
+            this.ui_npccode.DoubleClick += new System.EventHandler(this.ui_npccode_DoubleClick);
             // 
             // ui_canmove
             // 
@@ -1731,6 +1741,8 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.label40);
+            this.tabPage7.Controls.Add(this.ui_entersound);
             this.tabPage7.Controls.Add(this.label39);
             this.tabPage7.Controls.Add(this.ui_bgmusic);
             this.tabPage7.Controls.Add(this.label38);
@@ -1761,10 +1773,26 @@
             this.tabPage7.Text = "怪物编辑";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(214, 100);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(53, 12);
+            this.label40.TabIndex = 24;
+            this.label40.Text = "进场音乐";
+            // 
+            // ui_entersound
+            // 
+            this.ui_entersound.Location = new System.Drawing.Point(209, 115);
+            this.ui_entersound.Name = "ui_entersound";
+            this.ui_entersound.Size = new System.Drawing.Size(75, 21);
+            this.ui_entersound.TabIndex = 23;
+            // 
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(214, 323);
+            this.label39.Location = new System.Drawing.Point(214, 139);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(53, 12);
             this.label39.TabIndex = 22;
@@ -1772,7 +1800,7 @@
             // 
             // ui_bgmusic
             // 
-            this.ui_bgmusic.Location = new System.Drawing.Point(209, 338);
+            this.ui_bgmusic.Location = new System.Drawing.Point(209, 154);
             this.ui_bgmusic.Name = "ui_bgmusic";
             this.ui_bgmusic.Size = new System.Drawing.Size(75, 21);
             this.ui_bgmusic.TabIndex = 21;
@@ -1780,7 +1808,7 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(214, 284);
+            this.label38.Location = new System.Drawing.Point(214, 61);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(53, 12);
             this.label38.TabIndex = 20;
@@ -1797,7 +1825,7 @@
             // 
             // ui_battle_bg
             // 
-            this.ui_battle_bg.Location = new System.Drawing.Point(209, 299);
+            this.ui_battle_bg.Location = new System.Drawing.Point(209, 76);
             this.ui_battle_bg.Name = "ui_battle_bg";
             this.ui_battle_bg.Size = new System.Drawing.Size(75, 21);
             this.ui_battle_bg.TabIndex = 18;
@@ -1811,7 +1839,7 @@
             // 
             // ui_battle_rate
             // 
-            this.ui_battle_rate.Location = new System.Drawing.Point(209, 191);
+            this.ui_battle_rate.Location = new System.Drawing.Point(209, 218);
             this.ui_battle_rate.Name = "ui_battle_rate";
             this.ui_battle_rate.Size = new System.Drawing.Size(46, 21);
             this.ui_battle_rate.TabIndex = 16;
@@ -1819,7 +1847,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(162, 194);
+            this.label36.Location = new System.Drawing.Point(162, 221);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(41, 12);
             this.label36.TabIndex = 15;
@@ -1930,7 +1958,7 @@
             // 
             // ui_addmonster
             // 
-            this.ui_addmonster.Location = new System.Drawing.Point(209, 370);
+            this.ui_addmonster.Location = new System.Drawing.Point(209, 287);
             this.ui_addmonster.Name = "ui_addmonster";
             this.ui_addmonster.Size = new System.Drawing.Size(75, 23);
             this.ui_addmonster.TabIndex = 1;
@@ -2108,13 +2136,6 @@
             this.ui_mousey.Name = "ui_mousey";
             this.ui_mousey.Size = new System.Drawing.Size(11, 22);
             this.ui_mousey.Text = "y";
-            // 
-            // 怪物编辑器ToolStripMenuItem
-            // 
-            this.怪物编辑器ToolStripMenuItem.Name = "怪物编辑器ToolStripMenuItem";
-            this.怪物编辑器ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.怪物编辑器ToolStripMenuItem.Text = "怪物";
-            this.怪物编辑器ToolStripMenuItem.Click += new System.EventHandler(this.怪物编辑器ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -2369,6 +2390,8 @@
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.TextBox ui_bgmusic;
         private System.Windows.Forms.ToolStripMenuItem 怪物编辑器ToolStripMenuItem;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.TextBox ui_entersound;
     }
 }
 

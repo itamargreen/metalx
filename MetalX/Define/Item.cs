@@ -66,7 +66,7 @@ namespace MetalX.Define
         {
             ItemType = ItemType.Equipment;
         }
-        public EquipmentCHRType Type;
+        public EquipmentCHRType EquipmentType;
         //public int ExtMLevel, ExtELevel, ExtBLevel;
 
         int damage;
@@ -154,7 +154,7 @@ namespace MetalX.Define
         {
             ItemType = ItemType.Equipment;
         }
-        public EquipmentMTLType Type;
+        public EquipmentMTLType EquipmentType;
 
         int damage;
         int defense;

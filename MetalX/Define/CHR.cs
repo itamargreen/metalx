@@ -38,8 +38,7 @@ namespace MetalX.Define
         public double NeedMovePixel = 0;
         [NonSerialized]
         public Direction LastDirection;
-        [NonSerialized]
-        public Direction RealDirection;
+        //[NonSerialized]
         [NonSerialized]
         public Direction ForceDirection;
         public Direction OppositeDirection
@@ -69,6 +68,7 @@ namespace MetalX.Define
         public Vector3 LastLocation;
         //[NonSerialized]
         public Vector3 RealLocation;
+        public Direction RealDirection;
         //[NonSerialized]
         public Vector3 RealLocationPixel;
         public Color ColorFilter = Color.White;
@@ -545,31 +545,38 @@ namespace MetalX.Define
                 return bag;
             }
         }
-        public int BagCapacity = 16;
-
-        public void BagIn(Item item)
+        public int BagItemCount
         {
-            if (bag.Count < BagCapacity)
+            get
+            {
+                return bag.Count;
+            }
+        }
+        public int BagItemCapacity = 16;
+
+        public void BagAdd(Item item)
+        {
+            if (bag.Count < BagItemCapacity)
             {
                 bag.Add(item);
             }
         }
-        public Item BagOut(int i)
+        public Item BagSee(int i)
         {
             Item item = bag[i].GetClone();
             //bag.RemoveAt(i);
             return item;
         }
-        public void Drop(int i)
+        public void BagRemove(int i)
         {
             bag.RemoveAt(i);
         }
-        public void Equip(int i)
+        public void BagEquip(int i)
         {
             EquipmentCHR item = null;
             try
             {
-                item = (EquipmentCHR)BagOut(i);
+                item = (EquipmentCHR)BagSee(i);
                 bag.RemoveAt(i);
             }
             catch
@@ -578,13 +585,14 @@ namespace MetalX.Define
                 return;
             }
             EquipmentCHR item_tmp;
-            item_tmp = Equipments[(int)item.Type].GetClone();
+            item_tmp = Equipments[(int)item.EquipmentType].GetClone();
             if (item_tmp.Name != null)
             {
-                BagIn(item_tmp);
+                BagAdd(item_tmp);
             }
-            Equipments[(int)item.Type] = item;
+            Equipments[(int)item.EquipmentType] = item;
         }
+
         public bool Face(Direction dir)
         {
             if (CanTurn == false)
@@ -735,6 +743,12 @@ namespace MetalX.Define
                 }
             }
         }
+        public MetalXMovie GetBattleMovie(BattleState bs)
+        {
+            int i = (int)bs;
+            return BattleMovies[i];
+        }
+
         public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to, double timespan)
         {
             BattleState = bs;
