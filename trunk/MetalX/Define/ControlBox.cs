@@ -256,6 +256,10 @@ namespace MetalX.Define
         {
             get
             {
+                if (Text == null)
+                {
+                    return "";
+                }
                 TimeSpan timespan = DateTime.Now - lastCharacterTime;
                 if (timespan.Milliseconds > Interval)
                 {

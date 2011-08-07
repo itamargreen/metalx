@@ -28,7 +28,18 @@ namespace MetalX.Component
         Stack<string> cmdbak = new Stack<string>();
         string text = "";
         bool drawText = false;
-        bool isBig = false; 
+        bool isBig = false;
+        public bool Busy
+        {
+            get
+            {
+                if (commands.Count > 0 || inscommands.Count > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         string cur;
         string curcmd;
         string presskey = "";
@@ -135,7 +146,7 @@ namespace MetalX.Component
                 }
                 
             }
-            game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + "    DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
+            //game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + "    DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -148,31 +159,72 @@ namespace MetalX.Component
             }
             kw[0] = kw[0].ToLower();
             #region sys
-            if (kw[0] == "y")
+            if (kw[0] == "bool")
             {
-                if (RETURN.BOOL == false)
+                if (kw[1] == "true" || kw[1] == "t")
+                {
+                    if (RETURN.BOOL == false)
+                    {
+                        return;
+                    }
+                    for (int i = 2; i < kw.Length; i++)
+                    {
+                        kw[i - 2] = kw[i];
+                    }
+                }
+                else if (kw[1] == "false" || kw[1] == "f")
+                {
+                    if (RETURN.BOOL)
+                    {
+                        return;
+                    }
+                    for (int i = 2; i < kw.Length; i++)
+                    {
+                        kw[i - 2] = kw[i];
+                    }
+                }
+            }
+            else if (kw[0] == "int")
+            {
+                int n = int.Parse(kw[1]);
+                if (RETURN.INT == n)
+                {
+                    for (int i = 2; i < kw.Length; i++)
+                    {
+                        kw[i - 2] = kw[i];
+                    }
+                }
+                else
                 {
                     return;
                 }
-                for (int i = 1; i < kw.Length; i++)
-                {
-                    kw[i - 1] = kw[i];
-                }
             }
-            else if (kw[0] == "n")
+            else if (kw[0] == "string")
             {
-                if (RETURN.BOOL)
+                if (RETURN.STRING == kw[1])
+                {
+                    for (int i = 2; i < kw.Length; i++)
+                    {
+                        kw[i - 2] = kw[i];
+                    }
+                }
+                else
                 {
                     return;
                 }
-                for (int i = 1; i < kw.Length; i++)
-                {
-                    kw[i - 1] = kw[i];
-                }
             }
+
+
             if (kw[0] == "exit")
             {
                 game.Exit();
+            }
+            else if (kw[0] == "roll")
+            {
+                int l = int.Parse(kw[1]);
+                int h = int.Parse(kw[2]);
+                int seed = Util.Roll(l, h);
+                RETURN.INT = seed;
             }
             else if (kw[0] == "clr")
             {
@@ -206,13 +258,21 @@ namespace MetalX.Component
             }
             else if (kw[0] == "mp3")
             {
-                if (kw[1] == "1")
+                int l = int.Parse(kw[1]);
+                bool loop = false; ;
+                try
                 {
-                    game.PlayMP3Audio(1, game.AudioFiles[kw[2]].FullName);
+                    loop = bool.Parse(kw[3]);
                 }
-                else if (kw[1] == "2")
+                catch
+                { }
+                if (kw.Length > 2)
                 {
-                    game.PlayMP3Audio(2, game.AudioFiles[kw[2]].FullName);
+                    game.PlayMP3Audio(l, game.AudioFiles[kw[2]].FullName, loop);
+                }
+                else
+                {
+                    game.StopAudio(l);
                 }
             }
             else if (kw[0] == "vol")
@@ -346,6 +406,47 @@ namespace MetalX.Component
                 }
             }
             #endregion
+            #region battle
+            else if (kw[0] == "btl")
+            {
+                int range = -100;
+                try
+                {
+                    range = int.Parse(kw[3]);
+                }
+                catch
+                { }
+
+                if (kw[1] == "shock" && range != -100)
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.BattleManager.ShockScreen(ms, range);
+                }
+                else if (kw[1] == "shock")
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.BattleManager.ShockScreen(ms);
+                }
+                else if (kw[1] == "fallout")
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.BattleManager.FallOutSceen(ms);
+                }
+                else if (kw[1] == "fallin")
+                {
+                    double ms = double.Parse(kw[2]);
+                    game.BattleManager.FallInSceen(ms);
+                }
+                //else if (kw[1] == "setctrl")
+                //{
+                //    game.BattleManager.Controllable = true;
+                //}
+                //else if (kw[1] == "clrctrl")
+                //{
+                //    game.BattleManager.Controllable = false;
+                //}
+            }
+            #endregion
             #region gui
             else if (kw[0] == "gui")
             {
@@ -396,13 +497,13 @@ namespace MetalX.Component
                     }
                 }
             }
-            else if (kw[0] == "check")
-            {
-                if (kw[1] == "bool")
-                {
-                    game.FormBoxManager.Appear("ASKboolBox", kw[2]);
-                }
-            }
+            //else if (kw[0] == "check")
+            //{
+            //    if (kw[1] == "bool")
+            //    {
+            //        game.FormBoxManager.Appear("ASKboolBox", kw[2]);
+            //    }
+            //}
             else if (kw[0] == "msg")
             {
                 if (kw.Length == 1)
@@ -411,7 +512,8 @@ namespace MetalX.Component
                 }
                 else
                 {
-                    game.FormBoxManager.Appear("MessageBox", kw[1]);
+                    string str = kw[1].Replace(@"n\", "\n");
+                    game.FormBoxManager.Appear("MessageBox", str);
                 }
             }
             #endregion
@@ -492,11 +594,11 @@ namespace MetalX.Component
                     game.ME.TextureName = kw[2];
                     game.ME.TextureIndex = -1;
                 }
-                else if (kw[1] == "use")
-                {
-                    int i = int.Parse(kw[2]);
-                    //game.ME.Gold += int.Parse(kw[2]);
-                }
+                //else if (kw[1] == "use")
+                //{
+                //    int i = int.Parse(kw[2]);
+                //    //game.ME.Gold += int.Parse(kw[2]);
+                //}
                 else if (kw[1] == "hp")
                 {
                     int i = int.Parse(kw[2]);
@@ -509,18 +611,23 @@ namespace MetalX.Component
                 else if (kw[1] == "equip")
                 {
                     int i = int.Parse(kw[2]);
-                    game.ME.Equip(i);
+                    game.ME.BagEquip(i);
                 }
-                else if (kw[1] == "drop")
+                else if (kw[1] == "unequip")
                 {
                     int i = int.Parse(kw[2]);
-                    game.ME.Drop(i);
+                    game.ME.BagEquip(i);
+                }
+                else if (kw[1] == "bagremove")
+                {
+                    int i = int.Parse(kw[2]);
+                    game.ME.BagRemove(i);
                 }
                 else if (kw[1] == "gold")
                 {
                     game.ME.Gold += int.Parse(kw[2]);
                 }
-                else if (kw[1] == "bagin")
+                else if (kw[1] == "bagadd")
                 {
                     Item item;
                     int i = -1;
@@ -534,7 +641,7 @@ namespace MetalX.Component
                         item = game.Items[kw[2]].GetClone();
                     }
                     item.GUID = Guid.NewGuid();
-                    game.ME.BagIn(item);
+                    game.ME.BagAdd(item);
                 }
                 else if (kw[1] == "jump")
                 {
@@ -699,32 +806,26 @@ namespace MetalX.Component
                 }
                 if (kw[1] == "stand")
                 {
-                    //int i = int.Parse(kw[1]);
                     game.ME.SetBattleMovie(BattleState.Stand);
                 }
                 else if (kw[1] == "defense")
                 {
-                    //int i = int.Parse(kw[1]);
                     game.ME.SetBattleMovie(BattleState.Defense);
                 }
                 else if (kw[1] == "hit")
                 {
-                    //int i = int.Parse(kw[1]);
                     game.ME.SetBattleMovie(BattleState.Hit);
                 }
                 else if (kw[1] == "fight")
                 {
-                    //int i = int.Parse(kw[1]);
                     game.ME.SetBattleMovie(BattleState.Fight);
                 }
                 else if (kw[1] == "fire")
                 {
-                    //int i = int.Parse(kw[1]);
                     game.ME.SetBattleMovie(BattleState.Fire);
                 }
                 else if (kw[1] == "throw")
                 {
-                    //int i = int.Parse(kw[1]);
                     game.ME.SetBattleMovie(BattleState.Throw);
                 }
             }
@@ -762,7 +863,6 @@ namespace MetalX.Component
                     int i = int.Parse(kw[1]);
                     game.Monsters[i].SetBattleMovie(BattleState.Throw);
                 }
-
             }
             #endregion
             else
@@ -872,18 +972,18 @@ namespace MetalX.Component
                 if (drawText)
                 {
                     drawText = false;
-                    game.SceneManager.Controllable = true;
+                    //game.SceneManager.Controllable = true;
                     game.SceneManager.ColorFilter = Color.White;
-                    game.FormBoxManager.Controllable = true;
+                    //game.FormBoxManager.Controllable = true;
                     game.FormBoxManager.ColorFilter = Color.White;
                 }
                 else
                 {
                     drawText = true;
-                    game.SceneManager.Controllable = false;
-                    game.SceneManager.ColorFilter = Color.Blue;
-                    game.FormBoxManager.Controllable = false;
-                    game.FormBoxManager.ColorFilter = Color.Blue;
+                    //game.SceneManager.Controllable = false;
+                    game.SceneManager.ColorFilter = Color.FromArgb(20,20,20);
+                    //game.FormBoxManager.Controllable = false;
+                    game.FormBoxManager.ColorFilter = Color.FromArgb(20, 20, 20);
                 }
             }          
             else if (k == Key.F12)

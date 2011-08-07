@@ -308,24 +308,25 @@ namespace MetalX
             MountGameCom(KeyboardManager);
 
             SoundManager1 = new SoundManager(this);
-            SoundManager1.Volume = 77;
+            //SoundManager1.Volume = 77;
             MountGameCom(SoundManager1);
 
             SoundManager2 = new SoundManager(this);
-            SoundManager2.Volume = 88;
+            //SoundManager2.Volume = 88;
             MountGameCom(SoundManager2);
             
             SceneManager = new SceneManager(this);
             MountGameCom(SceneManager);
 
+            BattleManager = new BattleManager(this);
+            MountGameCom(BattleManager);
+
             FormBoxManager = new FormBoxManager(this);
             MountGameCom(FormBoxManager);
 
-            MovieManager = new MovieManager(this);
-            MountGameCom(MovieManager);
+            //MovieManager = new MovieManager(this);
+            //MountGameCom(MovieManager);
 
-            BattleManager = new BattleManager(this);
-            MountGameCom(BattleManager);
 
             ScriptManager = new ScriptManager(this);
             MountGameCom(ScriptManager);          
@@ -1249,9 +1250,16 @@ namespace MetalX
                 SoundManager2.PlayMP3(fileName);
             }
         }
-        public void StopAudio()
+        public void StopAudio(int ch)
         {
-            SoundManager1.Stop();
+            if (ch == 1)
+            {
+                SoundManager1.Stop();
+            }
+            else
+            {
+                SoundManager2.Stop();
+            }
         }
         //public void PauseAudio()
         //{

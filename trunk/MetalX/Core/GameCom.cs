@@ -27,6 +27,7 @@ namespace MetalX
         }
         public void DisableAll()
         {
+            Visible = false;
             Controllable = false;
             Enable = false;
         }
@@ -103,7 +104,7 @@ namespace MetalX
             else
             {
                 DelayBeginTime = DateTime.Now;
-                DisableAll();
+                Enable = Controllable = false;
                 IsDelaying = true;
                 DelayTime = ms;
             }

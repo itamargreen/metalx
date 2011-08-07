@@ -69,6 +69,14 @@ namespace MetalX.SceneMaker2D
             mxmovie.TileSize = new Size(int.Parse(textBox1.Text), int.Parse(textBox2.Text));
             bm = new Bitmap(mxmovie.TileSize.Width, mxmovie.TileSize.Height);
             mxmovie.Loop = ui_loop.Checked;
+            if (mxmovie.BGSound == null)
+            {
+                mxmovie.BGSound = new MemoryIndexer(ui_bgsound.Text);
+            }
+            else
+            {
+                mxmovie.BGSound.Name = ui_bgsound.Text;
+            }
         }
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
@@ -125,6 +133,13 @@ namespace MetalX.SceneMaker2D
 
                 textBox3.Text = mxmovie.FrameCount.ToString();
                 textBox4.Text = mxmovie.FrameInterval.ToString();
+
+                try
+                {
+
+                    ui_bgsound.Text = mxmovie.BGSound.Name;
+                }
+                catch { }
 
                 ui_loop.Checked = mxmovie.Loop;
 

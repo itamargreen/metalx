@@ -74,6 +74,10 @@ namespace MetalHunter
 
         void FormBoxManager_OnKeyboardUp(object sender, int key)
         {
+        }
+
+        void SceneManager_OnKeyboardUp(object sender, int key)
+        {
             Key k = (Key)key;
             if (k == Key.C)
             {
@@ -88,16 +92,12 @@ namespace MetalHunter
                 game.FormBoxManager.Appear("MenuBAG");
                 game.SceneManager.Controllable = false;
             }
-            else if (k == Key.P)
-            {
-                MetalX.File.MetalXMovie movie = (MetalX.File.MetalXMovie)Util.LoadObject(game.MovieFiles["firegun"].FullName);
-                movie.MXT.Init(game.Devices.D3DDev);
-                game.MovieManager.PlayMovie(movie, new Vector3(300,120,0), new Vector3(100,120,0), 300);
-            }
-        }
-
-        void SceneManager_OnKeyboardUp(object sender, int key)
-        {
+            //else if (k == Key.P)
+            //{
+            //    MetalX.File.MetalXMovie movie = (MetalX.File.MetalXMovie)Util.LoadObject(game.MovieFiles["firegun"].FullName);
+            //    movie.MXT.Init(game.Devices.D3DDev);
+            //    game.MovieManager.PlayMovie(movie, new Vector3(300, 120, 0), new Vector3(100, 120, 0), 300);
+            //}
         }
 
         [STAThread]

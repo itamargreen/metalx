@@ -11,7 +11,7 @@ namespace MetalHunter
     {
         public 弹弓()
         {
-            Type = EquipmentCHRType.Weapon;
+            EquipmentType = EquipmentCHRType.Weapon;
             IconName = "icon_weapon";
 
             Name = "弹弓";
@@ -36,7 +36,7 @@ namespace MetalHunter
     {
         public 狩猎弩()
         {
-            Type = EquipmentCHRType.Weapon;
+            EquipmentType = EquipmentCHRType.Weapon;
             IconName = "icon_weapon";
 
             Name = "狩猎弩";
@@ -60,7 +60,7 @@ namespace MetalHunter
     {
         public 双管猎枪()
         {
-            Type = EquipmentCHRType.Weapon;
+            EquipmentType = EquipmentCHRType.Weapon;
             IconName = "icon_weapon";
 
             Name = "双管猎枪";
@@ -85,7 +85,7 @@ namespace MetalHunter
     {
         public 运动服()
         {
-            Type = EquipmentCHRType.Body;
+            EquipmentType = EquipmentCHRType.Body;
             IconName = "icon_body";
 
             Name = "运动服";
@@ -110,7 +110,7 @@ namespace MetalHunter
     {
         public 运动裤()
         {
-            Type = EquipmentCHRType.Leg;
+            EquipmentType = EquipmentCHRType.Leg;
             IconName = "icon_leg";
 
             Name = "运动裤";
@@ -135,7 +135,7 @@ namespace MetalHunter
     {
         public 登山鞋()
         {
-            Type = EquipmentCHRType.Foot;
+            EquipmentType = EquipmentCHRType.Foot;
             IconName = "icon_foot";
 
             Name = "登山鞋";
@@ -160,7 +160,7 @@ namespace MetalHunter
     {
         public 粗线手套()
         {
-            Type = EquipmentCHRType.Hand;
+            EquipmentType = EquipmentCHRType.Hand;
             IconName = "icon_hand";
 
             Name = "粗线手套";
@@ -185,7 +185,7 @@ namespace MetalHunter
     {
         public 棒球帽()
         {
-            Type = EquipmentCHRType.Head;
+            EquipmentType = EquipmentCHRType.Head;
             IconName = "icon_head";
 
             Name = "棒球帽";

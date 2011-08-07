@@ -142,22 +142,22 @@ namespace MetalX.Define
         public List<string> BGMusicNames = new List<string>();
         public List<string> NPCNames = new List<string>();
         public List<MonsterZone> MonsterZones = new List<MonsterZone>();
-        public List<string> Fight(Vector3 loc)
+        public int Fight(Vector3 loc)
         {
             if (MonsterZones == null)
             {
-                return null;
+                return -1;
             }
-            List<string> monsterNames;
+            int i = 0;
             foreach (MonsterZone mz in MonsterZones)
             {
-                monsterNames = mz.Fight(loc);
-                if (monsterNames != null)
+                if (mz.Fight(loc))
                 {
-                    return monsterNames;
+                    return i;
                 }
+                i++;
             }
-            return null;
+            return -1;
         }
         /// <summary>
         /// 代码层
@@ -705,6 +705,7 @@ namespace MetalX.Define
     {
         public string BGTextureName;
         public string BGMusicName;
+        public string EnterSoundName;
         public Rectangle ZoneInfo = new Rectangle();
         public List<string> MonsterNames = new List<string>();
         public int FightChance = 0;
@@ -720,28 +721,32 @@ namespace MetalX.Define
         {
             return IsIn(new Vector3(loc.X, loc.Y, 0));
         }
-        public List<string> Fight(Vector3 loc)
+        public bool Fight(Vector3 loc)
         {
             bool inzone = IsIn(loc);
             if (inzone)
             {
                 int seed = Util.Roll(0, 65535);
                 if (seed < FightChance)
-                {
-                    List<string> monsterNames = new List<string>();
-                    int monsterCount = Util.Roll(1, 12);
-                    for (int i = 0; i < monsterCount; i++)
-                    {
-                        int mc = MonsterNames.Count;
-                        mc--;
-                        int j = Util.Roll(0, mc);
-                        monsterNames.Add(MonsterNames[j]);
-                    }
-                    return monsterNames;
+                {                    
+                    return true;
                 }
-                return null;
             }
-            return null;
+            return false;
+
+        }
+        public List<string> RollMonsters()
+        {
+            List<string> monsterNames = new List<string>();
+            int monsterCount = Util.Roll(1, 12);
+            for (int i = 0; i < monsterCount; i++)
+            {
+                int mc = MonsterNames.Count;
+                mc--;
+                int j = Util.Roll(0, mc);
+                monsterNames.Add(MonsterNames[j]);
+            }
+            return monsterNames;
         }
     }
 

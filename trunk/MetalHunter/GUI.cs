@@ -327,7 +327,8 @@ namespace MetalHunter
         void MenuBAG_OnButtonFocus(object sender, object arg)
         {
             int i = ((ButtonBox)sender).Index;
-            tb.Text = game.ME.Bag[i].Description;
+            Item item = game.ME.BagSee(i);
+            tb.Text = item.Description;
         }
 
         void MenuBAG_OnButtonUp(object sender, object arg)
@@ -375,18 +376,22 @@ namespace MetalHunter
         void BB1_OnButtonUp(object sender, object arg)
         {
             int i = game.ScriptManager.RETURN.INT;
-            game.AppendScript(game.ME.Bag[i].Script);
-            game.ExecuteScript();
-            game.ME.Drop(i);
+            Item item = game.ME.BagSee(i);
+            if (item.ItemType == ItemType.Supply)
+            {
+                game.AppendScript(item.Script);
+                game.ExecuteScript();
+                game.ME.BagRemove(i);
 
-            ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
-            game.FormBoxManager.Disappear(Name);
+                ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
+                game.FormBoxManager.Disappear(Name);
+            }
         }
         //装备
         void BB2_OnButtonUp(object sender, object arg)
         {
             int i = game.ScriptManager.RETURN.INT;
-            game.ME.Equip(i);
+            game.ME.BagEquip(i);
 
             ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
             game.FormBoxManager.Disappear(Name);
@@ -395,7 +400,7 @@ namespace MetalHunter
         void BB3_OnButtonUp(object sender, object arg)
         {
             int i = game.ScriptManager.RETURN.INT;
-            game.ME.BagOut(i);
+            game.ME.BagRemove(i);
 
             ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
             game.FormBoxManager.Disappear(Name);

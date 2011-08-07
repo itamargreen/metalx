@@ -59,6 +59,8 @@
             this.ui_z = new System.Windows.Forms.TextBox();
             this.ui_tp = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.ui_bgsound = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -344,11 +346,29 @@
             this.label9.TabIndex = 28;
             this.label9.Text = "time_point";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(548, 71);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 12);
+            this.label10.TabIndex = 30;
+            this.label10.Text = "配音";
+            // 
+            // ui_bgsound
+            // 
+            this.ui_bgsound.Location = new System.Drawing.Point(550, 86);
+            this.ui_bgsound.Name = "ui_bgsound";
+            this.ui_bgsound.Size = new System.Drawing.Size(100, 21);
+            this.ui_bgsound.TabIndex = 29;
+            // 
             // DotMXMovieMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 744);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.ui_bgsound);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.ui_tp);
             this.Controls.Add(this.label8);
@@ -422,5 +442,7 @@
         private System.Windows.Forms.TextBox ui_z;
         private System.Windows.Forms.TextBox ui_tp;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox ui_bgsound;
     }
 }

@@ -8,8 +8,8 @@ namespace MetalX.Define
     public enum BattleState
     {
         Stand = 0,
-        Defense = 1,
-        Hit = 2,
+        Hit = 1,
+        Defense = 2,
         Fight = 3,
         Fire = 4,
         Throw = 5,
@@ -17,15 +17,19 @@ namespace MetalX.Define
     [Serializable]
     public class Monster : CHR
     {
-
-
         public Monster()
+            : base()
         {
-            for (int i = 0; i < 8; i++)
-            {
-                BattleMovieIndexers.Add(new MemoryIndexer());
-                BattleMovies.Add(new MetalXMovie());
-            }
+        }
+
+        public List<string> IteamNames = new List<string>();
+
+        public BattleState AI()
+        {
+            BattleState bs;
+            int seed = Util.Roll(2, 5);
+            bs = (BattleState)seed;
+            return bs;
         }
     }
 }

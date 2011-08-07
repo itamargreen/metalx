@@ -121,17 +121,27 @@ namespace MetalX.Component
                     }
                     catch
                     { }
-                    List<string> monsterNames = game.SCN.Fight(game.ME.RealLocation);
-                    if (monsterNames != null)
+                    int i = game.SCN.Fight(game.ME.RealLocation);
+                    if (i > -1)
                     {
-                        game.AppendScript("mp3 2 battle");
+                        string bgt = game.SCN.MonsterZones[i].BGTextureName;
+                        List<string> monsterNames = game.SCN.MonsterZones[i].RollMonsters();
+                        game.BattleManager.GetIn(bgt, monsterNames);
+                      
+                        game.AppendScript("btl fallout 0");
+                        game.AppendScript("btl shock 1200");
+                        game.AppendScript("btl fallin 1000");
+                        game.AppendScript("mp3 1");
+                        game.AppendScript("mp3 2 " + game.SCN.MonsterZones[i].EnterSoundName);
+                        game.AppendScript("delay 1200");
+                        game.AppendScript("mp3 1 " + game.SCN.MonsterZones[i].BGMusicName + " true");
+                        game.AppendScript("delay 300");
+                        game.AppendScript("mp3 2");
                         game.ExecuteScript();
-                        game.BattleManager.GetIn(monsterNames);
                     }
                     else if (sname != null)
                     {
                         Enter(sname, Util.Point2Vector3(game.SCN[game.ME.RealLocation].DefaultLocation), game.ME.RealDirection);
-                        //Enter(sname, Util.Point2Vector3(game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultLocation, 0), game.SCN[(int)game.ME.RealLocation.Y, (int)game.ME.RealLocation.X].DefaultDirection);
                         Delay(300);
                         game.AppendScript("scn clrctrl");
                         game.AppendScript("scn fallout 200");
@@ -177,13 +187,11 @@ namespace MetalX.Component
                             if (npc.Invisible == false)
                             {
                                 npc.Invisible = true;
-                                game.PlayMP3Audio(2, game.AudioFiles["door"].FullName);
+                                game.PlayMP3Audio(2, game.AudioFiles["163"].FullName);
                             }
                         }
                         else if (v33 == game.ME.LastLocation)
                         {
-                            //
-
                             if (game.ME.RealDirection == Direction.U)
                             {
                                 PCbeforeNPC = true;
@@ -195,7 +203,7 @@ namespace MetalX.Component
                             if (npc.Invisible)
                             {
                                 npc.Invisible = false;
-                                game.PlayMP3Audio(2, game.AudioFiles["door"].FullName);
+                                game.PlayMP3Audio(2, game.AudioFiles["163"].FullName);
                             }
                         }
                     }
@@ -269,7 +277,7 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        game.StopAudio();
+                        game.StopAudio(1);
                     }
                 }
                 nextSCNName = null;
@@ -728,13 +736,13 @@ namespace MetalX.Component
             {
                 dz.X = 0;
             }
-            if (chr is NPC)
-            {
-                if (((NPC)chr).IsDoor)
-                {
-                    dz.Y += (2 - chr.Size.Height) * game.Textures[chr.TextureIndex].TileSize.Height;
-                }
-            }
+            //if (chr is NPC)
+            //{
+            //    if (((NPC)chr).IsDoor)
+            //    {
+            //        dz.Y += (2 - chr.Size.Height) * game.Textures[chr.TextureIndex].TileSize.Height;
+            //    }
+            //}
             Size tdz = game.Textures[chr.TextureIndex].TileSize;
             tdz.Width *= chr.Size.Width;
             tdz.Height *= chr.Size.Height;
