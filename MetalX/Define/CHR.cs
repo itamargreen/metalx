@@ -446,11 +446,11 @@ namespace MetalX.Define
         /// <summary>
         /// 伤害
         /// </summary>
-        public int Damage
+        public double Damage
         {
             get
             {
-                int damage = 0;
+                double damage = 0;
                 foreach (EquipmentCHR e in Equipments)
                 {
                     damage += e.Damage;
@@ -461,11 +461,11 @@ namespace MetalX.Define
         /// <summary>
         /// 防御
         /// </summary>
-        public int Defense
+        public double Defense
         {
             get
             {
-                int defense = 0;
+                double defense = 0;
                 foreach (EquipmentCHR e in Equipments)
                 {
                     defense += e.Defense;
@@ -723,19 +723,26 @@ namespace MetalX.Define
         [NonSerialized]
         public BattleState BattleState;
         [NonSerialized]
+        public BattleState BattleStateBackup;
+        [NonSerialized]
         public List<MetalXMovie> BattleMovies = new List<MetalXMovie>();
+        [NonSerialized]
         public List<MemoryIndexer> BattleMovieIndexers = new List<MemoryIndexer>();
+        public Vector3 BattleWeaponLocation;
+        public bool BattleShowWeapon = false;
         public MetalXMovie BattleMovie
         {
             get
             {
-                //if (BattleMovies == null)
-                //{
-                //    return null;
-                //}
                 try
                 {
-                    return BattleMovies[(int)BattleState];
+                    MetalXMovie movie = BattleMovies[(int)BattleState];
+                    if (movie.NextFrame())
+                    {
+                        BattleState = BattleState.Stand;
+                        movie = BattleMovies[(int)BattleState];
+                    }
+                    return movie;
                 }
                 catch
                 {
@@ -751,6 +758,7 @@ namespace MetalX.Define
 
         public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to, double timespan)
         {
+            BattleStateBackup = BattleState;
             BattleState = bs;
             int i = (int)bs;
             BattleLocation = BattleMovies[i].BeginLocation = from;
@@ -760,6 +768,7 @@ namespace MetalX.Define
         }
         public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to)
         {
+            BattleStateBackup = BattleState;
             BattleState = bs;
             int i = (int)bs;
             BattleLocation = BattleMovies[i].BeginLocation = from;
@@ -808,6 +817,11 @@ namespace MetalX.Define
     [Serializable]
     public class PC : CHR
     {
+        public PC()
+            : base()
+        {
+            BattleShowWeapon = true;
+        }
     }
     [Serializable]
     public class NPC : CHR
