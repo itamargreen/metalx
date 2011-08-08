@@ -35,7 +35,7 @@ namespace MetalX.SceneMaker2D
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                ui_defense.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
+                ui_block.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
             } 
         }
 
@@ -68,7 +68,7 @@ namespace MetalX.SceneMaker2D
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                ui_fire.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
+                ui_weapon.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
             } 
         }
 
@@ -79,7 +79,7 @@ namespace MetalX.SceneMaker2D
             ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                ui_throw.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
+                ui_item.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
             } 
         }
 
@@ -102,24 +102,33 @@ namespace MetalX.SceneMaker2D
             ui_w.Text = mon.BattleSize.Width.ToString();
             ui_h.Text = mon.BattleSize.Height.ToString();
 
-            int i = 0;
-            i = (int)MetalX.Define.BattleState.Stand;
-            ui_stand.Text = mon.BattleMovieIndexers[i].Name;
+            //int i = 0;
+            //i = (int)MetalX.Define.BattleState.Stand;
+            //ui_stand.Text = mon.BattleMovieIndexers[i].Name;
 
-            i = (int)MetalX.Define.BattleState.Defense;
-            ui_defense.Text = mon.BattleMovieIndexers[i].Name;
+            //i = (int)MetalX.Define.BattleState.Block;
+            //ui_block.Text = mon.BattleMovieIndexers[i].Name;
 
-            i = (int)MetalX.Define.BattleState.Hit;
-            ui_hit.Text = mon.BattleMovieIndexers[i].Name;
+            //i = (int)MetalX.Define.BattleState.Hit;
+            //ui_hit.Text = mon.BattleMovieIndexers[i].Name;
 
-            i = (int)MetalX.Define.BattleState.Fight;
-            ui_fight.Text = mon.BattleMovieIndexers[i].Name;
+            //i = (int)MetalX.Define.BattleState.Fight;
+            //ui_fight.Text = mon.BattleMovieIndexers[i].Name;
 
-            i = (int)MetalX.Define.BattleState.Fire;
-            ui_fire.Text = mon.BattleMovieIndexers[i].Name;
+            //i = (int)MetalX.Define.BattleState.Weapon;
+            //ui_weapon.Text = mon.BattleMovieIndexers[i].Name;
 
-            i = (int)MetalX.Define.BattleState.Throw;
-            ui_throw.Text = mon.BattleMovieIndexers[i].Name;
+            //i = (int)MetalX.Define.BattleState.Item;
+            //ui_item.Text = mon.BattleMovieIndexers[i].Name;
+
+            //i = (int)MetalX.Define.BattleState.Run;
+            //ui_run.Text = mon.BattleMovieIndexers[i].Name;
+
+            //i = (int)MetalX.Define.BattleState.Miss;
+            //ui_miss.Text = mon.BattleMovieIndexers[i].Name;
+
+            ui_scriptinit.Text = mon.ScriptInit;
+            ui_ai.Text = mon.ScriptAI;
         }
 
         private void ui_save_Click(object sender, EventArgs e)
@@ -140,24 +149,36 @@ namespace MetalX.SceneMaker2D
             mon.Name = ui_name.Text;
             mon.BattleSize = new Size(int.Parse(ui_w.Text), int.Parse(ui_h.Text));
 
-            int i = 0;
-            i = (int)MetalX.Define.BattleState.Stand;
-            mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_stand.Text);
+            mon.ScriptInit = ui_scriptinit.Text;
+            mon.ScriptAI = ui_ai.Text;
 
-            i = (int)MetalX.Define.BattleState.Defense;
-            mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_defense.Text);
+            //int i = 0;
+            //i = (int)MetalX.Define.BattleState.Stand;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_stand.Text);
 
-            i = (int)MetalX.Define.BattleState.Hit;
-            mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_hit.Text);
+            //i = (int)MetalX.Define.BattleState.Block;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_block.Text);
 
-            i = (int)MetalX.Define.BattleState.Fight;
-            mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_fight.Text);
+            //i = (int)MetalX.Define.BattleState.Hit;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_hit.Text);
 
-            i = (int)MetalX.Define.BattleState.Fire;
-            mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_fire.Text);
+            //i = (int)MetalX.Define.BattleState.Fight;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_fight.Text);
 
-            i = (int)MetalX.Define.BattleState.Throw;
-            mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_throw.Text);
+            //i = (int)MetalX.Define.BattleState.Weapon;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_weapon.Text);
+
+            //i = (int)MetalX.Define.BattleState.Item;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_item.Text);
+
+            //i = (int)MetalX.Define.BattleState.Run;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_run.Text);
+
+            //i = (int)MetalX.Define.BattleState.Miss;
+            //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_miss.Text);
         }
+
+
+
     }
 }

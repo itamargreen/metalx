@@ -36,15 +36,15 @@
             this.ui_save = new System.Windows.Forms.Button();
             this.ui_stand = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.ui_defense = new System.Windows.Forms.TextBox();
+            this.ui_block = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.ui_hit = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ui_fight = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.ui_fire = new System.Windows.Forms.TextBox();
+            this.ui_weapon = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.ui_throw = new System.Windows.Forms.TextBox();
+            this.ui_item = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.ui_yes = new System.Windows.Forms.Button();
             this.ui_name = new System.Windows.Forms.TextBox();
@@ -61,16 +61,26 @@
             this.label14 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.ui_miss = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.ui_run = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label16 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
+            this.ui_scriptinit = new System.Windows.Forms.TextBox();
+            this.ui_ai = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.ui_exp = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 462);
+            this.label1.Location = new System.Drawing.Point(492, 84);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(17, 12);
             this.label1.TabIndex = 0;
@@ -78,14 +88,14 @@
             // 
             // ui_w
             // 
-            this.ui_w.Location = new System.Drawing.Point(12, 477);
+            this.ui_w.Location = new System.Drawing.Point(494, 99);
             this.ui_w.Name = "ui_w";
             this.ui_w.Size = new System.Drawing.Size(100, 21);
             this.ui_w.TabIndex = 1;
             // 
             // ui_h
             // 
-            this.ui_h.Location = new System.Drawing.Point(118, 477);
+            this.ui_h.Location = new System.Drawing.Point(600, 99);
             this.ui_h.Name = "ui_h";
             this.ui_h.Size = new System.Drawing.Size(100, 21);
             this.ui_h.TabIndex = 3;
@@ -93,7 +103,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(116, 462);
+            this.label2.Location = new System.Drawing.Point(598, 84);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(17, 12);
             this.label2.TabIndex = 2;
@@ -121,7 +131,8 @@
             // 
             // ui_stand
             // 
-            this.ui_stand.Location = new System.Drawing.Point(12, 516);
+            this.ui_stand.Enabled = false;
+            this.ui_stand.Location = new System.Drawing.Point(897, 99);
             this.ui_stand.Name = "ui_stand";
             this.ui_stand.Size = new System.Drawing.Size(100, 21);
             this.ui_stand.TabIndex = 7;
@@ -130,32 +141,36 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 501);
+            this.label3.Enabled = false;
+            this.label3.Location = new System.Drawing.Point(895, 84);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 6;
             this.label3.Text = "站立动画";
             // 
-            // ui_defense
+            // ui_block
             // 
-            this.ui_defense.Location = new System.Drawing.Point(12, 555);
-            this.ui_defense.Name = "ui_defense";
-            this.ui_defense.Size = new System.Drawing.Size(100, 21);
-            this.ui_defense.TabIndex = 9;
-            this.ui_defense.DoubleClick += new System.EventHandler(this.ui_defense_DoubleClick);
+            this.ui_block.Enabled = false;
+            this.ui_block.Location = new System.Drawing.Point(897, 309);
+            this.ui_block.Name = "ui_block";
+            this.ui_block.Size = new System.Drawing.Size(100, 21);
+            this.ui_block.TabIndex = 9;
+            this.ui_block.DoubleClick += new System.EventHandler(this.ui_defense_DoubleClick);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 540);
+            this.label4.Enabled = false;
+            this.label4.Location = new System.Drawing.Point(895, 294);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 8;
-            this.label4.Text = "防御动画";
+            this.label4.Text = "格挡动画";
             // 
             // ui_hit
             // 
-            this.ui_hit.Location = new System.Drawing.Point(12, 594);
+            this.ui_hit.Enabled = false;
+            this.ui_hit.Location = new System.Drawing.Point(897, 403);
             this.ui_hit.Name = "ui_hit";
             this.ui_hit.Size = new System.Drawing.Size(100, 21);
             this.ui_hit.TabIndex = 11;
@@ -164,15 +179,17 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 579);
+            this.label5.Enabled = false;
+            this.label5.Location = new System.Drawing.Point(895, 138);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 10;
-            this.label5.Text = "被击中动画";
+            this.label5.Text = "逃跑动画";
             // 
             // ui_fight
             // 
-            this.ui_fight.Location = new System.Drawing.Point(12, 633);
+            this.ui_fight.Enabled = false;
+            this.ui_fight.Location = new System.Drawing.Point(897, 270);
             this.ui_fight.Name = "ui_fight";
             this.ui_fight.Size = new System.Drawing.Size(100, 21);
             this.ui_fight.TabIndex = 13;
@@ -181,41 +198,46 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 618);
+            this.label6.Enabled = false;
+            this.label6.Location = new System.Drawing.Point(895, 255);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 12;
             this.label6.Text = "格斗动画";
             // 
-            // ui_fire
+            // ui_weapon
             // 
-            this.ui_fire.Location = new System.Drawing.Point(12, 672);
-            this.ui_fire.Name = "ui_fire";
-            this.ui_fire.Size = new System.Drawing.Size(100, 21);
-            this.ui_fire.TabIndex = 15;
-            this.ui_fire.DoubleClick += new System.EventHandler(this.ui_fire_DoubleClick);
+            this.ui_weapon.Enabled = false;
+            this.ui_weapon.Location = new System.Drawing.Point(897, 192);
+            this.ui_weapon.Name = "ui_weapon";
+            this.ui_weapon.Size = new System.Drawing.Size(100, 21);
+            this.ui_weapon.TabIndex = 15;
+            this.ui_weapon.DoubleClick += new System.EventHandler(this.ui_fire_DoubleClick);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 657);
+            this.label7.Enabled = false;
+            this.label7.Location = new System.Drawing.Point(895, 177);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 14;
             this.label7.Text = "开火动画";
             // 
-            // ui_throw
+            // ui_item
             // 
-            this.ui_throw.Location = new System.Drawing.Point(12, 711);
-            this.ui_throw.Name = "ui_throw";
-            this.ui_throw.Size = new System.Drawing.Size(100, 21);
-            this.ui_throw.TabIndex = 17;
-            this.ui_throw.DoubleClick += new System.EventHandler(this.ui_throw_DoubleClick);
+            this.ui_item.Enabled = false;
+            this.ui_item.Location = new System.Drawing.Point(897, 231);
+            this.ui_item.Name = "ui_item";
+            this.ui_item.Size = new System.Drawing.Size(100, 21);
+            this.ui_item.TabIndex = 17;
+            this.ui_item.DoubleClick += new System.EventHandler(this.ui_throw_DoubleClick);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(10, 696);
+            this.label8.Enabled = false;
+            this.label8.Location = new System.Drawing.Point(895, 216);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(53, 12);
             this.label8.TabIndex = 16;
@@ -249,7 +271,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(224, 99);
+            this.textBox1.Location = new System.Drawing.Point(330, 99);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 21);
             this.textBox1.TabIndex = 22;
@@ -257,7 +279,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(222, 84);
+            this.label10.Location = new System.Drawing.Point(328, 84);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(17, 12);
             this.label10.TabIndex = 21;
@@ -343,11 +365,48 @@
             this.label15.TabIndex = 29;
             this.label15.Text = "智力";
             // 
+            // ui_miss
+            // 
+            this.ui_miss.Enabled = false;
+            this.ui_miss.Location = new System.Drawing.Point(897, 364);
+            this.ui_miss.Name = "ui_miss";
+            this.ui_miss.Size = new System.Drawing.Size(100, 21);
+            this.ui_miss.TabIndex = 40;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Enabled = false;
+            this.label17.Location = new System.Drawing.Point(895, 349);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 12);
+            this.label17.TabIndex = 39;
+            this.label17.Text = "未击中动画";
+            // 
+            // ui_run
+            // 
+            this.ui_run.Enabled = false;
+            this.ui_run.Location = new System.Drawing.Point(897, 153);
+            this.ui_run.Name = "ui_run";
+            this.ui_run.Size = new System.Drawing.Size(100, 21);
+            this.ui_run.TabIndex = 38;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Enabled = false;
+            this.label18.Location = new System.Drawing.Point(895, 388);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(65, 12);
+            this.label18.TabIndex = 37;
+            this.label18.Text = "被击中动画";
+            // 
             // listBox1
             // 
+            this.listBox1.Enabled = false;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(12, 177);
+            this.listBox1.Location = new System.Drawing.Point(12, 192);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(206, 184);
             this.listBox1.TabIndex = 33;
@@ -355,7 +414,8 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(12, 162);
+            this.label16.Enabled = false;
+            this.label16.Location = new System.Drawing.Point(12, 177);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(29, 12);
             this.label16.TabIndex = 34;
@@ -363,25 +423,87 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(224, 177);
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(224, 192);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 35;
             this.button1.Text = "<=";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(305, 179);
+            this.textBox7.Enabled = false;
+            this.textBox7.Location = new System.Drawing.Point(330, 194);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(100, 21);
             this.textBox7.TabIndex = 36;
+            // 
+            // ui_scriptinit
+            // 
+            this.ui_scriptinit.Location = new System.Drawing.Point(12, 492);
+            this.ui_scriptinit.Multiline = true;
+            this.ui_scriptinit.Name = "ui_scriptinit";
+            this.ui_scriptinit.Size = new System.Drawing.Size(320, 240);
+            this.ui_scriptinit.TabIndex = 41;
+            // 
+            // ui_ai
+            // 
+            this.ui_ai.Location = new System.Drawing.Point(338, 492);
+            this.ui_ai.Multiline = true;
+            this.ui_ai.Name = "ui_ai";
+            this.ui_ai.Size = new System.Drawing.Size(320, 240);
+            this.ui_ai.TabIndex = 42;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(12, 477);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(65, 12);
+            this.label19.TabIndex = 43;
+            this.label19.Text = "初始化脚本";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(336, 477);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(41, 12);
+            this.label20.TabIndex = 44;
+            this.label20.Text = "AI脚本";
+            // 
+            // ui_exp
+            // 
+            this.ui_exp.Location = new System.Drawing.Point(224, 99);
+            this.ui_exp.Name = "ui_exp";
+            this.ui_exp.Size = new System.Drawing.Size(100, 21);
+            this.ui_exp.TabIndex = 46;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(222, 84);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(41, 12);
+            this.label21.TabIndex = 45;
+            this.label21.Text = "经验值";
             // 
             // MonsterMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 744);
+            this.Controls.Add(this.ui_exp);
+            this.Controls.Add(this.label21);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.ui_ai);
+            this.Controls.Add(this.ui_scriptinit);
+            this.Controls.Add(this.ui_miss);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.ui_run);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label16);
@@ -401,15 +523,15 @@
             this.Controls.Add(this.ui_name);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.ui_yes);
-            this.Controls.Add(this.ui_throw);
+            this.Controls.Add(this.ui_item);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.ui_fire);
+            this.Controls.Add(this.ui_weapon);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.ui_fight);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.ui_hit);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.ui_defense);
+            this.Controls.Add(this.ui_block);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.ui_stand);
             this.Controls.Add(this.label3);
@@ -437,15 +559,15 @@
         private System.Windows.Forms.Button ui_save;
         private System.Windows.Forms.TextBox ui_stand;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox ui_defense;
+        private System.Windows.Forms.TextBox ui_block;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox ui_hit;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox ui_fight;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox ui_fire;
+        private System.Windows.Forms.TextBox ui_weapon;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox ui_throw;
+        private System.Windows.Forms.TextBox ui_item;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button ui_yes;
         private System.Windows.Forms.TextBox ui_name;
@@ -462,9 +584,19 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox ui_miss;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox ui_run;
+        private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox ui_scriptinit;
+        private System.Windows.Forms.TextBox ui_ai;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox ui_exp;
+        private System.Windows.Forms.Label label21;
     }
 }

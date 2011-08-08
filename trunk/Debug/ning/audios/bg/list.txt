@@ -1,8 +1,0 @@
-105 - battle bg
-110 - laduo
-115 - bar
-116 - home
-124 - enemy
-139 - fight
-140 - hit
-163 - door

@@ -77,11 +77,12 @@ namespace MetalX.Component
             : base(g)
         {
             DisableAll();
-            Enable = true;
-            //fillControlthd = new Thread(fillControl);
-            //fillControlthd.Priority = ThreadPriority.Lowest;
-            //fillControlthd.IsBackground = true;
-            //fillControlthd.Start();
+
+            //Enable = true;
+
+            fillControlthd = new Thread(fillControl);
+            fillControlthd.IsBackground = true;
+            fillControlthd.Start();
         }
 
         bool pos, posb;
@@ -133,13 +134,15 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        mp3Stream.Position = 0;
+                        //mp3Stream.Position = 0;
+                        secondaryBuffer.Stop();
                         if (Loop)
                         {
+                            playMP3();
                         }
                         else
                         {
-                            secondaryBuffer.Stop();
+                            
                             Playing = false;
                         }
                     }
@@ -259,14 +262,15 @@ namespace MetalX.Component
                         }
                         else
                         {
+                            //mp3Stream.Position = 0;
                             secondaryBuffer.Stop();
-                            mp3Stream.Position = 0;
                             if (Loop)
                             {
                                 playMP3();
                             }
                             else
                             {                                
+                                
                                 Playing = false;
                                 //for (int i = 0; i < buff.Length; i++)
                                 //{
@@ -348,10 +352,10 @@ namespace MetalX.Component
         }
         void playMP3()
         {
-            if (mp3Stream == null)
-            {
-                return;
-            }
+            //if (mp3Stream == null)
+            //{
+            //    return;
+            //}
             mp3Stream.Position = 0;
             mp3Stream.Read(buff, 0, halfSize);
             pos = posb = true;

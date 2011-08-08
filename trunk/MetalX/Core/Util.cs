@@ -202,6 +202,10 @@ namespace MetalX
         {
             return Random.Next(from, to + 1);
         }
+        public static int Roll(int count)
+        {
+            return Random.Next(count);
+        }
         public static bool RollBool()
         {
             if (Roll(1,100) <= 50)

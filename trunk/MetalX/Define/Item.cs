@@ -13,26 +13,129 @@ namespace MetalX.Define
         Equipment = 3,
     }
     [Serializable]
+    public enum ItemLevel
+    {
+        SSS = 130,
+        SS = 120,
+        S = 110,
+        A = 100,
+        B = 90,
+        C = 80,
+        D = 70,
+    }
+    [Serializable]
     public class Item
     {
         public Guid GUID = Guid.NewGuid();
         public string Name;
+        public MemoryIndexer Icon = new MemoryIndexer();
         public string Description;
-        public string IconName;
-        public int IconIndex;
         public int ReqLevel;
         public int ReqMBLevel;
         public int ReqCBLevel;
         public double Weight;
         public double Worth;
-        public double Endure = 1;
-        public double Upgrade = 0;
-        public int UpgradeTime = 0;
         public string Script;
         public ItemType ItemType;
+        public ItemLevel ItemLevel = ItemLevel.C;
         public Item GetClone()
         {
             return (Item)MemberwiseClone();
+        }
+    }
+    [Serializable]
+    public class Equipment : Item
+    {
+        public Equipment()
+        {
+            ItemType = ItemType.Equipment;
+        }
+
+        protected double damage;
+        protected double defense;
+        protected double accurate;
+        protected double missrate;
+        protected double delay;
+        protected double moveSpeed;
+
+        public double Damage
+        {
+            get
+            {
+                double t = (double)ItemLevel / 100;
+                return t * damage;
+            }
+            set
+            {
+                damage = value;
+            }
+        }
+        public double Defense
+        {
+            get
+            {
+                double t = (double)ItemLevel / 100;
+                return t * defense;
+            }
+            set
+            {
+                defense = value;
+            }
+        }
+        public double Accurate
+        {
+            get
+            {
+                double t = (double)ItemLevel / 100;
+                return t * accurate;
+            }
+            set
+            {
+                accurate = value;
+            }
+        }
+        public double Missrate
+        {
+            get
+            {
+                double t = (double)ItemLevel / 100;
+                return t * missrate;
+            }
+            set
+            {
+                missrate = value;
+            }
+        }
+
+        public double Delay
+        {
+            get
+            {
+                return delay;
+            }
+            set
+            {
+                delay = value;
+            }
+        }
+        public double MoveSpeed
+        {
+            get
+            {
+                return moveSpeed;
+            }
+            set
+            {
+                moveSpeed = value;
+            }
+        }
+
+        //public double Endure = 1;
+        //public double Upgrade = 0;
+        //public int UpgradeTime = 0;
+        new public Equipment GetClone()
+        {
+            return (Equipment)MemberwiseClone();
         }
     }
     [Serializable]
@@ -60,193 +163,44 @@ namespace MetalX.Define
         Other = 7,
     }
     [Serializable]
-    public class EquipmentCHR : Item
+    public class EquipmentCHR : Equipment
     {
         public EquipmentCHR()
-        {
-            ItemType = ItemType.Equipment;
-        }
+            : base()
+        { }
         public EquipmentCHRType EquipmentType;
-        //public int ExtMLevel, ExtELevel, ExtBLevel;
-
-        int damage;
-        int defense;
-        double accurate;
-        double missrate;
-        double delay;//for ecu
-        double moveSpeed;
-        public double MoveSpeed
-        {
-            get
-            {
-                return moveSpeed;
-            }
-            set
-            {
-                moveSpeed = value;
-            }
-        }
-        public int Damage
-        {
-            get
-            {
-                return (int)(damage + damage * Upgrade);
-            }
-            set
-            {
-                damage = value;
-            }
-        }
-        public int Defense
-        {
-            get
-            {
-                return (int)(defense + defense * Upgrade);
-            }
-            set
-            {
-                defense = value;
-            }
-        }
-        public double Delay
-        {
-            get
-            {
-                return (delay - delay * Upgrade);
-            }
-            set
-            {
-                delay = value;
-            }
-        }
-        public double Accurate
-        {
-            get
-            {
-                return accurate + accurate * Upgrade;
-            }
-            set
-            {
-                accurate = value;
-            }
-        }
-        public double Missrate
-        {
-            get
-            {
-                return missrate + missrate * Upgrade;
-            }
-            set
-            {
-                missrate = value;
-            }
-        }
-
         new public EquipmentCHR GetClone()
         {
             return (EquipmentCHR)MemberwiseClone();
         }
     }
     [Serializable]
-    public class EquipmentMTL : Item
+    public class EquipmentMTL : Equipment
     {
         public EquipmentMTL()
+            : base()
         {
-            ItemType = ItemType.Equipment;
         }
+
         public EquipmentMTLType EquipmentType;
-
-        int damage;
-        int defense;
-        double accurate;
-        double missrate;
-        double load;//for motor
+        double load;
         double ammoBoxCap, fuelBoxCap;
-        double delay;//for ecu
-        double moveSpeed;
-        public double MoveSpeed
-        {
-            get
-            {
-                return moveSpeed;
-            }
-            set
-            {
-                moveSpeed = value;
-            }
-        }
-
-        public double Delay
-        {
-            get
-            {
-                return (delay - delay * Upgrade);
-            }
-            set
-            {
-                delay = value;
-            }
-        }
-        public double Accurate
-        {
-            get
-            {
-                return accurate + accurate * Upgrade;
-            }
-            set
-            {
-                accurate = value;
-            }
-        }
-        public double Missrate
-        {
-            get
-            {
-                return missrate + missrate * Upgrade;
-            }
-            set
-            {
-                missrate = value;
-            }
-        }
         public double Load
         {
             get
             {
-                return load + load * Upgrade / 10;
+                return load;
             }
             set
             {
                 load = value;
             }
         }
-        public int Damage
-        {
-            get
-            {
-                return (int)(damage + damage * Upgrade);
-            }
-            set
-            {
-                damage = value;
-            }
-        }
-        public int Defense
-        {
-            get
-            {
-                return (int)(defense + defense * Upgrade);
-            }
-            set
-            {
-                defense = value;
-            }
-        }
         public double AmmoBoxCap
         {
             get
             {
-                return ammoBoxCap + ammoBoxCap * Upgrade / 10;
+                return ammoBoxCap;
             }
             set
             {
@@ -257,7 +211,7 @@ namespace MetalX.Define
         {
             get
             {
-                return fuelBoxCap + fuelBoxCap * Upgrade / 10;
+                return fuelBoxCap;
             }
             set
             {
@@ -271,13 +225,5 @@ namespace MetalX.Define
         }
 
     }
-    //[Serializable]
-    //public class ScriptItem : Item
-    //{
-    //    public string Script;
-    //    new public ScriptItem GetClone()
-    //    {
-    //        return (ScriptItem)MemberwiseClone();
-    //    }
-    //}
+
 }

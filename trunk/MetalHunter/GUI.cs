@@ -225,8 +225,8 @@ namespace MetalHunter
             this.exp.Text = "经验：　" + chr.EXP;
             try
             {
-                this.dmg.Text = "攻击：　" + chr.Weapon.Damage + "　　命中：　" + chr.Accurate + "%";
-                this.def.Text = "防御：　" + chr.Defense + "　　闪避：　" + chr.Missrate + "%";
+                this.dmg.Text = "攻击：　" + chr.Weapon.Damage.ToString("f1") + "　　命中：　" + chr.Accurate.ToString("f1") + "%";
+                this.def.Text = "防御：　" + chr.Defense.ToString("f1") + "　　闪避：　" + chr.Missrate.ToString("f1") + "%";
             }
             catch
             {
@@ -242,7 +242,7 @@ namespace MetalHunter
             {
                 this.b_weapon.WaitTextBox.Text = "       " + chr.Equipments[(int)EquipmentCHRType.Weapon].Name;
                 this.b_weapon.WaitTextBox.FontSize = 13;
-                this.b_weapon.WaitTextureBox.TextureName = chr.Equipments[(int)EquipmentCHRType.Weapon].IconName;
+                this.b_weapon.WaitTextureBox.TextureName = chr.Equipments[(int)EquipmentCHRType.Weapon].Icon.Name;
                 this.b_weapon.SameAsWait();
             }
             for (int i = 0; i < 7; i++)
@@ -251,7 +251,7 @@ namespace MetalHunter
                 {
                     this.b_def[i].WaitTextBox.Text = "       " + chr.Equipments[i + 1].Name;
                     this.b_def[i].WaitTextBox.FontSize = 13;
-                    this.b_def[i].WaitTextureBox.TextureName = chr.Equipments[i + 1].IconName;
+                    this.b_def[i].WaitTextureBox.TextureName = chr.Equipments[i + 1].Icon.Name;
                     this.b_def[i].SameAsWait();
                 }
             }
@@ -281,7 +281,7 @@ namespace MetalHunter
             tb.OneByOne = true;
             tb.FontSize = 13;
             tb.Interval = 10;
-            tb.Location = new Point(24, 192);
+            tb.Location = new Point(24, 24);
 
             this.OnFormBoxDisappear += new FormBoxEvent(MenuBAG_OnFormBoxDisappear);
         }
@@ -307,7 +307,7 @@ namespace MetalHunter
                     bb[i].WaitTextBox.Location = new Point(0, 4);
                     bb[i].WaitTextBox.Text = "　　　" + chr.Bag[i].Name;
                     bb[i].WaitTextBox.FontSize = 15;
-                    bb[i].WaitTextureBox.TextureName = chr.Bag[i].IconName;
+                    bb[i].WaitTextureBox.TextureName = chr.Bag[i].Icon.Name;
                     bb[i].WaitTextureBox.TextureIndex = -1;
                     bb[i].WaitTextureBox.Size = new System.Drawing.Size(48, 32);
                     bb[i].SameAsWait();
@@ -345,7 +345,7 @@ namespace MetalHunter
             : base(g)
         {
             Name = "MenuBAGASK";
-            Location = new Point(64 + 24, 48 + 24);
+            Location = new Point(64 + 24, 256 + 24);
             BGTextureBox.TextureName = "bg_64x64";
             BGTextureBox.Size = new System.Drawing.Size(128, 128);
 

@@ -56,6 +56,7 @@ namespace MetalX
         public PC ME = new PC();
         public List<NPC> NPCs = new List<NPC>();
         public List<Monster> Monsters = new List<Monster>();
+        public List<PC> PCs = new List<PC>();
         public NPC GetNPC(string name)
         {
             foreach (NPC npc in NPCs)

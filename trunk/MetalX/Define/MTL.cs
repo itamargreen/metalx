@@ -98,11 +98,11 @@ namespace MetalX.Define
         /// <summary>
         /// 伤害
         /// </summary>
-        public int Damage
+        public double Damage
         {
             get
             {
-                int damage = 0;
+                double damage = 0;
                 foreach (EquipmentMTL e in Equipments)
                 {
                     damage += e.Damage;
@@ -113,11 +113,11 @@ namespace MetalX.Define
         /// <summary>
         /// 防御
         /// </summary>
-        public int Defense
+        public double Defense
         {
             get
             {
-                int defense = 0;
+                double defense = 0;
                 foreach (EquipmentMTL e in Equipments)
                 {
                     defense += e.Defense;
