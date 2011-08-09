@@ -17,7 +17,7 @@ namespace MetalX.Define
             {
                 Equipments.Add(new EquipmentCHR());
                 BattleMovieIndexers.Add(new MemoryIndexer());
-                BattleMovies.Add(new MetalXMovie());
+                //BattleMovies.Add(new MetalXMovie());
             }
         }
         public string Name = "noname";
@@ -725,94 +725,122 @@ namespace MetalX.Define
         [NonSerialized]
         public BattleState BattleStateBackup;
         [NonSerialized]
-        public List<MetalXMovie> BattleMovies = new List<MetalXMovie>();
+        public MetalXMovie BattleMovie = new MetalXMovie();
+        public void SetBattleMovie(MetalXMovie movie, Vector3 fl, Vector3 tl, double playtime)
+        {
+            fl.X -= movie.TileSize2X.Width / 2;
+            fl.Y -= movie.TileSize2X.Height;
+            tl.X -= movie.TileSize2X.Width / 2;
+            tl.Y -= movie.TileSize2X.Height;
+
+            BattleMovie = movie;
+            BattleMovie.BeginLocation = fl;
+            BattleMovie.EndLocation = tl;
+            BattleMovie.PlayTime = playtime;
+            BattleMovie.Reset();
+        }
+        public void SetBattleMovie(MetalXMovie movie, Vector3 loc)
+        {
+            SetBattleMovie(movie, loc, loc, 1);
+        }
+        public void SetBattleMovie(MetalXMovie movie)
+        {
+            SetBattleMovie(movie, BattleLocation);
+        }
         [NonSerialized]
         public List<MemoryIndexer> BattleMovieIndexers = new List<MemoryIndexer>();
-        public Vector3 BattleWeaponLocation;
-        public bool BattleShowWeapon = false;
-        public MetalXMovie BattleMovie
+        public MemoryIndexer BattleMovieIndexer
         {
             get
             {
-                try
-                {
-                    MetalXMovie movie = BattleMovies[(int)BattleState];
-                    if (movie.NextFrame())
-                    {
-                        BattleState = BattleState.Stand;
-                        movie = BattleMovies[(int)BattleState];
-                    }
-                    return movie;
-                }
-                catch
-                {
-                    return null;
-                }
+                return BattleMovieIndexers[(int)BattleState];
             }
         }
-        public MetalXMovie GetBattleMovie(BattleState bs)
-        {
-            int i = (int)bs;
-            return BattleMovies[i];
-        }
+        public Vector3 BattleWeaponLocation;
+        public bool BattleShowWeapon = false;
+        //public MetalXMovie BattleMovie
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            MetalXMovie movie = BattleMovies[(int)BattleState];
+        //            if (movie.NextFrame() == false)
+        //            {
+        //                BattleState = BattleState.Stand;
+        //                movie = BattleMovies[(int)BattleState];
+        //            }
+        //            return movie;
+        //        }
+        //        catch
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
+        //public MetalXMovie GetBattleMovie(BattleState bs)
+        //{
+        //    int i = (int)bs;
+        //    return BattleMovies[i];
+        //}
 
-        public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to, double timespan)
-        {
-            BattleStateBackup = BattleState;
-            BattleState = bs;
-            int i = (int)bs;
-            BattleLocation = BattleMovies[i].BeginLocation = from;
-            BattleMovies[i].EndLocation = to;
-            BattleMovies[i].PlayTime = timespan;
-            BattleMovies[i].Reset();
-        }
-        public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to)
-        {
-            BattleStateBackup = BattleState;
-            BattleState = bs;
-            int i = (int)bs;
-            BattleLocation = BattleMovies[i].BeginLocation = from;
-            BattleMovies[i].EndLocation = to;
-            BattleMovies[i].PlayTime = BattleMovies[i].MovieTime;
-            BattleMovies[i].Reset();
-        }
-        public void SetBattleMovie(BattleState bs, Vector3 loc, double timespan)
-        {
-            SetBattleMovie(bs, BattleLocation, loc, timespan);
-        }
-        public void SetBattleMovie(BattleState bs, double timespan)
-        {
-            SetBattleMovie(bs, BattleLocation, timespan);
-        }
-        public void SetBattleMovie(BattleState bs, Vector3 loc)
-        {
-            SetBattleMovie(bs, BattleLocation, loc);
-        }
-        public void SetBattleMovie(BattleState bs)
-        {
-            SetBattleMovie(bs, BattleLocation);
-        }
+        //public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to, double timespan)
+        //{
+        //    BattleStateBackup = BattleState;
+        //    BattleState = bs;
+        //    int i = (int)bs;
+        //    BattleLocation = BattleMovies[i].BeginLocation = from;
+        //    BattleMovies[i].EndLocation = to;
+        //    BattleMovies[i].PlayTime = timespan;
+        //    BattleMovies[i].Reset();
+        //}
+        //public void SetBattleMovie(BattleState bs, Vector3 from, Vector3 to)
+        //{
+        //    BattleStateBackup = BattleState;
+        //    BattleState = bs;
+        //    int i = (int)bs;
+        //    BattleLocation = BattleMovies[i].BeginLocation = from;
+        //    BattleMovies[i].EndLocation = to;
+        //    BattleMovies[i].PlayTime = BattleMovies[i].MovieTime;
+        //    BattleMovies[i].Reset();
+        //}
+        //public void SetBattleMovie(BattleState bs, Vector3 loc, double timespan)
+        //{
+        //    SetBattleMovie(bs, BattleLocation, loc, timespan);
+        //}
+        //public void SetBattleMovie(BattleState bs, double timespan)
+        //{
+        //    SetBattleMovie(bs, BattleLocation, timespan);
+        //}
+        //public void SetBattleMovie(BattleState bs, Vector3 loc)
+        //{
+        //    SetBattleMovie(bs, BattleLocation, loc);
+        //}
+        //public void SetBattleMovie(BattleState bs)
+        //{
+        //    SetBattleMovie(bs, BattleLocation);
+        //}
 
-        public void LoadBattleMovies(Game game)
-        {
-            BattleMovies = new List<MetalXMovie>();
-            for (int i = 0; i < BattleMovieIndexers.Count; i++)
-            {
-                if (BattleMovieIndexers[i].Name == null)
-                {
-                    continue;
-                }
+        //public void LoadBattleMovies(Game game)
+        //{
+        //    BattleMovies = new List<MetalXMovie>();
+        //    for (int i = 0; i < BattleMovieIndexers.Count; i++)
+        //    {
+        //        if (BattleMovieIndexers[i].Name == null)
+        //        {
+        //            continue;
+        //        }
 
-                File.MetalXMovie movie = game.LoadDotMXMovie(game.MovieFiles[BattleMovieIndexers[i].Name].FullName);
+        //        File.MetalXMovie movie = game.LoadDotMXMovie(game.MovieFiles[BattleMovieIndexers[i].Name].FullName);
 
-                movie.BeginLocation = BattleLocation;
-                movie.EndLocation = BattleLocation;
-                movie.PlayTime = movie.MovieTime;
-                movie.Reset();
+        //        movie.BeginLocation = BattleLocation;
+        //        movie.EndLocation = BattleLocation;
+        //        movie.PlayTime = movie.MovieTime;
+        //        movie.Reset();
 
-                BattleMovies.Add(movie);
-            }
-        }
+        //        BattleMovies.Add(movie);
+        //    }
+        //}
     }
     [Serializable]
     public class PC : CHR

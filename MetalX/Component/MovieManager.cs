@@ -7,52 +7,84 @@ namespace MetalX.Component
 {
     public class MovieManager : GameCom
     {
-        MetalXMovie moviefile;
-
+        List<MetalXMovie> movies = new List<MetalXMovie>();
+        //List<MetalXMovie> bmovies = new List<MetalXMovie>();
         public MovieManager(Game g)
             : base(g)
-        { }
+        {
+            //for (int i = 0; i < 16; i++)
+            //{
+            //    bmovies.Add(new MetalXMovie());
+            //}
+        }
 
         public override void Code()
         {
-            if (moviefile == null)
+            for (int i = 0; i < movies.Count; i++)
             {
-                return;
+                if (movies[i].NextFrame() == false)
+                {
+                    movies.RemoveAt(i);
+                    i--;
+                }
             }
-
-            moviefile.NextFrame();
+            //foreach (MetalXMovie m in bmovies)
+            //{
+            //    m.NextFrame();
+            //}
         }
         public override void Draw()
         {
-            if (moviefile == null)
+            foreach (MetalXMovie m in movies)
             {
-                return;
+                Vector3 loc = m.DrawLocation;
+                Color color = Util.MixColor(ColorFilter, m.ColorFilter);
+                game.DrawMetalXTexture(m.MXT, m.DrawZone, loc, m.TileSize2X, 0, color);
             }
-            Vector3 loc = moviefile.DrawLocation;
-            Color color = Util.MixColor(ColorFilter, moviefile.ColorFilter);
-            game.DrawMetalXTexture(moviefile.MXT, moviefile.DrawZone, loc, moviefile.TileSize, 0, color);
+            //foreach (MetalXMovie m in bmovies)
+            //{
+            //    Vector3 loc = m.DrawLocation;
+            //    Color color = Util.MixColor(ColorFilter, m.ColorFilter);
+            //    game.DrawMetalXTexture(m.MXT, m.DrawZone, loc, m.TileSize2X, 0, color);
+            //}
         }
 
+        //public void BattlePlayMovie(int i, MetalXMovie movie, Vector3 fromLoc, Vector3 toLoc, double timespan)
+        //{
+        //    i += 12;
+        //    movie.BeginLocation = fromLoc;
+        //    movie.EndLocation = toLoc;
+        //    movie.PlayTime = timespan;
+
+        //    movie.Reset();
+
+        //    bmovies[i] = movie;
+        //}
+        //public void BattlePlayMovie(int i, MetalXMovie movie, Vector3 fromLoc, double timespan)
+        //{
+        //    BattlePlayMovie(i, movie, fromLoc, fromLoc, timespan);
+        //}
         public void PlayMovie(MetalXMovie movie, Vector3 fromLoc, Vector3 toLoc, double timespan)
         {
-            moviefile = movie;
+            fromLoc.X -= movie.TileSize2X.Width / 2;
+            fromLoc.Y -= movie.TileSize2X.Height;
+            toLoc.X -= movie.TileSize2X.Width / 2;
+            toLoc.Y -= movie.TileSize2X.Height;
 
-            moviefile.BeginLocation = fromLoc;
-            moviefile.EndLocation = toLoc;
-            moviefile.PlayTime = timespan;
+            movie.BeginLocation = fromLoc;
+            movie.EndLocation = toLoc;
+            movie.PlayTime = timespan;
 
-            moviefile.Reset();
+            movie.Reset();
+
+            movies.Add(movie);
         }
-
-        public void PlayMovie(MetalXMovie movie, Vector3 Loc)
+        public void PlayMovie(MetalXMovie movie, Vector3 fromLoc, double timespan)
         {
-            moviefile = movie;
-
-            moviefile.BeginLocation = Loc;
-            moviefile.EndLocation = Loc;
-            moviefile.PlayTime = 0;
-
-            moviefile.Reset();
+            PlayMovie(movie, fromLoc, fromLoc, timespan);
         }
+        //public void PlayMovie(MetalXMovie movie)
+        //{ 
+        //}
     }
 }

@@ -23,6 +23,7 @@ namespace MetalHunter
             game.FormBoxes.Add(new MenuCHR(game));
             game.FormBoxes.Add(new MenuBAG(game));
             game.FormBoxes.Add(new MenuBAGASK(game));
+            game.FormBoxes.Add(new MenuBattleCHR(game));
 
             game.OverLoadMessageBox(new MH_MSGBox(game));
             game.OverLoadASKboolBox(new MH_ASKboolBox(game));
@@ -63,34 +64,34 @@ namespace MetalHunter
             InitFormBoxes();
             InitItems();
             
-            game.AppendDotMetalXScript("logo");
-            game.ExecuteScript();
+            game.ScriptManager.AppendDotMetalXScript("logo");
+            game.ScriptManager.Execute();
 
-            game.FormBoxManager.OnKeyboardUp += new KeyboardEvent(FormBoxManager_OnKeyboardUp);
-            game.SceneManager.OnKeyboardUp += new KeyboardEvent(SceneManager_OnKeyboardUp);
+            game.FormBoxManager.OnKeyUp += new KeyboardEvent(FormBoxManager_OnKeyUp);
+            game.SceneManager.OnKeyUp += new KeyboardEvent(SceneManager_OnKeyUp);
 
             game.Start();
         }
 
-        void FormBoxManager_OnKeyboardUp(object sender, int key)
+        void FormBoxManager_OnKeyUp(object sender, int key)
         {
         }
 
-        void SceneManager_OnKeyboardUp(object sender, int key)
+        void SceneManager_OnKeyUp(object sender, int key)
         {
             Key k = (Key)key;
             if (k == Key.C)
             {
                 ((MenuCHR)game.FormBoxes["MenuCHR"]).LoadContext(game.ME);
                 game.FormBoxManager.Appear("MenuCHR");
-                game.SceneManager.Controllable = false;
+                //game.SceneManager.Controllable = false;
             }
             else if (k == Key.B)
             {
                 game.FormBoxManager.Disappear("MenuCHR");
                 ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
                 game.FormBoxManager.Appear("MenuBAG");
-                game.SceneManager.Controllable = false;
+                //game.SceneManager.Controllable = false;
             }
             //else if (k == Key.P)
             //{

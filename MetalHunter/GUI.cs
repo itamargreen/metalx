@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
+using Microsoft.DirectX.DirectInput;
+
 using MetalX;
 using MetalX.Define;
 
@@ -85,18 +87,18 @@ namespace MetalHunter
 
         void MenuLoad_OnButtonUp0(object sender, object arg)
         {
-            game.AppendDotMetalXScript("load0");
-            game.ExecuteScript();
+            game.ScriptManager.AppendDotMetalXScript("load0");
+            game.ScriptManager.Execute();
         }
         void MenuLoad_OnButtonUp1(object sender, object arg)
         {
-            game.AppendDotMetalXScript("load1");
-            game.ExecuteScript();
+            game.ScriptManager.AppendDotMetalXScript("load1");
+            game.ScriptManager.Execute();
         }
         void MenuLoad_OnButtonUp2(object sender, object arg)
         {
-            game.AppendDotMetalXScript("load2");
-            game.ExecuteScript();
+            game.ScriptManager.AppendDotMetalXScript("load2");
+            game.ScriptManager.Execute();
         }
 
     }
@@ -132,7 +134,7 @@ namespace MetalHunter
             int line = 5;
 
             head = new TextureBox(g);
-            head.Location = new Point(16, 16);
+            head.Location = new Point(32, 16);
             
             nam = new TextBox(g);
             nam.Location = new Point(24, line++ * 24 - 4);
@@ -256,6 +258,16 @@ namespace MetalHunter
                 }
             }
         }
+
+        public override void OnKeyUpCode(object sender, int key)
+        {
+            Key k = (Key)key;
+            if (k == game.Options.KeyNO)
+            {
+                game.ScriptManager.AppendCommand("gui " + Name + " disappear");
+                game.ScriptManager.Execute();
+            }
+        }
     }
     public class MenuBAG : FormBox
     {
@@ -288,8 +300,8 @@ namespace MetalHunter
 
         void MenuBAG_OnFormBoxDisappear(object sender, object arg)
         {
-            game.AppendScript("gui MenuBAGASK disappear");
-            game.ExecuteScript();
+            game.ScriptManager.AppendCommand("gui MenuBAGASK disappear");
+            game.ScriptManager.Execute();
         }
 
         public void LoadContext(CHR chr)
@@ -334,8 +346,18 @@ namespace MetalHunter
         void MenuBAG_OnButtonUp(object sender, object arg)
         {
             game.ReturnScript(((ButtonBox)sender).Index);
-            game.AppendScript("gui MenuBAGASK appear");
-            game.ExecuteScript();
+            game.ScriptManager.AppendCommand("gui MenuBAGASK appear");
+            game.ScriptManager.Execute();
+        }
+
+        public override void OnKeyUpCode(object sender, int key)
+        {
+            Key k = (Key)key;
+            if (k == game.Options.KeyNO)
+            {
+                game.ScriptManager.AppendCommand("gui " + Name + " disappear");
+                game.ScriptManager.Execute();
+            }
         }
     }
     public class MenuBAGASK : FormBox
@@ -379,8 +401,8 @@ namespace MetalHunter
             Item item = game.ME.BagSee(i);
             if (item.ItemType == ItemType.Supply)
             {
-                game.AppendScript(item.Script);
-                game.ExecuteScript();
+                game.ScriptManager.AppendCommand(item.Script);
+                game.ScriptManager.Execute();
                 game.ME.BagRemove(i);
 
                 ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
@@ -404,6 +426,78 @@ namespace MetalHunter
 
             ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
             game.FormBoxManager.Disappear(Name);
+        }
+
+        public override void OnKeyUpCode(object sender, int key)
+        {
+            Key k = (Key)key;
+            if (k == game.Options.KeyNO)
+            {
+                game.ScriptManager.AppendCommand("gui " + Name + " disappear");
+                game.ScriptManager.Execute();
+            }
+        }
+    }
+
+    public class MenuBattleCHR : FormBox
+    {
+        ButtonBox BB1,BB2,BB3,BB4;
+        public MenuBattleCHR(Game g)
+            : base(g)
+        {
+            Name = "MenuBattleCHR";
+            Location = new Point(24, 24);
+            //BGTextureBox.TextureName = "bg_64x64";
+            //BGTextureBox.Size = new System.Drawing.Size(128, 128);
+
+            BB1 = new ButtonBox(g);
+            BB1.Location = new Point(24, 24);
+            BB1.WaitTextBox.Text = "攻击";
+            BB1.SameAsWait();
+            BB1.OnButtonUp += new ButtonBoxEvent(BB1_OnButtonUp);
+
+            BB2 = new ButtonBox(g);
+            BB2.Location = new Point(24, 48);
+            BB2.WaitTextBox.Text = "道具";
+            BB2.SameAsWait();
+            BB2.OnButtonUp += new ButtonBoxEvent(BB2_OnButtonUp);
+
+            BB3 = new ButtonBox(g);
+            BB3.Location = new Point(24, 72);
+            BB3.WaitTextBox.Text = "装备";
+            BB3.SameAsWait();
+            BB3.OnButtonUp += new ButtonBoxEvent(BB3_OnButtonUp);
+
+            BB4 = new ButtonBox(g);
+            BB4.Location = new Point(24, 96);
+            BB4.WaitTextBox.Text = "乘降";
+            BB4.SameAsWait();
+            BB4.OnButtonUp += new ButtonBoxEvent(BB4_OnButtonUp);
+
+            ControlBoxes.Add(BB1);
+            ControlBoxes.Add(BB2);
+            ControlBoxes.Add(BB3);
+            ControlBoxes.Add(BB4);
+        }
+
+        void BB1_OnButtonUp(object sender, object arg)
+        {
+            game.ReturnScript("攻击");
+        }
+
+        void BB2_OnButtonUp(object sender, object arg)
+        {
+            game.ReturnScript("道具");
+        }
+
+        void BB3_OnButtonUp(object sender, object arg)
+        {
+            game.ReturnScript("装备");
+        }
+
+        void BB4_OnButtonUp(object sender, object arg)
+        {
+            game.ReturnScript("乘降");
         }
     }
 

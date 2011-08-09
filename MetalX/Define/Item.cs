@@ -46,6 +46,9 @@ namespace MetalX.Define
     [Serializable]
     public class Equipment : Item
     {
+        public MemoryIndexer ShotMovieIndexer = new MemoryIndexer();
+        public MemoryIndexer HitMovieIndexer = new MemoryIndexer();
+
         public Equipment()
         {
             ItemType = ItemType.Equipment;

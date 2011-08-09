@@ -46,6 +46,7 @@ namespace MetalX.Component
 
                 if (game.ME.NeedMovePixel == 0)
                 {
+                    #region for next scene
                     string sname = null;
                     try
                     {
@@ -53,74 +54,89 @@ namespace MetalX.Component
                     }
                     catch
                     { }
-                    int i = game.SCN.Fight(game.ME.RealLocation);
-                    if (i > -1)
-                    {
-                        Controllable = false;
-
-                        string bem = game.SCN.MonsterZones[i].EnterSoundName;
-
-                        game.PCs.Clear();
-                        game.PCs.Add(game.ME);
-
-                        game.PCs[0].BattleLocation = new Vector3(576 - game.ME.BattleSize.Width, 192 + 0 - game.ME.BattleSize.Height, 0);
-                        game.PCs[0].LoadBattleMovies(game);
-
-                        game.AppendScript("scn shock 1000");
-                        game.AppendScript("scn fallout 1000");
-                        game.AppendScript("scn disable");
-                        game.AppendScript("mp3 1 " + bem);
-
-                        string bgt = game.SCN.MonsterZones[i].BGTextureName;
-                        string bgm = game.SCN.MonsterZones[i].BGMusicName;
-
-                        List<string> monsterNames = game.SCN.MonsterZones[i].RollMonsters();
-
-                        game.Monsters.Clear();
-                        foreach (string name in monsterNames)
-                        {
-                            Monster monster = game.LoadDotMXMonster(game.MonsterFiles[name].FullName);
-                            game.Monsters.Add(monster);
-                        }
-
-                        for (int j = 0; j < game.Monsters.Count; j++)
-                        {
-                            //Define.Monster monster = game.Monsters[i];
-                            //monster.BattleLocation = new Microsoft.DirectX.Vector3(32 + (i / 4) * 80, 192 + (i % 4) * 80 - monster.BattleSize.Height, 0);
-                            //monster.LoadBattleMovies(game);
-                            Monster mon = game.Monsters[j];
-                            mon.BattleLocation = new Microsoft.DirectX.Vector3(32 + (j / 4) * 80, 192 + (j % 4) * 80 - mon.BattleSize.Height, 0);
-                            string[] strs = mon.ScriptInit.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                            foreach (string str in strs)
-                            {
-                                string tmp = str.Replace("me", "monster " + j);
-                                game.AppendScript(tmp);
-                            }
-                            game.AppendScript("monster " + j + " loadbattlemovie");
-                        }
-
-                        game.AppendScript("scn disableall");
-                        game.AppendScript("scn fallin 0");
-
-                        game.AppendScript("btl fallout 0");
-                        game.AppendScript("btl fallin 1000");
-
-                        game.BattleManager.GetIn(bgt, bgm);
-
-                        game.ExecuteScript();
-                    }
-                    else if (sname != null)
+                    if (sname != null)
                     {
                         Enter(sname, Util.Point2Vector3(game.SCN[game.ME.RealLocation].DefaultLocation), game.ME.RealDirection);
                         Delay(300);
-                        game.AppendScript("scn clrctrl");
-                        game.AppendScript("scn fallout 200");
-                        game.AppendScript("delay 300");
-                        game.AppendScript("scn fallin 200");
-                        game.AppendScript("delay 200");
-                        game.AppendScript("scn setctrl");
-                        game.ExecuteScript();
+                        game.ScriptManager.AppendCommand("scn clrctrl");
+                        game.ScriptManager.AppendCommand("scn fallout 200");
+                        game.ScriptManager.AppendCommand("delay 300");
+                        game.ScriptManager.AppendCommand("scn fallin 200");
+                        game.ScriptManager.AppendCommand("delay 200");
+                        game.ScriptManager.AppendCommand("scn setctrl");
+                        game.ScriptManager.Execute();
                     }
+                    #endregion
+                    #region for battle
+                    else
+                    {
+                        int i = game.SCN.Fight(game.ME.RealLocation);
+                        if (i > -1)
+                        {
+                            Controllable = false;
+
+                            string bem = game.SCN.MonsterZones[i].EnterSoundName;
+
+                            game.PCs.Clear();
+                            game.PCs.Add(game.ME);
+
+                            game.PCs[0].BattleLocation = new Vector3(576, 192, 0);
+                            game.PCs[0].BattleWeaponLocation = Util.Vector3AddVector3(game.PCs[0].BattleLocation, new Vector3(-16, 0, 0));
+                            //game.PCs[0].LoadBattleMovies(game);
+
+                            game.ScriptManager.AppendCommand("scn shock 1000");
+                            game.ScriptManager.AppendCommand("scn fallout 1000");
+                            game.ScriptManager.AppendCommand("scn disable");
+                            game.ScriptManager.AppendCommand("mp3 1 " + bem);
+
+                            string bgt = game.SCN.MonsterZones[i].BGTextureName;
+                            string bgm = game.SCN.MonsterZones[i].BGMusicName;
+
+                            List<string> monsterNames = game.SCN.MonsterZones[i].RollMonsters();
+
+                            game.Monsters.Clear();
+                            foreach (string name in monsterNames)
+                            {
+                                Monster monster = game.LoadDotMXMonster(game.MonsterFiles[name].FullName);
+                                game.Monsters.Add(monster);
+                            }
+
+                            for (int j = 0; j < game.Monsters.Count; j++)
+                            {
+                                //Define.Monster monster = game.Monsters[i];
+                                //monster.BattleLocation = new Microsoft.DirectX.Vector3(32 + (i / 4) * 80, 192 + (i % 4) * 80 - monster.BattleSize.Height, 0);
+                                //monster.LoadBattleMovies(game);
+                                Monster mon = game.Monsters[j];
+                                if (mon.BattleMovieIndexers == null)
+                                {
+                                    mon.BattleMovieIndexers = new List<MemoryIndexer>();
+                                    for (int k = 0; k < 8; k++)
+                                    {
+                                        mon.BattleMovieIndexers.Add(new MemoryIndexer());
+                                    }
+                                }
+                                mon.BattleLocation = new Microsoft.DirectX.Vector3(64 + (j / 4) * 80, 192 + (j % 4) * 80, 0);
+                                string[] strs = mon.ScriptInit.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (string str in strs)
+                                {
+                                    string tmp = str.Replace("me", "monster " + j);
+                                    game.ScriptManager.AppendCommand(tmp);
+                                }
+                                game.ScriptManager.AppendCommand("monster " + j + " loadbattlemovie");
+                            }
+
+                            game.ScriptManager.AppendCommand("scn disableall");
+                            game.ScriptManager.AppendCommand("scn fallin 0");
+
+                            game.ScriptManager.AppendCommand("btl fallout 0");
+                            game.ScriptManager.AppendCommand("btl fallin 1000");
+
+                            game.BattleManager.GetIn(bgt, bgm);
+
+                            game.ScriptManager.Execute();
+                        }
+                    }
+                    #endregion
                 }
             }
         }
@@ -201,10 +217,10 @@ namespace MetalX.Component
             {
                 if (spt != string.Empty)
                 {
-                    game.AppendScript("scn clrctrl");
-                    game.AppendScript(spt);
-                    game.AppendScript("scn setctrl");
-                    game.ExecuteScript();
+                    game.ScriptManager.AppendCommand("scn clrctrl");
+                    game.ScriptManager.AppendCommand(spt);
+                    game.ScriptManager.AppendCommand("scn setctrl");
+                    game.ScriptManager.Execute();
                 }
             }
         }
@@ -228,7 +244,7 @@ namespace MetalX.Component
                 game.SCN.Init(game.Options.WindowSize);
                 game.Options.TileSizePixel = game.SCN.TileSizePixel;
 
-                InitNPCs();
+                NPCsInit();
 
                 game.ME.SetRealLocation(nextSCNLoc, game.Options.TilePixelX);
                 SceneJump(nextSCNLoc);
@@ -283,7 +299,7 @@ namespace MetalX.Component
             nextSCNLoc = realLoc;
             nextSCNDir = dir;
         }
-        public void InitNPCs()
+        public void NPCsInit()
         {
             game.NPCs.Clear();
             if (game.SCN.NPCNames != null)
@@ -372,10 +388,7 @@ namespace MetalX.Component
                     if (IsInWindow(Util.PointAddPoint(t.LocationPoint, s.RealLocationPoint)))
                     {
                         int fi = 0;
-                        //if (t.IsAnimation)
-                        {
-                            fi = frameIndex;
-                        }
+                        fi = frameIndex;
                         float rot = 0 % 360;
                         game.DrawMetalXTexture(
                             game.Textures[t[fi].TextureIndex],
@@ -521,7 +534,7 @@ namespace MetalX.Component
         //    }
         //}
         #endregion
-        public override void OnKeyboardDownHoldCode(object sender, int key)
+        public override void OnKeyDownHoldCode(object sender, int key)
         {
             if (game.SCN == null)
             {
@@ -561,7 +574,7 @@ namespace MetalX.Component
                 }
             }
         }
-        public override void OnKeyboardUpCode(object sender, int key)
+        public override void OnKeyUpCode(object sender, int key)
         {
             if (game.SCN == null)
             {
@@ -588,9 +601,9 @@ namespace MetalX.Component
                 npc.FocusOnMe(game.ME);
                 if (npc.IsBox)
                 {
-                    game.AppendScript(npc.Script);
-                    game.AppendScript("scn setctrl");
-                    game.ExecuteScript();
+                    game.ScriptManager.AppendCommand(npc.Script);
+                    game.ScriptManager.AppendCommand("scn setctrl");
+                    game.ScriptManager.Execute();
                 }
                 else if (npc.IsDoor)
                 {
@@ -599,19 +612,19 @@ namespace MetalX.Component
                 {
                     //if (GetNPC(game.ME).Code == string.Empty)
                     //{
-                    //    game.AppendScript("msg " + GetNPC(game.ME).DialogText);
-                    //    game.AppendScript("untilpress j");
-                    //    game.AppendScript("gui close MessageBox");
-                    //    game.AppendScript("unfreezeme");
-                    //    game.ExecuteScript();
+                    //    game.ScriptManager.AppendCommand("msg " + GetNPC(game.ME).DialogText);
+                    //    game.ScriptManager.AppendCommand("untilpress j");
+                    //    game.ScriptManager.AppendCommand("gui close MessageBox");
+                    //    game.ScriptManager.AppendCommand("unfreezeme");
+                    //    game.ScriptManager.Execute();
 
                     //}
                     //else
-                    game.AppendScript(npc.Script);
+                    game.ScriptManager.AppendCommand(npc.Script);
 
-                    game.AppendScript("scn setctrl");
-                    game.AppendScript("npc " + npc.Name + " dir def");
-                    game.ExecuteScript();
+                    game.ScriptManager.AppendCommand("scn setctrl");
+                    game.ScriptManager.AppendCommand("npc " + npc.Name + " dir def");
+                    game.ScriptManager.Execute();
                     //if (sm.IsNobody() == false)
                     //{
                     //    if (sm.game.ME.IsTalking)

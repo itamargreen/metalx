@@ -322,12 +322,11 @@ namespace MetalX
             BattleManager = new BattleManager(this);
             MountGameCom(BattleManager);
 
+            MovieManager = new MovieManager(this);
+            MountGameCom(MovieManager);
+
             FormBoxManager = new FormBoxManager(this);
             MountGameCom(FormBoxManager);
-
-            //MovieManager = new MovieManager(this);
-            //MountGameCom(MovieManager);
-
 
             ScriptManager = new ScriptManager(this);
             MountGameCom(ScriptManager);          
@@ -1300,6 +1299,7 @@ namespace MetalX
             }
         }
         #endregion
+
         public void ReturnScript(bool yes)
         {
             ScriptManager.Return(yes);
@@ -1311,18 +1311,6 @@ namespace MetalX
         public void ReturnScript(string str)
         {
             ScriptManager.Return(str);
-        }
-        public void ExecuteScript()
-        {
-            ScriptManager.Execute();
-        }
-        public void AppendScript(string cmd)
-        {
-            ScriptManager.AppendCommand(cmd);
-        }
-        public void AppendDotMetalXScript(string file)
-        {
-            ScriptManager.AppendDotMetalXScript(file);
         }
 
         public void OverLoadMessageBox(MSGBox box)

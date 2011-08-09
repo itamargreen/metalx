@@ -11,7 +11,7 @@ namespace MetalX.Component
     public class FormBoxManager : GameCom
     {
         List<int> AppearingFormBoxIndex = new List<int>();
-        FormBox AppearingFormBox
+        FormBox TopFormBox
         {
             get
             {
@@ -153,6 +153,7 @@ namespace MetalX.Component
             
             game.FormBoxes[i].Appear(arg);
             AppearingFormBoxIndex.Add(i);
+            game.SceneManager.Controllable = false;
             //game.FormBoxes[i].OnFormBoxAppearCode();
         }
         public void Disappear()
@@ -172,6 +173,10 @@ namespace MetalX.Component
             }
             AppearingFormBoxIndex.Remove(i);
             game.FormBoxes[i].Disappear();
+            if (AppearingFormBoxIndex.Count == 0)
+            {
+                game.SceneManager.Controllable = true;
+            }
             //game.FormBoxes[i].OnFormBoxDisappearCode();
         }
         public void DisappearAll()
@@ -181,21 +186,23 @@ namespace MetalX.Component
                 Disappear(AppearingFormBoxIndex[0]);
             }
         }
-        public override void OnKeyboardDownCode(object sender, int key)
+        //void KeyEventSendToAllForm(int key, KeyState ks)
+        //{
+        //    foreach (int i in AppearingFormBoxIndex)
+        //    {
+        //        game.FormBoxes[i].SetKeyboardEvent(key, ks);
+        //    }
+        //}
+        void KeyEventSendToTopForm(int key, KeyState ks)
         {
-            if (AppearingFormBoxIndex.Count < 1)
+            if (TopFormBox != null)
             {
-                return;
-            }
-
-            Key k = (Key)key;
-            if (k == game.Options.KeyYES)
-            {
-                AppearingFormBox.DownNowButtonBox();
+                TopFormBox.SetKeyboardEvent(key, ks);
             }
         }
-        public override void OnKeyboardUpCode(object sender, int key)
+        public override void OnKeyDownCode(object sender, int key)
         {
+            KeyEventSendToTopForm(key, KeyState.Down);
             if (AppearingFormBoxIndex.Count < 1)
             {
                 return;
@@ -204,37 +211,51 @@ namespace MetalX.Component
             Key k = (Key)key;
             if (k == game.Options.KeyYES)
             {
-                AppearingFormBox.UpNowButtonBox();
-                AppearingFormBox.FocusNowButtonBox();
+                TopFormBox.DownNowButtonBox();
+            }
+        }
+        public override void OnKeyUpCode(object sender, int key)
+        {
+            KeyEventSendToTopForm(key, KeyState.Up);
+            if (AppearingFormBoxIndex.Count < 1)
+            {
+                return;
+            }
+
+            Key k = (Key)key;
+            if (k == game.Options.KeyYES)
+            {
+                TopFormBox.UpNowButtonBox();
+                TopFormBox.FocusNowButtonBox();
             }
             else if (k == game.Options.KeyNO)
             {
-                Disappear();
-                if (AppearingFormBoxIndex.Count == 0)
-                {
-                    game.SceneManager.Controllable = true;
-                }
+                //Disappear();
+                //if (AppearingFormBoxIndex.Count == 0)
+                //{
+                //    game.SceneManager.Controllable = true;
+                //}
             }
             else if (k == game.Options.KeyUP)
             {
-                AppearingFormBox.FocusLastButtonBox();
+                TopFormBox.FocusLastButtonBox();
             }
             else if (k == game.Options.KeyDOWN)
             {
-                AppearingFormBox.FocusNextButtonBox();
+                TopFormBox.FocusNextButtonBox();
             }
             else if (k == game.Options.KeyLEFT)
             {
-                for (int i = 0; i < AppearingFormBox.BigStep; i++)
+                for (int i = 0; i < TopFormBox.BigStep; i++)
                 {
-                    AppearingFormBox.FocusLastButtonBox();
+                    TopFormBox.FocusLastButtonBox();
                 }
             }
             else if (k == game.Options.KeyRIGHT)
             {
-                for (int i = 0; i < AppearingFormBox.BigStep; i++)
+                for (int i = 0; i < TopFormBox.BigStep; i++)
                 {
-                    AppearingFormBox.FocusNextButtonBox();
+                    TopFormBox.FocusNextButtonBox();
                 }
             }
         }

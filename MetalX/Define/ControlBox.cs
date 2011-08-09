@@ -22,6 +22,29 @@ namespace MetalX.Define
     [Serializable]
     public class FormBox : ControlBox
     {
+        public event KeyboardEvent OnKeyDown;
+        public event KeyboardEvent OnKeyDownHold;
+        public event KeyboardEvent OnKeyUp;
+        public void SetKeyboardEvent(int key, KeyState keyState)
+        {
+            if (!Visible)
+            {
+                return;
+            }
+
+            if (keyState == KeyState.Down)
+            {
+                OnKeyDown(this, key);
+            }
+            else if (keyState == KeyState.Up)
+            {
+                OnKeyUp(this, key);
+            }
+            else if (keyState == KeyState.DownHold)
+            {
+                OnKeyDownHold(this, key);
+            }
+        }
         public int ButtonBoxCount
         {
             get
@@ -209,6 +232,21 @@ namespace MetalX.Define
             ControlBoxes.Add(BGTextureBox);
             OnFormBoxAppear = new FormBoxEvent(OnFormBoxAppearCode);
             OnFormBoxDisappear = new FormBoxEvent(OnFormBoxDisappearCode);
+            OnKeyDown += new KeyboardEvent(OnKeyDownCode);
+            OnKeyUp += new KeyboardEvent(OnKeyUpCode);
+            OnKeyDownHold += new KeyboardEvent(OnKeyDownHoldCode);
+        }
+
+        public virtual void OnKeyDownHoldCode(object sender, int key)
+        {
+        }
+
+        public virtual void OnKeyUpCode(object sender, int key)
+        {
+        }
+
+        public virtual void OnKeyDownCode(object sender, int key)
+        {
         }
 
         public virtual void OnFormBoxAppearCode(object sender, object arg)
@@ -248,7 +286,7 @@ namespace MetalX.Define
             }
         }
         public bool OneByOne = false;
-        public int Interval = 33;
+        public int Interval = 10;
         DateTime lastCharacterTime;
         public int SubTextIndex = 0;
         public event TextBoxEvent OnSubTextShowDone;

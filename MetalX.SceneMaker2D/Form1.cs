@@ -1257,7 +1257,7 @@ namespace MetalX.SceneMaker2D
             //    ui_npclist.Items.Add(fl.Name);
             //}
             game.LoadAllDotMXNPC();
-            sceneMaker2D.InitNPCs();
+            sceneMaker2D.NPCsInit();
             ui_npclist.Items.Clear();
             foreach (NPC npc in game.NPCs)
             {

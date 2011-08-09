@@ -9,9 +9,9 @@ namespace MetalX
 {
     public class GameCom
     {
-        public event KeyboardEvent OnKeyboardDown;
-        public event KeyboardEvent OnKeyboardDownHold;
-        public event KeyboardEvent OnKeyboardUp;
+        public event KeyboardEvent OnKeyDown;
+        public event KeyboardEvent OnKeyDownHold;
+        public event KeyboardEvent OnKeyUp;
 
         protected Game game;
 
@@ -37,18 +37,18 @@ namespace MetalX
         public GameCom(Game game)
         {
             this.game = game;
-            OnKeyboardDown = new KeyboardEvent(OnKeyboardDownCode);
-            OnKeyboardUp = new KeyboardEvent(OnKeyboardUpCode);
-            OnKeyboardDownHold = new KeyboardEvent(OnKeyboardDownHoldCode);
+            OnKeyDown = new KeyboardEvent(OnKeyDownCode);
+            OnKeyUp = new KeyboardEvent(OnKeyUpCode);
+            OnKeyDownHold = new KeyboardEvent(OnKeyDownHoldCode);
             EnableAll();
         }
-        public virtual void OnKeyboardDownCode(object sender, int key)
+        public virtual void OnKeyDownCode(object sender, int key)
         {
         }
-        public virtual void OnKeyboardUpCode(object sender, int key)
+        public virtual void OnKeyUpCode(object sender, int key)
         {
         }
-        public virtual void OnKeyboardDownHoldCode(object sender, int key)
+        public virtual void OnKeyDownHoldCode(object sender, int key)
         {
         }
 
@@ -81,15 +81,15 @@ namespace MetalX
 
             if (keyState == KeyState.Down)
             {
-                OnKeyboardDown(this, key);
+                OnKeyDown(this, key);
             }
             else if (keyState == KeyState.Up)
             {
-                OnKeyboardUp(this, key);
+                OnKeyUp(this, key);
             }
             else if (keyState == KeyState.DownHold)
             {
-                OnKeyboardDownHold(this, key);
+                OnKeyDownHold(this, key);
             }
         }
         protected DateTime DelayBeginTime;

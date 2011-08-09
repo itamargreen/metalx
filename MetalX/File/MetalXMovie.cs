@@ -62,7 +62,7 @@ namespace MetalX.File
                     if (Loop == false)
                     {
                         frameIndex--;
-                        return true;
+                        return false;
                     }
                     else
                     {
@@ -70,7 +70,7 @@ namespace MetalX.File
                     }
                 }
             }
-            return false;
+            return true;
         }
         [NonSerialized]
         public DateTime BeginTime;
