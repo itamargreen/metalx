@@ -118,11 +118,15 @@ namespace MetalX.Resource
         }
         void BB1_OnButtonDown(object sender, object arg)
         {
+            //game.AppendScript("return true");
+            //game.ExecuteScript();
             game.ReturnScript(true);
         }
 
         void BB2_OnButtonDown(object sender, object arg)
         {
+            //game.AppendScript("return false");
+            //game.ExecuteScript();
             game.ReturnScript(false);
         }
         public override void OnFormBoxAppearCode(object sender, object arg)

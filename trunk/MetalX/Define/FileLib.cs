@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 
 using MetalX.Define;
-using MetalX.File;
 
-namespace MetalX.Resource
+namespace MetalX.Define
 {
     public class FileLib
     {

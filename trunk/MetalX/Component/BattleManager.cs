@@ -24,6 +24,21 @@ namespace MetalX.Component
 
         public override void Code()
         {
+            for (int i = 0; i < game.PCs.Count; i++)
+            {
+                if (game.PCs[i].BattleMovie.NextFrame() == false)
+                {
+                    game.ScriptManager.InsertCommand("pc " + i + " stand");
+                }
+            }
+            for (int i = 0; i < game.Monsters.Count; i++)
+            {
+                if (game.Monsters[i].BattleMovie != null)
+                    if (game.Monsters[i].BattleMovie.NextFrame() == false)
+                    {
+                        game.ScriptManager.InsertCommand("monster " + i + " stand");
+                    }
+            }
             if (game.ScriptManager.Busy)
             { }
             else
@@ -36,58 +51,90 @@ namespace MetalX.Component
                         PCFirst = false;
                         i++;
                         i = -i;
+
+
+                        int fi = i;
                         int ti = 0;
 
                         BattleState fbs = BattleState.Fight;
                         BattleState tbs = BattleState.Hit;
                         //提示
-                        game.AppendScript("msg " + game.Monsters[i].Name + "　" + fbs.ToString());
-                        game.AppendScript("untilpress y n");
-                        game.AppendScript("msg");
+                        game.ScriptManager.AppendCommand("msg " + game.Monsters[fi].Name + "　" + fbs.ToString());
+                        game.ScriptManager.AppendCommand("untilpress y n");
+                        game.ScriptManager.AppendCommand("msg");
                         //攻击动画
-                        game.AppendScript("monster " + i + " " + fbs.ToString().ToLower() + " " + ti);
-                        game.AppendScript("mp3 2 " + game.Monsters[i].GetBattleMovie(fbs).BGSound.Name);
-                        game.AppendScript("delay 500");
+                        game.ScriptManager.AppendCommand("monster " + fi + " " + fbs.ToString().ToLower() + " " + ti);
+                        game.ScriptManager.AppendCommand("delay 500");
                         //被攻击动画
-                        game.AppendScript("pc "+ tbs.ToString().ToLower());
-                        game.AppendScript("delay 500");
-
-                        //game.AppendScript("monster " + i + " stand");
-
+                        game.ScriptManager.AppendCommand("pc 0 " + tbs.ToString().ToLower());
+                        game.ScriptManager.AppendCommand("delay 500");
                     }
                     else
                     {
                         PCFirst = true;
+                        int fi = i;
 
-                        int fi = 0;
+                        game.ScriptManager.AppendCommand("gui MenuBattleCHR appear");
+                        game.ScriptManager.AppendCommand("untilpress y");
+                        game.ScriptManager.AppendCommand("gui MenuBattleCHR disappear");
+
                         int ti = 0;
 
-                        BattleState fbs = BattleState.Fight;
                         BattleState tbs = BattleState.Hit;
-                        //提示
-                        game.AppendScript("msg " + game.PCs[fi].Name + "　" + fbs.ToString());
-                        game.AppendScript("untilpress y n");
-                        game.AppendScript("msg");
-                        //攻击动画
-                        game.AppendScript("pc fight " + ti);
-                        game.AppendScript("mp3 2 " + game.PCs[fi].GetBattleMovie(fbs).BGSound.Name);
-                        game.AppendScript("delay 500");
-                        //被攻击动画
-                        game.AppendScript("monster " + ti + " " + tbs.ToString().ToLower());
-                        game.AppendScript("delay 500");
 
-                        //game.AppendScript("pc stand");
+                        game.ScriptManager.AppendCommand("var optype = RETURN");
+                        string haveweapon = "null";
+                        if (game.PCs[fi].Weapon != null)
+                        {
+                            if (game.PCs[fi].Weapon.Name != null)
+                                if (game.PCs[fi].Weapon.Name != string.Empty)
+                                {
+                                haveweapon = game.PCs[fi].Weapon.Name;
+                            }
+                        }
+                        game.ScriptManager.AppendCommand("?var optype = 攻击 var haveweapon = " + haveweapon);
+                        game.ScriptManager.AppendCommand("var bs = weapon");
+                        game.ScriptManager.AppendCommand("?var haveweapon = null var bs = fight");
+
+                        //if (game.ScriptRETURN.STRING == "攻击")
+                        //{
+                        //    if (game.PCs[fi].Weapon == null)
+                        //    {
+                        //        fbs = BattleState.Fight;
+                        //        tbs = BattleState.Hit;
+                        //    }
+                        //    else
+                        //    {
+                        //        fbs = BattleState.Weapon;
+                        //        tbs = BattleState.Hit;
+                        //    }
+                        //}                            
+                        //提示
+                        game.ScriptManager.AppendCommand("msg " + game.PCs[fi].Name + "　[bs]");
+                        game.ScriptManager.AppendCommand("untilpress y n");
+                        game.ScriptManager.AppendCommand("msg");
+                        game.ScriptManager.AppendCommand("pc 0 [bs]" + " " + ti);
+                        Vector3 floc = game.PCs[fi].BattleWeaponLocation;
+                        game.ScriptManager.AppendCommand("?var bs = weapon movie play " + game.PCs[fi].Weapon.ShotMovieIndexer.Name + " " + floc.X + " " + floc.Y);
+                        game.ScriptManager.AppendCommand("delay 500");
+                        //被攻击动画
+                        game.ScriptManager.AppendCommand("monster " + ti + " " + tbs.ToString().ToLower());
+                        Vector3 tloc = game.Monsters[ti].BattleLocation;
+                        game.ScriptManager.AppendCommand("?var bs = weapon movie play " + game.PCs[fi].Weapon.HitMovieIndexer.Name + " " + tloc.X + " " + tloc.Y);
+                        game.ScriptManager.AppendCommand("delay 500");
+
+                        //game.ScriptManager.AppendCommand("pc 0 stand");
                     }
                 }
                 else
                 {
                     InitOrder();
 
-                    game.AppendScript("msg 第" + Round + "回合");
-                    game.AppendScript("untilpress y n");
-                    game.AppendScript("msg");
+                    game.ScriptManager.AppendCommand("msg 第" + Round + "回合");
+                    game.ScriptManager.AppendCommand("untilpress y n");
+                    game.ScriptManager.AppendCommand("msg");
                 }
-                game.ExecuteScript();
+                game.ScriptManager.Execute();
             }
         }
 
@@ -98,22 +145,28 @@ namespace MetalX.Component
                 return;
             }
 
-            DrawBGTexture();
+            //DrawBGTexture();
 
             if (PCFirst)
             {
-                foreach (Define.Monster monster in game.Monsters)
+                foreach (Monster mon in game.Monsters)
                 {
-                    DrawMonster(monster);
+                    DrawMonster(mon);
                 }
-                DrawCHR(game.ME);
+                foreach (PC pc in game.PCs)
+                {
+                    DrawCHR(pc);
+                }
             }
             else
             {
-                DrawCHR(game.ME);
-                foreach (Define.Monster monster in game.Monsters)
+                foreach (PC pc in game.PCs)
                 {
-                    DrawMonster(monster);
+                    DrawCHR(pc);
+                }
+                foreach (Monster mon in game.Monsters)
+                {
+                    DrawMonster(mon);
                 }
             }
         }
@@ -135,26 +188,15 @@ namespace MetalX.Component
             {
                 return;
             }
-            if (mon.BattleMovie.NextFrame())
-            {
-                //mon.SetBattleMovie(BattleState.Stand);
-            }
+
             Vector3 loc = mon.BattleMovie.DrawLocation;
-            loc = Util.Vector3AddVector3(loc, this.ScreenOffsetPixel); 
+            loc = Util.Vector3AddVector3(loc, this.ScreenOffsetPixel);
             Color color = Util.MixColor(ColorFilter, mon.BattleMovie.ColorFilter);
-            game.DrawMetalXTexture(mon.BattleMovie.MXT, mon.BattleMovie.DrawZone,loc , mon.BattleMovie.TileSize2X, 0, color);
+            game.DrawMetalXTexture(mon.BattleMovie.MXT, mon.BattleMovie.DrawZone, loc, mon.BattleMovie.TileSize2X, 0, color);
         }
 
         void DrawCHR(CHR chr)
         {
-            if (chr.BattleMovie == null)
-            {
-                return;
-            }
-            if (chr.BattleMovie.NextFrame())
-            {
-                //mon.SetBattleMovie(BattleState.Stand);
-            }
             Vector3 loc = chr.BattleMovie.DrawLocation;
             loc = Util.Vector3AddVector3(loc, this.ScreenOffsetPixel);
             Color color = Util.MixColor(ColorFilter, chr.BattleMovie.ColorFilter);
@@ -164,10 +206,17 @@ namespace MetalX.Component
         public void GetIn(string bgt,string bgm)
         {
             BGTextureName = bgt;
-            game.AppendScript("mp3 1 " + bgm + " loop");
-            game.AppendScript("scn disableall");
-            game.AppendScript("btl enableall");
-            game.ExecuteScript();
+            game.ScriptManager.AppendCommand("mp3 1 " + bgm + " loop");
+            game.ScriptManager.AppendCommand("scn disableall");
+            game.ScriptManager.AppendCommand("btl enableall");
+            game.ScriptManager.AppendCommand("pc 0 stand");
+
+            for (int i = 0; i < game.Monsters.Count; i++)
+            {
+                game.ScriptManager.AppendCommand("monster " + i + " stand");
+            }
+
+            game.ScriptManager.Execute();
         }
         List<int> Order = new List<int>();
         void InitOrder()
@@ -196,14 +245,14 @@ namespace MetalX.Component
             game.Monsters.Clear();
 
             game.PlayMP3Audio(1, game.AudioFiles[game.SCN.BGMusicNames[0]].FullName, true);
-            game.AppendScript("break");
-            game.AppendScript("msg");
-            game.AppendScript("btl disableall");
-            game.AppendScript("scn enableall");
-            game.ExecuteScript();
+            game.ScriptManager.AppendCommand("break");
+            game.ScriptManager.AppendCommand("gui all disappear");
+            game.ScriptManager.AppendCommand("btl disableall");
+            game.ScriptManager.AppendCommand("scn enableall");
+            game.ScriptManager.Execute();
         }
 
-        public override void OnKeyboardUpCode(object sender, int key)
+        public override void OnKeyUpCode(object sender, int key)
         {
             Key k = (Key)key;
 

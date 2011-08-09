@@ -86,7 +86,7 @@
     <Compile Include="Define\CheckPoint.cs" />
     <Compile Include="File\MetalXMovie.cs" />
     <Compile Include="Net\Socket.cs" />
-    <Compile Include="Resource\FileLib.cs" />
+    <Compile Include="Define\FileLib.cs" />
     <Compile Include="Resource\Items.cs" />
     <Compile Include="Resource\Textures.cs" />
     <Compile Include="Define\CHR.cs" />

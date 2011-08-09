@@ -57,6 +57,8 @@ namespace MetalHunter
             str += "\n";
             str += "很强劲的努，\n拿在手里就有勇气\n了。";
             Description = str;
+
+            ShotMovieIndexer.Name = "bowshot";
         }
     }
 
@@ -83,6 +85,9 @@ namespace MetalHunter
             str += "\n";
             str += "威力强大！";
             Description = str;
+
+            ShotMovieIndexer.Name = "m16shot";
+            HitMovieIndexer.Name = "m16hit";
         }
     }
     #endregion

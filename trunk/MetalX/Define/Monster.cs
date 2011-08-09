@@ -26,7 +26,7 @@ namespace MetalX.Define
         {
         }
 
-        public List<string> IteamNames = new List<string>();
+        //public List<string> IteamNames = new List<string>();
 
         public string ScriptInit="";
         public string ScriptAI="";

@@ -1,0 +1,7 @@
+ask 你是干什么的？是猎人吗？ bool
+untilpress y
+ask
+bool= true msg 骗人的吧。
+bool= false msg 一看就不是。
+untilpress y n
+msg
