@@ -95,34 +95,32 @@ namespace MetalX.Component
                         game.ScriptManager.AppendCommand("?var optype = 攻击 var haveweapon = " + haveweapon);
                         game.ScriptManager.AppendCommand("var bs = weapon");
                         game.ScriptManager.AppendCommand("?var haveweapon = null var bs = fight");
-
-                        //if (game.ScriptRETURN.STRING == "攻击")
-                        //{
-                        //    if (game.PCs[fi].Weapon == null)
-                        //    {
-                        //        fbs = BattleState.Fight;
-                        //        tbs = BattleState.Hit;
-                        //    }
-                        //    else
-                        //    {
-                        //        fbs = BattleState.Weapon;
-                        //        tbs = BattleState.Hit;
-                        //    }
-                        //}                            
+                        
                         //提示
                         game.ScriptManager.AppendCommand("msg " + game.PCs[fi].Name + "　[bs]");
                         game.ScriptManager.AppendCommand("untilpress y n");
                         game.ScriptManager.AppendCommand("msg");
+                        //攻击动画
                         game.ScriptManager.AppendCommand("pc 0 [bs]" + " " + ti);
                         Vector3 floc = game.PCs[fi].BattleWeaponLocation;
                         game.ScriptManager.AppendCommand("?var bs = weapon movie play " + game.PCs[fi].Weapon.ShotMovieIndexer.Name + " " + floc.X + " " + floc.Y);
                         game.ScriptManager.AppendCommand("delay 500");
                         //被攻击动画
-                        game.ScriptManager.AppendCommand("monster " + ti + " " + tbs.ToString().ToLower());
-                        Vector3 tloc = game.Monsters[ti].BattleLocation;
-                        game.ScriptManager.AppendCommand("?var bs = weapon movie play " + game.PCs[fi].Weapon.HitMovieIndexer.Name + " " + tloc.X + " " + tloc.Y);
-                        game.ScriptManager.AppendCommand("delay 500");
-
+                        if (game.PCs[fi].Weapon.BulletTime == 0)
+                        {
+                            game.ScriptManager.AppendCommand("monster " + ti + " " + tbs.ToString().ToLower());
+                            Vector3 tloc = game.Monsters[ti].BattleLocation;
+                            game.ScriptManager.AppendCommand("?var bs = weapon movie play " + game.PCs[fi].Weapon.HitMovieIndexer.Name + " " + tloc.X + " " + tloc.Y);
+                            game.ScriptManager.AppendCommand("delay 500");
+                        }
+                        else
+                        {
+                            double bt = game.PCs[fi].Weapon.BulletTime;
+                            game.ScriptManager.AppendCommand("monster " + ti + " " + tbs.ToString().ToLower());
+                            Vector3 tloc = game.Monsters[ti].BattleLocation;
+                            game.ScriptManager.AppendCommand("?var bs = weapon movie play " + game.PCs[fi].Weapon.HitMovieIndexer.Name + " " + floc.X + " " + floc.Y + " " + tloc.X + " " + tloc.Y + " " + bt);
+                            game.ScriptManager.AppendCommand("delay 500");
+                        }
                         //game.ScriptManager.AppendCommand("pc 0 stand");
                     }
                 }
@@ -145,7 +143,7 @@ namespace MetalX.Component
                 return;
             }
 
-            //DrawBGTexture();
+            DrawBGTexture();
 
             if (PCFirst)
             {

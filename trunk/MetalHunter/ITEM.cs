@@ -27,7 +27,7 @@ namespace MetalHunter
             str += "能恢复ＨＰ的胶囊。";
             Description = str;
 
-            Script = "pc hp 100\nmsg ＨＰ恢复了１００\nuntilpress y n\nmsg";
+            Script = "pc 0 hp 100\nmsg ＨＰ恢复了１００\nuntilpress y n\nmsg";
         }
     }
     public class 爆竹 : Item

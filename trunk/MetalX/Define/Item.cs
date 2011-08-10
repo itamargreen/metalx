@@ -48,6 +48,7 @@ namespace MetalX.Define
     {
         public MemoryIndexer ShotMovieIndexer = new MemoryIndexer();
         public MemoryIndexer HitMovieIndexer = new MemoryIndexer();
+        public double BulletTime = 0;
 
         public Equipment()
         {

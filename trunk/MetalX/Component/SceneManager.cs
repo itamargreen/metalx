@@ -116,6 +116,7 @@ namespace MetalX.Component
                                     }
                                 }
                                 mon.BattleLocation = new Microsoft.DirectX.Vector3(64 + (j / 4) * 80, 192 + (j % 4) * 80, 0);
+                                mon.ScriptInit = mon.ScriptInit.Replace("\r", "");
                                 string[] strs = mon.ScriptInit.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                                 foreach (string str in strs)
                                 {

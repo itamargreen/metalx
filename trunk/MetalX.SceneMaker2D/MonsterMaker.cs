@@ -102,6 +102,14 @@ namespace MetalX.SceneMaker2D
             ui_w.Text = mon.BattleSize.Width.ToString();
             ui_h.Text = mon.BattleSize.Height.ToString();
 
+            ui_name.Text = mon.Name;
+            ui_lv.Text = mon.Level.ToString();
+            ui_hp.Text = mon.HP.ToString();
+            ui_str.Text = mon.Strength.ToString();
+            ui_phy.Text = mon.Physique.ToString();
+            ui_int.Text = mon.Intelligence.ToString();
+            ui_spd.Text = mon.Agility.ToString();
+            ui_exp.Text = mon.EXP.ToString();
             //int i = 0;
             //i = (int)MetalX.Define.BattleState.Stand;
             //ui_stand.Text = mon.BattleMovieIndexers[i].Name;
@@ -147,10 +155,19 @@ namespace MetalX.SceneMaker2D
             mon = new Define.Monster();
 
             mon.Name = ui_name.Text;
+            mon.Level = int.Parse(ui_lv.Text);
+            mon.HP = int.Parse(ui_hp.Text);
+            mon.Strength = int.Parse(ui_str.Text);
+            mon.Physique = int.Parse(ui_phy.Text);
+            mon.Intelligence = int.Parse(ui_int.Text);
+            mon.Agility = int.Parse(ui_spd.Text);
+
             mon.BattleSize = new Size(int.Parse(ui_w.Text), int.Parse(ui_h.Text));
 
             mon.ScriptInit = ui_scriptinit.Text;
             mon.ScriptAI = ui_ai.Text;
+
+            mon.EXP = int.Parse(ui_exp.Text);
 
             //int i = 0;
             //i = (int)MetalX.Define.BattleState.Stand;
@@ -176,6 +193,11 @@ namespace MetalX.SceneMaker2D
 
             //i = (int)MetalX.Define.BattleState.Miss;
             //mon.BattleMovieIndexers[i] = new Define.MemoryIndexer(ui_miss.Text);
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
 
