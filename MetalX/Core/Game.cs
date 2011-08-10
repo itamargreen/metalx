@@ -1300,18 +1300,18 @@ namespace MetalX
         }
         #endregion
 
-        public void ReturnScript(bool yes)
-        {
-            ScriptManager.Return(yes);
-        }
-        public void ReturnScript(int i)
-        {
-            ScriptManager.Return(i);
-        }
-        public void ReturnScript(string str)
-        {
-            ScriptManager.Return(str);
-        }
+        //public void ReturnScript(bool yes)
+        //{
+        //    ScriptManager.Return(yes);
+        //}
+        //public void ReturnScript(int i)
+        //{
+        //    ScriptManager.Return(i);
+        //}
+        //public void ReturnScript(string str)
+        //{
+        //    ScriptManager.Return(str);
+        //}
 
         public void OverLoadMessageBox(MSGBox box)
         {

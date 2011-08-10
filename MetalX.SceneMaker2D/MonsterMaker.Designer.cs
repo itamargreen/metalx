@@ -49,17 +49,17 @@
             this.ui_yes = new System.Windows.Forms.Button();
             this.ui_name = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.ui_hp = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.ui_lv = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.ui_str = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.ui_phy = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.ui_spd = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.ui_int = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.ui_miss = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -91,14 +91,14 @@
             this.ui_w.Location = new System.Drawing.Point(494, 99);
             this.ui_w.Name = "ui_w";
             this.ui_w.Size = new System.Drawing.Size(100, 21);
-            this.ui_w.TabIndex = 1;
+            this.ui_w.TabIndex = 9;
             // 
             // ui_h
             // 
             this.ui_h.Location = new System.Drawing.Point(600, 99);
             this.ui_h.Name = "ui_h";
             this.ui_h.Size = new System.Drawing.Size(100, 21);
-            this.ui_h.TabIndex = 3;
+            this.ui_h.TabIndex = 10;
             // 
             // label2
             // 
@@ -114,7 +114,7 @@
             this.ui_load.Location = new System.Drawing.Point(12, 12);
             this.ui_load.Name = "ui_load";
             this.ui_load.Size = new System.Drawing.Size(75, 23);
-            this.ui_load.TabIndex = 4;
+            this.ui_load.TabIndex = 0;
             this.ui_load.Text = "载入";
             this.ui_load.UseVisualStyleBackColor = true;
             this.ui_load.Click += new System.EventHandler(this.ui_load_Click);
@@ -248,7 +248,7 @@
             this.ui_yes.Location = new System.Drawing.Point(680, 12);
             this.ui_yes.Name = "ui_yes";
             this.ui_yes.Size = new System.Drawing.Size(75, 23);
-            this.ui_yes.TabIndex = 18;
+            this.ui_yes.TabIndex = 13;
             this.ui_yes.Text = "确定";
             this.ui_yes.UseVisualStyleBackColor = true;
             this.ui_yes.Click += new System.EventHandler(this.ui_yes_Click);
@@ -258,7 +258,7 @@
             this.ui_name.Location = new System.Drawing.Point(12, 99);
             this.ui_name.Name = "ui_name";
             this.ui_name.Size = new System.Drawing.Size(100, 21);
-            this.ui_name.TabIndex = 20;
+            this.ui_name.TabIndex = 1;
             // 
             // label9
             // 
@@ -269,12 +269,12 @@
             this.label9.TabIndex = 19;
             this.label9.Text = "名字";
             // 
-            // textBox1
+            // ui_hp
             // 
-            this.textBox1.Location = new System.Drawing.Point(330, 99);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 21);
-            this.textBox1.TabIndex = 22;
+            this.ui_hp.Location = new System.Drawing.Point(330, 99);
+            this.ui_hp.Name = "ui_hp";
+            this.ui_hp.Size = new System.Drawing.Size(100, 21);
+            this.ui_hp.TabIndex = 4;
             // 
             // label10
             // 
@@ -285,12 +285,12 @@
             this.label10.TabIndex = 21;
             this.label10.Text = "HP";
             // 
-            // textBox2
+            // ui_lv
             // 
-            this.textBox2.Location = new System.Drawing.Point(118, 99);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 21);
-            this.textBox2.TabIndex = 24;
+            this.ui_lv.Location = new System.Drawing.Point(118, 99);
+            this.ui_lv.Name = "ui_lv";
+            this.ui_lv.Size = new System.Drawing.Size(100, 21);
+            this.ui_lv.TabIndex = 2;
             // 
             // label11
             // 
@@ -301,12 +301,13 @@
             this.label11.TabIndex = 23;
             this.label11.Text = "LEVEL";
             // 
-            // textBox3
+            // ui_str
             // 
-            this.textBox3.Location = new System.Drawing.Point(12, 138);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 26;
+            this.ui_str.Location = new System.Drawing.Point(12, 138);
+            this.ui_str.Name = "ui_str";
+            this.ui_str.Size = new System.Drawing.Size(100, 21);
+            this.ui_str.TabIndex = 5;
+            this.ui_str.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // label12
             // 
@@ -317,12 +318,12 @@
             this.label12.TabIndex = 25;
             this.label12.Text = "力量";
             // 
-            // textBox4
+            // ui_phy
             // 
-            this.textBox4.Location = new System.Drawing.Point(118, 138);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 21);
-            this.textBox4.TabIndex = 28;
+            this.ui_phy.Location = new System.Drawing.Point(118, 138);
+            this.ui_phy.Name = "ui_phy";
+            this.ui_phy.Size = new System.Drawing.Size(100, 21);
+            this.ui_phy.TabIndex = 6;
             // 
             // label13
             // 
@@ -333,12 +334,12 @@
             this.label13.TabIndex = 27;
             this.label13.Text = "体质";
             // 
-            // textBox5
+            // ui_spd
             // 
-            this.textBox5.Location = new System.Drawing.Point(330, 138);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 21);
-            this.textBox5.TabIndex = 32;
+            this.ui_spd.Location = new System.Drawing.Point(330, 138);
+            this.ui_spd.Name = "ui_spd";
+            this.ui_spd.Size = new System.Drawing.Size(100, 21);
+            this.ui_spd.TabIndex = 8;
             // 
             // label14
             // 
@@ -349,12 +350,12 @@
             this.label14.TabIndex = 31;
             this.label14.Text = "敏捷";
             // 
-            // textBox6
+            // ui_int
             // 
-            this.textBox6.Location = new System.Drawing.Point(224, 138);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 21);
-            this.textBox6.TabIndex = 30;
+            this.ui_int.Location = new System.Drawing.Point(224, 138);
+            this.ui_int.Name = "ui_int";
+            this.ui_int.Size = new System.Drawing.Size(100, 21);
+            this.ui_int.TabIndex = 7;
             // 
             // label15
             // 
@@ -445,7 +446,7 @@
             this.ui_scriptinit.Multiline = true;
             this.ui_scriptinit.Name = "ui_scriptinit";
             this.ui_scriptinit.Size = new System.Drawing.Size(320, 240);
-            this.ui_scriptinit.TabIndex = 41;
+            this.ui_scriptinit.TabIndex = 11;
             // 
             // ui_ai
             // 
@@ -453,7 +454,7 @@
             this.ui_ai.Multiline = true;
             this.ui_ai.Name = "ui_ai";
             this.ui_ai.Size = new System.Drawing.Size(320, 240);
-            this.ui_ai.TabIndex = 42;
+            this.ui_ai.TabIndex = 12;
             // 
             // label19
             // 
@@ -478,7 +479,7 @@
             this.ui_exp.Location = new System.Drawing.Point(224, 99);
             this.ui_exp.Name = "ui_exp";
             this.ui_exp.Size = new System.Drawing.Size(100, 21);
-            this.ui_exp.TabIndex = 46;
+            this.ui_exp.TabIndex = 3;
             // 
             // label21
             // 
@@ -508,17 +509,17 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.ui_spd);
             this.Controls.Add(this.label14);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.ui_int);
             this.Controls.Add(this.label15);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.ui_phy);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.ui_str);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.ui_lv);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.ui_hp);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.ui_name);
             this.Controls.Add(this.label9);
@@ -572,17 +573,17 @@
         private System.Windows.Forms.Button ui_yes;
         private System.Windows.Forms.TextBox ui_name;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox ui_hp;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox ui_lv;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox ui_str;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox ui_phy;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox ui_spd;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox ui_int;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox ui_miss;
         private System.Windows.Forms.Label label17;

@@ -17,18 +17,18 @@ namespace MetalX.Component
         
         public ScriptReturn RETURN = new ScriptReturn();
 
-        public void Return(bool yes)
-        {
-            RETURN.BOOL = yes;
-        }
-        public void Return(int i)
-        {
-            RETURN.INT = i;
-        }
-        public void Return(string str)
-        {
-            RETURN.STRING = str;
-        }
+        //public void Return(bool yes)
+        //{
+        //    RETURN.BOOL = yes;
+        //}
+        //public void Return(int i)
+        //{
+        //    RETURN.INT = i;
+        //}
+        //public void Return(string str)
+        //{
+        //    RETURN.STRING = str;
+        //}
 
         Stack<string> cmdbak = new Stack<string>();
         string text = "";
@@ -173,10 +173,12 @@ namespace MetalX.Component
                     {
                         return;
                     }
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else if (kw[1] == "false" || kw[1] == "f")
                 {
@@ -184,10 +186,12 @@ namespace MetalX.Component
                     {
                         return;
                     }
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
             }
             else if (kw[0] == "bool#")
@@ -198,10 +202,12 @@ namespace MetalX.Component
                     {
                         return;
                     }
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else if (kw[1] == "false" || kw[1] == "f")
                 {
@@ -209,10 +215,12 @@ namespace MetalX.Component
                     {
                         return;
                     }
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
             }
             else if (kw[0] == "int=")
@@ -220,10 +228,12 @@ namespace MetalX.Component
                 int n = int.Parse(kw[1]);
                 if (RETURN.INT == n)
                 {
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else
                 {
@@ -235,10 +245,12 @@ namespace MetalX.Component
                 int n = int.Parse(kw[1]);
                 if (RETURN.INT > n)
                 {
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else
                 {
@@ -250,10 +262,12 @@ namespace MetalX.Component
                 int n = int.Parse(kw[1]);
                 if (RETURN.INT < n)
                 {
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else
                 {
@@ -265,10 +279,12 @@ namespace MetalX.Component
                 int n = int.Parse(kw[1]);
                 if (RETURN.INT != n)
                 {
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else
                 {
@@ -279,10 +295,12 @@ namespace MetalX.Component
             {
                 if (RETURN.STRING == kw[1])
                 {
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else
                 {
@@ -293,10 +311,12 @@ namespace MetalX.Component
             {
                 if (RETURN.STRING != kw[1])
                 {
+                    string[] nkw = new string[kw.Length - 2];
                     for (int i = 2; i < kw.Length; i++)
                     {
-                        kw[i - 2] = kw[i];
+                        nkw[i - 2] = kw[i];
                     }
+                    kw = nkw;
                 }
                 else
                 {
@@ -311,10 +331,12 @@ namespace MetalX.Component
                 {
                     if (vars[name].ToString() == value)
                     {
+                        string[] nkw = new string[kw.Length - 4];
                         for (int i = 4; i < kw.Length; i++)
                         {
-                            kw[i - 4] = kw[i];
+                            nkw[i - 4] = kw[i];
                         }
+                        kw = nkw;
                     }
                     else
                     {
@@ -627,6 +649,11 @@ namespace MetalX.Component
                     int i = int.Parse(kw[3]);
                     game.ME.BagEquip(i);
                 }
+                else if (kw[2] == "unequip")
+                {
+                    int i = int.Parse(kw[3]);
+                    game.ME.BagUnequip((EquipmentCHRType)i);
+                }
                 else if (kw[2] == "bagremove")
                 {
                     int i = int.Parse(kw[3]);
@@ -854,8 +881,11 @@ namespace MetalX.Component
                     pc.BattleState = BattleState.Fight;
                     MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[pc.BattleMovieIndexer.Name].FullName);
                     pc.SetBattleMovie(mov, pc.BattleLocation, v3, 1);
-
-                    game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                    try
+                    {
+                        game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                    }
+                    catch { }
                 }
                 else if (kw[2] == "weapon")
                 {
@@ -900,8 +930,11 @@ namespace MetalX.Component
                     mon.BattleState = BattleState.Fight;
                     MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[mon.BattleMovieIndexer.Name].FullName);
                     mon.SetBattleMovie(mov, mon.BattleLocation, v3, 1);
-
-                    game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                    try
+                    {
+                        game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                    }
+                    catch { }
                 }
                 else if (kw[2] == "run")
                 {
@@ -1122,20 +1155,44 @@ namespace MetalX.Component
             #endregion
             else if (kw[0] == "movie")
             {
-                if (kw[1] == "play")
+                if (kw.Length >= 7)
                 {
-                    MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[kw[2]].FullName);
-                    //if (mov.BGSound != null)
-                    //{
-                    //    inscommands.Enqueue("mp3 2 " + mov.BGSound.Name);
-                    //}
-                    int x = int.Parse(kw[3]);
-                    int y = int.Parse(kw[4]);
-                    Vector3 f = new Vector3(x, y, 0);
-                    game.MovieManager.PlayMovie(mov, f, f, 1);
-                    if (mov.BGSound.Name != null)
-                        if (mov.BGSound.Name != string.Empty)
-                            game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                    if (kw[1] == "play")
+                    {
+                        double offsettime = 1;
+                        MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[kw[2]].FullName);
+                        int x = int.Parse(kw[3]);
+                        int y = int.Parse(kw[4]);
+                        int tx = int.Parse(kw[5]);
+                        int ty = int.Parse(kw[6]);
+                        try
+                        {
+                            offsettime = int.Parse(kw[7]);
+                        }
+                        catch { }
+                        Vector3 f = new Vector3(x, y, 0);
+                        Vector3 t = new Vector3(tx, ty, 0);
+                        game.MovieManager.PlayMovie(mov, f, t, offsettime);
+
+                        if (mov.BGSound.Name != null)
+                            if (mov.BGSound.Name != string.Empty)
+                                game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                    }
+                }
+                else
+                {
+                    if (kw[1] == "play")
+                    {
+                        MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[kw[2]].FullName);
+                        int x = int.Parse(kw[3]);
+                        int y = int.Parse(kw[4]);
+                        Vector3 f = new Vector3(x, y, 0);
+                        game.MovieManager.PlayMovie(mov, f);
+
+                        if (mov.BGSound.Name != null)
+                            if (mov.BGSound.Name != string.Empty)
+                                game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                    }
                 }
                 //else if (kw[1] == "bplay")
                 //{
@@ -1172,7 +1229,34 @@ namespace MetalX.Component
                 }
                 else if (kw[2] == "appear")
                 {
-                    game.FormBoxManager.Appear(kw[1]);
+                    if (kw.Length == 5)
+                    {
+                        if (kw[3] == "arg")
+                        {
+                            if (kw[4] == "me")
+                            {
+                                game.FormBoxManager.Appear(kw[1], game.ME);
+                            }
+                        }
+                        else
+                        {
+                            int x = 0;
+                            int y = 0;
+                            try
+                            {
+                                x = int.Parse(kw[3]);
+                                y = int.Parse(kw[4]);
+                                game.FormBoxManager.Appear(kw[1], new Point(x, y));
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                    else
+                    {
+                        game.FormBoxManager.Appear(kw[1]);
+                    }
                 }
                 else if (kw[2] == "disappear")
                 {

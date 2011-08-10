@@ -21,6 +21,7 @@ namespace MetalHunter
             game.FormBoxes.Add(new LogoGame(game));
             game.FormBoxes.Add(new MenuLoad(game));
             game.FormBoxes.Add(new MenuCHR(game));
+            game.FormBoxes.Add(new MenuCHRASK(game));
             game.FormBoxes.Add(new MenuBAG(game));
             game.FormBoxes.Add(new MenuBAGASK(game));
             game.FormBoxes.Add(new MenuBattleCHR(game));
@@ -33,7 +34,7 @@ namespace MetalHunter
         {
             game.Items.Add(new 弹弓());
             game.Items.Add(new 狩猎弩());
-            game.Items.Add(new 双管猎枪());
+            game.Items.Add(new M16突击步枪());
 
             game.Items.Add(new 运动服());
             game.Items.Add(new 运动裤());
@@ -82,15 +83,15 @@ namespace MetalHunter
             Key k = (Key)key;
             if (k == Key.C)
             {
-                ((MenuCHR)game.FormBoxes["MenuCHR"]).LoadContext(game.ME);
-                game.FormBoxManager.Appear("MenuCHR");
+                //((MenuCHR)game.FormBoxes["MenuCHR"]).LoadContext(game.ME);
+                game.FormBoxManager.Appear("MenuCHR", game.ME);
                 //game.SceneManager.Controllable = false;
             }
             else if (k == Key.B)
             {
                 game.FormBoxManager.Disappear("MenuCHR");
-                ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
-                game.FormBoxManager.Appear("MenuBAG");
+                //((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
+                game.FormBoxManager.Appear("MenuBAG", game.ME);
                 //game.SceneManager.Controllable = false;
             }
             //else if (k == Key.P)

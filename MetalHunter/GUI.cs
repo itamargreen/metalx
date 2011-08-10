@@ -17,7 +17,7 @@ namespace MetalHunter
         {
             Name = "LogoEngine";
             Location = new Point();
-            BGTextureBox.TextureName = "logo_engine";
+            BGTextureBox.Texture.Name = "logo_engine";
             BGTextureBox.Size = new Size(640, 480);
         }
     }
@@ -56,10 +56,10 @@ namespace MetalHunter
                 bb.Add(new ButtonBox(g));
                 bb[i].Location = new Point(64, 48 + 128 * i);
                 bb[i].Size = new System.Drawing.Size(512, 128);
-                bb[i].WaitTextureBox.TextureName = "bg_256x64";
-                bb[i].FocusTextureBox.TextureName = "bg_256x64";
-                bb[i].DownTextureBox.TextureName = "bg_256x64";
-                bb[i].UpTextureBox.TextureName = "bg_256x64";
+                bb[i].WaitTextureBox.Texture.Name = "bg_256x64";
+                bb[i].FocusTextureBox.Texture.Name = "bg_256x64";
+                bb[i].DownTextureBox.Texture.Name = "bg_256x64";
+                bb[i].UpTextureBox.Texture.Name = "bg_256x64";
                 bb[i].WaitTextureBox.Size = new System.Drawing.Size(512, 128);
                 bb[i].FocusTextureBox.Size = new System.Drawing.Size(512, 128);
                 bb[i].DownTextureBox.Size = new System.Drawing.Size(512, 128);
@@ -128,7 +128,7 @@ namespace MetalHunter
             Name = "MenuCHR";
             Location = new Point(64, 48);
 
-            BGTextureBox.TextureName = "bg_256x256";
+            BGTextureBox.Texture.Name = "bg_256x256";
             BGTextureBox.Size = new Size(512, 512);
 
             int line = 5;
@@ -169,16 +169,18 @@ namespace MetalHunter
             chrlv = new TextBox(g);
             chrlv.Location = new Point(24, line++ * 24 + 4);
 
-            line = 7;
+            line = 1;
 
             dmg = new TextBox(g);
-            dmg.Location = new Point(224, line++ * 24);
+            dmg.Location = new Point(224, line++ * 32);
 
             b_weapon = new ButtonBox(g);
-            b_weapon.Location = new Point(224, line++ * 24);
+            b_weapon.Location = new Point(224, line++ * 32);
+            b_weapon.OnButtonFocus += new ButtonBoxEvent(MenuCHR_OnButtonFocus);
+            b_weapon.OnButtonUp += new ButtonBoxEvent(MenuCHR_OnButtonUp);
 
             def = new TextBox(g);
-            def.Location = new Point(224, line++ * 24);
+            def.Location = new Point(224, line++ * 32);
 
             ControlBoxes.Add(head);
             ControlBoxes.Add(nam);
@@ -204,17 +206,22 @@ namespace MetalHunter
             for (int i = 0; i < 7; i++)
             {
                 b_def.Add(new ButtonBox(g));
-                b_def[i].Location = new Point(224, line * 24 + i * 18);
+                b_def[i].OnButtonFocus += new ButtonBoxEvent(MenuCHR_OnButtonFocus);
+                b_def[i].OnButtonUp += new ButtonBoxEvent(MenuCHR_OnButtonUp);
+                b_def[i].Location = new Point(224, line * 32 + i * 32);
                 ControlBoxes.Add(b_def[i]);
             }
+
+            this.OnFormBoxAppear += new FormBoxEvent(MenuCHR_OnFormBoxAppear);
+            this.OnFormBoxDisappear += new FormBoxEvent(MenuCHR_OnFormBoxDisappear);
         }
 
-        public void LoadContext(CHR chr)
+        void LoadContext(CHR chr)
         {
             chr.HeadTextureName = "icon_" + chr.TextureName;
 
-            this.head.TextureIndex = chr.HeadTextureIndex;
-            this.head.TextureName = chr.HeadTextureName;
+            //this.head.Texture.Index = chr.HeadTextureIndex;
+            this.head.Texture.Name = chr.HeadTextureName;
 
             this.nam.Text = "名字：　" + chr.Name;
 
@@ -240,23 +247,137 @@ namespace MetalHunter
             this.itl.Text = "智力：　" + chr.Intelligence;
             this.phy.Text = "体质：　" + chr.Physique;
 
-            if (chr.Equipments[(int)EquipmentCHRType.Weapon].Name != null && chr.Equipments[(int)EquipmentCHRType.Weapon].Name != "")
+            string name;
+            string icon_name;
+            if (chr.Equipments[(int)EquipmentCHRType.Weapon].Name != null)
             {
-                this.b_weapon.WaitTextBox.Text = "       " + chr.Equipments[(int)EquipmentCHRType.Weapon].Name;
-                this.b_weapon.WaitTextBox.FontSize = 13;
-                this.b_weapon.WaitTextureBox.TextureName = chr.Equipments[(int)EquipmentCHRType.Weapon].Icon.Name;
-                this.b_weapon.SameAsWait();
+                name = chr.Equipments[(int)EquipmentCHRType.Weapon].Name;
+                icon_name = chr.Equipments[(int)EquipmentCHRType.Weapon].Icon.Name;
             }
+            else
+            {
+                name = "X";
+                icon_name = "icon_" + ((EquipmentCHRType)(int)EquipmentCHRType.Weapon).ToString().ToLower();
+            }
+            this.b_weapon.Index = 0;
+            this.b_weapon.WaitTextBox.Location = new Point(48, 4);
+            this.b_weapon.WaitTextBox.Text = name;
+            this.b_weapon.WaitTextureBox.Texture.Name = icon_name;
+            this.b_weapon.WaitTextureBox.Size = new Size(48, 32);
+
+            this.b_weapon.SameAsWait();
             for (int i = 0; i < 7; i++)
             {
-                if (chr.Equipments[i + 1].Name != null && chr.Equipments[i + 1].Name != "")
+                if ( chr.Equipments[i + 1].Name != null)
                 {
-                    this.b_def[i].WaitTextBox.Text = "       " + chr.Equipments[i + 1].Name;
-                    this.b_def[i].WaitTextBox.FontSize = 13;
-                    this.b_def[i].WaitTextureBox.TextureName = chr.Equipments[i + 1].Icon.Name;
-                    this.b_def[i].SameAsWait();
+                    name = chr.Equipments[i + 1].Name;
+                    icon_name = chr.Equipments[i + 1].Icon.Name;
                 }
+                else
+                {
+                    name = "X";
+                    icon_name = "icon_" + ((EquipmentCHRType)i + 1).ToString().ToLower();
+                }
+                this.b_def[i].Index = i + 1;
+                this.b_def[i].WaitTextBox.Location = new Point(48, 4);
+                this.b_def[i].WaitTextBox.Text = name;
+                this.b_def[i].WaitTextureBox.Texture.Name = icon_name;
+                this.b_def[i].WaitTextureBox.Size = new Size(48, 32);
+                this.b_def[i].SameAsWait();
             }
+        }
+
+        public override void OnKeyUpCode(object sender, int key)
+        {
+            Key k = (Key)key;
+            if (k == game.Options.KeyNO)
+            {
+                game.ScriptManager.AppendCommand("gui " + Name + " disappear");
+                game.ScriptManager.Execute();
+            }
+        }
+
+        void MenuCHR_OnFormBoxDisappear(object sender, object arg)
+        {
+            game.ScriptManager.AppendCommand("gui MenuCHRASK disappear");
+            game.ScriptManager.Execute();
+        }
+
+        void MenuCHR_OnFormBoxAppear(object sender, object arg)
+        {
+            if (arg is CHR)
+            {
+                LoadContext((CHR)arg);
+            }
+        }
+
+        void MenuCHR_OnButtonUp(object sender, object arg)
+        {
+            game.ScriptManager.RETURN.INT = ((ButtonBox)sender).Index;
+            game.ScriptManager.AppendCommand("gui MenuCHRASK appear 64 304");
+            game.ScriptManager.Execute();
+        }
+
+        void MenuCHR_OnButtonFocus(object sender, object arg)
+        {
+        }
+    }
+    public class MenuCHRASK : FormBox
+    {
+        ButtonBox BB1, BB2;
+        public MenuCHRASK(Game g)
+            : base(g)
+        {
+            Name = "MenuCHRASK";
+            Location = new Point(576, 48);
+            BGTextureBox.Texture.Name = "bg_64x64";
+            BGTextureBox.Size = new System.Drawing.Size(128, 128);
+
+            BB1 = new ButtonBox(g);
+            BB1.Location = new Point(48, 24);
+            BB1.UpTextBox.Text = BB1.DownTextBox.Text = BB1.FocusTextBox.Text = BB1.WaitTextBox.Text = "装备";
+            BB1.FocusTextBox.FontColor = Color.CornflowerBlue;
+            BB1.OnButtonUp += new ButtonBoxEvent(BB1_OnButtonUp);
+
+            BB2 = new ButtonBox(g);
+            BB2.Location = new Point(48, 24);
+            BB2.UpTextBox.Text = BB2.DownTextBox.Text = BB2.FocusTextBox.Text = BB2.WaitTextBox.Text = "卸下";
+            BB2.FocusTextBox.FontColor = Color.CornflowerBlue;
+            BB2.OnButtonUp += new ButtonBoxEvent(BB2_OnButtonUp);
+
+            //ControlBoxes.Add(BB1);
+            ControlBoxes.Add(BB2);
+        }
+
+        //装备
+        void BB1_OnButtonUp(object sender, object arg)
+        {
+            //int i = game.ScriptManager.RETURN.INT;
+            //Item item = game.ME.BagSee(i);
+            //if (item.ItemType == ItemType.Supply)
+            //{
+            //    game.ScriptManager.AppendCommand(item.Script);
+            //    game.ScriptManager.Execute();
+            //    game.ME.BagRemove(i);
+
+            //    ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
+            //    game.FormBoxManager.Disappear(Name);
+            //}
+            game.ScriptManager.AppendCommand("gui MenuBAG appear arg me");
+            game.ScriptManager.AppendCommand("untilpress y n");
+            game.ScriptManager.AppendCommand("gui MenuBAG disappear");
+            game.ScriptManager.Execute();
+        }
+        //卸下
+        void BB2_OnButtonUp(object sender, object arg)
+        {
+            int i = game.ScriptManager.RETURN.INT;
+            game.ME.BagUnequip((EquipmentCHRType)i);
+            //game.ME.BagEquip(i);
+
+            game.FormBoxManager.Disappear(Name);
+            game.FormBoxManager.Disappear("MenuCHR");
+            game.FormBoxManager.Appear("MenuCHR", game.ME);
         }
 
         public override void OnKeyUpCode(object sender, int key)
@@ -281,7 +402,7 @@ namespace MetalHunter
             Name = "MenuBAG";
             Location = new Point(64, 48);
 
-            BGTextureBox.TextureName = "bg_256x256";
+            BGTextureBox.Texture.Name = "bg_256x256";
             BGTextureBox.Size = new Size(512, 512);
 
             for (int i = 0; i < 16; i++)
@@ -296,15 +417,10 @@ namespace MetalHunter
             tb.Location = new Point(24, 24);
 
             this.OnFormBoxDisappear += new FormBoxEvent(MenuBAG_OnFormBoxDisappear);
+            this.OnFormBoxAppear += new FormBoxEvent(MenuBAG_OnFormBoxAppear);
         }
 
-        void MenuBAG_OnFormBoxDisappear(object sender, object arg)
-        {
-            game.ScriptManager.AppendCommand("gui MenuBAGASK disappear");
-            game.ScriptManager.Execute();
-        }
-
-        public void LoadContext(CHR chr)
+        void LoadContext(CHR chr)
         {
             ControlBoxes.Clear();
             ControlBoxes.Add(BGTextureBox);
@@ -316,11 +432,11 @@ namespace MetalHunter
                     bb[i].Index = i;
                     bb[i].Location = new Point(160 + 160 * (i / 8), 64 + 32 * (i % 8));
 
-                    bb[i].WaitTextBox.Location = new Point(0, 4);
-                    bb[i].WaitTextBox.Text = "　　　" + chr.Bag[i].Name;
+                    bb[i].WaitTextBox.Location = new Point(48, 4);
+                    bb[i].WaitTextBox.Text = chr.Bag[i].Name;
                     bb[i].WaitTextBox.FontSize = 15;
-                    bb[i].WaitTextureBox.TextureName = chr.Bag[i].Icon.Name;
-                    bb[i].WaitTextureBox.TextureIndex = -1;
+                    bb[i].WaitTextureBox.Texture.Name = chr.Bag[i].Icon.Name;
+                    //bb[i].WaitTextureBox.Texture.Index = -1;
                     bb[i].WaitTextureBox.Size = new System.Drawing.Size(48, 32);
                     bb[i].SameAsWait();
 
@@ -330,24 +446,11 @@ namespace MetalHunter
                     ControlBoxes.Add(bb[i]);
                 }
             }
-            if (NowButtonBoxIndex >= chr.Bag.Count)
-            {
-                FocusLastButtonBox();
-            }
-        }
-
-        void MenuBAG_OnButtonFocus(object sender, object arg)
-        {
-            int i = ((ButtonBox)sender).Index;
-            Item item = game.ME.BagSee(i);
-            tb.Text = item.Description;
-        }
-
-        void MenuBAG_OnButtonUp(object sender, object arg)
-        {
-            game.ReturnScript(((ButtonBox)sender).Index);
-            game.ScriptManager.AppendCommand("gui MenuBAGASK appear");
-            game.ScriptManager.Execute();
+            FocusNowButtonBox();
+            //if (NowButtonBoxIndex >= chr.Bag.Count)
+            //{
+            //    FocusLastButtonBox();
+            //}
         }
 
         public override void OnKeyUpCode(object sender, int key)
@@ -359,6 +462,44 @@ namespace MetalHunter
                 game.ScriptManager.Execute();
             }
         }
+
+        void MenuBAG_OnFormBoxAppear(object sender, object arg)
+        {
+            if (arg is CHR)
+            {
+                LoadContext((CHR)arg);
+            }
+        }
+
+        void MenuBAG_OnFormBoxDisappear(object sender, object arg)
+        {
+            game.ScriptManager.AppendCommand("gui MenuBAGASK disappear");
+            game.ScriptManager.Execute();
+        }
+
+        void MenuBAG_OnButtonFocus(object sender, object arg)
+        {
+            int i = ((ButtonBox)sender).Index;
+            Item item = game.ME.BagSee(i);
+            string str = "";
+            if (item == null)
+            {
+                str = "";
+            }
+            else
+            {
+                str = item.Description;
+            }
+            tb.Text = str;
+        }
+
+        void MenuBAG_OnButtonUp(object sender, object arg)
+        {
+            game.ScriptManager.RETURN.INT = (((ButtonBox)sender).Index);
+            game.ScriptManager.AppendCommand("gui MenuBAGASK appear 64 304");
+            game.ScriptManager.Execute();
+        }
+
     }
     public class MenuBAGASK : FormBox
     {
@@ -368,7 +509,7 @@ namespace MetalHunter
         {
             Name = "MenuBAGASK";
             Location = new Point(64 + 24, 256 + 24);
-            BGTextureBox.TextureName = "bg_64x64";
+            BGTextureBox.Texture.Name = "bg_64x64";
             BGTextureBox.Size = new System.Drawing.Size(128, 128);
 
             BB1 = new ButtonBox(g);
@@ -405,8 +546,10 @@ namespace MetalHunter
                 game.ScriptManager.Execute();
                 game.ME.BagRemove(i);
 
-                ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
+                //((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
                 game.FormBoxManager.Disappear(Name);
+                game.FormBoxManager.Disappear("MenuBAG");
+                game.FormBoxManager.Appear("MenuBAG", game.ME);
             }
         }
         //装备
@@ -415,8 +558,9 @@ namespace MetalHunter
             int i = game.ScriptManager.RETURN.INT;
             game.ME.BagEquip(i);
 
-            ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
             game.FormBoxManager.Disappear(Name);
+            game.FormBoxManager.Disappear("MenuBAG");
+            game.FormBoxManager.Appear("MenuBAG", game.ME);
         }
         //丢弃
         void BB3_OnButtonUp(object sender, object arg)
@@ -424,8 +568,9 @@ namespace MetalHunter
             int i = game.ScriptManager.RETURN.INT;
             game.ME.BagRemove(i);
 
-            ((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
             game.FormBoxManager.Disappear(Name);
+            game.FormBoxManager.Disappear("MenuBAG");
+            game.FormBoxManager.Appear("MenuBAG", game.ME);
         }
 
         public override void OnKeyUpCode(object sender, int key)
@@ -438,7 +583,6 @@ namespace MetalHunter
             }
         }
     }
-
     public class MenuBattleCHR : FormBox
     {
         ButtonBox BB1,BB2,BB3,BB4;
@@ -447,7 +591,7 @@ namespace MetalHunter
         {
             Name = "MenuBattleCHR";
             Location = new Point(24, 24);
-            //BGTextureBox.TextureName = "bg_64x64";
+            //BGTextureBox.Texture.Name = "bg_64x64";
             //BGTextureBox.Size = new System.Drawing.Size(128, 128);
 
             BB1 = new ButtonBox(g);
@@ -482,25 +626,24 @@ namespace MetalHunter
 
         void BB1_OnButtonUp(object sender, object arg)
         {
-            game.ReturnScript("攻击");
+            game.ScriptManager.RETURN.STRING = ("攻击");
         }
 
         void BB2_OnButtonUp(object sender, object arg)
         {
-            game.ReturnScript("道具");
+            game.ScriptManager.RETURN.STRING = ("道具");
         }
 
         void BB3_OnButtonUp(object sender, object arg)
         {
-            game.ReturnScript("装备");
+            game.ScriptManager.RETURN.STRING = ("装备");
         }
 
         void BB4_OnButtonUp(object sender, object arg)
         {
-            game.ReturnScript("乘降");
+            game.ScriptManager.RETURN.STRING = ("乘降");
         }
     }
-
     public class MH_MSGBox : MetalX.Resource.MSGBox
     {
         public MH_MSGBox(Game g)
@@ -508,7 +651,7 @@ namespace MetalHunter
         {
             Location = new Point(64, 480 - 128 - 8);
 
-            BGTextureBox.TextureName = "bg_256x64";
+            BGTextureBox.Texture.Name = "bg_256x64";
             BGTextureBox.Size = new Size(512, 128);
 
             TextBox.Location = new Point(20, 20);
@@ -525,7 +668,7 @@ namespace MetalHunter
         {
             Location = new Point(64, 480 - 128 - 8);
 
-            BGTextureBox.TextureName = "bg_256x64";
+            BGTextureBox.Texture.Name = "bg_256x64";
             BGTextureBox.Size = new Size(512, 128);
 
             TextBox.Location = new Point(20, 20);

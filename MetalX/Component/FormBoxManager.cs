@@ -57,19 +57,19 @@ namespace MetalX.Component
             Color fColor = ColorFilter;
             
             fColor = Util.MixColor(fColor, tb.TextureFliterColor);
-            if (tb.TextureIndex > -1)
+            //if (tb.Texture.Index > -1)
+            //{
+            //    game.DrawMetalXTexture(game.Textures[tb.Texture.Index], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.Texture.Index].Size), basepos, tb.Size,0, fColor);
+            //}
+            //else
             {
-                game.DrawMetalXTexture(game.Textures[tb.TextureIndex], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].Size), basepos, tb.Size,0, fColor);
-            }
-            else
-            {
-                int j = game.Textures.GetIndex(tb.TextureName);
+                int j = game.Textures.GetIndex(tb.Texture.Name);
                 if (j < 0)
                 {
                     return;
                 }
-                tb.TextureIndex = j;
-                game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[tb.TextureIndex].Size), basepos, tb.Size,0, fColor);
+                //tb.Texture.Index = j;
+                game.DrawMetalXTexture(game.Textures[j], new System.Drawing.Rectangle(new System.Drawing.Point(), game.Textures[j].Size), basepos, tb.Size,0, fColor);
             }
         }
         void drawTextBox(TextBox tb, Point basepos)
@@ -150,7 +150,10 @@ namespace MetalX.Component
                     return;
                 }
             }
-            
+            if (arg is Point)
+            {
+                game.FormBoxes[i].Location = (Point)arg;
+            }
             game.FormBoxes[i].Appear(arg);
             AppearingFormBoxIndex.Add(i);
             game.SceneManager.Controllable = false;

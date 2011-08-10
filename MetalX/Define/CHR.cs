@@ -335,21 +335,21 @@ namespace MetalX.Define
         //    CanControl = true;
         //}
 
-        public int Gold;
+        public int Gold = 0;
 
-        public int EXP;
-        public int Level;
+        public int EXP = 0;
+        public int Level = 1;
 
-        public int MBLevel;//车战LV
+        public int MBLevel=1;//车战LV
         //public int ELevel;
-        public int CBLevel;//人战LV
+        public int CBLevel=1;//人战LV
 
-        public int Strength;
-        public int Agility;
-        public int Intelligence;
-        public int Physique;
+        public int Strength=5;
+        public int Agility=5;
+        public int Intelligence=5;
+        public int Physique=5;
 
-        public int HP;
+        public int HP=100;
         public int HPMax = 100;
 
         public List<EquipmentCHR> Equipments = new List<EquipmentCHR>(8);
@@ -554,15 +554,21 @@ namespace MetalX.Define
         }
         public int BagItemCapacity = 16;
 
-        public void BagAdd(Item item)
+        public bool BagAdd(Item item)
         {
             if (bag.Count < BagItemCapacity)
             {
                 bag.Add(item);
+                return true;
             }
+            return false;
         }
         public Item BagSee(int i)
         {
+            if (bag.Count == 0)
+            {
+                return null;
+            }
             Item item = bag[i].GetClone();
             //bag.RemoveAt(i);
             return item;
@@ -591,6 +597,19 @@ namespace MetalX.Define
                 BagAdd(item_tmp);
             }
             Equipments[(int)item.EquipmentType] = item;
+        }
+        public void BagUnequip(EquipmentCHRType t)
+        {
+            int i = (int)t;
+            EquipmentCHR item = null;
+            item = Equipments[i].GetClone();
+            if (item.Name != null)
+            {
+                if (BagAdd(item))
+                {
+                    Equipments[i] = new EquipmentCHR();
+                }
+            }
         }
 
         public bool Face(Direction dir)

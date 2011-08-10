@@ -79,9 +79,9 @@ namespace MetalX.Component
 
             movies.Add(movie);
         }
-        public void PlayMovie(MetalXMovie movie, Vector3 fromLoc, double timespan)
+        public void PlayMovie(MetalXMovie movie, Vector3 fromLoc)
         {
-            PlayMovie(movie, fromLoc, fromLoc, timespan);
+            PlayMovie(movie, fromLoc, fromLoc, 1);
         }
         //public void PlayMovie(MetalXMovie movie)
         //{ 

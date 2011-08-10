@@ -12,7 +12,7 @@ namespace MetalHunter
         public 弹弓()
         {
             EquipmentType = EquipmentCHRType.Weapon;
-            Icon.Name = "icon_weapon";
+            Icon.Name = "sling_icon";
 
             Name = "弹弓";
             Damage = 10;
@@ -31,6 +31,10 @@ namespace MetalHunter
             str += "\n";
             str += "通常是给小孩玩的。";
             Description = str;
+
+            ShotMovieIndexer.Name = "sling_shot";
+            HitMovieIndexer.Name = "sling_hit";
+            BulletTime = 200;
         }
     }
 
@@ -39,7 +43,7 @@ namespace MetalHunter
         public 狩猎弩()
         {
             EquipmentType = EquipmentCHRType.Weapon;
-            Icon.Name = "icon_weapon";
+            Icon.Name = "bow_icon";
 
             Name = "狩猎弩";
             Damage = 30;
@@ -58,18 +62,20 @@ namespace MetalHunter
             str += "很强劲的努，\n拿在手里就有勇气\n了。";
             Description = str;
 
-            ShotMovieIndexer.Name = "bowshot";
+            ShotMovieIndexer.Name = "bow_shot";
+            HitMovieIndexer.Name = "bow_hit";
+            BulletTime = 200;
         }
     }
 
-    public class 双管猎枪 : EquipmentCHR
+    public class M16突击步枪 : EquipmentCHR
     {
-        public 双管猎枪()
+        public M16突击步枪()
         {
             EquipmentType = EquipmentCHRType.Weapon;
-            Icon.Name = "icon_weapon";
+            Icon.Name = "m16_icon";
 
-            Name = "双管猎枪";
+            Name = "M16突击步枪";
             Damage = 50;
             Accurate = 85f;
             Worth = 2200;
@@ -86,8 +92,8 @@ namespace MetalHunter
             str += "威力强大！";
             Description = str;
 
-            ShotMovieIndexer.Name = "m16shot";
-            HitMovieIndexer.Name = "m16hit";
+            ShotMovieIndexer.Name = "m16_shot";
+            HitMovieIndexer.Name = "rife_hit";
         }
     }
     #endregion

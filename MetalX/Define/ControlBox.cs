@@ -346,8 +346,7 @@ namespace MetalX.Define
     [Serializable]
     public class TextureBox : ControlBox
     {
-        public string TextureName;
-        public int TextureIndex = -1;
+        public MemoryIndexer Texture = new MemoryIndexer();
         public Color TextureFliterColor = Color.White;
         public TextureBox(Game g)
             : base(g)
@@ -357,7 +356,6 @@ namespace MetalX.Define
             return (TextureBox)MemberwiseClone();
         }
     }
-    
     [Serializable]
     public class ButtonBox : ControlBox
     {
