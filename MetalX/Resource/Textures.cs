@@ -22,6 +22,10 @@ namespace MetalX.Resource
                 {
                     return null;
                 }
+                //else if (i + 1 > items.Count)
+                //{
+                //    return null;
+                //}
                 return items[i];
             }
         }

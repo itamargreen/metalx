@@ -83,8 +83,48 @@ namespace MetalX.Component
         {
             PlayMovie(movie, fromLoc, fromLoc, 1);
         }
-        //public void PlayMovie(MetalXMovie movie)
-        //{ 
-        //}
+        public void PlayMovie(string name, Vector3 loc)
+        {
+            int i = GetIndex(name);
+            if (i > -1)
+            {
+                movies[i].BeginLocation = loc;
+                movies[i].EndLocation = loc;
+                movies[i].Reset();
+            }
+        }
+        public int GetIndex(string name)
+        {
+            int i = -1;
+            for (int j = 0; j < movies.Count; j++)
+            {
+                if (movies[j].Name == name)
+                {
+                    i = j;
+                    break;
+                }
+            }
+            return i;
+        }
+        public void RemoveMovie(string name)
+        {
+            if (movies.Count == 0)
+            {
+                return;
+            }
+            int i = 0;
+            foreach (MetalXMovie m in movies)
+            {
+                if (m.Name != null)
+                {
+                    if (m.Name == name)
+                    {
+                        break;
+                    }
+                }
+                i++;
+            }
+            movies.RemoveAt(i);
+        }
     }
 }

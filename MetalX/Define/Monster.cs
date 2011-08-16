@@ -19,6 +19,12 @@ namespace MetalX.Define
         Hit = 7,        //hit
     }
     [Serializable]
+    public enum MonsterType
+    {
+        BIO = 0,
+        MEC = 1,
+    }
+    [Serializable]
     public class Monster : CHR
     {
         public Monster()
@@ -26,10 +32,11 @@ namespace MetalX.Define
         {
         }
 
+        public MonsterType MonsterType;
         //public List<string> IteamNames = new List<string>();
 
-        public string ScriptInit="";
-        public string ScriptAI="";
+        public string ScriptInit = "";
+        public string ScriptAI = "";
 
         //public BattleState AI()
         //{

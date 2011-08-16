@@ -25,6 +25,7 @@ namespace MetalHunter
             game.FormBoxes.Add(new MenuBAG(game));
             game.FormBoxes.Add(new MenuBAGASK(game));
             game.FormBoxes.Add(new MenuBattleCHR(game));
+            game.FormBoxes.Add(new MenuMonster(game));
 
             game.OverLoadMessageBox(new MH_MSGBox(game));
             game.OverLoadASKboolBox(new MH_ASKboolBox(game));
@@ -43,7 +44,7 @@ namespace MetalHunter
             game.Items.Add(new 棒球帽());
 
             game.Items.Add(new 恢复胶囊小());
-            game.Items.Add(new 爆竹());
+            game.Items.Add(new 火箭礼花());
         }
 
         public MetalHunter()
@@ -81,18 +82,10 @@ namespace MetalHunter
         void SceneManager_OnKeyUp(object sender, int key)
         {
             Key k = (Key)key;
-            if (k == Key.C)
+            if (k == Key.B)
             {
-                //((MenuCHR)game.FormBoxes["MenuCHR"]).LoadContext(game.ME);
                 game.FormBoxManager.Appear("MenuCHR", game.ME);
-                //game.SceneManager.Controllable = false;
-            }
-            else if (k == Key.B)
-            {
-                game.FormBoxManager.Disappear("MenuCHR");
-                //((MenuBAG)game.FormBoxes["MenuBAG"]).LoadContext(game.ME);
                 game.FormBoxManager.Appear("MenuBAG", game.ME);
-                //game.SceneManager.Controllable = false;
             }
             //else if (k == Key.P)
             //{

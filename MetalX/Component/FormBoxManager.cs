@@ -23,6 +23,43 @@ namespace MetalX.Component
                 return null;
             }
         }
+        //int FocusFormBoxIndex;
+        //FormBox FocusFormBox
+        //{
+        //    get
+        //    {
+        //        return game.FormBoxes[FocusFormBoxIndex];
+        //    }
+        //}
+        public void FocusOn(int fbid)
+        {
+            int index = -1;
+            for (int i = 0; i < AppearingFormBoxIndex.Count - 1; i++)
+            {
+                if (AppearingFormBoxIndex[i] == fbid)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index > -1)
+            {
+                //TopFormBox.LostFocus(null);
+                AppearingFormBoxIndex.RemoveAt(index);
+                AppearingFormBoxIndex.Add(fbid);
+                //game.FormBoxes[fbid].Focus(null);
+            } 
+            for (int i = 0; i < AppearingFormBoxIndex.Count - 1; i++)
+            {
+                game.FormBoxes[AppearingFormBoxIndex[i]].LostFocus(null);
+            }
+            TopFormBox.Focus(null);
+        }
+        public void FocusOn(string name)
+        {
+            int i = game.FormBoxes.GetIndex(name);
+            FocusOn(i);
+        }
         public FormBoxManager(Game g)
             : base(g)
         {
@@ -154,8 +191,13 @@ namespace MetalX.Component
             {
                 game.FormBoxes[i].Location = (Point)arg;
             }
-            game.FormBoxes[i].Appear(arg);
+            //if (TopFormBox != null)
+            //{
+            //    TopFormBox.LostFocus(null);
+            //}
             AppearingFormBoxIndex.Add(i);
+            game.FormBoxes[i].Appear(arg);
+            FocusOn(i);
             game.SceneManager.Controllable = false;
             //game.FormBoxes[i].OnFormBoxAppearCode();
         }
@@ -175,7 +217,12 @@ namespace MetalX.Component
                 return;
             }
             AppearingFormBoxIndex.Remove(i);
+            game.FormBoxes[i].LostFocus(null);
             game.FormBoxes[i].Disappear();
+            if (TopFormBox != null)
+            {
+                TopFormBox.Focus(null);
+            }
             if (AppearingFormBoxIndex.Count == 0)
             {
                 game.SceneManager.Controllable = true;
@@ -247,20 +294,20 @@ namespace MetalX.Component
             {
                 TopFormBox.FocusNextButtonBox();
             }
-            else if (k == game.Options.KeyLEFT)
-            {
-                for (int i = 0; i < TopFormBox.BigStep; i++)
-                {
-                    TopFormBox.FocusLastButtonBox();
-                }
-            }
-            else if (k == game.Options.KeyRIGHT)
-            {
-                for (int i = 0; i < TopFormBox.BigStep; i++)
-                {
-                    TopFormBox.FocusNextButtonBox();
-                }
-            }
+            //else if (k == game.Options.KeyLEFT)
+            //{
+            //    for (int i = 0; i < TopFormBox.BigStep; i++)
+            //    {
+            //        TopFormBox.FocusLastButtonBox();
+            //    }
+            //}
+            //else if (k == game.Options.KeyRIGHT)
+            //{
+            //    for (int i = 0; i < TopFormBox.BigStep; i++)
+            //    {
+            //        TopFormBox.FocusNextButtonBox();
+            //    }
+            //}
         }
     }
 }

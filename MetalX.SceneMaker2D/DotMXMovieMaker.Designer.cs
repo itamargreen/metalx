@@ -61,6 +61,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.ui_bgsound = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ui_mname = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -95,14 +97,14 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(444, 24);
+            this.textBox1.Location = new System.Drawing.Point(694, 23);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 21);
             this.textBox1.TabIndex = 3;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(550, 24);
+            this.textBox2.Location = new System.Drawing.Point(800, 23);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 21);
             this.textBox2.TabIndex = 4;
@@ -110,7 +112,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(442, 9);
+            this.label2.Location = new System.Drawing.Point(692, 8);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 12);
             this.label2.TabIndex = 5;
@@ -119,7 +121,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(548, 9);
+            this.label3.Location = new System.Drawing.Point(798, 8);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 6;
@@ -127,7 +129,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(656, 24);
+            this.textBox3.Location = new System.Drawing.Point(906, 23);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 21);
             this.textBox3.TabIndex = 7;
@@ -136,7 +138,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(654, 9);
+            this.label4.Location = new System.Drawing.Point(904, 8);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 8;
@@ -147,7 +149,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(366, 26);
+            this.checkBox1.Location = new System.Drawing.Point(616, 25);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(72, 16);
             this.checkBox1.TabIndex = 9;
@@ -362,11 +364,29 @@
             this.ui_bgsound.Size = new System.Drawing.Size(100, 21);
             this.ui_bgsound.TabIndex = 29;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(364, 8);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(41, 12);
+            this.label11.TabIndex = 32;
+            this.label11.Text = "动画名";
+            // 
+            // ui_mname
+            // 
+            this.ui_mname.Location = new System.Drawing.Point(366, 23);
+            this.ui_mname.Name = "ui_mname";
+            this.ui_mname.Size = new System.Drawing.Size(100, 21);
+            this.ui_mname.TabIndex = 31;
+            // 
             // DotMXMovieMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 744);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.ui_mname);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.ui_bgsound);
             this.Controls.Add(this.label9);
@@ -444,5 +464,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox ui_bgsound;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox ui_mname;
     }
 }

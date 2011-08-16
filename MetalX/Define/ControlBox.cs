@@ -61,7 +61,7 @@ namespace MetalX.Define
             }
         }
         public int NowButtonBoxIndex = -1;
-        public int BigStep = 1;
+        //public int BigStep = 1;
         //public int FocusButtonBoxIndex
         //{
         //    get
@@ -189,10 +189,20 @@ namespace MetalX.Define
         public TextureBox BGTextureBox;
         public event FormBoxEvent OnFormBoxAppear;
         public event FormBoxEvent OnFormBoxDisappear;
+        public event FormBoxEvent OnFormBoxFocus;
+        public event FormBoxEvent OnFormBoxLostFocus;
         public List<ControlBox> ControlBoxes = new List<ControlBox>();
         public void Appear()
         {
-            Appear(null);
+            Appear(this);
+        }
+        public void Focus(object arg)
+        {
+            OnFormBoxFocusCode(this, arg);
+        }
+        public void LostFocus(object arg)
+        {
+            OnFormBoxLostFocusCode(this, arg);
         }
         public void Appear(object arg)
         {
@@ -212,8 +222,6 @@ namespace MetalX.Define
                 }
             }
             Visible = true;
-            NowButtonBoxIndex = -1;
-            FocusNextButtonBox();
             OnFormBoxAppear(this, arg);
         }
         public void Disappear()
@@ -232,28 +240,44 @@ namespace MetalX.Define
             ControlBoxes.Add(BGTextureBox);
             OnFormBoxAppear = new FormBoxEvent(OnFormBoxAppearCode);
             OnFormBoxDisappear = new FormBoxEvent(OnFormBoxDisappearCode);
-            OnKeyDown += new KeyboardEvent(OnKeyDownCode);
-            OnKeyUp += new KeyboardEvent(OnKeyUpCode);
-            OnKeyDownHold += new KeyboardEvent(OnKeyDownHoldCode);
+            OnFormBoxFocus = new FormBoxEvent(OnFormBoxFocusCode);
+            OnFormBoxLostFocus = new FormBoxEvent(OnFormBoxLostFocusCode);
+            OnKeyDown = new KeyboardEvent(OnKeyDownCode);
+            OnKeyUp = new KeyboardEvent(OnKeyUpCode);
+            OnKeyDownHold = new KeyboardEvent(OnKeyDownHoldCode);
         }
 
-        public virtual void OnKeyDownHoldCode(object sender, int key)
+        protected virtual void OnFormBoxLostFocusCode(object sender, object arg)
+        {
+            //throw new NotImplementedException();
+            WaitAllButtonBox();
+        }
+
+        protected virtual void OnFormBoxFocusCode(object sender, object arg)
+        {
+            FocusNowButtonBox();
+            //throw new NotImplementedException();
+        }
+
+        protected virtual void OnKeyDownHoldCode(object sender, int key)
         {
         }
 
-        public virtual void OnKeyUpCode(object sender, int key)
+        protected virtual void OnKeyUpCode(object sender, int key)
         {
         }
 
-        public virtual void OnKeyDownCode(object sender, int key)
+        protected virtual void OnKeyDownCode(object sender, int key)
         {
         }
 
-        public virtual void OnFormBoxAppearCode(object sender, object arg)
+        protected virtual void OnFormBoxAppearCode(object sender, object arg)
         {
+            NowButtonBoxIndex = -1;
+            FocusNextButtonBox();
         }
 
-        public virtual void OnFormBoxDisappearCode(object sender, object arg)
+        protected virtual void OnFormBoxDisappearCode(object sender, object arg)
         {
         }
     }
@@ -277,7 +301,7 @@ namespace MetalX.Define
         public int TextIndex = -1;
         public string TextFileName;
         public string FontName = "微软雅黑";
-        public int FontSize = 15;
+        public int FontSize = 13;
         public string[] Lines
         {
             get

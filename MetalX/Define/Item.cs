@@ -26,6 +26,10 @@ namespace MetalX.Define
     [Serializable]
     public class Item
     {
+        public MemoryIndexer ShotMovieIndexer = new MemoryIndexer();
+        public MemoryIndexer FlyMovieIndexer = new MemoryIndexer();
+        public MemoryIndexer HitMovieIndexer = new MemoryIndexer();
+        public double FlyTime = 0;
         public Guid GUID = Guid.NewGuid();
         public string Name;
         public MemoryIndexer Icon = new MemoryIndexer();
@@ -46,9 +50,6 @@ namespace MetalX.Define
     [Serializable]
     public class Equipment : Item
     {
-        public MemoryIndexer ShotMovieIndexer = new MemoryIndexer();
-        public MemoryIndexer HitMovieIndexer = new MemoryIndexer();
-        public double BulletTime = 0;
 
         public Equipment()
         {
