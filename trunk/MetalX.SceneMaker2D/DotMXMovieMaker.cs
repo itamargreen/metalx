@@ -52,6 +52,7 @@ namespace MetalX.SceneMaker2D
         {
             timer1.Enabled = false;
             mxmovie.FrameCount = int.Parse(textBox3.Text);
+            mxmovie.Name = ui_mname.Text;
             if (mxmovie.Vertical)
             {
                 int n = mxmovie.MXT.Size.Height;
@@ -133,6 +134,8 @@ namespace MetalX.SceneMaker2D
 
                 textBox3.Text = mxmovie.FrameCount.ToString();
                 textBox4.Text = mxmovie.FrameInterval.ToString();
+                ui_mname.Text = mxmovie.Name;
+
 
                 try
                 {

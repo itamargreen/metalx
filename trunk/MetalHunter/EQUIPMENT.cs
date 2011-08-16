@@ -33,8 +33,9 @@ namespace MetalHunter
             Description = str;
 
             ShotMovieIndexer.Name = "sling_shot";
+            FlyMovieIndexer.Name = "sling_fly";
             HitMovieIndexer.Name = "sling_hit";
-            BulletTime = 200;
+            FlyTime = 200;
         }
     }
 
@@ -63,8 +64,9 @@ namespace MetalHunter
             Description = str;
 
             ShotMovieIndexer.Name = "bow_shot";
+            FlyMovieIndexer.Name = "bow_fly";
             HitMovieIndexer.Name = "bow_hit";
-            BulletTime = 200;
+            FlyTime = 200;
         }
     }
 

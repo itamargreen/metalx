@@ -329,7 +329,41 @@ namespace MetalX.Component
                 string value = kw[3];
                 if (kw[2] == "=")
                 {
-                    if (vars[name].ToString() == value)
+                    string val = "";
+                    try
+                    {
+                        val = vars[name].ToString();
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                    if (val == value)
+                    {
+                        string[] nkw = new string[kw.Length - 4];
+                        for (int i = 4; i < kw.Length; i++)
+                        {
+                            nkw[i - 4] = kw[i];
+                        }
+                        kw = nkw;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else if (kw[2] == "#")
+                {
+                    string val = "";
+                    try
+                    {
+                        val = vars[name].ToString();
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                    if (val != value)
                     {
                         string[] nkw = new string[kw.Length - 4];
                         for (int i = 4; i < kw.Length; i++)
@@ -620,6 +654,9 @@ namespace MetalX.Component
                     pc = game.PCs[c];
                 }
                 getValueByName(ref kw[2]);
+                if(kw.Length>3){
+                    getValueByName(ref kw[3]);
+                }
                 if (kw[2] == "skin")
                 {
                     game.ME.TextureName = kw[3];
@@ -889,15 +926,63 @@ namespace MetalX.Component
                 }
                 else if (kw[2] == "weapon")
                 {
+                    int t = int.Parse(kw[3]);
+
+                    Monster mon = game.Monsters[t];
+
                     pc.BattleState = BattleState.Weapon;
                     MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[pc.BattleMovieIndexer.Name].FullName);
                     pc.SetBattleMovie(mov);
+
+                    Vector3 floc = pc.BattleWeaponLocation;
+                    InsertCommand("?var bs = weapon movie play " + pc.Weapon.ShotMovieIndexer.Name + " " + floc.X + " " + floc.Y);
+                    InsertCommand("delay " + mov.MovieTime);
+
+                    Vector3 tloc = mon.BattleLocation;
+                    double bt = pc.Weapon.FlyTime;
+                    if (bt == 0)
+                    {
+                        //InsertCommand("monster " + t + " hit");
+                        //InsertCommand("?var bs = weapon movie play " + pc.Weapon.FlyMovieIndexer.Name + " " + tloc.X + " " + tloc.Y);
+                    }
+                    else
+                    {
+                        InsertCommand("monster " + t + " hit");
+                        InsertCommand("?var bs = weapon movie play " + pc.Weapon.FlyMovieIndexer.Name + " " + floc.X + " " + floc.Y + " " + tloc.X + " " + tloc.Y + " " + bt);
+                    }
+                    InsertCommand("delay " + bt);
+                    InsertCommand("?var bs = weapon movie play " + pc.Weapon.HitMovieIndexer.Name + " " + tloc.X + " " + tloc.Y);
                 }
                 else if (kw[2] == "item")
                 {
+                    int item_index = int.Parse(kw[3]);
+                    getValueByName(ref kw[4]);
+                    int t = int.Parse(kw[4]);
+
+                    Monster mon = game.Monsters[t];
+
                     pc.BattleState = BattleState.Item;
                     MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[pc.BattleMovieIndexer.Name].FullName);
                     pc.SetBattleMovie(mov);
+
+                    Vector3 floc = pc.BattleWeaponLocation;
+                    InsertCommand("?var bs = item movie play " + pc.Bag[item_index].ShotMovieIndexer.Name + " " + floc.X + " " + floc.Y);
+                    InsertCommand("delay " + mov.MovieTime);
+
+                    Vector3 tloc = mon.BattleLocation;
+                    double bt = pc.Bag[item_index].FlyTime;
+                    if (bt == 0)
+                    {
+                        //InsertCommand("monster " + t + " hit");
+                        //InsertCommand("?var bs = item movie play " + pc.Bag[item_index].FlyMovieIndexer.Name + " " + tloc.X + " " + tloc.Y);
+                    }
+                    else
+                    {
+                        InsertCommand("monster " + t + " hit");
+                        InsertCommand("?var bs = item movie play " + pc.Bag[item_index].FlyMovieIndexer.Name + " " + floc.X + " " + floc.Y + " " + tloc.X + " " + tloc.Y + " " + bt);
+                    }
+                    InsertCommand("delay " + bt);
+                    InsertCommand("?var bs = item movie play " + pc.Bag[item_index].HitMovieIndexer.Name + " " + tloc.X + " " + tloc.Y);
                 }
             }
             #endregion
@@ -1133,6 +1218,14 @@ namespace MetalX.Component
                     double ms = double.Parse(kw[2]);
                     game.BattleManager.ShockScreen(ms);
                 }
+                else if (kw[1] == "pctop")
+                {
+                    game.BattleManager.PCOnTop = true;
+                }
+                else if (kw[1] == "montop")
+                {
+                    game.BattleManager.PCOnTop = false;
+                }
                 else if (kw[1] == "fallout")
                 {
                     double ms = double.Parse(kw[2]);
@@ -1155,45 +1248,56 @@ namespace MetalX.Component
             #endregion
             else if (kw[0] == "movie")
             {
-                if (kw.Length >= 7)
+                try
                 {
-                    if (kw[1] == "play")
+                    if (kw.Length >= 7)
                     {
-                        double offsettime = 1;
-                        MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[kw[2]].FullName);
-                        int x = int.Parse(kw[3]);
-                        int y = int.Parse(kw[4]);
-                        int tx = int.Parse(kw[5]);
-                        int ty = int.Parse(kw[6]);
-                        try
+                        if (kw[1] == "play")
                         {
-                            offsettime = int.Parse(kw[7]);
+                            double offsettime = 1;
+                            MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[kw[2]].FullName);
+                            int x = int.Parse(kw[3]);
+                            int y = int.Parse(kw[4]);
+                            int tx = int.Parse(kw[5]);
+                            int ty = int.Parse(kw[6]);
+                            try
+                            {
+                                offsettime = int.Parse(kw[7]);
+                            }
+                            catch { }
+                            Vector3 f = new Vector3(x, y, 0);
+                            Vector3 t = new Vector3(tx, ty, 0);
+                            game.MovieManager.PlayMovie(mov, f, t, offsettime);
+
+                            if (mov.BGSound.Name != null)
+                                if (mov.BGSound.Name != string.Empty)
+                                    game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
                         }
-                        catch { }
-                        Vector3 f = new Vector3(x, y, 0);
-                        Vector3 t = new Vector3(tx, ty, 0);
-                        game.MovieManager.PlayMovie(mov, f, t, offsettime);
-
-                        if (mov.BGSound.Name != null)
-                            if (mov.BGSound.Name != string.Empty)
-                                game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
                     }
-                }
-                else
-                {
-                    if (kw[1] == "play")
+                    else
                     {
-                        MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[kw[2]].FullName);
-                        int x = int.Parse(kw[3]);
-                        int y = int.Parse(kw[4]);
-                        Vector3 f = new Vector3(x, y, 0);
-                        game.MovieManager.PlayMovie(mov, f);
+                        if (kw[1] == "play")
+                        {
+                            MetalX.File.MetalXMovie mov = game.LoadDotMXMovie(game.MovieFiles[kw[2]].FullName);
+                            int x = int.Parse(kw[3]);
+                            int y = int.Parse(kw[4]);
+                            Vector3 f = new Vector3(x, y, 0);
+                            game.MovieManager.PlayMovie(mov, f);
 
-                        if (mov.BGSound.Name != null)
-                            if (mov.BGSound.Name != string.Empty)
-                                game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                            if (mov.BGSound.Name != null)
+                                if (mov.BGSound.Name != string.Empty)
+                                    game.PlayMP3Audio(2, game.AudioFiles[mov.BGSound.Name].FullName);
+                        }
+                        else if (kw[1] == "set")
+                        {
+                            int x = int.Parse(kw[3]);
+                            int y = int.Parse(kw[4]);
+                            Vector3 f = new Vector3(x, y, 0);
+                            game.MovieManager.PlayMovie(kw[2], f);
+                        }
                     }
                 }
+                catch { }
                 //else if (kw[1] == "bplay")
                 //{
                 //    int i = int.Parse(kw[2]);
@@ -1217,6 +1321,10 @@ namespace MetalX.Component
                     double ms = double.Parse(kw[2]);
                     game.FormBoxManager.ShockScreen(ms);
                 }
+                else if (kw[1] == "focuson")
+                {
+                    game.FormBoxManager.FocusOn(kw[2]);
+                }
                 else if (kw[1] == "fallout")
                 {
                     double ms = double.Parse(kw[2]);
@@ -1227,7 +1335,7 @@ namespace MetalX.Component
                     double ms = double.Parse(kw[2]);
                     game.FormBoxManager.FallInSceen(ms);
                 }
-                else if (kw[2] == "appear")
+                else if (kw[1] == "appear")
                 {
                     if (kw.Length == 5)
                     {
@@ -1235,7 +1343,7 @@ namespace MetalX.Component
                         {
                             if (kw[4] == "me")
                             {
-                                game.FormBoxManager.Appear(kw[1], game.ME);
+                                game.FormBoxManager.Appear(kw[2], game.ME);
                             }
                         }
                         else
@@ -1246,7 +1354,7 @@ namespace MetalX.Component
                             {
                                 x = int.Parse(kw[3]);
                                 y = int.Parse(kw[4]);
-                                game.FormBoxManager.Appear(kw[1], new Point(x, y));
+                                game.FormBoxManager.Appear(kw[2], new Point(x, y));
                             }
                             catch
                             {
@@ -1255,18 +1363,18 @@ namespace MetalX.Component
                     }
                     else
                     {
-                        game.FormBoxManager.Appear(kw[1]);
+                        game.FormBoxManager.Appear(kw[2]);
                     }
                 }
-                else if (kw[2] == "disappear")
+                else if (kw[1] == "disappear")
                 {
-                    if (kw[1] == "all")
+                    if (kw[2] == "all")
                     {
                         game.FormBoxManager.DisappearAll();
                     }
                     else
                     {
-                        game.FormBoxManager.Disappear(kw[1]);
+                        game.FormBoxManager.Disappear(kw[2]);
                     }
                 }
             }

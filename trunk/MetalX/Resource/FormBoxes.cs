@@ -129,7 +129,7 @@ namespace MetalX.Resource
             //game.ExecuteScript();
             game.ScriptManager.RETURN.BOOL = (false);
         }
-        public override void OnFormBoxAppearCode(object sender, object arg)
+        protected override void OnFormBoxAppearCode(object sender, object arg)
         {
             if (arg is string)
             {
@@ -163,7 +163,7 @@ namespace MetalX.Resource
                 TextBox.Text = value;
             }
         }
-        public override void OnFormBoxAppearCode(object sender, object arg)
+        protected override void OnFormBoxAppearCode(object sender, object arg)
         {
             if (arg is string)
             {

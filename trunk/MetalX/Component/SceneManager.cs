@@ -228,7 +228,6 @@ namespace MetalX.Component
         string nextSCNName = null;
         Vector3 nextSCNLoc;
         Direction nextSCNDir;
-
         void changeSCNCode()
         {
             if (nextSCNName != null)
@@ -391,6 +390,10 @@ namespace MetalX.Component
                         int fi = 0;
                         fi = frameIndex;
                         float rot = 0 % 360;
+                        if (t[fi].TextureIndex == 451)
+                        {
+                            rot = 100;
+                        }
                         game.DrawMetalXTexture(
                             game.Textures[t[fi].TextureIndex],
                             t[fi].DrawZone,

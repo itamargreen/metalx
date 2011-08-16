@@ -562,6 +562,7 @@ namespace MetalX.Define
         /// 纹理文件名
         /// </summary>
         public string TextureFileName;
+        [NonSerialized]
         public int TextureIndex = -1;
         /// <summary>
         /// 纹理物理尺寸

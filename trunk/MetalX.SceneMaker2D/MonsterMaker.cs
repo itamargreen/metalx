@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using MetalX.Define;
+
 namespace MetalX.SceneMaker2D
 {
     public partial class MonsterMaker : Form
@@ -110,6 +112,7 @@ namespace MetalX.SceneMaker2D
             ui_int.Text = mon.Intelligence.ToString();
             ui_spd.Text = mon.Agility.ToString();
             ui_exp.Text = mon.EXP.ToString();
+            ui_montyp.Text = mon.MonsterType.ToString();
             //int i = 0;
             //i = (int)MetalX.Define.BattleState.Stand;
             //ui_stand.Text = mon.BattleMovieIndexers[i].Name;
@@ -168,6 +171,17 @@ namespace MetalX.SceneMaker2D
             mon.ScriptAI = ui_ai.Text;
 
             mon.EXP = int.Parse(ui_exp.Text);
+
+            MonsterType mt;
+            if (ui_montyp.Text == "生化")
+            {
+                mt = MonsterType.BIO;
+            }
+            else
+            {
+                mt = MonsterType.MEC;
+            }
+            mon.MonsterType = mt;
 
             //int i = 0;
             //i = (int)MetalX.Define.BattleState.Stand;

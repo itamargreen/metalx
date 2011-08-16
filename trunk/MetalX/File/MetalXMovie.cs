@@ -8,6 +8,7 @@ namespace MetalX.File
     [Serializable]
     public class MetalXMovie : IDisposable
     {
+        public string Name;
         public MetalXTexture MXT = new MetalXTexture();
         public Color ColorFilter = Color.White;
         public int FrameCount;

@@ -75,6 +75,8 @@
             this.label20 = new System.Windows.Forms.Label();
             this.ui_exp = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
+            this.ui_montyp = new System.Windows.Forms.ComboBox();
+            this.label22 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -407,7 +409,7 @@
             this.listBox1.Enabled = false;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(12, 192);
+            this.listBox1.Location = new System.Drawing.Point(800, 548);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(206, 184);
             this.listBox1.TabIndex = 33;
@@ -416,7 +418,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Enabled = false;
-            this.label16.Location = new System.Drawing.Point(12, 177);
+            this.label16.Location = new System.Drawing.Point(800, 533);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(29, 12);
             this.label16.TabIndex = 34;
@@ -425,24 +427,24 @@
             // button1
             // 
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(224, 192);
+            this.button1.Location = new System.Drawing.Point(694, 546);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 35;
-            this.button1.Text = "<=";
+            this.button1.Text = "->";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // textBox7
             // 
             this.textBox7.Enabled = false;
-            this.textBox7.Location = new System.Drawing.Point(330, 194);
+            this.textBox7.Location = new System.Drawing.Point(588, 548);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(100, 21);
             this.textBox7.TabIndex = 36;
             // 
             // ui_scriptinit
             // 
-            this.ui_scriptinit.Location = new System.Drawing.Point(12, 492);
+            this.ui_scriptinit.Location = new System.Drawing.Point(12, 184);
             this.ui_scriptinit.Multiline = true;
             this.ui_scriptinit.Name = "ui_scriptinit";
             this.ui_scriptinit.Size = new System.Drawing.Size(320, 240);
@@ -450,7 +452,7 @@
             // 
             // ui_ai
             // 
-            this.ui_ai.Location = new System.Drawing.Point(338, 492);
+            this.ui_ai.Location = new System.Drawing.Point(338, 184);
             this.ui_ai.Multiline = true;
             this.ui_ai.Name = "ui_ai";
             this.ui_ai.Size = new System.Drawing.Size(320, 240);
@@ -459,7 +461,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(12, 477);
+            this.label19.Location = new System.Drawing.Point(12, 169);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(65, 12);
             this.label19.TabIndex = 43;
@@ -468,7 +470,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(336, 477);
+            this.label20.Location = new System.Drawing.Point(336, 169);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(41, 12);
             this.label20.TabIndex = 44;
@@ -490,11 +492,34 @@
             this.label21.TabIndex = 45;
             this.label21.Text = "经验值";
             // 
+            // ui_montyp
+            // 
+            this.ui_montyp.FormattingEnabled = true;
+            this.ui_montyp.Items.AddRange(new object[] {
+            "生化",
+            "机械"});
+            this.ui_montyp.Location = new System.Drawing.Point(494, 139);
+            this.ui_montyp.Name = "ui_montyp";
+            this.ui_montyp.Size = new System.Drawing.Size(121, 20);
+            this.ui_montyp.TabIndex = 46;
+            this.ui_montyp.Text = "生化";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(492, 124);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(53, 12);
+            this.label22.TabIndex = 47;
+            this.label22.Text = "怪物类别";
+            // 
             // MonsterMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 744);
+            this.Controls.Add(this.label22);
+            this.Controls.Add(this.ui_montyp);
             this.Controls.Add(this.ui_exp);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.label20);
@@ -599,5 +624,7 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox ui_exp;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ComboBox ui_montyp;
+        private System.Windows.Forms.Label label22;
     }
 }

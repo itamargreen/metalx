@@ -30,15 +30,15 @@ namespace MetalHunter
             Script = "pc 0 hp 100\nmsg ＨＰ恢复了１００\nuntilpress y n\nmsg";
         }
     }
-    public class 爆竹 : Item
+    public class 火箭礼花 : Item
     {
-        public 爆竹()
+        public 火箭礼花()
         {
             ItemType = ItemType.Battle;
 
             Icon.Name = "icon_battle";
 
-            Name = "爆竹";
+            Name = "火箭礼花";
             Worth = 20;
 
             string str = "";
@@ -52,7 +52,11 @@ namespace MetalHunter
 
             Script = "";
 
+            ShotMovieIndexer.Name = "火箭礼花_shot";
+            FlyMovieIndexer.Name = "火箭礼花_fly";
+            HitMovieIndexer.Name = "boom_small";
 
+            FlyTime = 400;
         }
     }
     #endregion
