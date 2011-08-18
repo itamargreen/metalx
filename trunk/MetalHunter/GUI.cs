@@ -328,7 +328,7 @@ namespace MetalHunter
 
         void MenuCHR_OnButtonUp(object sender, object arg)
         {
-            game.ScriptManager.RETURN.INT = ((ButtonBox)sender).Index;
+            game.ScriptManager.AppendCommand("var equip_index = " + ((ButtonBox)sender).Index);
             game.ScriptManager.AppendCommand("gui appear MenuCHRASK 192 352");
             game.ScriptManager.Execute();
         }
@@ -386,7 +386,7 @@ namespace MetalHunter
         //卸下
         void BB2_OnButtonUp(object sender, object arg)
         {
-            int i = game.ScriptManager.RETURN.INT;
+            int i = int.Parse(game.ScriptManager.GetVariable("equip_index"));
             game.ME.BagUnequip((EquipmentCHRType)i);
             //game.ME.BagEquip(i);
 
@@ -524,8 +524,10 @@ namespace MetalHunter
         void MenuBAG_OnButtonUp(object sender, object arg)
         {
             Index = ((ButtonBox)sender).Index;
-            game.ScriptManager.RETURN.INT = (((ButtonBox)sender).Index);
-            game.ScriptManager.RETURN.STRING = (((ButtonBox)sender).Index).ToString();
+            //game.ScriptManager.RETURN.INT = Index;
+
+            game.ScriptManager.InsertCommand("var item_index = " + Index);
+
             game.ScriptManager.AppendCommand("gui appear MenuBAGASK 512 352");
             game.ScriptManager.Execute();
         }
@@ -568,7 +570,7 @@ namespace MetalHunter
         //使用
         void BB1_OnButtonUp(object sender, object arg)
         {
-            int i = game.ScriptManager.RETURN.INT;
+            int i = int.Parse(game.ScriptManager.GetVariable("item_index"));
             Item item = game.ME.BagSee(i);
             if (item.ItemType == ItemType.Supply)
             {
@@ -583,7 +585,7 @@ namespace MetalHunter
         //装备
         void BB2_OnButtonUp(object sender, object arg)
         {
-            int i = game.ScriptManager.RETURN.INT;
+            int i = int.Parse(game.ScriptManager.GetVariable("item_index"));
             game.ME.BagEquip(i);
 
             game.FormBoxManager.Disappear("MenuCHR");
@@ -594,7 +596,7 @@ namespace MetalHunter
         //丢弃
         void BB3_OnButtonUp(object sender, object arg)
         {
-            int i = game.ScriptManager.RETURN.INT;
+            int i = int.Parse(game.ScriptManager.GetVariable("item_index"));
             game.ME.BagRemove(i);
 
             game.FormBoxManager.Disappear("MenuBAG");
@@ -661,49 +663,114 @@ namespace MetalHunter
 
         void BB1_OnButtonUp(object sender, object arg)
         {
-            game.ScriptManager.InsertCommand("var bs = weapon");
+            game.ScriptManager.InsertCommand("var op_type = weapon");
 
             game.ScriptManager.InsertCommand("gui appear MenuMonster");
             game.ScriptManager.InsertCommand("untilpress y n");
             game.ScriptManager.InsertCommand("gui disappear MenuMonster");
-
-            game.ScriptManager.InsertCommand("var tar_index = RETURN");
         }
 
         void BB2_OnButtonUp(object sender, object arg)
         {
-            game.ScriptManager.InsertCommand("var bs = item");
+            game.ScriptManager.InsertCommand("var op_type = item");
 
             game.ScriptManager.InsertCommand("gui appear MenuBAG arg me");
             game.ScriptManager.InsertCommand("untilpress y");
             game.ScriptManager.InsertCommand("gui disappear MenuBAG");
 
-            game.ScriptManager.InsertCommand("var item_index = RETURN");
-
             game.ScriptManager.InsertCommand("gui appear MenuMonster");
             game.ScriptManager.InsertCommand("untilpress y n");
             game.ScriptManager.InsertCommand("gui disappear MenuMonster");
-
-            game.ScriptManager.InsertCommand("var tar_index = RETURN");
         }
 
         void BB3_OnButtonUp(object sender, object arg)
         {
-            game.ScriptManager.RETURN.STRING = ("装备");
+            //game.ScriptManager.RETURN.STRING = ("装备");
         }
 
         void BB4_OnButtonUp(object sender, object arg)
         {
-            game.ScriptManager.RETURN.STRING = ("乘降");
+            //game.ScriptManager.RETURN.STRING = ("乘降");
         }
 
         void BB5_OnButtonUp(object sender, object arg)
         {
-            game.ScriptManager.RETURN.STRING = ("逃跑");
+            //game.ScriptManager.RETURN.STRING = ("逃跑");
         }
+
+        //protected override void OnKeyUpCode(object sender, int key)
+        //{
+        //    Key k = (Key)key;
+        //    if (k == game.Options.KeyYES)
+        //    {
+        //        game.FormBoxManager.Disappear(Name);
+        //    }
+        //}
     }
     public class MenuMonster : FormBox
     {
+        void MenuMonster_OnButtonUp(object sender, object arg)
+        {
+            int pc_index = int.Parse(game.ScriptManager.GetVariable("pc_index"));
+            int target_index = ((ButtonBox)sender).Index;
+            string haveweapon = "null";
+
+            PC pc = game.PCs[pc_index];
+            Monster mon = game.Monsters[target_index];
+
+            if (pc.Weapon != null)
+            {
+                if (pc.Weapon.Name != null)
+                    if (pc.Weapon.Name != string.Empty)
+                    {
+                        haveweapon = pc.Weapon.Name;
+                    }
+            }
+
+            game.ScriptManager.InsertCommand("var target_index = " + target_index);
+            game.ScriptManager.InsertCommand("var haveweapon = " + haveweapon);
+            game.ScriptManager.InsertCommand("?var op_type # weapon var haveweapon = not_null");
+            game.ScriptManager.InsertCommand("?var haveweapon = null var op_type = fight");
+
+            //计算伤害
+            int damage = 0;
+            int roll = Util.Roll(100000);
+
+            double acc = pc.Accurate - mon.Missrate;
+            double str = pc.Strength - mon.Physique;
+            if (acc < 0) acc = 0;
+            if (str < 0) str = 0;
+
+            if (roll < acc * 1000.0)
+            {
+                if (roll < str * acc)
+                {
+                    //暴击
+                    damage = (int)(pc.Damage + pc.Damage * (100000.0 - roll) / 100000.0);
+                }
+                else
+                {
+                    //非暴击
+                    double x = (double)pc.Weapon.Quality;
+                    x /= 100.0;
+                    double y = Math.Abs(1.0 - x);
+                    damage = (int)(pc.Damage * x + pc.Damage * y * (100000.0 - roll) / 100000.0);
+                }
+            }
+
+            game.ScriptManager.AppendCommand("monster [target_index] -hp " + damage);
+            
+            game.ScriptManager.AppendCommand("msg monster　[target_index]　HP-=　" + damage);
+            game.ScriptManager.AppendCommand("untilpress y n");
+            game.ScriptManager.AppendCommand("msg");
+
+            game.ScriptManager.AppendCommand("monster [target_index] gethp mhp");
+            game.ScriptManager.AppendCommand("?var mhp < 1 msg monster　[target_index]　死了");
+            game.ScriptManager.AppendCommand("?var mhp < 1 untilpress y n");
+            game.ScriptManager.AppendCommand("?var mhp < 1 msg");
+            game.ScriptManager.AppendCommand("?var mhp < 1 monster [target_index] dead");
+        }
+        
         MetalX.File.MetalXMovie movie;
         List<ButtonBox> bb = new List<ButtonBox>();
 
@@ -715,6 +782,16 @@ namespace MetalHunter
             movie = game.LoadDotMXMovie(game.MovieFiles["cursor"].FullName);
             OnFormBoxDisappear += new FormBoxEvent(MenuMonster_OnFormBoxDisappear);
             OnFormBoxAppear += new FormBoxEvent(MenuMonster_OnFormBoxAppear);
+
+            ControlBoxes.Clear();
+            for (int i = 0; i < 16; i++)
+            {
+                bb.Add(new ButtonBox(game));
+                bb[i].OnButtonFocus += new ButtonBoxEvent(MenuMonster_OnButtonFocus);
+                bb[i].OnButtonUp += new ButtonBoxEvent(MenuMonster_OnButtonUp);
+                //ControlBoxes.Add(bb[i]);
+            }
+
         }
 
         void MenuMonster_OnFormBoxAppear(object sender, object arg)
@@ -722,21 +799,44 @@ namespace MetalHunter
             ControlBoxes.Clear();
             for (int i = 0; i < game.Monsters.Count; i++)
             {
-                bb.Add(new ButtonBox(game));
                 bb[i].Index = i;
+                bb[i].Visible = true;
                 bb[i].Location = Util.Vector32Point(game.Monsters[i].BattleLocation);
-                bb[i].OnButtonFocus += new ButtonBoxEvent(MenuMonster_OnButtonFocus);
-                bb[i].OnButtonUp += new ButtonBoxEvent(MenuMonster_OnButtonUp);
-                ControlBoxes.Add(bb[i]);
+                if (game.Monsters[i].HP > 0)
+                {
+                    ControlBoxes.Add(bb[i]);
+                }
             }
-
-            game.MovieManager.PlayMovie(movie, Util.Point2Vector3(bb[0].Location));
-        }
-
-        void MenuMonster_OnButtonUp(object sender, object arg)
-        {
-            ButtonBox bbs = (ButtonBox)sender;
-            game.ScriptManager.RETURN.STRING = bbs.Index.ToString();
+            game.MovieManager.PlayMovie(movie, Util.Point2Vector3(((ButtonBox)ControlBoxes[0]).Location));
+            //int first = -1;
+            //for (int i = 0; i < 16; i++)
+            //{
+            //    //bb.Add(new ButtonBox(game));
+            //    //ButtonBox bbb = ((ButtonBox)ControlBoxes[i]);
+            //    ((ButtonBox)ControlBoxes[i]).Index = i;
+            //    ((ButtonBox)ControlBoxes[i]).Visible = false;
+            //    //if (i < game.Monsters.Count)
+            //    try
+            //    {
+            //        if (game.Monsters[i].HP > 0)
+            //        {
+            //            if (first == -1)
+            //            {
+            //                first = i;
+            //            }
+            //            ((ButtonBox)ControlBoxes[i]).Visible = true;
+            //            ((ButtonBox)ControlBoxes[i]).Location = Util.Vector32Point(game.Monsters[i].BattleLocation);
+            //        }
+            //    }
+            //    catch { }
+            //    //bb[i].OnButtonFocus += new ButtonBoxEvent(MenuMonster_OnButtonFocus);
+            //    //bb[i].OnButtonUp += new ButtonBoxEvent(MenuMonster_OnButtonUp);
+            //    //ControlBoxes.Add(bb[i]);
+            //}
+            //if (first > -1)
+            //{
+            //    game.MovieManager.PlayMovie(movie, Util.Point2Vector3(((ButtonBox)ControlBoxes[first]).Location));
+            //}
         }
 
         void MenuMonster_OnFormBoxDisappear(object sender, object arg)
@@ -747,10 +847,17 @@ namespace MetalHunter
         void MenuMonster_OnButtonFocus(object sender, object arg)
         {
             ButtonBox bbs = (ButtonBox)sender;
-            Microsoft.DirectX.Vector3 loc = Util.Point2Vector3(bbs.Location);
-            loc.X -= 32;
-            loc.Y -= 32;
-            game.MovieManager.PlayMovie("cursor", loc);
+            //if (bbs.Visible == false)
+            //{
+            //    FocusNextButtonBox();
+            //}
+            //else
+            {
+                Microsoft.DirectX.Vector3 loc = Util.Point2Vector3(bbs.Location);
+                loc.X -= 48;
+                loc.Y -= 32;
+                game.MovieManager.PlayMovie("cursor", loc);
+            }
         }
 
         protected override void OnKeyUpCode(object sender, int key)
@@ -758,11 +865,15 @@ namespace MetalHunter
             Key k = (Key)key;
             if (k == game.Options.KeyNO)
             {
-                game.ScriptManager.InsertCommand("gui disappear " + Name);
+                game.FormBoxManager.Disappear(Name); 
+                
                 game.ScriptManager.InsertCommand("gui appear MenuBattleCHR");
                 game.ScriptManager.InsertCommand("untilpress y");
-                game.ScriptManager.InsertCommand("gui disappear MenuBattleCHR");
-                //game.ScriptManager.Execute();
+                //game.ScriptManager.InsertCommand("gui disappear MenuBattleCHR");
+            } 
+            else if (k == game.Options.KeyYES)
+            {
+                //game.FormBoxManager.Disappear(Name);                
             }
         }
 

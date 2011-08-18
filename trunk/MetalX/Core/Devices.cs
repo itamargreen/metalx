@@ -30,7 +30,8 @@ namespace MetalX
         public Microsoft.DirectX.DirectInput.Device DMouseDev;
         public Microsoft.DirectX.Direct3D.VertexBuffer VertexBuffer;
 
-        public Microsoft.DirectX.Direct3D.Font Font;
+        public System.Drawing.Font Font3D;
+        public Microsoft.DirectX.Direct3D.Font Font2D;
         public Microsoft.DirectX.Direct3D.Sprite Sprite;
 
         public SizeF D3DDevSizePixel
@@ -92,7 +93,9 @@ namespace MetalX
             FontDescription fd = new FontDescription();
             fd.FaceName = "新宋体";
             fd.Height = -12;
-            Font = new Microsoft.DirectX.Direct3D.Font(D3DDev, fd);
+            Font2D = new Microsoft.DirectX.Direct3D.Font(D3DDev, fd);
+
+            Font3D = new System.Drawing.Font("新宋体", 12);
         }
         public Devices(Game g)
         {            
@@ -108,7 +111,8 @@ namespace MetalX
         }
         public void Dispose()
         {
-            Font.Dispose();
+            Font2D.Dispose();
+            Font3D.Dispose();
             Sprite.Dispose();
             D3DDev.Dispose();
             DSoundDev.Dispose();

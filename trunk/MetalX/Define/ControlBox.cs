@@ -164,7 +164,10 @@ namespace MetalX.Define
                 {
                     if (j == i)
                     {
-                        return k;
+                        //if (ControlBoxes[k].Visible)
+                        {
+                            return k;
+                        }
                     }
                     j++;
                 }
@@ -479,6 +482,8 @@ namespace MetalX.Define
             OnButtonFocus = new ButtonBoxEvent(OnButtonFocusCode);
             OnButtonDown = new ButtonBoxEvent(OnButtonDownCode);
             OnButtonUp = new ButtonBoxEvent(OnButtonUpCode);
+
+            Visible = true;
         }
 
         public void SameAsWait()

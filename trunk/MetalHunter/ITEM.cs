@@ -19,7 +19,7 @@ namespace MetalHunter
             Worth = 30;
 
             string str = "";
-            str += "品质：" + ItemLevel.ToString();
+            str += "品质：" + Quality.ToString();
             str += "\n";
             str += "价值：" + Worth + "Ｇ";
             str += "\n";
@@ -42,7 +42,7 @@ namespace MetalHunter
             Worth = 20;
 
             string str = "";
-            str += "品质：" + ItemLevel.ToString();
+            str += "品质：" + Quality.ToString();
             str += "\n";
             str += "价值：" + Worth + "Ｇ";
             str += "\n";
