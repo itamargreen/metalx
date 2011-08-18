@@ -174,6 +174,10 @@ namespace MetalX.Component
         }
         public void Appear(int i,object arg)
         {
+            if (i < 0)
+            {
+                return;
+            }
             for (int j = 0; j < AppearingFormBoxIndex.Count; j++)
             {
                 if (AppearingFormBoxIndex[j] == i)

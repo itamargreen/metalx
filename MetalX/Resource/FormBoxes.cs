@@ -120,14 +120,14 @@ namespace MetalX.Resource
         {
             //game.AppendScript("return true");
             //game.ExecuteScript();
-            game.ScriptManager.RETURN.BOOL = (true);
+            //game.ScriptManager.RETURN.BOOL = (true);
         }
 
         void BB2_OnButtonDown(object sender, object arg)
         {
             //game.AppendScript("return false");
             //game.ExecuteScript();
-            game.ScriptManager.RETURN.BOOL = (false);
+            //game.ScriptManager.RETURN.BOOL = (false);
         }
         protected override void OnFormBoxAppearCode(object sender, object arg)
         {

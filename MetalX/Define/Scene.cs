@@ -739,7 +739,7 @@ namespace MetalX.Define
         public List<string> RollMonsters()
         {
             List<string> monsterNames = new List<string>();
-            int monsterCount = Util.Roll(1, 12);
+            int monsterCount = Util.Roll(1, 4);
             for (int i = 0; i < monsterCount; i++)
             {
                 int mc = MonsterNames.Count;

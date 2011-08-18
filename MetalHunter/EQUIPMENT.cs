@@ -20,7 +20,7 @@ namespace MetalHunter
             Worth = 8;
 
             string str = "";
-            str += "品质：" + ItemLevel.ToString();
+            str += "品质：" + Quality.ToString();
             str += "\n";          
             str += "攻击：" + Damage.ToString("f1");
             str += "\n";
@@ -51,7 +51,7 @@ namespace MetalHunter
             Accurate = 75f;
             Worth = 100;
             string str = "";
-            str += "品质：" + ItemLevel.ToString();
+            str += "品质：" + Quality.ToString();
             str += "\n";         
             str += "攻击：" + Damage.ToString("f1");
             str += "\n";
@@ -82,7 +82,7 @@ namespace MetalHunter
             Accurate = 85f;
             Worth = 2200;
             string str = "";
-            str += "品质：" + ItemLevel.ToString();
+            str += "品质：" + Quality.ToString();
             str += "\n"; 
             str += "攻击：" + Damage.ToString("f1");
             str += "\n";
@@ -111,7 +111,7 @@ namespace MetalHunter
             Defense = 5;
             Missrate = 2.5f;
             Worth = 190;
-            string str = ""; str += "品质：" + ItemLevel.ToString();  str += "\n"; 
+            string str = ""; str += "品质：" + Quality.ToString();  str += "\n"; 
 
             str += "防御：" + Defense.ToString("f1");
             str += "\n";
@@ -137,7 +137,7 @@ namespace MetalHunter
             Defense = 5;
             Missrate = 2.5f;
             Worth = 180;
-            string str = ""; str += "品质：" + ItemLevel.ToString(); str += "\n"; 
+            string str = ""; str += "品质：" + Quality.ToString(); str += "\n"; 
             str += "防御：" + Defense.ToString("f1");
             str += "\n";
             str += "闪避："+ Missrate.ToString("f1") + "%";
@@ -162,7 +162,7 @@ namespace MetalHunter
             Defense = 5;
             Missrate = 1.5f;
             Worth = 220;
-            string str = ""; str += "品质：" + ItemLevel.ToString(); str += "\n"; 
+            string str = ""; str += "品质：" + Quality.ToString(); str += "\n"; 
             str += "防御：" + Defense.ToString("f1");
             str += "\n";
             str += "闪避："+ Missrate.ToString("f1") + "%";
@@ -187,7 +187,7 @@ namespace MetalHunter
             Defense = 1;
             Accurate = 1f;
             Worth = 8;
-            string str = ""; str += "品质：" + ItemLevel.ToString(); str += "\n"; 
+            string str = ""; str += "品质：" + Quality.ToString(); str += "\n"; 
             str += "防御：" + Defense.ToString("f1");
             str += "\n";
             str += "命中：" + Accurate.ToString("f1") + "%";
@@ -212,7 +212,7 @@ namespace MetalHunter
             Defense = 1;
             Missrate = 1f;
             Worth = 38;
-            string str = ""; str += "品质：" + ItemLevel.ToString(); str += "\n"; 
+            string str = ""; str += "品质：" + Quality.ToString(); str += "\n"; 
             str += "防御：" + Defense.ToString("f1");
             str += "\n";
             str += "闪避："+ Missrate.ToString("f1") + "%";

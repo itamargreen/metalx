@@ -13,7 +13,7 @@ namespace MetalX.Define
         Equipment = 3,
     }
     [Serializable]
-    public enum ItemLevel
+    public enum Quality
     {
         SSS = 130,
         SS = 120,
@@ -41,7 +41,7 @@ namespace MetalX.Define
         public double Worth;
         public string Script;
         public ItemType ItemType;
-        public ItemLevel ItemLevel = ItemLevel.C;
+        public Quality Quality = Quality.C;
         public Item GetClone()
         {
             return (Item)MemberwiseClone();
@@ -67,7 +67,8 @@ namespace MetalX.Define
         {
             get
             {
-                double t = (double)ItemLevel / 100;
+                //double t = (double)Quality / 100;
+                double t = 1;
                 return t * damage;
             }
             set
@@ -79,7 +80,8 @@ namespace MetalX.Define
         {
             get
             {
-                double t = (double)ItemLevel / 100;
+                //double t = (double)Quality / 100;
+                double t = 1;
                 return t * defense;
             }
             set
@@ -91,7 +93,8 @@ namespace MetalX.Define
         {
             get
             {
-                double t = (double)ItemLevel / 100;
+                //double t = (double)Quality / 100;
+                double t = 1;
                 return t * accurate;
             }
             set
@@ -103,7 +106,8 @@ namespace MetalX.Define
         {
             get
             {
-                double t = (double)ItemLevel / 100;
+                //double t = (double)Quality / 100;
+                double t = 1;
                 return t * missrate;
             }
             set

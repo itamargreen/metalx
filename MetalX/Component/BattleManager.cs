@@ -43,77 +43,95 @@ namespace MetalX.Component
             { }
             else
             {
-                if (Order.Count > 0)
+                if (MonstersAllDead())
                 {
-                    int i = GetOrder();
-                    if (i < 0)
+                    int exp = 0;
+                    for (int i = 0; i < game.Monsters.Count; i++)
                     {
-                        //PCOnTop = false;
-                        i++;
-                        i = -i;
-
-
-                        int fi = i;
-                        int ti = 0;
-
-                        BattleState fbs = BattleState.Fight;
-                        BattleState tbs = BattleState.Hit;
-
-                        game.ScriptManager.AppendCommand("btl montop");
-                        //提示
-                        game.ScriptManager.AppendCommand("msg " + game.Monsters[fi].Name + "　" + fbs.ToString());
-                        game.ScriptManager.AppendCommand("untilpress y n");
-                        game.ScriptManager.AppendCommand("msg");
-                        //攻击动画
-                        game.ScriptManager.AppendCommand("monster " + fi + " " + fbs.ToString().ToLower() + " " + ti);
-                        game.ScriptManager.AppendCommand("delay 500");
-                        //被攻击动画
-                        game.ScriptManager.AppendCommand("pc 0 " + tbs.ToString().ToLower());
-                        game.ScriptManager.AppendCommand("delay 500");
+                        exp += game.Monsters[i].EXP;
                     }
-                    else
+                    for (int i = 0; i < game.PCs.Count; i++)
                     {
-                        int fi = i;
-
-                        game.ScriptManager.AppendCommand("btl pctop"); 
-
-                        game.ScriptManager.AppendCommand("gui appear MenuBattleCHR");
-                        game.ScriptManager.AppendCommand("untilpress y");
-                        game.ScriptManager.AppendCommand("gui disappear MenuBattleCHR");
-
-                        string haveweapon = "null";
-                        if (game.PCs[fi].Weapon != null)
-                        {
-                            if (game.PCs[fi].Weapon.Name != null)
-                                if (game.PCs[fi].Weapon.Name != string.Empty)
-                                {
-                                    haveweapon = game.PCs[fi].Weapon.Name;
-                                }
-                        }
-                        game.ScriptManager.AppendCommand("var haveweapon = " + haveweapon);
-                        game.ScriptManager.AppendCommand("?var bs # weapon var haveweapon = !null");
-                        game.ScriptManager.AppendCommand("?var haveweapon = null var bs = fight");
-                                      
-                        //提示
-                        game.ScriptManager.AppendCommand("msg " + game.PCs[fi].Name + "　[bs]");
-                        game.ScriptManager.AppendCommand("untilpress y n");
-                        game.ScriptManager.AppendCommand("msg");
-                        //动画
-                        game.ScriptManager.AppendCommand("?var bs = fight pc 0 [bs] [tar_index]");
-                        game.ScriptManager.AppendCommand("?var bs = weapon pc 0 [bs] [tar_index]");
-                        game.ScriptManager.AppendCommand("?var bs = item pc 0 [bs] [item_index] [tar_index]");
-                        game.ScriptManager.AppendCommand("delay 500");
+                        game.PCs[i].EXP += exp;
                     }
+                    game.ScriptManager.AppendCommand(@"msg 消灭了所有怪物n\获得经验" + exp + "点");
+                    game.ScriptManager.AppendCommand("untilpress y n");
+                    game.ScriptManager.AppendCommand("msg");
+                    game.ScriptManager.AppendCommand("btl getout");
+                }
+                else if (PCsAllDead())
+                {
                 }
                 else
                 {
-                    InitOrder();
+                    if (Order.Count > 0)
+                    {
+                        int i = GetOrder();
+                        if (i < 0)
+                        {
+                            i++;
+                            i = -i;
+                            Monster mon = game.Monsters[i];
+                            if (mon.HP > 0)
+                            {
+                                game.ScriptManager.AppendCommand("var op_type = weapon");
+                                game.ScriptManager.AppendCommand("var mon_index = " + i);
+                                game.ScriptManager.AppendCommand("var target_index = 0");
 
-                    game.ScriptManager.AppendCommand("msg 第" + Round + "回合");
-                    game.ScriptManager.AppendCommand("untilpress y n");
-                    game.ScriptManager.AppendCommand("msg");
-                }
-                game.ScriptManager.Execute();
+                                BattleState fbs = BattleState.Fight;
+                                BattleState tbs = BattleState.Hit;
+
+                                game.ScriptManager.AppendCommand("btl montop");
+                                //提示
+                                game.ScriptManager.AppendCommand("msg [mon_index]　" + fbs.ToString());
+                                game.ScriptManager.AppendCommand("untilpress y n");
+                                game.ScriptManager.AppendCommand("msg");
+                                //攻击动画
+                                game.ScriptManager.AppendCommand("monster [mon_index] " + fbs.ToString().ToLower() + " [target_index]");
+                                game.ScriptManager.AppendCommand("delay 500");
+                                //被攻击动画
+                                game.ScriptManager.AppendCommand("pc [target_index] " + tbs.ToString().ToLower());
+                                game.ScriptManager.AppendCommand("delay 500");
+                            }
+                        }
+                        else
+                        {
+                            PC pc = game.PCs[i];
+                            if (pc.HP > 0)
+                            {
+                                game.ScriptManager.AppendCommand("var op_type = weapon");
+                                game.ScriptManager.AppendCommand("var target_index = 0");
+                                game.ScriptManager.AppendCommand("var pc_index = 0");
+
+                                game.ScriptManager.AppendCommand("btl pctop");
+
+                                game.ScriptManager.AppendCommand("gui appear MenuBattleCHR");
+                                game.ScriptManager.AppendCommand("untilpress y");
+                                game.ScriptManager.AppendCommand("gui disappear MenuBattleCHR");
+
+                                //提示
+                                game.ScriptManager.AppendCommand("msg " + pc.Name + "　[op_type]");
+                                game.ScriptManager.AppendCommand("untilpress y n");
+                                game.ScriptManager.AppendCommand("msg");
+                                //动画
+                                game.ScriptManager.AppendCommand("?var op_type = fight pc [pc_index] [op_type] [target_index]");
+                                game.ScriptManager.AppendCommand("?var op_type = weapon pc [pc_index] [op_type] [target_index]");
+                                game.ScriptManager.AppendCommand("?var op_type = item pc [pc_index] [op_type] [item_index] [target_index]");
+
+                                game.ScriptManager.AppendCommand("delay 500");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        InitOrder();
+
+                        game.ScriptManager.AppendCommand("msg 第" + Round + "回合");
+                        game.ScriptManager.AppendCommand("untilpress y n");
+                        game.ScriptManager.AppendCommand("msg");
+                    }
+                    
+                }game.ScriptManager.Execute();
             }
         }
 
@@ -163,6 +181,11 @@ namespace MetalX.Component
 
         void DrawMonster(Monster mon)
         {
+            if (mon.HP < 0)
+            {
+                return;
+            }
+
             if (mon.BattleMovie == null)
             {
                 return;
@@ -172,6 +195,7 @@ namespace MetalX.Component
             loc = Util.Vector3AddVector3(loc, this.ScreenOffsetPixel);
             Color color = Util.MixColor(ColorFilter, mon.BattleMovie.ColorFilter);
             game.DrawMetalXTexture(mon.BattleMovie.MXT, mon.BattleMovie.DrawZone, loc, mon.BattleMovie.TileSize2X, 0, color);
+            game.DrawText(mon.HP.ToString(), Util.Vector32Point(loc), Color.White);
         }
 
         void DrawCHR(CHR chr)
@@ -181,7 +205,28 @@ namespace MetalX.Component
             Color color = Util.MixColor(ColorFilter, chr.BattleMovie.ColorFilter);
             game.DrawMetalXTexture(chr.BattleMovie.MXT, chr.BattleMovie.DrawZone, loc, chr.BattleMovie.TileSize2X, 0, color);
         }
-
+        public bool MonstersAllDead()
+        {
+            for (int i = 0; i < game.Monsters.Count; i++)
+            {
+                if (game.Monsters[i].HP > 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public bool PCsAllDead()
+        {
+            for (int i = 0; i < game.PCs.Count; i++)
+            {
+                if (game.PCs[i].HP > 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public void GetIn(string bgt,string bgm)
         {
             BGTextureName = bgt;

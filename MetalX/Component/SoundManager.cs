@@ -285,6 +285,10 @@ namespace MetalX.Component
         }
         void fillFore()
         {
+            if (mp3Stream == null)
+            {
+                return;
+            } 
             if (secondaryBuffer == null || secondaryBuffer.Disposed || mp3Stream == null)
             {
                 return;
@@ -298,6 +302,10 @@ namespace MetalX.Component
         }
         void fillBack()
         {
+            if (mp3Stream == null)
+            {
+                return;
+            }
             if (secondaryBuffer == null || secondaryBuffer.Disposed || mp3Stream == null)
             {
                 return;
