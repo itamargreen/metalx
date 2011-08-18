@@ -53,7 +53,9 @@ namespace MetalX.Component
                     for (int i = 0; i < game.PCs.Count; i++)
                     {
                         game.PCs[i].EXP += exp;
-                    }
+                    } 
+                    game.ScriptManager.AppendCommand("mp3 1");
+                    game.ScriptManager.AppendCommand("mp3 2 win");
                     game.ScriptManager.AppendCommand(@"msg 消灭了所有怪物n\获得经验" + exp + "点");
                     game.ScriptManager.AppendCommand("untilpress y n");
                     game.ScriptManager.AppendCommand("msg");
