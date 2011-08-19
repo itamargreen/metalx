@@ -869,6 +869,7 @@ namespace MetalX.Define
         {
             BattleShowWeapon = true;
         }
+        public bool CanCtrl = true;
     }
     [Serializable]
     public class NPC : CHR

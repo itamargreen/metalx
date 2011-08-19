@@ -313,7 +313,7 @@ namespace MetalX.Define
             }
         }
         public bool OneByOne = false;
-        public int Interval = 10;
+        public int Interval = 20;
         DateTime lastCharacterTime;
         public int SubTextIndex = 0;
         public event TextBoxEvent OnSubTextShowDone;

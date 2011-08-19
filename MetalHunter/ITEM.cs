@@ -30,19 +30,25 @@ namespace MetalHunter
             Script = "pc 0 hp 100\nmsg ＨＰ恢复了１００\nuntilpress y n\nmsg";
         }
     }
-    public class 火箭礼花 : Item
+    public class 火箭礼花 : BattleItem
     {
-        public 火箭礼花()
+        public 火箭礼花():base()
         {
-            ItemType = ItemType.Battle;
+            //ItemType = ItemType.Battle;
 
             Icon.Name = "icon_battle";
 
             Name = "火箭礼花";
             Worth = 20;
+            damage = 100;
+            accurate = 85;
 
             string str = "";
             str += "品质：" + Quality.ToString();
+            str += "\n";
+            str += "攻击：" + Damage.ToString("f1");
+            str += "\n";
+            str += "命中：" + Accurate.ToString("f1") + "%";
             str += "\n";
             str += "价值：" + Worth + "Ｇ";
             str += "\n";

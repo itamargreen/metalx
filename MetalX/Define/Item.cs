@@ -48,10 +48,48 @@ namespace MetalX.Define
         }
     }
     [Serializable]
+    public class BattleItem : Item
+    {
+        public BattleItem()
+            : base()
+        {
+            ItemType = ItemType.Battle;
+        }
+        protected double damage;
+        public double Damage
+        {
+            get
+            {
+                //double t = (double)Quality / 100;
+                double t = 1;
+                return t * damage;
+            }
+            set
+            {
+                damage = value;
+            }
+        }
+        protected double accurate;
+        public double Accurate
+        {
+            get
+            {
+                //double t = (double)Quality / 100;
+                double t = 1;
+                return t * accurate;
+            }
+            set
+            {
+                accurate = value;
+            }
+        }
+    }
+    [Serializable]
     public class Equipment : Item
     {
 
         public Equipment()
+            : base()
         {
             ItemType = ItemType.Equipment;
         }

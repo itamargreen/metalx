@@ -12,6 +12,7 @@ namespace MetalX.Component
 {
     public class ScriptManager : GameCom
     {
+        //bool gsc_bak = false;
         //List<string> vars = new List<string>();
         Hashtable vars = new Hashtable();
         public string GetVariable(string name)
@@ -72,7 +73,11 @@ namespace MetalX.Component
                 int j = 0;
                 for (int i = strs.Length - 20; i < strs.Length; i++)
                 {
-                    tmp[j] = strs[i];
+                    //try
+                    {
+                        tmp[j] = strs[i];
+                    }
+                    //catch { }
                     j++;
                 }
                 return tmp;
@@ -97,7 +102,7 @@ namespace MetalX.Component
         {
             insque.Add(cmd);
         }
-        void en_que(string cmd)
+        void app_que(string cmd)
         {
             appque.Add(cmd);
         }
@@ -161,10 +166,10 @@ namespace MetalX.Component
                 {
                     presskey = "";
                     text += curcmd + "\n";
-                    if (text.Length > 1024)
-                    {
-                        text = "";
-                    }
+                    //if (text.Length > 1024)
+                    //{
+                    //    text = "";
+                    //}
                     curcmd = de_que();
                     if (curcmd == null)
                     {
@@ -195,6 +200,7 @@ namespace MetalX.Component
                 
             }
             //game.DrawText("FPS: " + game.AverageFPS.ToString("f1") + "    DrawMode: " + game.Options.TextureDrawMode, new System.Drawing.Point(0, 0), Color.Blue);
+            //game.DrawText(game.SceneManager.Controllable.ToString(), new System.Drawing.Point(0, 0), Color.Blue);
         }
 
         void execute(string cmd)
@@ -211,165 +217,7 @@ namespace MetalX.Component
             }
             kw[0] = kw[0].ToLower();
             #region sys
-            //if (kw[0] == "bool=")
-            //{
-            //    if (kw[1] == "true" || kw[1] == "t")
-            //    {
-            //        if (RETURN.BOOL == false)
-            //        {
-            //            return;
-            //        }
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else if (kw[1] == "false" || kw[1] == "f")
-            //    {
-            //        if (RETURN.BOOL)
-            //        {
-            //            return;
-            //        }
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //}
-            //else if (kw[0] == "bool#")
-            //{
-            //    if (kw[1] == "true" || kw[1] == "t")
-            //    {
-            //        if (RETURN.BOOL)
-            //        {
-            //            return;
-            //        }
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else if (kw[1] == "false" || kw[1] == "f")
-            //    {
-            //        if (RETURN.BOOL == false)
-            //        {
-            //            return;
-            //        }
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //}
-            //else if (kw[0] == "int=")
-            //{
-            //    int n = int.Parse(kw[1]);
-            //    if (RETURN.INT == n)
-            //    {
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else
-            //    {
-            //        return;
-            //    }
-            //}
-            //else if (kw[0] == "int>")
-            //{
-            //    int n = int.Parse(kw[1]);
-            //    if (RETURN.INT > n)
-            //    {
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else
-            //    {
-            //        return;
-            //    }
-            //}
-            //else if (kw[0] == "int<")
-            //{
-            //    int n = int.Parse(kw[1]);
-            //    if (RETURN.INT < n)
-            //    {
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else
-            //    {
-            //        return;
-            //    }
-            //}
-            //else if (kw[0] == "int#")
-            //{
-            //    int n = int.Parse(kw[1]);
-            //    if (RETURN.INT != n)
-            //    {
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else
-            //    {
-            //        return;
-            //    }
-            //}
-            //else if (kw[0] == "string=")
-            //{
-            //    if (RETURN.STRING == kw[1])
-            //    {
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else
-            //    {
-            //        return;
-            //    }
-            //}
-            //else if (kw[0] == "string#")
-            //{
-            //    if (RETURN.STRING != kw[1])
-            //    {
-            //        string[] nkw = new string[kw.Length - 2];
-            //        for (int i = 2; i < kw.Length; i++)
-            //        {
-            //            nkw[i - 2] = kw[i];
-            //        }
-            //        kw = nkw;
-            //    }
-            //    else
-            //    {
-            //        return;
-            //    }
-            //}
-            //else 
+
             if (kw[0] == "?var")
             {
                 string name = kw[1];
@@ -461,7 +309,7 @@ namespace MetalX.Component
                 int l = int.Parse(kw[1]);
                 int h = int.Parse(kw[2]);
                 int seed = Util.Roll(l, h);
-                vars.Add("roll", seed.ToString());
+                SetVariable("roll", seed.ToString());
                 //RETURN.INT = seed;
             }
             //else if (kw[0] == "exe")
@@ -664,7 +512,7 @@ namespace MetalX.Component
                     {
                         for (int i = 0; i < stp; i++)
                         {
-                            ins_que("npc " + kw[1] + " move");
+                            ins_que("npc " + kw[1] + " move 1");
                             if (i + 1 < stp)
                             {
                                 ins_que("untilstop " + kw[1]);
@@ -719,6 +567,14 @@ namespace MetalX.Component
                 //    int i = int.Parse(kw[2]);
                 //    //game.ME.Gold += int.Parse(kw[2]);
                 //}
+                else if (kw[2] == "freeze")
+                {
+                    pc.CanCtrl = false;
+                }
+                else if (kw[2] == "unfreeze")
+                {
+                    pc.CanCtrl = true;
+                }
                 else if (kw[2] == "+hp")
                 {
                     pc.HP += int.Parse(kw[3]);
@@ -816,7 +672,7 @@ namespace MetalX.Component
                     {
                         for (int i = 0; i < stp; i++)
                         {
-                            ins_que("pc move");
+                            ins_que("pc 0 move 1");
                             if (i + 1 < stp)
                             {
                                 ins_que("untilstop pc");
@@ -962,7 +818,7 @@ namespace MetalX.Component
                     int t = int.Parse(kw[3]);
                     Monster mon = game.Monsters[t];
                     Microsoft.DirectX.Vector3 v3 = mon.BattleLocation;
-                    v3.X += mon.BattleSize.Width / 2;
+                    v3.X += (mon.BattleSize.Width / 2 + pc.BattleSize.Width / 2);
                     //v3.Y += mon.BattleSize.Height;
                     //v3.Y -= game.ME.BattleSize.Height;
 
@@ -1061,7 +917,7 @@ namespace MetalX.Component
                     int ti = int.Parse(kw[3]);
                     PC pc = game.PCs[ti];
                     Microsoft.DirectX.Vector3 v3 = pc.BattleLocation;
-                    v3.X -= pc.BattleSize.Width / 2;
+                    v3.X -= (mon.BattleSize.Width / 2 + pc.BattleSize.Width / 2);
                     //v3.Y += pc.BattleSize.Height;
                     //v3.Y -= mon.BattleSize.Height;
 
@@ -1231,6 +1087,7 @@ namespace MetalX.Component
                 }
                 else if (kw[1] == "clrctrl")
                 {
+                    //gsc_bak = game.SceneManager.Controllable;
                     game.SceneManager.Controllable = false;
                 }
                 else if (kw[1] == "enableall")
@@ -1581,7 +1438,7 @@ namespace MetalX.Component
                         }
                         else
                         {
-                            en_que(c);
+                            app_que(c);
                         }
                     }
                 }
@@ -1599,9 +1456,22 @@ namespace MetalX.Component
         }
         public void InsertDotMetalXScript(string fileName)
         {
-            string cmds = System.IO.File.ReadAllText(game.ScriptFiles[fileName].FullName);
+            string cmd = System.IO.File.ReadAllText(game.ScriptFiles[fileName].FullName);
+            string[] cmds = cmd.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            appque.InsertRange(0, cmds);
+            //foreach (string c in cmds)
+            //{
+            //    try
+            //    {
+            //        if (c.Substring(0, 2) != "//")
+            //        {
+            //            appque.InsertRange(0, cmds);
+            //        }
+            //    }
+            //    catch { }
+            //}
+            //InsertCommand(cmds);
 
-            InsertCommand(cmds);
         }
 
         public override void OnKeyUpCode(object sender, int key)

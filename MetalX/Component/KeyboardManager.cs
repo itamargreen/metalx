@@ -33,14 +33,16 @@ namespace MetalX.Component
                     {
                         foreach (GameCom gc in game.GameComs)
                         {
-                            gc.SetKeyboardEvent(i, KeyState.DownHold);
+                            if (gc.Controllable)
+                                gc.SetKeyboardEvent(i, KeyState.DownHold);
                         }
                     }
                     else
                     {
                         foreach (GameCom gc in game.GameComs)
                         {
-                            gc.SetKeyboardEvent(i, KeyState.Down);
+                            if (gc.Controllable)
+                                gc.SetKeyboardEvent(i, KeyState.Down);
                             //gc.SetKeyboardEvent(i, KeyState.DownHold);
                             
                         }
@@ -53,7 +55,8 @@ namespace MetalX.Component
                     {
                         foreach (GameCom gc in game.GameComs)
                         {
-                            gc.SetKeyboardEvent(i, KeyState.Up);
+                            if (gc.Controllable)
+                                gc.SetKeyboardEvent(i, KeyState.Up);
                         }
                     }
                     keyboardStateBackup[i] = false;
