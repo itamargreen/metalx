@@ -293,9 +293,9 @@ namespace MetalX.Component
             {
                 return;
             }
-            mp3Stream.Read(buff, 0, halfSize);
             try
             {
+                mp3Stream.Read(buff, 0, halfSize);
                 secondaryBuffer.Write(0, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
             }
             catch { }
@@ -310,9 +310,9 @@ namespace MetalX.Component
             {
                 return;
             }
-            mp3Stream.Read(buff, 0, halfSize);
             try
             {
+                mp3Stream.Read(buff, 0, halfSize);
                 secondaryBuffer.Write(halfSize, new System.IO.MemoryStream(buff), halfSize, LockFlag.None);
             }
             catch { }
@@ -365,7 +365,11 @@ namespace MetalX.Component
             //    return;
             //}
             mp3Stream.Position = 0;
-            mp3Stream.Read(buff, 0, halfSize);
+            try
+            {
+                mp3Stream.Read(buff, 0, halfSize);
+            }
+            catch { }
             pos = posb = true;
             foreFilled = true;
             backFilled = false;

@@ -174,7 +174,7 @@ namespace MetalX.Component
                             if (npc.Invisible == false)
                             {
                                 npc.Invisible = true;
-                                game.PlayMP3Audio(2, game.AudioFiles["163"].FullName);
+                                game.PlayMP3Audio(2, game.AudioFiles["door"].FullName);
                             }
                         }
                         else if (v33 == game.ME.LastLocation)
@@ -190,7 +190,7 @@ namespace MetalX.Component
                             if (npc.Invisible)
                             {
                                 npc.Invisible = false;
-                                game.PlayMP3Audio(2, game.AudioFiles["163"].FullName);
+                                game.PlayMP3Audio(2, game.AudioFiles["door"].FullName);
                             }
                         }
                     }
@@ -199,7 +199,7 @@ namespace MetalX.Component
         }
         void scriptCode()
         {
-            if (game.SceneManager.Controllable == false)
+            if (Controllable == false)
             {
                 return;
             }
@@ -310,6 +310,7 @@ namespace MetalX.Component
                     try
                     {
                         game.NPCs.Add(game.LoadDotMXNPC(game.NPCFiles[name].FullName));
+                        game.NPCs[i].SetRealLocation(game.NPCs[i].RealLocation, game.Options.TilePixelX);
                     }
                     catch
                     {
@@ -544,6 +545,10 @@ namespace MetalX.Component
             {
                 return;
             }
+            if (game.ME.CanCtrl == false)
+            {
+                return;
+            }
             Key k = (Key)key;
             if (game.ME.NeedMovePixel == 0)
             {
@@ -601,7 +606,7 @@ namespace MetalX.Component
                 {
                     return;
                 }
-                game.SceneManager.Controllable = false;
+                Controllable = false;
                 npc.FocusOnMe(game.ME);
                 if (npc.IsBox)
                 {
@@ -626,8 +631,8 @@ namespace MetalX.Component
                     //else
                     game.ScriptManager.AppendCommand(npc.Script);
 
-                    game.ScriptManager.AppendCommand("scn setctrl");
                     game.ScriptManager.AppendCommand("npc " + npc.Name + " dir def");
+                    game.ScriptManager.AppendCommand("scn setctrl");
                     game.ScriptManager.Execute();
                     //if (sm.IsNobody() == false)
                     //{

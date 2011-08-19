@@ -102,8 +102,9 @@ namespace MetalX.Component
                             if (pc.HP > 0)
                             {
                                 game.ScriptManager.AppendCommand("var op_type = weapon");
+                                game.ScriptManager.AppendCommand("var pc_index = " + i);
                                 game.ScriptManager.AppendCommand("var target_index = 0");
-                                game.ScriptManager.AppendCommand("var pc_index = 0");
+                                game.ScriptManager.AppendCommand("var item_index = 0");
 
                                 game.ScriptManager.AppendCommand("btl pctop");
 

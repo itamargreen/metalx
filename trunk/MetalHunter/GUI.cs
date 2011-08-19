@@ -143,6 +143,7 @@ namespace MetalHunter
 
             head = new TextureBox(g);
             head.Location = new Point(32, 16);
+            head.Size = new Size(96, 96);
             
             nam = new TextBox(g);
             nam.Location = new Point(24, line++ * 24 - 4);
@@ -713,51 +714,91 @@ namespace MetalHunter
         {
             int pc_index = int.Parse(game.ScriptManager.GetVariable("pc_index"));
             int target_index = ((ButtonBox)sender).Index;
-            string haveweapon = "null";
+            int damage = 0;
 
             PC pc = game.PCs[pc_index];
             Monster mon = game.Monsters[target_index];
 
-            if (pc.Weapon != null)
-            {
-                if (pc.Weapon.Name != null)
-                    if (pc.Weapon.Name != string.Empty)
-                    {
-                        haveweapon = pc.Weapon.Name;
-                    }
-            }
-
             game.ScriptManager.InsertCommand("var target_index = " + target_index);
-            game.ScriptManager.InsertCommand("var haveweapon = " + haveweapon);
-            game.ScriptManager.InsertCommand("?var op_type # weapon var haveweapon = not_null");
-            game.ScriptManager.InsertCommand("?var haveweapon = null var op_type = fight");
 
-            //计算伤害
-            int damage = 0;
-            int roll = Util.Roll(100000);
-
-            double acc = pc.Accurate - mon.Missrate;
-            double str = pc.Strength - mon.Physique;
-            if (acc < 0) acc = 0;
-            if (str < 0) str = 0;
-
-            if (roll < acc * 1000.0)
+            string op_type = game.ScriptManager.GetVariable("op_type");
+            if (op_type == "weapon")
             {
-                if (roll < str * acc)
+                string haveweapon = "null";
+
+
+                if (pc.Weapon != null)
                 {
-                    //暴击
-                    damage = (int)(pc.Damage + pc.Damage * (100000.0 - roll) / 100000.0);
+                    if (pc.Weapon.Name != null)
+                        if (pc.Weapon.Name != string.Empty)
+                        {
+                            haveweapon = pc.Weapon.Name;
+                        }
                 }
-                else
+                game.ScriptManager.InsertCommand("var haveweapon = " + haveweapon);
+                game.ScriptManager.InsertCommand("?var op_type # weapon var haveweapon = not_null");
+                game.ScriptManager.InsertCommand("?var haveweapon = null var op_type = fight");
+
+                //计算伤害
+                int roll = Util.Roll(100000);
+
+                double acc = pc.Accurate - mon.Missrate;
+                double str = pc.Strength - mon.Physique;
+                if (acc < 0) acc = 0;
+                if (str < 0) str = 0;
+
+                if (roll < acc * 1000.0)
                 {
-                    //非暴击
-                    double x = (double)pc.Weapon.Quality;
-                    x /= 100.0;
-                    double y = Math.Abs(1.0 - x);
-                    damage = (int)(pc.Damage * x + pc.Damage * y * (100000.0 - roll) / 100000.0);
+                    if (roll < str * acc)
+                    {
+                        //暴击
+                        damage = (int)(pc.Damage + pc.Damage * (100000.0 - roll) / 100000.0);
+                    }
+                    else
+                    {
+                        //非暴击
+                        double x = (double)pc.Weapon.Quality;
+                        x /= 100.0;
+                        double y = Math.Abs(1.0 - x);
+                        damage = (int)(pc.Damage * x + pc.Damage * y * (100000.0 - roll) / 100000.0);
+                    }
                 }
             }
+            else if (op_type == "item")
+            {
+                int item_index = int.Parse(game.ScriptManager.GetVariable("item_index"));
+                Item item = pc.BagSee(item_index);
+                //pc.BagRemove(item_index);
+                if (item is BattleItem)
+                {
+                    BattleItem bitem = (BattleItem)item;
 
+                    int roll = Util.Roll(100000);
+
+                    double acc = bitem.Accurate - mon.Missrate;
+                    double str = pc.Strength - mon.Physique;
+                    if (acc < 0) acc = 0;
+                    if (str < 0) str = 0;
+
+                    if (roll < acc * 1000.0)
+                    {
+                        if (roll < str * acc)
+                        {
+                            //暴击
+                            damage = (int)(bitem.Damage + bitem.Damage * (100000.0 - roll) / 100000.0);
+                        }
+                        else
+                        {
+                            //非暴击
+                            double x = (double)pc.Weapon.Quality;
+                            x /= 100.0;
+                            double y = Math.Abs(1.0 - x);
+                            damage = (int)(bitem.Damage * x + bitem.Damage * y * (100000.0 - roll) / 100000.0);
+                        }
+                    }
+                }
+                game.ScriptManager.AppendCommand("pc [pc_index] bagremove [item_index]");
+            }
             game.ScriptManager.AppendCommand("monster [target_index] -hp " + damage);
             
             game.ScriptManager.AppendCommand("msg monster　[target_index]　HP-=　" + damage);
