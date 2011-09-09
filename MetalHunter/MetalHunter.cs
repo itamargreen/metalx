@@ -86,6 +86,12 @@ namespace MetalHunter
             {
                 game.FormBoxManager.Appear("MenuCHR", game.ME);
                 game.FormBoxManager.Appear("MenuBAG", game.ME);
+            } if (k == Key.F11)
+            {
+                game.ToggleToFullScreen();
+            } if (k == Key.F10)
+            {
+                game.ToggleToWindowed();
             }
             //else if (k == Key.P)
             //{

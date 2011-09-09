@@ -137,6 +137,7 @@ namespace MetalHunter
             Location = new Point(0, 0);
 
             BGTextureBox.Texture.Name = "bg_160x240";
+            BGTextureBox.TextureFliterColor = Color.FromArgb(150, 0xff, 0xff, 0xff);
             BGTextureBox.Size = new Size(320, 480);
 
             int line = 5;

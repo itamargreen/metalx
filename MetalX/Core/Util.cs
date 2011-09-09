@@ -193,7 +193,7 @@ namespace MetalX
             filebuff = Compress(filebuff);
             System.IO.File.WriteAllBytes(FileName, filebuff);
         }
-        static System.Random Random = new System.Random(DateTime.Now.Millisecond);
+        static System.Random Random = new System.Random(Guid.NewGuid().GetHashCode());
         public static double Roll()
         {
             return Random.NextDouble();
