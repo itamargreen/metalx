@@ -46,9 +46,9 @@ namespace MetalX
             Microsoft.DirectX.Direct3D.PresentParameters pps = new Microsoft.DirectX.Direct3D.PresentParameters();
             pps.SwapEffect = Microsoft.DirectX.Direct3D.SwapEffect.Discard;
             pps.Windowed = true;
-            pps.BackBufferCount = 2;
+            pps.BackBufferCount = 1;
             pps.PresentationInterval = PresentInterval.One;
-            pps.PresentFlag = PresentFlag.LockableBackBuffer;
+            pps.BackBufferFormat = Format.A8R8G8B8;
 
             if (GameWindow == null)
             {

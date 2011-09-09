@@ -390,6 +390,23 @@ namespace MetalX
 
             isRunning = true;
         }
+        public void ToggleToWindowed()
+        {
+            isRunning = false;
+
+            Devices.D3DDev.PresentationParameters.Windowed = true;
+            Devices.D3DDev.PresentationParameters.BackBufferWidth = Options.WindowSizePixel.Width;
+            Devices.D3DDev.PresentationParameters.BackBufferHeight = Options.WindowSizePixel.Height;
+            //Devices.D3DDev.Dispose();
+            Devices.D3DDev.Reset(Devices.D3DDev.PresentationParameters);
+
+            //Devices.D3DDev.RenderState.AlphaBlendEnable = true;
+            ////Devices.D3DDev.RenderState.AlphaTestEnable = true;
+            //Devices.D3DDev.RenderState.SourceBlend = Microsoft.DirectX.Direct3D.Blend.SourceAlpha;
+            //Devices.D3DDev.RenderState.DestinationBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceAlpha;
+
+            isRunning = true;
+        }
         /// <summary>
         /// 每帧
         /// </summary>

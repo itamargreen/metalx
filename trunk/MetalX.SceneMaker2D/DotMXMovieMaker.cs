@@ -63,7 +63,7 @@ namespace MetalX.SceneMaker2D
             {
                 int n = mxmovie.MXT.Size.Width;
                 n = n / mxmovie.FrameCount;
-                textBox2.Text = n.ToString();
+                textBox1.Text = n.ToString();
             }
             mxmovie.FrameInterval = int.Parse(textBox4.Text);
             timer1.Interval = (int)mxmovie.FrameInterval;
